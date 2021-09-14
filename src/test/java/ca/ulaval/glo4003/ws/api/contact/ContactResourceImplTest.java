@@ -24,10 +24,8 @@ public class ContactResourceImplTest {
 
     private ContactResource contactResource;
 
-
     @BeforeEach
-    public void setUp()
-            throws Exception {
+    public void setUp() throws Exception {
         contactResource = new ContactResourceImpl(contactService);
     }
 

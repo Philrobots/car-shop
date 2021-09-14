@@ -16,13 +16,12 @@ public class ContactResourceIT {
     private static Thread t;
 
     @BeforeAll
-    public static void setUp()
-            throws Exception {
+    public static void setUp() throws Exception {
 
         t = new Thread() {
             public void run() {
                 try {
-                    TelephonyWsMain.main(new String[]{});
+                    TelephonyWsMain.main(new String[] {});
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

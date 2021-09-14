@@ -31,14 +31,12 @@ public class ContactServiceTest {
     private ContactService contactService;
 
     @BeforeEach
-    public void setUp()
-            throws Exception {
+    public void setUp() throws Exception {
         contactService = new ContactService(contactRepository, contactAssembler);
     }
 
     @Test
-    public void givenContactsInRepository_whenFindAllContacts_thenReturnDtos()
-            throws Exception {
+    public void givenContactsInRepository_whenFindAllContacts_thenReturnDtos() throws Exception {
         // given
         BDDMockito.given(contactRepository.findAll()).willReturn(Lists.newArrayList(contact));
         BDDMockito.given(contactAssembler.create(contact)).willReturn(contactDto);

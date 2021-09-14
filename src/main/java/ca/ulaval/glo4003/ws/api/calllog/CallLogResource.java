@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.ws.api.calllog;
 
-
 import ca.ulaval.glo4003.ws.api.calllog.dto.CallLogDto;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

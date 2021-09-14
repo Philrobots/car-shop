@@ -30,7 +30,7 @@ public class ContactRepositoryInMemoryTest {
 
     @Test
     public void givenContact_whenFindAll_ThenReturnContactInMemory() {
-        //given
+        // given
         contactRepositoryInMemory.save(contact);
 
         // when

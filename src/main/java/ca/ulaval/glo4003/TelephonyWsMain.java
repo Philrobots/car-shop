@@ -33,13 +33,11 @@ public class TelephonyWsMain {
     public static boolean isDev = true; // Would be a JVM argument or in a .property file
     public static final String BASE_URI = "http://localhost:8080/";
 
-    public static void main(String[] args)
-            throws Exception {
+    public static void main(String[] args) throws Exception {
 
         // Setup resources (API)
         ContactResource contactResource = createContactResource();
         CallLogResource callLogResource = createCallLogResource();
-
 
         final AbstractBinder binder = new AbstractBinder() {
             @Override
@@ -54,12 +52,9 @@ public class TelephonyWsMain {
         config.register(new CORSResponseFilter());
         config.packages("ca.ulaval.glo4003.ws.api");
 
-
         try {
             // Setup http server
-            final Server server =
-                    JettyHttpContainerFactory.createServer(URI.create(BASE_URI), config);
-
+            final Server server = JettyHttpContainerFactory.createServer(URI.create(BASE_URI), config);
 
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
@@ -71,8 +66,7 @@ public class TelephonyWsMain {
                 }
             }));
 
-            System.out.println(
-                    String.format("Application started.%nStop the application using CTRL+C"));
+            System.out.println(String.format("Application started.%nStop the application using CTRL+C"));
 
             // block and wait shut down signal, like CTRL+C
             Thread.currentThread().join();
@@ -80,7 +74,6 @@ public class TelephonyWsMain {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-
 
     }
 
