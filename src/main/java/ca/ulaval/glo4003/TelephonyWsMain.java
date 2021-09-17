@@ -1,9 +1,17 @@
 package ca.ulaval.glo4003;
 
+import ca.ulaval.glo4003.ws.service.customer.CustomerAssembler;
+import ca.ulaval.glo4003.ws.api.customer.CustomerResource;
+import ca.ulaval.glo4003.ws.api.customer.CustomerResourceImpl;
 import ca.ulaval.glo4003.ws.api.calllog.CallLogResource;
 import ca.ulaval.glo4003.ws.api.calllog.CallLogResourceImpl;
 import ca.ulaval.glo4003.ws.api.contact.ContactResource;
 import ca.ulaval.glo4003.ws.api.contact.ContactResourceImpl;
+import ca.ulaval.glo4003.ws.api.login.LoginResource;
+import ca.ulaval.glo4003.ws.api.login.LoginResourceImpl;
+import ca.ulaval.glo4003.ws.domain.customer.*;
+import ca.ulaval.glo4003.ws.service.login.TokenAssembler;
+import ca.ulaval.glo4003.ws.domain.token.TokenFactory;
 import ca.ulaval.glo4003.ws.domain.calllog.CallLog;
 import ca.ulaval.glo4003.ws.domain.calllog.CallLogAssembler;
 import ca.ulaval.glo4003.ws.domain.calllog.CallLogRepository;
@@ -12,11 +20,18 @@ import ca.ulaval.glo4003.ws.domain.contact.Contact;
 import ca.ulaval.glo4003.ws.domain.contact.ContactAssembler;
 import ca.ulaval.glo4003.ws.domain.contact.ContactRepository;
 import ca.ulaval.glo4003.ws.domain.contact.ContactService;
+import ca.ulaval.glo4003.ws.domain.date.DateFormat;
+import ca.ulaval.glo4003.ws.domain.login.LoginValidator;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
+import ca.ulaval.glo4003.ws.infrastructure.customer.CustomerRepositoryInMemory;
 import ca.ulaval.glo4003.ws.infrastructure.calllog.CallLogDevDataFactory;
 import ca.ulaval.glo4003.ws.infrastructure.calllog.CallLogRepositoryInMemory;
 import ca.ulaval.glo4003.ws.infrastructure.contact.ContactDevDataFactory;
 import ca.ulaval.glo4003.ws.infrastructure.contact.ContactRepositoryInMemory;
+import ca.ulaval.glo4003.ws.infrastructure.token.TokenRepositoryInMemory;
+import ca.ulaval.glo4003.ws.service.customer.CustomerService;
+import ca.ulaval.glo4003.ws.service.login.LoginService;
+import ca.ulaval.glo4003.ws.service.login.TokenRepository;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -36,14 +51,19 @@ public class TelephonyWsMain {
     public static void main(String[] args) throws Exception {
 
         // Setup resources (API)
+        CustomerRepository customerRepository = new CustomerRepositoryInMemory();
         ContactResource contactResource = createContactResource();
         CallLogResource callLogResource = createCallLogResource();
+        CustomerResource customerResource = createAccountResource(customerRepository);
+        LoginResource loginResource = createLoginResource(customerRepository);
 
         final AbstractBinder binder = new AbstractBinder() {
             @Override
             protected void configure() {
                 bind(contactResource).to(ContactResource.class);
                 bind(callLogResource).to(CallLogResource.class);
+                bind(customerResource).to(CustomerResource.class);
+                bind(loginResource).to(LoginResource.class);
             }
         };
 
@@ -109,5 +129,27 @@ public class TelephonyWsMain {
         CallLogService callLogService = new CallLogService(callLogRepository, callLogAssembler);
 
         return new CallLogResourceImpl(callLogService);
+    }
+
+    private static CustomerResource createAccountResource(CustomerRepository customerRepository) {
+        CustomerFactory customerFactory = new CustomerFactory();
+        DateFormat dateFormat = new DateFormat();
+        CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory, dateFormat);
+        CustomerValidator customerValidator = new CustomerValidator(customerRepository);
+        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
+
+        return new CustomerResourceImpl(customerService);
+
+    }
+
+    private static LoginResource createLoginResource(CustomerRepository customerRepository) {
+        TokenFactory tokenFactory = new TokenFactory();
+        TokenRepository tokenRepository = new TokenRepositoryInMemory(tokenFactory);
+        TokenAssembler tokenAssembler = new TokenAssembler();
+        LoginValidator loginValidator = new LoginValidator();
+        LoginService loginService = new LoginService(tokenRepository, tokenAssembler, customerRepository,
+                loginValidator);
+
+        return new LoginResourceImpl(loginService);
     }
 }
