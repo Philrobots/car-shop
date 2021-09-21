@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.AccountAlreadyExistException;
-import ca.ulaval.glo4003.evulution.domain.customer.exception.InvalidDateFormatException;
+import ca.ulaval.glo4003.evulution.api.customer.exception.InvalidDateFormatException;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

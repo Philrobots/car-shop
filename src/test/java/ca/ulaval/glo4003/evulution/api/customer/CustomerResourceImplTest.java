@@ -1,8 +1,9 @@
 package ca.ulaval.glo4003.evulution.api.customer;
 
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
+import ca.ulaval.glo4003.evulution.api.customer.exception.InvalidDateFormatException;
+import ca.ulaval.glo4003.evulution.api.customer.validator.DateFormatValidator;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.AccountAlreadyExistException;
-import ca.ulaval.glo4003.evulution.domain.customer.exception.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +23,14 @@ public class CustomerResourceImplTest {
     @Mock
     private CustomerService customerService;
 
+    @Mock
+    DateFormatValidator dateFormatValidator;
+
     private CustomerResourceImpl accountResource;
 
     @BeforeEach
     public void setUp() {
-        accountResource = new CustomerResourceImpl(customerService);
+        accountResource = new CustomerResourceImpl(customerService, dateFormatValidator);
     }
 
     @Test

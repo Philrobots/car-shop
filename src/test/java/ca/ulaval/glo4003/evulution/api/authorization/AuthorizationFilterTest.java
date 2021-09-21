@@ -1,14 +1,12 @@
 package ca.ulaval.glo4003.evulution.api.authorization;
 
+import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.core.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -22,11 +20,14 @@ public class AuthorizationFilterTest {
     @Mock
     AuthorizationService authorizationService;
 
+    @Mock
+    TokenDtoAssembler tokenDtoAssembler;
+
     private AuthorizationFilter authorizationFilter;
 
     @BeforeEach
     public void setUp() {
-        authorizationFilter = new AuthorizationFilter(authorizationService);
+        authorizationFilter = new AuthorizationFilter(authorizationService, tokenDtoAssembler);
     }
 
     @Test

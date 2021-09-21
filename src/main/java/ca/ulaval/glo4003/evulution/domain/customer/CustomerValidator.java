@@ -3,8 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.customer;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.AccountAlreadyExistException;
 
 public class CustomerValidator {
-
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     public CustomerValidator(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;

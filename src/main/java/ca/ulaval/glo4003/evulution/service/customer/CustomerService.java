@@ -5,7 +5,6 @@ import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.AccountAlreadyExistException;
-import ca.ulaval.glo4003.evulution.domain.customer.exception.InvalidDateFormatException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ public class CustomerService {
         this.customerValidator = customerValidator;
     }
 
-    public void addCustomer(CustomerDto customerDto) throws AccountAlreadyExistException, InvalidDateFormatException {
+    public void addCustomer(CustomerDto customerDto) throws AccountAlreadyExistException {
         this.customerValidator.validateEmailIsNotInUse(customerDto.email);
         Customer customer = this.customerAssembler.DtoToCustomer(customerDto);
         this.customerRepository.addAccount(customer);

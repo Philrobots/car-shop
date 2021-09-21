@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.evulution.api.authorization.AuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.customer.CustomerResource;
 import ca.ulaval.glo4003.evulution.api.customer.CustomerResourceImpl;
+import ca.ulaval.glo4003.evulution.api.customer.validator.DateFormatValidator;
 import ca.ulaval.glo4003.evulution.api.login.LoginResource;
 import ca.ulaval.glo4003.evulution.api.login.LoginResourceImpl;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
@@ -13,11 +14,11 @@ import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
-import ca.ulaval.glo4003.evulution.domain.date.DateFormat;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionIdFactory;
+import ca.ulaval.glo4003.evulution.domain.token.ActiveTokenValidator;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.http.CORSResponseFilter;
 import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInMemory;
@@ -44,36 +45,23 @@ import java.net.URI;
 @SuppressWarnings("all")
 public class EvulutionMain {
     public static final String BASE_URI = "http://localhost:8080/";
-    private static TokenRepository tokenRepository = new TokenRepositoryInMemory();
+    public static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     public static void main(String[] args) throws Exception {
-
-        // Setup resources (API)
+        // Setup repositories
         CustomerRepository customerRepository = new CustomerRepositoryInMemory();
-        CustomerResource customerResource = createAccountResource(customerRepository);
-        LoginResource loginResource = createLoginResource(customerRepository);
-
+        TokenRepository tokenRepository = new TokenRepositoryInMemory();
         SaleRepository saleRepository = new SaleRepositoryInMemory();
 
+        // Setup assemblers
         TokenAssembler tokenAssembler = new TokenAssembler();
-
-        TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
-
-        TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
-
-        SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
-
-        CarFactory carFactory = new CarFactory();
-
-        BatteryFactory batteryFactory = new BatteryFactory();
-
         TokenDtoAssembler tokenDtoAssembler = new TokenDtoAssembler();
 
-        SaleResource saleResource = new SaleResourceImpl(new SaleService(saleFactory, saleRepository, tokenRepository,
-                tokenAssembler, transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory),
+        // Setup resources (API)
+        CustomerResource customerResource = createAccountResource(customerRepository);
+        LoginResource loginResource = createLoginResource(customerRepository, tokenRepository, tokenAssembler);
+        SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, tokenAssembler,
                 tokenDtoAssembler);
-
-        AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, tokenRepository);
 
         final AbstractBinder binder = new AbstractBinder() {
             @Override
@@ -87,7 +75,7 @@ public class EvulutionMain {
         final ResourceConfig config = new ResourceConfig();
         config.register(binder);
         config.register(new CORSResponseFilter());
-        config.register(new AuthorizationFilter(authorizationService));
+        config.register(createAuthorizationFilter(tokenRepository, tokenAssembler, tokenDtoAssembler));
         config.packages("ca.ulaval.glo4003.evulution.api");
 
         try {
@@ -117,22 +105,42 @@ public class EvulutionMain {
 
     private static CustomerResource createAccountResource(CustomerRepository customerRepository) {
         CustomerFactory customerFactory = new CustomerFactory();
-        DateFormat dateFormat = new DateFormat();
-        CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory, dateFormat);
+        CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
         CustomerValidator customerValidator = new CustomerValidator(customerRepository);
+        DateFormatValidator dateFormatValidator = new DateFormatValidator(DATE_REGEX);
         CustomerService customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
 
-        return new CustomerResourceImpl(customerService);
+        return new CustomerResourceImpl(customerService, dateFormatValidator);
 
     }
 
-    private static LoginResource createLoginResource(CustomerRepository customerRepository) {
+    private static LoginResource createLoginResource(CustomerRepository customerRepository,
+            TokenRepository tokenRepository, TokenAssembler tokenAssembler) {
         TokenFactory tokenFactory = new TokenFactory();
-        TokenAssembler tokenAssembler = new TokenAssembler();
         LoginValidator loginValidator = new LoginValidator();
         LoginService loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, customerRepository,
                 loginValidator);
 
         return new LoginResourceImpl(loginService);
+    }
+
+    private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
+            TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler) {
+        TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
+        SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
+        CarFactory carFactory = new CarFactory();
+        TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
+        SaleService saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
+                transactionIdAssembler, transactionIdFactory, carFactory);
+
+        return new SaleResourceImpl(saleService, tokenDtoAssembler);
+    }
+
+    private static AuthorizationFilter createAuthorizationFilter(TokenRepository tokenRepository,
+            TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler) {
+        ActiveTokenValidator activeTokenValidator = new ActiveTokenValidator(tokenRepository);
+        AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, activeTokenValidator);
+
+        return new AuthorizationFilter(authorizationService, tokenDtoAssembler);
     }
 }

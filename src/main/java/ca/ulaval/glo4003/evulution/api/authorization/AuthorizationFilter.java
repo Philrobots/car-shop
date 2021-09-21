@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.evulution.api.authorization;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
+import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.exception.GenericException;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import jakarta.annotation.Priority;
@@ -17,27 +18,28 @@ import java.io.IOException;
 @Provider
 @Priority(Priorities.AUTHORIZATION)
 public class AuthorizationFilter implements ContainerRequestFilter {
-    private AuthorizationService authorizationService;
+    private final AuthorizationService authorizationService;
+    private final TokenDtoAssembler tokenDtoAssembler;
 
-    public AuthorizationFilter(AuthorizationService authorizationService) {
+    public AuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler) {
         this.authorizationService = authorizationService;
+        this.tokenDtoAssembler = tokenDtoAssembler;
     }
 
     @Override
     public void filter(ContainerRequestContext containerRequestContext) throws IOException {
-
         String authorizationToken = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        TokenDto tokenDto = tokenDtoAssembler.assembleFromString(authorizationToken);
 
         try {
-            validateToken(authorizationToken);
+            validateToken(tokenDto);
         } catch (GenericException e) {
             containerRequestContext.abortWith(
                     Response.status(e.getErrorCode(), e.getErrorMessage()).entity(e.getErrorMessage()).build());
         }
     }
 
-    private void validateToken(String token) {
-        TokenDto tokenDto = new TokenDto(token);
+    private void validateToken(TokenDto tokenDto) {
         this.authorizationService.ValidateToken(tokenDto);
     }
 }
