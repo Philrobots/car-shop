@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @ExtendWith(MockitoExtension.class)
 public class CustomerRepositoryInMemoryTest {
 
-    private String AN_EMAIL = "tiray@vincent.yuk.com";
+    private static final String AN_EMAIL = "tiray@vincent.yuk.com";
 
     @Mock
     private Customer customer;
@@ -29,14 +29,13 @@ public class CustomerRepositoryInMemoryTest {
     }
 
     @Test
-    public void givenAnAccount_whenGetAccounts_thenShouldContainsTheAccount() {
-        // given
-        this.customerRepositoryInMemory.addAccount(customer);
+    public void whenAddAccount_thenRepositoryInMemoryContainsAccount() {
 
         // when
-        List<Customer> customers = this.customerRepositoryInMemory.getAll();
+        this.customerRepositoryInMemory.addAccount(customer);
 
         // then
+        List<Customer> customers = this.customerRepositoryInMemory.getAll();
         assertThat(customers, org.hamcrest.Matchers.hasItem(customer));
     }
 }

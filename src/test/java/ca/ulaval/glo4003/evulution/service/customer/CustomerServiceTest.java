@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
 
-    private String AN_EMAIL = "yuk@lamby.com";
+    private static final String AN_EMAIL = "yuk@lamby.com";
 
     @Mock
     private Customer customer;
@@ -44,7 +44,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void whenGettingAllAccount_thenShouldCallTheRepositoryToGetAccount() {
+    public void givenACustomer_whenGetCustomers_thenCustomerRepositoryGetsAll() {
         BDDMockito.given(customerRepository.getAll()).willReturn(Lists.newArrayList(customer));
 
         // when
@@ -55,7 +55,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void givenAnAccountDto_whenAddingTheAddingTheAccount_shouldCallTheRepositoryToAddAccount()
+    public void givenAnAccountDto_whenAddCustomer_shouldCustomerRepositoryAddsTheAccount()
             throws AccountAlreadyExistException, InvalidDateFormatException {
         // given
         BDDMockito.given(customerAssembler.DtoToCustomer(customerDto)).willReturn(customer);
@@ -68,7 +68,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void givenAnAccountDto_whenAddingTheAddingTheAccount_shouldCallTheRepositoryToAssembleCustomer()
+    public void givenAnAccountDto_whenAddCustomer_ThenCustomerAssemblerAssemblesDtoToCustomer()
             throws AccountAlreadyExistException, InvalidDateFormatException {
         // given
         BDDMockito.given(customerAssembler.DtoToCustomer(customerDto)).willReturn(customer);
@@ -81,7 +81,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void givenAnAccountDto_whenAddingTheAddingTheAccount_shouldCallTheCustomerValidatorToValidateCustomer()
+    public void givenAnAccountDto_whenAddCustomer_ThenCustomerValidatorValidatesEmailIsNotInUse()
             throws AccountAlreadyExistException, InvalidDateFormatException {
         // given
         BDDMockito.given(customerAssembler.DtoToCustomer(customerDto)).willReturn(customer);
@@ -90,7 +90,7 @@ public class CustomerServiceTest {
         this.customerService.addCustomer(customerDto);
 
         // then
-        Mockito.verify(customerValidator).validateEmailIsNotUse(AN_EMAIL);
+        Mockito.verify(customerValidator).validateEmailIsNotInUse(AN_EMAIL);
     }
 
 }

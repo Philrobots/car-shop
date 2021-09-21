@@ -24,13 +24,13 @@ public class CustomerService {
     }
 
     public void addCustomer(CustomerDto customerDto) throws AccountAlreadyExistException, InvalidDateFormatException {
-        this.customerValidator.validateEmailIsNotUse(customerDto.email);
+        this.customerValidator.validateEmailIsNotInUse(customerDto.email);
         Customer customer = this.customerAssembler.DtoToCustomer(customerDto);
         this.customerRepository.addAccount(customer);
     }
 
     public List<CustomerDto> getCustomers() {
         List<Customer> customers = this.customerRepository.getAll();
-        return customers.stream().map(customerAssembler::toDto).collect(Collectors.toList());
+        return customers.stream().map(customerAssembler::CustomerToDto).collect(Collectors.toList());
     }
 }

@@ -27,8 +27,7 @@ public class LoginResourceImplTest {
     }
 
     @Test
-    public void givenALoginDto_whenLoginCustomer_thenShouldCallTheLoginServiceToLoginCustomer()
-            throws NoAccountFoundException {
+    public void givenLoginDto_whenLoginCustomer_thenLoginServiceCallsLoginCustomer() throws NoAccountFoundException {
         // when
         loginResource.loginCustomer(loginDto);
 

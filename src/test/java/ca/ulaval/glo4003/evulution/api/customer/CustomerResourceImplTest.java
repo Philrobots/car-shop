@@ -25,12 +25,12 @@ public class CustomerResourceImplTest {
     private CustomerResourceImpl accountResource;
 
     @BeforeEach
-    public void set_up() {
+    public void setUp() {
         accountResource = new CustomerResourceImpl(customerService);
     }
 
     @Test
-    public void when_getAllAccounts_thenShouldCallTheAccountServiceToGetAllAccounts() {
+    public void whenGetAll_thenCustomerServiceGetsCustomers() {
         BDDMockito.given(customerService.getCustomers()).willReturn(Lists.newArrayList(customerDto));
 
         // when
@@ -41,8 +41,9 @@ public class CustomerResourceImplTest {
     }
 
     @Test
-    public void givenAnAccountDto_whenAddAccount_thenShouldCallTheServiceToAddAccount()
+    public void whenAddCustomer_thenCustomerServiceAddsCustomer()
             throws AccountAlreadyExistException, InvalidDateFormatException {
+
         // when
         this.accountResource.addCustomer(customerDto);
 

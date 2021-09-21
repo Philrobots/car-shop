@@ -1,13 +1,12 @@
 package ca.ulaval.glo4003.evulution.domain.customer.exception;
 
-public class InvalidDateFormatException extends CannotCreateCustomerException {
+import ca.ulaval.glo4003.evulution.exception.GenericException;
 
-    public InvalidDateFormatException(String message) {
-        super(message);
-    }
+public class InvalidDateFormatException extends GenericException {
+    private static int errorCode = 400;
+    private static String errorMessage = "bad input parameter";
 
-    @Override
-    public int getStatusCode() {
-        return 400;
+    public InvalidDateFormatException() {
+        super(errorCode, errorMessage);
     }
 }

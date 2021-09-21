@@ -23,11 +23,11 @@ public class CustomerAssembler {
         return this.customerFactory.create(customerDto.name, dateOfBirth, customerDto.email, customerDto.password);
     }
 
-    public CustomerDto toDto(Customer customer) {
+    public CustomerDto CustomerToDto(Customer customer) {
         CustomerDto customerDto = new CustomerDto();
         customerDto.name = customer.getName();
         customerDto.email = customer.getEmail();
-        customerDto.birthdate = this.dateFormat.dateToString(customer.getBirthdate());
+        customerDto.birthdate = this.dateFormat.dateToString(customer.getBirthDate());
         customerDto.password = customer.getPassword();
         return customerDto;
     }

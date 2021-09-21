@@ -1,12 +1,15 @@
 package ca.ulaval.glo4003.evulution.service.login;
 
-import ca.ulaval.glo4003.evulution.api.customer.dto.TokenDto;
+import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
 import ca.ulaval.glo4003.evulution.domain.login.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
+import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
+import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
+import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,12 +18,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceTest {
-
-    private String AN_EMAIl = "tiray@expat.com";
+    private static final String A_STRING_EMAIL = "tiray@expat.com";
 
     @Mock
     private Token token;
@@ -30,6 +32,9 @@ public class LoginServiceTest {
 
     @Mock
     private TokenRepository tokenRepository;
+
+    @Mock
+    private TokenFactory tokenFactory;
 
     @Mock
     private TokenAssembler tokenAssembler;
@@ -50,26 +55,26 @@ public class LoginServiceTest {
 
     @BeforeEach
     public void setUp() {
-        loginDto.email = AN_EMAIl;
-        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIl)).willReturn(customer);
-        BDDMockito.given(tokenRepository.loginCustomer(AN_EMAIl)).willReturn(token);
-        BDDMockito.given(tokenAssembler.toDto(token)).willReturn(tokenDto);
-        loginService = new LoginService(tokenRepository, tokenAssembler, customerRepository, loginValidator);
+        loginDto.email = A_STRING_EMAIL;
+        BDDMockito.given(customerRepository.getAccountByEmail(A_STRING_EMAIL)).willReturn(customer);
+        BDDMockito.given(tokenAssembler.tokenToDto(token)).willReturn(tokenDto);
+        BDDMockito.given(tokenFactory.generateNewToken()).willReturn(token);
+        loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, customerRepository,
+                loginValidator);
     }
 
     @Test
-    public void givenAnEmail_whenLoginCustomer_thenShouldCallTheRepositoryToGetCustomerInformation()
+    public void givenAnEmail_whenLoginCustomer_thenCustomerRepositoryGetsAccountByEmail()
             throws NoAccountFoundException {
         // when
         loginService.loginCustomer(loginDto);
 
         // then
-        Mockito.verify(customerRepository).getAccountByEmail(AN_EMAIl);
+        Mockito.verify(customerRepository).getAccountByEmail(A_STRING_EMAIL);
     }
 
     @Test
-    public void givenAnEmail_whenLoginCustomer_thenShouldCallTheLoginValidatorToValidateAuthentication()
-            throws NoAccountFoundException {
+    public void givenAnEmail_whenLoginCustomer_thenLoginValidationValidatesLogin() throws NoAccountFoundException {
         // when
         loginService.loginCustomer(loginDto);
 
@@ -78,32 +83,32 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void givenAnEmail_whenLoginCustomer_thenShouldCallTheRepositoryToHandlerToken()
+    public void givenAnEmail_whenLoginCustomer_thenTokenRepositoryRegistersActiveEmail()
             throws NoAccountFoundException {
         // when
         loginService.loginCustomer(loginDto);
 
         // then
-        Mockito.verify(tokenRepository).loginCustomer(AN_EMAIl);
+        Mockito.verify(tokenRepository).addTokenWithEmail(token, A_STRING_EMAIL);
     }
 
     @Test
-    public void givenAnEmail_whenLoginCustomer_thenShouldCallTheAssemblerToGetTokenDto()
-            throws NoAccountFoundException {
+    public void givenAnEmail_whenLoginCustomer_thenTokenAssemblerAssemblesTokenToDto() throws NoAccountFoundException {
         // when
         loginService.loginCustomer(loginDto);
 
         // then
-        Mockito.verify(tokenAssembler).toDto(token);
+        Mockito.verify(tokenAssembler).tokenToDto(token);
     }
 
     @Test
-    public void givenAnEmail_whenLoginCustomer_thenShouldReturnTheRightTokenDto() throws NoAccountFoundException {
+    public void givenAnEmail_whenLoginCustomer_thenReturnsTheRightDto() throws NoAccountFoundException {
+
         // when
         TokenDto actualTokenDto = loginService.loginCustomer(loginDto);
 
         // then
-        assertTrue(tokenDto.equals(actualTokenDto));
+        assertEquals(tokenDto, actualTokenDto);
     }
 
 }

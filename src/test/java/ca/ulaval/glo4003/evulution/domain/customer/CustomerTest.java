@@ -13,37 +13,37 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(MockitoExtension.class)
 public class CustomerTest {
 
-    private String AN_EMAIL = "kevin@expat.com";
-    private String A_PASSWORD = "Fireball";
-    private String A_NAME = "JaggerBom";
-    private Date birthdate = new Date();
+    private static final String AN_EMAIL = "kevin@expat.com";
+    private static final String A_PASSWORD = "Fireball";
+    private static final String A_NAME = "JaggerBom";
+    private static final Date A_BIRTH_DATE = new Date();
 
     private Customer customer;
 
     @BeforeEach
     public void setUp() {
-        customer = new Customer(A_NAME, birthdate, AN_EMAIL, A_PASSWORD);
+        customer = new Customer(A_NAME, A_BIRTH_DATE, AN_EMAIL, A_PASSWORD);
     }
 
     @Test
-    public void givenAnRandomPassword_whenVerifyIfAuthIsCorrect_thenShouldNotBeCorrect() {
+    public void givenAnInvalidPassword_whenIsAuthenticationValid_thenIsInvalid() {
         // given
-        String badPassword = "12FireBallSvp";
+        String invalidPassword = "12FireBallSvp";
 
         // when
-        boolean isAuthCorrect = customer.isRightCustomerInfo(AN_EMAIL, badPassword);
+        boolean isAuthenticationValid = customer.isAuthenticationValid(AN_EMAIL, invalidPassword);
 
         // given
-        assertFalse(isAuthCorrect);
+        assertFalse(isAuthenticationValid);
     }
 
     @Test
-    public void givenAGoodPasswordAndGoodEmail_whenVerifyIfAuthIsCorrect_thenShouldBeCorrect() {
+    public void givenValidAuthenticationInfos_whenIsAuthenticationValid_thenIsValid() {
         // when
-        boolean isAuthCorrect = customer.isRightCustomerInfo(AN_EMAIL, A_PASSWORD);
+        boolean isAuthenticationValid = customer.isAuthenticationValid(AN_EMAIL, A_PASSWORD);
 
         // given
-        assertTrue(isAuthCorrect);
+        assertTrue(isAuthenticationValid);
     }
 
 }

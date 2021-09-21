@@ -4,20 +4,32 @@ import java.util.Date;
 
 public class Customer {
 
+    // rester attentif, peut être qu'on aura besoin d'un id dans le futur plutot que d'utiliser le email comme primary key
     private String name;
-    private Date birthdate;
+    private Date birthDate;
     private String email;
     private String password;
+    // Faire attention cest peut etre preferable de faire un interface avec differentes implementations plutot qu'un field
+    private Role role;
 
-    public Customer(String name, Date birthdate, String email, String password) {
+    public Customer(String name, Date birthDate, String email, String password) {
         this.name = name;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
         this.email = email;
         this.password = password;
+        this.role = Role.CUSTOMER;
     }
 
-    public Date getBirthdate() {
-        return birthdate;
+    public Customer(String name, Date birthDate, String email, String password, Role role) {
+        this.name = name;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
     }
 
     public String getEmail() {
@@ -32,7 +44,7 @@ public class Customer {
         return password;
     }
 
-    public boolean isRightCustomerInfo(String email, String password) {
+    public boolean isAuthenticationValid(String email, String password) {
         return this.email.equals(email) && this.password.equals(password);
     }
 }

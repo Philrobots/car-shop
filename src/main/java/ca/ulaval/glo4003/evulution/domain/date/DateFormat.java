@@ -17,13 +17,13 @@ public class DateFormat {
         try {
             return this.simpleDateFormat.parse(date);
         } catch (ParseException e) {
-            throw new InvalidDateFormatException("bad input parameter");
+            throw new InvalidDateFormatException();
         }
     }
 
     private void validateDateIsInTheCorrectFormat(String date) throws InvalidDateFormatException {
         if (!date.matches(this.dateRegex)) {
-            throw new InvalidDateFormatException("bad input parameter");
+            throw new InvalidDateFormatException();
         }
     }
 

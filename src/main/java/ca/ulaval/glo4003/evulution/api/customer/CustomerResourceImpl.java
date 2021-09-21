@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.api.customer;
 
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
-import ca.ulaval.glo4003.evulution.domain.customer.exception.CannotCreateCustomerException;
+import ca.ulaval.glo4003.evulution.exception.GenericException;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import jakarta.ws.rs.core.Response;
 
@@ -26,8 +26,8 @@ public class CustomerResourceImpl implements CustomerResource {
             this.customerService.addCustomer(customerDto);
             return Response.status(201, "Customer created").build();
 
-        } catch (CannotCreateCustomerException e) {
-            return Response.status(e.getStatusCode(), e.getMessage()).entity(e.getMessage()).build();
+        } catch (GenericException e) {
+            return Response.status(e.getErrorCode(), e.getMessage()).entity(e.getMessage()).build();
         }
     }
 }

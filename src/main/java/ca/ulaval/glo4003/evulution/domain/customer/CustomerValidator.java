@@ -10,11 +10,11 @@ public class CustomerValidator {
         this.customerRepository = customerRepository;
     }
 
-    public void validateEmailIsNotUse(String email) throws AccountAlreadyExistException {
+    public void validateEmailIsNotInUse(String email) throws AccountAlreadyExistException {
         Customer c = this.customerRepository.getAccountByEmail(email);
 
         if (c != null) {
-            throw new AccountAlreadyExistException("an existing customer already exists");
+            throw new AccountAlreadyExistException();
         }
     }
 }

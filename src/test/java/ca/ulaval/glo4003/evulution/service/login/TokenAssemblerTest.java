@@ -1,7 +1,8 @@
 package ca.ulaval.glo4003.evulution.service.login;
 
-import ca.ulaval.glo4003.evulution.api.customer.dto.TokenDto;
+import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
+import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +32,7 @@ public class TokenAssemblerTest {
     @Test
     public void givenAnToken_whenToDto_thenShouldCallTheTokenToGetHisValue() {
         // when
-        TokenDto dto = tokenAssembler.toDto(token);
+        TokenDto dto = tokenAssembler.tokenToDto(token);
 
         // then
         Mockito.verify(token).getToken();
@@ -40,9 +41,9 @@ public class TokenAssemblerTest {
     @Test
     public void givenAnToken_whenToDto_thenShouldBeTheSameValue() {
         // when
-        TokenDto dto = tokenAssembler.toDto(token);
+        TokenDto dto = tokenAssembler.tokenToDto(token);
 
         // then
-        assertEquals(dto.token, A_RANDOM_STRING_TOKEN);
+        assertEquals(dto.getToken(), A_RANDOM_STRING_TOKEN);
     }
 }

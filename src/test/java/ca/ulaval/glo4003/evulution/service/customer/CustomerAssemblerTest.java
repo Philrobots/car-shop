@@ -21,11 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class CustomerAssemblerTest {
 
-    private String NAME = "tiray";
-    private String EMAIl = "tiray@expat.com";
-    private String PASSWORD = "vinceBro@expat.com";
-    private Date BIRTH_DATE = new Date();
-    private String DATE_IN_STRING = "1999-08-08";
+    private static final String A_NAME = "tiray";
+    private static final String AN_EMAIL = "tiray@expat.com";
+    private static final String A_PASSWORD = "vinceBro@expat.com";
+    private static final Date A_BIRTHDATE = new Date();
+    private static final String A_DATE = "1999-08-08";
 
     @Mock
     private DateFormat dateFormat;
@@ -44,79 +44,78 @@ public class CustomerAssemblerTest {
     }
 
     @Test
-    public void givenAnCustomerDto_whenToCustomer_thenShouldCallTheCustomerFactory() throws InvalidDateFormatException {
+    public void givenACustomerDto_whenDtoToCustomer_thenCustomerFactoryIsCalled() throws InvalidDateFormatException {
         // given
-        BDDMockito.given(dateFormat.stringToDate(DATE_IN_STRING)).willReturn(BIRTH_DATE);
-        BDDMockito.given(customerFactory.create(NAME, BIRTH_DATE, EMAIl, PASSWORD)).willReturn(customer);
+        BDDMockito.given(dateFormat.stringToDate(A_DATE)).willReturn(A_BIRTHDATE);
+        BDDMockito.given(customerFactory.create(A_NAME, A_BIRTHDATE, AN_EMAIL, A_PASSWORD)).willReturn(customer);
         CustomerDto customerDto = givenAnCustomerDto();
 
         // when
-        Customer aCustomer = customerAssembler.DtoToCustomer(customerDto);
+        customerAssembler.DtoToCustomer(customerDto);
 
         // then
-        Mockito.verify(customerFactory).create(NAME, BIRTH_DATE, EMAIl, PASSWORD);
+        Mockito.verify(customerFactory).create(A_NAME, A_BIRTHDATE, AN_EMAIL, A_PASSWORD);
     }
 
     @Test
-    public void givenAnCustomerDto_whenToCustomer_thenShouldCallTheDateFormatToGetTheDate()
+    public void givenACustomerDto_whenDtoToCustomer_thenVerifiesStringToDateConversion()
             throws InvalidDateFormatException {
         // given
-        BDDMockito.given(dateFormat.stringToDate(DATE_IN_STRING)).willReturn(BIRTH_DATE);
-        BDDMockito.given(customerFactory.create(NAME, BIRTH_DATE, EMAIl, PASSWORD)).willReturn(customer);
+        BDDMockito.given(dateFormat.stringToDate(A_DATE)).willReturn(A_BIRTHDATE);
+        BDDMockito.given(customerFactory.create(A_NAME, A_BIRTHDATE, AN_EMAIL, A_PASSWORD)).willReturn(customer);
+        CustomerDto customerDto = givenAnCustomerDto();
+
+        // when
+        customerAssembler.DtoToCustomer(customerDto);
+
+        // then
+        Mockito.verify(dateFormat).stringToDate(A_DATE);
+    }
+
+    @Test
+    public void givenACustomerDto_whenDtoToCustomer_thenCustomersInfoMatchesDto() throws InvalidDateFormatException {
+        // given
+        BDDMockito.given(dateFormat.stringToDate(A_DATE)).willReturn(A_BIRTHDATE);
+        BDDMockito.given(customerFactory.create(A_NAME, A_BIRTHDATE, AN_EMAIL, A_PASSWORD)).willReturn(customer);
+        BDDMockito.given(customer.getPassword()).willReturn(A_PASSWORD);
+        BDDMockito.given(customer.getName()).willReturn(A_NAME);
+        BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
         CustomerDto customerDto = givenAnCustomerDto();
 
         // when
         Customer aCustomer = customerAssembler.DtoToCustomer(customerDto);
 
         // then
-        Mockito.verify(dateFormat).stringToDate(DATE_IN_STRING);
+        assertEquals(aCustomer.getPassword(), A_PASSWORD);
+        assertEquals(aCustomer.getName(), A_NAME);
+        assertEquals(aCustomer.getEmail(), AN_EMAIL);
     }
 
     @Test
-    public void givenAnCustomerDto_whenToCustomer_thenTheCustomerShouldHaveTheSameInformationAsTheDto()
-            throws InvalidDateFormatException {
+    public void givenACustomer_whenCustomerToDto_thenDtoInfoMatchesCustomer() {
         // given
-        BDDMockito.given(dateFormat.stringToDate(DATE_IN_STRING)).willReturn(BIRTH_DATE);
-        BDDMockito.given(customerFactory.create(NAME, BIRTH_DATE, EMAIl, PASSWORD)).willReturn(customer);
-        BDDMockito.given(customer.getPassword()).willReturn(PASSWORD);
-        BDDMockito.given(customer.getName()).willReturn(NAME);
-        BDDMockito.given(customer.getEmail()).willReturn(EMAIl);
-        CustomerDto customerDto = givenAnCustomerDto();
+        BDDMockito.given(customer.getPassword()).willReturn(A_PASSWORD);
+        BDDMockito.given(customer.getName()).willReturn(A_NAME);
+        BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
+        BDDMockito.given(customer.getBirthDate()).willReturn(A_BIRTHDATE);
+        BDDMockito.given(dateFormat.dateToString(A_BIRTHDATE)).willReturn(A_DATE);
 
         // when
-        Customer aCustomer = customerAssembler.DtoToCustomer(customerDto);
-
-        // then
-        assertEquals(aCustomer.getPassword(), PASSWORD);
-        assertEquals(aCustomer.getName(), NAME);
-        assertEquals(aCustomer.getEmail(), EMAIl);
-    }
-
-    @Test
-    public void givenAnCustomer_whenToDto_thenCustomerShouldHaveTheSameInformationAsTheDto() {
-        // given
-        BDDMockito.given(customer.getPassword()).willReturn(PASSWORD);
-        BDDMockito.given(customer.getName()).willReturn(NAME);
-        BDDMockito.given(customer.getEmail()).willReturn(EMAIl);
-        BDDMockito.given(customer.getBirthdate()).willReturn(BIRTH_DATE);
-        BDDMockito.given(dateFormat.dateToString(BIRTH_DATE)).willReturn(DATE_IN_STRING);
-
-        // when
-        CustomerDto aCustomerDto = customerAssembler.toDto(customer);
+        CustomerDto aCustomerDto = customerAssembler.CustomerToDto(customer);
 
         // then
         assertEquals(aCustomerDto.email, customer.getEmail());
         assertEquals(aCustomerDto.name, customer.getName());
         assertEquals(aCustomerDto.password, customer.getPassword());
-        assertEquals(aCustomerDto.birthdate, DATE_IN_STRING);
+        assertEquals(aCustomerDto.birthdate, A_DATE);
     }
 
     private CustomerDto givenAnCustomerDto() {
         CustomerDto customerDto = new CustomerDto();
-        customerDto.email = EMAIl;
-        customerDto.password = PASSWORD;
-        customerDto.name = NAME;
-        customerDto.birthdate = DATE_IN_STRING;
+        customerDto.email = AN_EMAIL;
+        customerDto.password = A_PASSWORD;
+        customerDto.name = A_NAME;
+        customerDto.birthdate = A_DATE;
         return customerDto;
     }
 }

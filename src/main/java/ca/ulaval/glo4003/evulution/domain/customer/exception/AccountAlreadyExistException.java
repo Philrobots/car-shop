@@ -1,13 +1,12 @@
 package ca.ulaval.glo4003.evulution.domain.customer.exception;
 
-public class AccountAlreadyExistException extends CannotCreateCustomerException {
+import ca.ulaval.glo4003.evulution.exception.GenericException;
 
-    public AccountAlreadyExistException(String message) {
-        super(message);
-    }
+public class AccountAlreadyExistException extends GenericException {
+    private static int errorCode = 409;
+    private static String errorMessage = "an existing customer already exists";
 
-    @Override
-    public int getStatusCode() {
-        return 409;
+    public AccountAlreadyExistException() {
+        super(errorCode, errorMessage);
     }
 }

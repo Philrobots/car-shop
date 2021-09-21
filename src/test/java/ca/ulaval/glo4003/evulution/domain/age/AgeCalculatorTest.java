@@ -8,7 +8,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AgeCalculatorTest {
-    private Date A_DATE = new Date();
+    private static final Date A_DATE = new Date();
 
     private AgeCalculator ageCalculator;
 
@@ -19,7 +19,7 @@ public class AgeCalculatorTest {
     }
 
     @Test
-    public void givenADate_thenCalculateAge_thenShouldReturnTheRightAge() {
+    public void givenADate_thenCalculateAge_thenReturnsTheRightAge() {
         // when
         int age = ageCalculator.calculateAge(A_DATE);
 

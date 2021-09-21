@@ -1,71 +1,40 @@
 package ca.ulaval.glo4003.evulution.infrastructure.token;
 
 import ca.ulaval.glo4003.evulution.domain.token.Token;
-import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class TokenRepositoryInMemoryTest {
 
-    private String AN_EMAIL = "tiray@expat.com";
+    private static final String AN_EMAIL = "tiray@expat.com";
 
     @Mock
     private Token token;
-
-    @Mock
-    private TokenFactory tokenFactory;
 
     private TokenRepositoryInMemory tokenRepositoryInMemory;
 
     @BeforeEach
     public void setUp() {
-        BDDMockito.given(tokenFactory.generateNewToken()).willReturn(token);
-        tokenRepositoryInMemory = new TokenRepositoryInMemory(tokenFactory);
+        tokenRepositoryInMemory = new TokenRepositoryInMemory();
     }
 
-    @Test
-    public void givenAnEmail_thenAddLoginCustomer_thenShouldCallTheTokenFactoryToGenerateToken() {
-        // when
-        tokenRepositoryInMemory.loginCustomer(AN_EMAIL);
+     @Test
+     public void givenAnActiveEmail_whenGetEmail_thenShouldReturnCorrespondingEmail() {
+         // given
+         tokenRepositoryInMemory.addTokenWithEmail(token, AN_EMAIL);
 
-        // then
-        Mockito.verify(tokenFactory).generateNewToken();
-    }
+         // when
+         String email = tokenRepositoryInMemory.getEmail(token);
 
-    @Test
-    public void givenAnEmail_thenGetAllToken_shouldHaveAnTokenLinkToTheEmail() {
-        // given
-        tokenRepositoryInMemory.loginCustomer(AN_EMAIL);
-
-        // then
-        Map<String, Token> tokens = tokenRepositoryInMemory.getTokens();
-        Token aToken = tokens.get(AN_EMAIL);
-
-        // should
-        assertTrue(aToken == token);
-    }
-
-    @Test
-    public void givenAnEmail_thenSignOutTheCustomer_thenShouldReturnAMapWithNoToken() {
-        // given
-        tokenRepositoryInMemory.loginCustomer(AN_EMAIL);
-
-        // then
-        tokenRepositoryInMemory.signOutCustomer(AN_EMAIL);
-
-        // should
-        Map<String, Token> tokens = tokenRepositoryInMemory.getTokens();
-        assertTrue(tokens.isEmpty());
-    }
+         // then
+         assertEquals(email, AN_EMAIL);
+     }
 
 }

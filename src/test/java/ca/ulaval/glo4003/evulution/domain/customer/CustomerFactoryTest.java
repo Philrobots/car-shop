@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class CustomerFactoryTest {
 
-    private String AN_EMAIl = "tiray@expat.com";
-    private String A_PASSWORD = "123456";
-    private Date BIRTH_DATE = new Date();
-    private String A_NAME = "TI RAY EXPAT";
+    private static final String AN_EMAIl = "tiray@expat.com";
+    private static final String A_PASSWORD = "123456";
+    private static final Date A_BIRTH_DATE = new Date();
+    private static final String A_NAME = "TI RAY EXPAT";
 
     private CustomerFactory customerFactory;
 
@@ -25,13 +25,13 @@ public class CustomerFactoryTest {
     }
 
     @Test
-    public void givenInformation_whenCreateCustomer_thenCustomerShouldHaveTheSameInformation() {
+    public void givenInformations_whenCreateCustomer_thenCustomerHasTheSameInformations() {
         // when
-        Customer customer = customerFactory.create(A_NAME, BIRTH_DATE, AN_EMAIl, A_PASSWORD);
+        Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD);
 
         // then
         assertEquals(customer.getEmail(), AN_EMAIl);
-        assertEquals(customer.getBirthdate(), BIRTH_DATE);
+        assertEquals(customer.getBirthDate(), A_BIRTH_DATE);
         assertEquals(customer.getName(), A_NAME);
         assertEquals(customer.getPassword(), A_PASSWORD);
     }
