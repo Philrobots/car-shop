@@ -27,18 +27,18 @@ public class SaleRepositoryInMemoryTest {
         saleRepositoryInMemory = new SaleRepositoryInMemory();
     }
 
-     @Test
-     public void givenASale_whenRegisterSale_thenRepositoryInMemoryContainsSale() {
+    @Test
+    public void givenASale_whenRegisterSale_thenRepositoryInMemoryContainsSale() {
 
-         // given
-         Sale expectedSale = new Sale(AN_EMAIL, A_TRANSACTION_ID);
+        // given
+        Sale expectedSale = new Sale(AN_EMAIL, A_TRANSACTION_ID);
 
-         // when
-         this.saleRepositoryInMemory.registerSale(expectedSale);
+        // when
+        this.saleRepositoryInMemory.registerSale(expectedSale);
 
-         // then
-         assertEquals(expectedSale, this.saleRepositoryInMemory.getSale(A_TRANSACTION_ID));
-     }
+        // then
+        assertEquals(expectedSale, this.saleRepositoryInMemory.getSale(A_TRANSACTION_ID));
+    }
 
     @Test
     public void givenNoSale_whenGetSale_thenRepositoryDoesNotContainSale() {

@@ -21,8 +21,10 @@ public class Token {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Token)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Token))
+            return false;
         Token token1 = (Token) o;
         return Objects.equals(token, token1.token);
     }

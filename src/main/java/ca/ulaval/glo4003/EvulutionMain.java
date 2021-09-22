@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.evulution.api.login.LoginResourceImpl;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
+import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
@@ -30,7 +31,6 @@ import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import ca.ulaval.glo4003.evulution.service.sale.TransactionIdAssembler;
-import org.checkerframework.checker.units.qual.C;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -65,10 +65,13 @@ public class EvulutionMain {
 
         CarFactory carFactory = new CarFactory();
 
+        BatteryFactory batteryFactory = new BatteryFactory();
+
         TokenDtoAssembler tokenDtoAssembler = new TokenDtoAssembler();
 
         SaleResource saleResource = new SaleResourceImpl(new SaleService(saleFactory, saleRepository, tokenRepository,
-                tokenAssembler, transactionIdAssembler, transactionIdFactory, carFactory), tokenDtoAssembler);
+                tokenAssembler, transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory),
+                tokenDtoAssembler);
 
         AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, tokenRepository);
 

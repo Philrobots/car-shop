@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.api.sale;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
+import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
 import ca.ulaval.glo4003.evulution.domain.login.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
@@ -41,6 +42,16 @@ public class SaleResourceImpl implements SaleResource {
         try {
             this.saleService.chooseVehicle(transactionId, chooseVehicleDto);
             return Response.ok().status(202, "Added car model").build();
+        } catch (GenericException e) {
+            return Response.status(e.getErrorCode(), e.getErrorMessage()).entity(e.getErrorMessage()).build();
+        }
+    }
+
+    @Override
+    public Response chooseBattery(int transactionId, ChooseBatteryDto chooseBatteryDto) {
+        try {
+            this.saleService.chooseBattery(transactionId, chooseBatteryDto);
+            return Response.ok().status(202, "Added selected battery capacity").build();
         } catch (GenericException e) {
             return Response.status(e.getErrorCode(), e.getErrorMessage()).entity(e.getErrorMessage()).build();
         }

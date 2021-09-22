@@ -1,10 +1,13 @@
 package ca.ulaval.glo4003.evulution.service.sale;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.TransactionIdDto;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
+import ca.ulaval.glo4003.evulution.domain.car.Battery;
+import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.*;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
@@ -18,10 +21,11 @@ public class SaleService {
     private TransactionIdAssembler transactionIdAssembler;
     private TransactionIdFactory transactionIdFactory;
     private CarFactory carFactory;
+    private BatteryFactory batteryFactory;
 
     public SaleService(SaleFactory saleFactory, SaleRepository saleRepository, TokenRepository tokenRepository,
             TokenAssembler tokenAssembler, TransactionIdAssembler transactionIdAssembler,
-            TransactionIdFactory transactionIdFactory, CarFactory carFactory) {
+            TransactionIdFactory transactionIdFactory, CarFactory carFactory, BatteryFactory batteryFactory) {
         this.saleFactory = saleFactory;
         this.saleRepository = saleRepository;
         this.tokenRepository = tokenRepository;
@@ -29,6 +33,7 @@ public class SaleService {
         this.transactionIdAssembler = transactionIdAssembler;
         this.transactionIdFactory = transactionIdFactory;
         this.carFactory = carFactory;
+        this.batteryFactory = batteryFactory;
     }
 
     public TransactionIdDto initSale(TokenDto tokenDto) {
@@ -46,5 +51,12 @@ public class SaleService {
         Sale sale = this.saleRepository.getSale(transactionId);
         Car car = this.carFactory.create(chooseVehicleDto.name, chooseVehicleDto.color);
         sale.chooseCar(car);
+    }
+
+    public void chooseBattery(int transactionIdInt, ChooseBatteryDto chooseBatteryDto) {
+        TransactionId transactionId = this.transactionIdFactory.createFromInt(transactionIdInt);
+        Sale sale = this.saleRepository.getSale(transactionId);
+        Battery battery = this.batteryFactory.create(chooseBatteryDto.type);
+        sale.chooseBattery(battery);
     }
 }

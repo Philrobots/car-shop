@@ -1,4 +1,5 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
+
 import java.util.List;
 
 public interface SaleRepository {

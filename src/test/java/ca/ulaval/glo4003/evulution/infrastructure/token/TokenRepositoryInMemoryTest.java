@@ -25,16 +25,16 @@ public class TokenRepositoryInMemoryTest {
         tokenRepositoryInMemory = new TokenRepositoryInMemory();
     }
 
-     @Test
-     public void givenAnActiveEmail_whenGetEmail_thenShouldReturnCorrespondingEmail() {
-         // given
-         tokenRepositoryInMemory.addTokenWithEmail(token, AN_EMAIL);
+    @Test
+    public void givenAnActiveEmail_whenGetEmail_thenShouldReturnCorrespondingEmail() {
+        // given
+        tokenRepositoryInMemory.addTokenWithEmail(token, AN_EMAIL);
 
-         // when
-         String email = tokenRepositoryInMemory.getEmail(token);
+        // when
+        String email = tokenRepositoryInMemory.getEmail(token);
 
-         // then
-         assertEquals(email, AN_EMAIL);
-     }
+        // then
+        assertEquals(email, AN_EMAIL);
+    }
 
 }

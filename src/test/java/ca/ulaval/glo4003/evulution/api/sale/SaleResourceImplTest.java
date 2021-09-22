@@ -2,9 +2,9 @@ package ca.ulaval.glo4003.evulution.api.sale;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
+import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
-import com.google.common.collect.Lists;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,12 +14,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.anyString;
-
 @ExtendWith(MockitoExtension.class)
 public class SaleResourceImplTest {
 
-    private int AN_INT = 2;
+    private int A_TRANSACTION_ID = 2;
     @Mock
     private SaleService saleService;
 
@@ -31,6 +29,9 @@ public class SaleResourceImplTest {
 
     @Mock
     private ChooseVehicleDto chooseVehicleDto;
+
+    @Mock
+    private ChooseBatteryDto chooseBatteryDto;
 
     @Mock
     private ContainerRequestContext containerRequestContext;
@@ -56,12 +57,21 @@ public class SaleResourceImplTest {
     }
 
     @Test
-    public void when_thenSaleServiceIsCalled() {
+    public void whenChooseVehicle_thenSaleServiceIsCalled() {
         // when
-        saleResourceImpl.chooseVehicle(AN_INT, chooseVehicleDto);
+        saleResourceImpl.chooseVehicle(A_TRANSACTION_ID, chooseVehicleDto);
 
         // then
-        Mockito.verify(saleService).chooseVehicle(AN_INT, chooseVehicleDto);
+        Mockito.verify(saleService).chooseVehicle(A_TRANSACTION_ID, chooseVehicleDto);
+    }
+
+    @Test
+    public void whenChooseBattery_thenSaleServiceIsCalled() {
+        // when
+        saleResourceImpl.chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
+
+        // then
+        Mockito.verify(saleService).chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
     }
 
 }

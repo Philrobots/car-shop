@@ -8,15 +8,43 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CarFactoryTest {
 
+    private static final String A_GOOD_NAME = "Vandry";
+    private static final String A_GOOD_COLOR = "white";
+    private static final String A_BAD_NAME = "a_bad_name";
+    private static final String A_BAD_COLOR = "a_bad_color";
+
     private CarFactory carFactory;
+
     @BeforeEach
-    public void setup(){
+    public void setup() {
         carFactory = new CarFactory();
     }
+
     @Test
-    public void whenBadSpecs_thenThrowsBadCarSpecsException() {
-        String badName = "bad name";
-        String badColor = "bad color";
-        assertThrows(BadCarSpecsException.class, () -> carFactory.create(badName, badColor));
+    public void givenGoodSpecs_whenCreate_thenReturnsCar() {
+
+        // when
+        Car car = carFactory.create(A_GOOD_NAME, A_GOOD_COLOR);
+
+        // then
+        assertNotNull(car);
+    }
+
+    @Test
+    public void givenBadName_whenCreate_thenThrowsBadCarSpecsException() {
+        // then
+        assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_BAD_NAME, A_GOOD_COLOR));
+    }
+
+    @Test
+    public void givenBadColor_whenCreate_thenThrowsBadCarSpecsException() {
+        // then
+        assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_GOOD_NAME, A_BAD_COLOR));
+    }
+
+    @Test
+    public void givenBadSpecs_whenCreate_thenThrowsBadCarSpecsException() {
+        // then
+        assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_BAD_NAME, A_BAD_COLOR));
     }
 }

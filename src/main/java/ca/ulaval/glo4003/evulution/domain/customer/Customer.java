@@ -4,12 +4,14 @@ import java.util.Date;
 
 public class Customer {
 
-    // rester attentif, peut être qu'on aura besoin d'un id dans le futur plutot que d'utiliser le email comme primary key
+    // rester attentif, peut être qu'on aura besoin d'un id dans le futur plutot que d'utiliser le email comme primary
+    // key
     private String name;
     private Date birthDate;
     private String email;
     private String password;
-    // Faire attention cest peut etre preferable de faire un interface avec differentes implementations plutot qu'un field
+    // Faire attention cest peut etre preferable de faire un interface avec differentes implementations plutot qu'un
+    // field
     private Role role;
 
     public Customer(String name, Date birthDate, String email, String password) {
