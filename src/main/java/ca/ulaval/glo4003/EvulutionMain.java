@@ -10,8 +10,8 @@ import ca.ulaval.glo4003.evulution.api.login.LoginResourceImpl;
 import ca.ulaval.glo4003.evulution.api.mappers.InvalidRequestFormatMapper;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
-import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
+import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
@@ -131,9 +131,10 @@ public class EvulutionMain {
         TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
         CarFactory carFactory = new CarFactory();
+        BatteryFactory batteryFactory = new BatteryFactory();
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
         SaleService saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
-                transactionIdAssembler, transactionIdFactory, carFactory);
+                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory);
 
         return new SaleResourceImpl(saleService, tokenDtoAssembler);
     }
