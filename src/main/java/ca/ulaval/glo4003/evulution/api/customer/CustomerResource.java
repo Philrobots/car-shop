@@ -6,7 +6,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.text.ParseException;
 import java.util.List;
 
 @Path("/customers")
@@ -18,5 +17,5 @@ public interface CustomerResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    Response addCustomer(@Valid CustomerDto customerDto) throws ParseException;
+    Response addCustomer(@Valid CustomerDto customerDto);
 }

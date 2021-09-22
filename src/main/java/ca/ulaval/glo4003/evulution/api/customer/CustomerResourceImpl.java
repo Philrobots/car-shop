@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.customer.validator.DateFormatValidator;
 import ca.ulaval.glo4003.evulution.exception.GenericException;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class CustomerResourceImpl implements CustomerResource {
     }
 
     @Override
-    public Response addCustomer(CustomerDto customerDto) {
+    public Response addCustomer(@Valid CustomerDto customerDto) {
         try {
             this.dateFormatValidator.validate(customerDto.birthdate);
 

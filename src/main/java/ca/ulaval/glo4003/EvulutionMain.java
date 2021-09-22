@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.evulution.api.customer.CustomerResourceImpl;
 import ca.ulaval.glo4003.evulution.api.customer.validator.DateFormatValidator;
 import ca.ulaval.glo4003.evulution.api.login.LoginResource;
 import ca.ulaval.glo4003.evulution.api.login.LoginResourceImpl;
+import ca.ulaval.glo4003.evulution.api.mappers.InvalidRequestFormatMapper;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
@@ -76,6 +77,7 @@ public class EvulutionMain {
         config.register(binder);
         config.register(new CORSResponseFilter());
         config.register(createAuthorizationFilter(tokenRepository, tokenAssembler, tokenDtoAssembler));
+        config.register(new InvalidRequestFormatMapper());
         config.packages("ca.ulaval.glo4003.evulution.api");
 
         try {
