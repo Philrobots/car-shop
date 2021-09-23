@@ -1,7 +1,8 @@
 package ca.ulaval.glo4003.evulution.api.login;
 
+import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
-import ca.ulaval.glo4003.evulution.domain.login.NoAccountFoundException;
+import ca.ulaval.glo4003.evulution.domain.login.exception.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,13 +18,16 @@ public class LoginResourceImplTest {
     private LoginService loginService;
 
     @Mock
+    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
+
+    @Mock
     private LoginDto loginDto;
 
     private LoginResource loginResource;
 
     @BeforeEach
     public void setUp() {
-        loginResource = new LoginResourceImpl(loginService);
+        loginResource = new LoginResourceImpl(loginService, httpExceptionResponseAssembler);
     }
 
     @Test

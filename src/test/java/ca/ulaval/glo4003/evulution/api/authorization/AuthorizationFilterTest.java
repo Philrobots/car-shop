@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.api.authorization;
 
+import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -18,6 +19,9 @@ public class AuthorizationFilterTest {
     ContainerRequestContext containerRequestContext;
 
     @Mock
+    HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
+
+    @Mock
     AuthorizationService authorizationService;
 
     @Mock
@@ -27,7 +31,7 @@ public class AuthorizationFilterTest {
 
     @BeforeEach
     public void setUp() {
-        authorizationFilter = new AuthorizationFilter(authorizationService, tokenDtoAssembler);
+        authorizationFilter = new AuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 
     @Test

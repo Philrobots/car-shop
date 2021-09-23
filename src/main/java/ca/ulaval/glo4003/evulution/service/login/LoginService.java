@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
-import ca.ulaval.glo4003.evulution.domain.login.NoAccountFoundException;
+import ca.ulaval.glo4003.evulution.domain.login.exception.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;

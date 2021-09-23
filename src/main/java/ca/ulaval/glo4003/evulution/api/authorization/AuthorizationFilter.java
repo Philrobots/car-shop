@@ -1,8 +1,9 @@
 package ca.ulaval.glo4003.evulution.api.authorization;
 
+import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
-import ca.ulaval.glo4003.evulution.exception.GenericException;
+import ca.ulaval.glo4003.evulution.domain.exception.GenericException;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
@@ -20,10 +21,12 @@ import java.io.IOException;
 public class AuthorizationFilter implements ContainerRequestFilter {
     private final AuthorizationService authorizationService;
     private final TokenDtoAssembler tokenDtoAssembler;
+    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
-    public AuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler) {
+    public AuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         this.authorizationService = authorizationService;
         this.tokenDtoAssembler = tokenDtoAssembler;
+        this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
     }
 
     @Override
@@ -34,8 +37,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         try {
             validateToken(tokenDto);
         } catch (GenericException e) {
-            containerRequestContext.abortWith(
-                    Response.status(e.getErrorCode(), e.getErrorMessage()).entity(e.getErrorMessage()).build());
+            containerRequestContext.abortWith(httpExceptionResponseAssembler.assembleResponseFromExceptionClass(e.getClass()));
         }
     }
 

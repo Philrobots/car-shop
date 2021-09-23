@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.api.sale;
 
+import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
@@ -22,6 +23,9 @@ public class SaleResourceImplTest {
     private SaleService saleService;
 
     @Mock
+    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
+
+    @Mock
     private TokenDtoAssembler tokenDtoAssembler;
 
     @Mock
@@ -40,7 +44,7 @@ public class SaleResourceImplTest {
 
     @BeforeEach
     private void setUp() {
-        saleResourceImpl = new SaleResourceImpl(saleService, tokenDtoAssembler);
+        saleResourceImpl = new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 
     @Test

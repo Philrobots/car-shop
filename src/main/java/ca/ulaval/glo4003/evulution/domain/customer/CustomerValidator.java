@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.customer;
 
-import ca.ulaval.glo4003.evulution.domain.customer.exception.AccountAlreadyExistException;
+import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
 
 public class CustomerValidator {
     private final CustomerRepository customerRepository;
@@ -9,11 +9,11 @@ public class CustomerValidator {
         this.customerRepository = customerRepository;
     }
 
-    public void validateEmailIsNotInUse(String email) throws AccountAlreadyExistException {
+    public void validateEmailIsNotInUse(String email) throws CustomerAlreadyExistsException {
         Customer c = this.customerRepository.getAccountByEmail(email);
 
         if (c != null) {
-            throw new AccountAlreadyExistException();
+            throw new CustomerAlreadyExistsException();
         }
     }
 }

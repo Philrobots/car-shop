@@ -1,8 +1,9 @@
 package ca.ulaval.glo4003.evulution.api.customer;
 
+import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.customer.validator.DateFormatValidator;
-import ca.ulaval.glo4003.evulution.exception.GenericException;
+import ca.ulaval.glo4003.evulution.domain.exception.GenericException;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.core.Response;
@@ -12,10 +13,12 @@ import java.util.List;
 public class CustomerResourceImpl implements CustomerResource {
     private final CustomerService customerService;
     private final DateFormatValidator dateFormatValidator;
+    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
-    public CustomerResourceImpl(CustomerService customerService, DateFormatValidator dateFormatValidator) {
+    public CustomerResourceImpl(CustomerService customerService, DateFormatValidator dateFormatValidator, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         this.customerService = customerService;
         this.dateFormatValidator = dateFormatValidator;
+        this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class CustomerResourceImpl implements CustomerResource {
             return Response.status(201, "Customer created").build();
 
         } catch (GenericException e) {
-            return Response.status(e.getErrorCode(), e.getErrorMessage()).entity(e.getErrorMessage()).build();
+            return httpExceptionResponseAssembler.assembleResponseFromExceptionClass(e.getClass());
         }
     }
 }

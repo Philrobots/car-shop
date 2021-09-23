@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003;
 
+import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.authorization.AuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.customer.CustomerResource;
@@ -7,6 +8,7 @@ import ca.ulaval.glo4003.evulution.api.customer.CustomerResourceImpl;
 import ca.ulaval.glo4003.evulution.api.customer.validator.DateFormatValidator;
 import ca.ulaval.glo4003.evulution.api.login.LoginResource;
 import ca.ulaval.glo4003.evulution.api.login.LoginResourceImpl;
+import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
 import ca.ulaval.glo4003.evulution.api.mappers.InvalidRequestFormatMapper;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
@@ -48,6 +50,9 @@ public class EvulutionMain {
     public static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     public static void main(String[] args) throws Exception {
+        // Setup exception mapping
+        HTTPExceptionMapper httpExceptionMapper = new HTTPExceptionMapper();
+        HTTPExceptionResponseAssembler httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(httpExceptionMapper);
         // Setup repositories
         CustomerRepository customerRepository = new CustomerRepositoryInMemory();
         TokenRepository tokenRepository = new TokenRepositoryInMemory();
@@ -58,10 +63,10 @@ public class EvulutionMain {
         TokenDtoAssembler tokenDtoAssembler = new TokenDtoAssembler();
 
         // Setup resources (API)
-        CustomerResource customerResource = createAccountResource(customerRepository);
-        LoginResource loginResource = createLoginResource(customerRepository, tokenRepository, tokenAssembler);
+        CustomerResource customerResource = createAccountResource(customerRepository, httpExceptionResponseAssembler);
+        LoginResource loginResource = createLoginResource(customerRepository, tokenRepository, tokenAssembler, httpExceptionResponseAssembler);
         SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, tokenAssembler,
-                tokenDtoAssembler);
+                tokenDtoAssembler, httpExceptionResponseAssembler);
 
         final AbstractBinder binder = new AbstractBinder() {
             @Override
@@ -75,7 +80,7 @@ public class EvulutionMain {
         final ResourceConfig config = new ResourceConfig();
         config.register(binder);
         config.register(new CORSResponseFilter());
-        config.register(createAuthorizationFilter(tokenRepository, tokenAssembler, tokenDtoAssembler));
+        config.register(createAuthorizationFilter(tokenRepository, tokenAssembler, tokenDtoAssembler, httpExceptionResponseAssembler));
         config.register(new InvalidRequestFormatMapper());
         config.packages("ca.ulaval.glo4003.evulution.api");
 
@@ -104,29 +109,29 @@ public class EvulutionMain {
 
     }
 
-    private static CustomerResource createAccountResource(CustomerRepository customerRepository) {
+    private static CustomerResource createAccountResource(CustomerRepository customerRepository, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         CustomerFactory customerFactory = new CustomerFactory();
         CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
         CustomerValidator customerValidator = new CustomerValidator(customerRepository);
         DateFormatValidator dateFormatValidator = new DateFormatValidator(DATE_REGEX);
         CustomerService customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
 
-        return new CustomerResourceImpl(customerService, dateFormatValidator);
+        return new CustomerResourceImpl(customerService, dateFormatValidator, httpExceptionResponseAssembler);
 
     }
 
     private static LoginResource createLoginResource(CustomerRepository customerRepository,
-            TokenRepository tokenRepository, TokenAssembler tokenAssembler) {
+                                                     TokenRepository tokenRepository, TokenAssembler tokenAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         TokenFactory tokenFactory = new TokenFactory();
         LoginValidator loginValidator = new LoginValidator();
         LoginService loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, customerRepository,
                 loginValidator);
 
-        return new LoginResourceImpl(loginService);
+        return new LoginResourceImpl(loginService, httpExceptionResponseAssembler);
     }
 
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
-            TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler) {
+                                                   TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
         CarFactory carFactory = new CarFactory();
@@ -135,13 +140,13 @@ public class EvulutionMain {
         SaleService saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
                 transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory);
 
-        return new SaleResourceImpl(saleService, tokenDtoAssembler);
+        return new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 
     private static AuthorizationFilter createAuthorizationFilter(TokenRepository tokenRepository,
-            TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler) {
+                                                                 TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, tokenRepository);
 
-        return new AuthorizationFilter(authorizationService, tokenDtoAssembler);
+        return new AuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 }

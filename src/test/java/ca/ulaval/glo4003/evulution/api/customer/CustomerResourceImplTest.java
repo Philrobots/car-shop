@@ -1,9 +1,10 @@
 package ca.ulaval.glo4003.evulution.api.customer;
 
+import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.customer.exception.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.api.customer.validator.DateFormatValidator;
-import ca.ulaval.glo4003.evulution.domain.customer.exception.AccountAlreadyExistException;
+import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,13 +25,16 @@ public class CustomerResourceImplTest {
     private CustomerService customerService;
 
     @Mock
+    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
+
+    @Mock
     DateFormatValidator dateFormatValidator;
 
     private CustomerResourceImpl accountResource;
 
     @BeforeEach
     public void setUp() {
-        accountResource = new CustomerResourceImpl(customerService, dateFormatValidator);
+        accountResource = new CustomerResourceImpl(customerService, dateFormatValidator, httpExceptionResponseAssembler);
     }
 
     @Test
@@ -46,7 +50,7 @@ public class CustomerResourceImplTest {
 
     @Test
     public void whenAddCustomer_thenCustomerServiceAddsCustomer()
-            throws AccountAlreadyExistException, InvalidDateFormatException {
+            throws CustomerAlreadyExistsException, InvalidDateFormatException {
 
         // when
         this.accountResource.addCustomer(customerDto);
