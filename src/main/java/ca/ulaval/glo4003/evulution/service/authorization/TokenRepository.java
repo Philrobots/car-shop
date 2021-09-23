@@ -7,4 +7,6 @@ public interface TokenRepository {
     void addTokenWithEmail(Token token, String email);
 
     String getEmail(Token token);
+
+    void validateToken(Token token);
 }

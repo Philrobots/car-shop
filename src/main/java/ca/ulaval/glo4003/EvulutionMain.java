@@ -19,7 +19,6 @@ import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionIdFactory;
-import ca.ulaval.glo4003.evulution.domain.token.ActiveTokenValidator;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.http.CORSResponseFilter;
 import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInMemory;
@@ -141,8 +140,7 @@ public class EvulutionMain {
 
     private static AuthorizationFilter createAuthorizationFilter(TokenRepository tokenRepository,
             TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler) {
-        ActiveTokenValidator activeTokenValidator = new ActiveTokenValidator(tokenRepository);
-        AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, activeTokenValidator);
+        AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, tokenRepository);
 
         return new AuthorizationFilter(authorizationService, tokenDtoAssembler);
     }
