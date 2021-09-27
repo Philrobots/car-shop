@@ -3,31 +3,24 @@ package ca.ulaval.glo4003.evulution.service.customer;
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
-import ca.ulaval.glo4003.evulution.domain.customer.exception.InvalidDateFormatException;
-import ca.ulaval.glo4003.evulution.domain.date.DateFormat;
-
-import java.util.Date;
 
 public class CustomerAssembler {
-
     private CustomerFactory customerFactory;
-    private DateFormat dateFormat;
 
-    public CustomerAssembler(CustomerFactory customerFactory, DateFormat dateFormat) {
+    public CustomerAssembler(CustomerFactory customerFactory) {
         this.customerFactory = customerFactory;
-        this.dateFormat = dateFormat;
     }
 
-    public Customer DtoToCustomer(CustomerDto customerDto) throws InvalidDateFormatException {
-        Date dateOfBirth = this.dateFormat.stringToDate(customerDto.birthdate);
-        return this.customerFactory.create(customerDto.name, dateOfBirth, customerDto.email, customerDto.password);
+    public Customer DtoToCustomer(CustomerDto customerDto) {
+        return this.customerFactory.create(customerDto.name, customerDto.birthdate, customerDto.email,
+                customerDto.password);
     }
 
     public CustomerDto CustomerToDto(Customer customer) {
         CustomerDto customerDto = new CustomerDto();
         customerDto.name = customer.getName();
         customerDto.email = customer.getEmail();
-        customerDto.birthdate = this.dateFormat.dateToString(customer.getBirthDate());
+        customerDto.birthdate = customer.getBirthDate().toString();
         customerDto.password = customer.getPassword();
         return customerDto;
     }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,7 +16,7 @@ public class CustomerTest {
     private static final String AN_EMAIL = "kevin@expat.com";
     private static final String A_PASSWORD = "Fireball";
     private static final String A_NAME = "JaggerBom";
-    private static final Date A_BIRTH_DATE = new Date();
+    private static final LocalDate A_BIRTH_DATE = LocalDate.now();
 
     private Customer customer;
 

@@ -14,3 +14,5 @@ jobs:
         run: mvn --batch-mode --update-snapshots verify
       - name: Style validation
         run: mvn formatter:validate
+      - name: Test runner
+        run: mvn test

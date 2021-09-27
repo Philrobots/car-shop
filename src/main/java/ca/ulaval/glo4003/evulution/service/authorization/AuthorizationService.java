@@ -5,8 +5,8 @@ import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.domain.token.exception.UnauthorizedRequestException;
 
 public class AuthorizationService {
-    private TokenAssembler tokenAssembler;
-    private TokenRepository tokenRepository;
+    private final TokenAssembler tokenAssembler;
+    private final TokenRepository tokenRepository;
 
     public AuthorizationService(TokenAssembler tokenAssembler, TokenRepository tokenRepository) {
         this.tokenAssembler = tokenAssembler;
@@ -15,10 +15,6 @@ public class AuthorizationService {
 
     public void ValidateToken(TokenDto tokenDto) throws UnauthorizedRequestException {
         Token token = this.tokenAssembler.dtoToToken(tokenDto);
-        String email = this.tokenRepository.getEmail(token);
-        if (email == null) {
-            throw new UnauthorizedRequestException();
-        }
-
+        this.tokenRepository.validateToken(token);
     }
 }
