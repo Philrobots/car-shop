@@ -6,19 +6,21 @@ import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BatteryFactoryTest {
 
-    private static final String A_GOOD_TYPE = "Longue Autonomie";
+    private static final String A_GOOD_TYPE = "LONGUE AUTONOMIE";
     private static final String A_BAD_TYPE = "a_bad_type";
 
     private BatteryFactory batteryFactory;
 
     @BeforeEach
     public void setup() {
-        batteryFactory = new BatteryFactory();
+        batteryFactory = new BatteryFactory(Arrays.asList(A_GOOD_TYPE));
     }
 
     @Test

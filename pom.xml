@@ -111,6 +111,11 @@
             <version>4.4.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>net.revelc.code.formatter</groupId>
+            <artifactId>jsdt-core</artifactId>
+            <version>2.6.0</version>
+        </dependency>
     </dependencies>
 
     <build>
