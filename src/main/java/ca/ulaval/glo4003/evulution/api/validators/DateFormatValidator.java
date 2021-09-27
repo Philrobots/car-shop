@@ -1,6 +1,6 @@
-package ca.ulaval.glo4003.evulution.api.customer.validator;
+package ca.ulaval.glo4003.evulution.api.validators;
 
-import ca.ulaval.glo4003.evulution.api.customer.exception.InvalidDateFormatException;
+import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 
 import java.util.regex.Pattern;
 

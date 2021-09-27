@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.api.login;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
+import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
 import ca.ulaval.glo4003.evulution.domain.login.exception.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class LoginResourceImplTest {
+    private LoginResource loginResource;
 
     @Mock
     private LoginService loginService;
@@ -23,11 +25,12 @@ public class LoginResourceImplTest {
     @Mock
     private LoginDto loginDto;
 
-    private LoginResource loginResource;
+    @Mock
+    private ConstraintsValidator constraintsValidator;
 
     @BeforeEach
     public void setUp() {
-        loginResource = new LoginResourceImpl(loginService, httpExceptionResponseAssembler);
+        loginResource = new LoginResourceImpl(loginService, httpExceptionResponseAssembler, constraintsValidator);
     }
 
     @Test

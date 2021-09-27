@@ -5,6 +5,7 @@ import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
+import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleResourceImplTest {
+    private final int A_TRANSACTION_ID = 2;
+    private SaleResourceImpl saleResourceImpl;
 
-    private int A_TRANSACTION_ID = 2;
     @Mock
     private SaleService saleService;
 
@@ -40,11 +42,13 @@ public class SaleResourceImplTest {
     @Mock
     private ContainerRequestContext containerRequestContext;
 
-    private SaleResourceImpl saleResourceImpl;
+    @Mock
+    private ConstraintsValidator constraintsValidator;
 
     @BeforeEach
     private void setUp() {
-        saleResourceImpl = new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler);
+        saleResourceImpl = new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler,
+                constraintsValidator);
     }
 
     @Test

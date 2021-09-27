@@ -31,7 +31,8 @@ public class AuthorizationFilterTest {
 
     @BeforeEach
     public void setUp() {
-        authorizationFilter = new AuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
+        authorizationFilter = new AuthorizationFilter(authorizationService, tokenDtoAssembler,
+                httpExceptionResponseAssembler);
     }
 
     @Test

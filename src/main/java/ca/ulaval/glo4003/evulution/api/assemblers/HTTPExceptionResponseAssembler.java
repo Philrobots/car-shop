@@ -11,8 +11,9 @@ public class HTTPExceptionResponseAssembler {
         this.httpExceptionMapper = httpExceptionMapper;
     }
 
-    public Response assembleResponseFromExceptionClass(Class genericExceptionClass){
+    public Response assembleResponseFromExceptionClass(Class genericExceptionClass) {
         HTTPExceptionMapping mapping = httpExceptionMapper.map(genericExceptionClass);
-        return Response.status(mapping.getStatusCode(), mapping.getErrorMessage()).entity(mapping.getErrorMessage()).build();
+        return Response.status(mapping.getStatusCode(), mapping.getErrorMessage()).entity(mapping.getErrorMessage())
+                .build();
     }
 }

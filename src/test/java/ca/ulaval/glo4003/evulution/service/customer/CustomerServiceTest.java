@@ -1,11 +1,11 @@
 package ca.ulaval.glo4003.evulution.service.customer;
 
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
+import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
-import ca.ulaval.glo4003.evulution.api.customer.exception.InvalidDateFormatException;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

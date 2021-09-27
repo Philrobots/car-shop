@@ -1,17 +1,20 @@
 package ca.ulaval.glo4003.evulution.api.customer.dto;
 
-import jakarta.validation.constraints.NotNull;
+import ca.ulaval.glo4003.evulution.api.GenericDto;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-public class CustomerDto {
-    @NotNull
+public class CustomerDto extends GenericDto {
+    @NotBlank
     public String name;
 
-    @NotNull
+    @NotBlank
     public String birthdate;
 
-    @NotNull
+    @Email
+    @NotBlank
     public String email;
 
-    @NotNull
+    @NotBlank
     public String password;
 }
