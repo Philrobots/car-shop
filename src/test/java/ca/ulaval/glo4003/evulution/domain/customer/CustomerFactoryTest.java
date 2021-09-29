@@ -16,6 +16,7 @@ public class CustomerFactoryTest {
     private static final String A_PASSWORD = "123456";
     private static final String A_BIRTH_DATE = "1999-08-08";
     private static final String A_NAME = "TI RAY EXPAT";
+    private static final Gender A_GENDER = Gender.WOMEN;
 
     private final String DATE_FORMAT = "yyyy-MM-dd";
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
@@ -31,12 +32,13 @@ public class CustomerFactoryTest {
     @Test
     public void givenInformations_whenCreateCustomer_thenCustomerHasTheSameInformations() {
         // when
-        Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD);
+        Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD, A_GENDER);
 
         // then
         assertEquals(customer.getEmail(), AN_EMAIl);
         assertEquals(customer.getBirthDate(), A_LOCAL_DATE);
         assertEquals(customer.getName(), A_NAME);
         assertEquals(customer.getPassword(), A_PASSWORD);
+        assertEquals(customer.getGender(), A_GENDER);
     }
 }

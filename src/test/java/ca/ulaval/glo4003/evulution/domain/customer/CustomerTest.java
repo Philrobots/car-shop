@@ -17,12 +17,13 @@ public class CustomerTest {
     private static final String A_PASSWORD = "Fireball";
     private static final String A_NAME = "JaggerBom";
     private static final LocalDate A_BIRTH_DATE = LocalDate.now();
+    private static final Gender A_GENDER = Gender.WOMEN;
 
     private Customer customer;
 
     @BeforeEach
     public void setUp() {
-        customer = new Customer(A_NAME, A_BIRTH_DATE, AN_EMAIL, A_PASSWORD);
+        customer = new Customer(A_NAME, A_BIRTH_DATE, AN_EMAIL, A_PASSWORD, A_GENDER);
     }
 
     @Test

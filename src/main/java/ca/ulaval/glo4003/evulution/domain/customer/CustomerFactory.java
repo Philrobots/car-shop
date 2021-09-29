@@ -8,9 +8,9 @@ public class CustomerFactory {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
-    public Customer create(String name, String birthdate, String email, String password) {
+    public Customer create(String name, String birthdate, String email, String password, Gender gender) {
         LocalDate date = LocalDate.parse(birthdate, formatter);
-        return new Customer(name, date, email, password);
+        return new Customer(name, date, email, password, gender);
     }
 
 }

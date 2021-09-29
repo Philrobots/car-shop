@@ -4,6 +4,8 @@ import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
+import ca.ulaval.glo4003.evulution.domain.customer.Gender;
+import ca.ulaval.glo4003.evulution.domain.customer.GenderFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +30,8 @@ public class CustomerAssemblerTest {
     private final String DATE_FORMAT = "yyyy-MM-dd";
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private final LocalDate A_LOCAL_DATE = LocalDate.parse(A_DATE, formatter);
+    private final Gender A_GENDER = Gender.MEN;
+    private final String A_STRING_GENDER = "W";
 
     @Mock
     private Customer customer;
@@ -35,30 +39,35 @@ public class CustomerAssemblerTest {
     @Mock
     private CustomerFactory customerFactory;
 
+    @Mock
+    private GenderFactory genderFactory;
+
     private CustomerAssembler customerAssembler;
 
     @BeforeEach
     public void setUp() throws ParseException {
-        customerAssembler = new CustomerAssembler(customerFactory);
+        customerAssembler = new CustomerAssembler(customerFactory, genderFactory);
     }
 
     @Test
     public void givenACustomerDto_whenDtoToCustomer_thenCustomerFactoryIsCalled() throws InvalidDateFormatException {
         // given
-        BDDMockito.given(customerFactory.create(A_NAME, A_DATE, AN_EMAIL, A_PASSWORD)).willReturn(customer);
+        BDDMockito.given(genderFactory.create(A_STRING_GENDER)).willReturn(A_GENDER);
+        BDDMockito.given(customerFactory.create(A_NAME, A_DATE, AN_EMAIL, A_PASSWORD, A_GENDER)).willReturn(customer);
         CustomerDto customerDto = givenAnCustomerDto();
 
         // when
         customerAssembler.DtoToCustomer(customerDto);
 
         // then
-        Mockito.verify(customerFactory).create(A_NAME, A_DATE, AN_EMAIL, A_PASSWORD);
+        Mockito.verify(customerFactory).create(A_NAME, A_DATE, AN_EMAIL, A_PASSWORD, A_GENDER);
     }
 
     @Test
     public void givenACustomerDto_whenDtoToCustomer_thenCustomersInfoMatchesDto() throws InvalidDateFormatException {
         // given
-        BDDMockito.given(customerFactory.create(A_NAME, A_DATE, AN_EMAIL, A_PASSWORD)).willReturn(customer);
+        BDDMockito.given(genderFactory.create(A_STRING_GENDER)).willReturn(A_GENDER);
+        BDDMockito.given(customerFactory.create(A_NAME, A_DATE, AN_EMAIL, A_PASSWORD, A_GENDER)).willReturn(customer);
         BDDMockito.given(customer.getPassword()).willReturn(A_PASSWORD);
         BDDMockito.given(customer.getName()).willReturn(A_NAME);
         BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
@@ -76,12 +85,30 @@ public class CustomerAssemblerTest {
     }
 
     @Test
+    public void givenACustomerDto_whenDtoToCustomer_thenShouldCallTheGenderFactoryToCreatGenderObject() {
+        // given
+        BDDMockito.given(genderFactory.create(A_STRING_GENDER)).willReturn(A_GENDER);
+        BDDMockito.given(customerFactory.create(A_NAME, A_DATE, AN_EMAIL, A_PASSWORD, A_GENDER)).willReturn(customer);
+
+        CustomerDto customerDto = givenAnCustomerDto();
+
+        // when
+        Customer aCustomer = customerAssembler.DtoToCustomer(customerDto);
+
+        // then
+        Mockito.verify(genderFactory).create(A_STRING_GENDER);
+
+    }
+
+    @Test
     public void givenACustomer_whenCustomerToDto_thenDtoInfoMatchesCustomer() {
         // given
         BDDMockito.given(customer.getPassword()).willReturn(A_PASSWORD);
         BDDMockito.given(customer.getName()).willReturn(A_NAME);
         BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
         BDDMockito.given(customer.getBirthDate()).willReturn(A_LOCAL_DATE);
+        BDDMockito.given(customer.getGender()).willReturn(A_GENDER);
+        BDDMockito.given(genderFactory.genderDto(A_GENDER)).willReturn(A_STRING_GENDER);
 
         // when
         CustomerDto aCustomerDto = customerAssembler.CustomerToDto(customer);
@@ -91,6 +118,25 @@ public class CustomerAssemblerTest {
         assertEquals(aCustomerDto.name, customer.getName());
         assertEquals(aCustomerDto.password, customer.getPassword());
         assertEquals(aCustomerDto.birthdate, A_DATE);
+        assertEquals(aCustomerDto.sex, A_STRING_GENDER);
+    }
+
+    @Test
+    public void givenACustomer_whenCustomerToDto_thenShouldCallTheGenderFactoryToCreateStringGender() {
+        // given
+        BDDMockito.given(customer.getPassword()).willReturn(A_PASSWORD);
+        BDDMockito.given(customer.getName()).willReturn(A_NAME);
+        BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
+        BDDMockito.given(customer.getBirthDate()).willReturn(A_LOCAL_DATE);
+        BDDMockito.given(customer.getGender()).willReturn(A_GENDER);
+        BDDMockito.given(genderFactory.genderDto(A_GENDER)).willReturn(A_STRING_GENDER);
+
+        // when
+        CustomerDto aCustomerDto = customerAssembler.CustomerToDto(customer);
+
+        // then
+        Mockito.verify(genderFactory).genderDto(A_GENDER);
+
     }
 
     private CustomerDto givenAnCustomerDto() {
@@ -99,6 +145,7 @@ public class CustomerAssemblerTest {
         customerDto.password = A_PASSWORD;
         customerDto.name = A_NAME;
         customerDto.birthdate = A_DATE;
+        customerDto.sex = A_STRING_GENDER;
         return customerDto;
     }
 }

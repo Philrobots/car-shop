@@ -60,7 +60,7 @@ public class SaleResourceImplTest {
     }
 
     @Test
-    public void givenInvalidConstraints_whenChooseVehicle_thenReturnsAccordingErrorResponse(){
+    public void givenInvalidConstraints_whenChooseVehicle_thenReturnsAccordingErrorResponse() {
 
         Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(chooseVehicleDto);
 
@@ -73,7 +73,7 @@ public class SaleResourceImplTest {
     }
 
     @Test
-    public void givenInvalidConstraints_whenChooseBattery_thenReturnsAccordingErrorResponse(){
+    public void givenInvalidConstraints_whenChooseBattery_thenReturnsAccordingErrorResponse() {
 
         Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(chooseBatteryDto);
 
