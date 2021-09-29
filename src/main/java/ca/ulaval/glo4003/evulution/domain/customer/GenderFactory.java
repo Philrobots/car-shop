@@ -19,8 +19,4 @@ public class GenderFactory {
 
         throw new BadInputParameterException();
     }
-
-    public String genderDto(Gender gender) {
-        return gender.getSex();
-    }
 }

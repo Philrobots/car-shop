@@ -37,6 +37,10 @@ public class Customer {
         return gender;
     }
 
+    public String getSex() {
+        return gender.getSex();
+    }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }

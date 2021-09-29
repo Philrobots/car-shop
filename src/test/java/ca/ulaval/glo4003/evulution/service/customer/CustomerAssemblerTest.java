@@ -107,8 +107,7 @@ public class CustomerAssemblerTest {
         BDDMockito.given(customer.getName()).willReturn(A_NAME);
         BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
         BDDMockito.given(customer.getBirthDate()).willReturn(A_LOCAL_DATE);
-        BDDMockito.given(customer.getGender()).willReturn(A_GENDER);
-        BDDMockito.given(genderFactory.genderDto(A_GENDER)).willReturn(A_STRING_GENDER);
+        BDDMockito.given(customer.getSex()).willReturn(A_STRING_GENDER);
 
         // when
         CustomerDto aCustomerDto = customerAssembler.CustomerToDto(customer);
@@ -119,24 +118,6 @@ public class CustomerAssemblerTest {
         assertEquals(aCustomerDto.password, customer.getPassword());
         assertEquals(aCustomerDto.birthdate, A_DATE);
         assertEquals(aCustomerDto.sex, A_STRING_GENDER);
-    }
-
-    @Test
-    public void givenACustomer_whenCustomerToDto_thenShouldCallTheGenderFactoryToCreateStringGender() {
-        // given
-        BDDMockito.given(customer.getPassword()).willReturn(A_PASSWORD);
-        BDDMockito.given(customer.getName()).willReturn(A_NAME);
-        BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
-        BDDMockito.given(customer.getBirthDate()).willReturn(A_LOCAL_DATE);
-        BDDMockito.given(customer.getGender()).willReturn(A_GENDER);
-        BDDMockito.given(genderFactory.genderDto(A_GENDER)).willReturn(A_STRING_GENDER);
-
-        // when
-        CustomerDto aCustomerDto = customerAssembler.CustomerToDto(customer);
-
-        // then
-        Mockito.verify(genderFactory).genderDto(A_GENDER);
-
     }
 
     private CustomerDto givenAnCustomerDto() {

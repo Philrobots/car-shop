@@ -27,7 +27,7 @@ public class CustomerAssembler {
         customerDto.email = customer.getEmail();
         customerDto.birthdate = customer.getBirthDate().toString();
         customerDto.password = customer.getPassword();
-        customerDto.sex = genderFactory.genderDto(customer.getGender());
+        customerDto.sex = customer.getSex();
         return customerDto;
     }
 
