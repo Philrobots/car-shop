@@ -57,9 +57,9 @@ public class SaleResourceImpl implements SaleResource {
     public Response chooseBattery(int transactionId, ChooseBatteryDto chooseBatteryDto) {
         try {
             this.constraintsValidator.validate(chooseBatteryDto);
-            this.saleService.chooseBattery(transactionId, chooseBatteryDto);
 
-            return Response.ok().status(202, "Added selected battery capacity").build();
+
+            return Response.ok(this.saleService.chooseBattery(transactionId, chooseBatteryDto), MediaType.APPLICATION_JSON ).status(202, "Added selected battery capacity").build();
         } catch (GenericException e) {
             return httpExceptionResponseAssembler.assembleResponseFromExceptionClass(e.getClass());
         }

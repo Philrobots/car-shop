@@ -10,9 +10,11 @@ public class BatteryFactory {
         this.possibleBatteryTypes = stringList;
     }
 
-    public Battery create(String type) {
+    public Battery create(String type, Car car) {
         if (!possibleBatteryTypes.contains(type))
             throw new BadCarSpecsException();
-        return new Battery(type);
+        return new Battery(type, car.getRate());
     }
+
+
 }

@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.evulution.service.sale;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.AutonomyDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.TransactionIdDto;
@@ -53,10 +54,11 @@ public class SaleService {
         sale.chooseCar(car);
     }
 
-    public void chooseBattery(int transactionIdInt, ChooseBatteryDto chooseBatteryDto) {
+    public AutonomyDto chooseBattery(int transactionIdInt, ChooseBatteryDto chooseBatteryDto) {
         TransactionId transactionId = this.transactionIdFactory.createFromInt(transactionIdInt);
         Sale sale = this.saleRepository.getSale(transactionId);
-        Battery battery = this.batteryFactory.create(chooseBatteryDto.type);
+        Car car = sale.getCar();
+        Battery battery = this.batteryFactory.create(chooseBatteryDto.type, sale.getCar());
         sale.chooseBattery(battery);
     }
 }

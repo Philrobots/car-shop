@@ -23,6 +23,10 @@ public class Sale {
         return email;
     }
 
+    public Car getCar(){
+        return car;
+    }
+
     public void chooseCar(Car car) {
         this.car = car;
     }
