@@ -24,6 +24,7 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionIdFactory;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.http.CORSResponseFilter;
 import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInMemory;
+import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.SaleRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.token.TokenRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
@@ -40,6 +41,7 @@ import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * RESTApi setup without using DI or spring
@@ -50,6 +52,8 @@ public class EvulutionMain {
     public static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     public static void main(String[] args) throws Exception {
+        // add to delivery factory in corresponding PR
+        List<String> deliveryLocationNameStrings = JsonFileMapper.parseDeliveryLocations();
         // Setup exception mapping
         HTTPExceptionMapper httpExceptionMapper = new HTTPExceptionMapper();
         ConstraintsValidator constraintsValidator = new ConstraintsValidator();
@@ -143,8 +147,8 @@ public class EvulutionMain {
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
         TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
-        CarFactory carFactory = new CarFactory();
-        BatteryFactory batteryFactory = new BatteryFactory();
+        CarFactory carFactory = new CarFactory(JsonFileMapper.parseCarModels());
+        BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
         SaleService saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
                 transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory);

@@ -4,6 +4,10 @@ import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CarFactoryTest {
@@ -17,7 +21,7 @@ class CarFactoryTest {
 
     @BeforeEach
     public void setup() {
-        carFactory = new CarFactory();
+        carFactory = new CarFactory(Arrays.asList("Vandry"));
     }
 
     @Test
