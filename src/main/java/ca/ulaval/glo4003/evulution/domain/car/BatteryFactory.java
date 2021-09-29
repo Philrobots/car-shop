@@ -6,6 +6,7 @@ import java.util.List;
 
 public class BatteryFactory {
     private List<String> possibleBatteryTypes;
+
     public BatteryFactory(List<String> stringList) {
         this.possibleBatteryTypes = stringList;
     }

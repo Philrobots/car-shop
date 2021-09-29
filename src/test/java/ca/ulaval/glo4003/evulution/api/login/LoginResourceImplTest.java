@@ -40,7 +40,7 @@ public class LoginResourceImplTest {
     }
 
     @Test
-    public void givenInvalidConstraints_whenChooseBattery_thenReturnsAccordingErrorResponse(){
+    public void givenInvalidConstraints_whenChooseBattery_thenReturnsAccordingErrorResponse() {
 
         Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(loginDto);
 

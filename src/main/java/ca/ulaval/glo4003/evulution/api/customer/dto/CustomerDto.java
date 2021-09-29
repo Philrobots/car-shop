@@ -17,4 +17,7 @@ public class CustomerDto extends GenericDto {
 
     @NotBlank
     public String password;
+
+    @NotBlank
+    public String sex;
 }

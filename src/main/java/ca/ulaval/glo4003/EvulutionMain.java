@@ -17,6 +17,7 @@ import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
+import ca.ulaval.glo4003.evulution.domain.customer.GenderFactory;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
@@ -121,7 +122,8 @@ public class EvulutionMain {
     private static CustomerResource createAccountResource(CustomerRepository customerRepository,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
         CustomerFactory customerFactory = new CustomerFactory();
-        CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
+        GenderFactory genderFactory = new GenderFactory();
+        CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory, genderFactory);
         CustomerValidator customerValidator = new CustomerValidator(customerRepository);
         DateFormatValidator dateFormatValidator = new DateFormatValidator(DATE_REGEX);
         CustomerService customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
