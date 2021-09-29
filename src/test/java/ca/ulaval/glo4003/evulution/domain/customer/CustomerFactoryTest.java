@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.customer;
 
+import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerFactoryTest {
@@ -21,6 +23,7 @@ public class CustomerFactoryTest {
     private final String DATE_FORMAT = "yyyy-MM-dd";
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private final LocalDate A_LOCAL_DATE = LocalDate.parse(A_BIRTH_DATE, formatter);
+    private String A_DATE_IN_THE_FUTURE = "2070-03-03";
 
     private CustomerFactory customerFactory;
 
@@ -30,7 +33,7 @@ public class CustomerFactoryTest {
     }
 
     @Test
-    public void givenInformations_whenCreateCustomer_thenCustomerHasTheSameInformations() {
+    public void givenInformation_whenCreateCustomer_thenCustomerHasTheSameInformations() {
         // when
         Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD, A_GENDER);
 
@@ -40,5 +43,10 @@ public class CustomerFactoryTest {
         assertEquals(customer.getName(), A_NAME);
         assertEquals(customer.getPassword(), A_PASSWORD);
         assertEquals(customer.getGender(), A_GENDER);
+    }
+
+    @Test
+    public void givenBirthDateInTheFuture_whenCreateCustomer_thenShouldThrowException() {
+        assertThrows(InvalidDateFormatException.class, () -> customerFactory.create(A_NAME, A_DATE_IN_THE_FUTURE, AN_EMAIl, A_PASSWORD, A_GENDER));
     }
 }
