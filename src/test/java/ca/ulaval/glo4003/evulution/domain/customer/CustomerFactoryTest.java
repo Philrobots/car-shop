@@ -47,6 +47,7 @@ public class CustomerFactoryTest {
 
     @Test
     public void givenBirthDateInTheFuture_whenCreateCustomer_thenShouldThrowException() {
-        assertThrows(InvalidDateFormatException.class, () -> customerFactory.create(A_NAME, A_DATE_IN_THE_FUTURE, AN_EMAIl, A_PASSWORD, A_GENDER));
+        assertThrows(InvalidDateFormatException.class,
+                () -> customerFactory.create(A_NAME, A_DATE_IN_THE_FUTURE, AN_EMAIl, A_PASSWORD, A_GENDER));
     }
 }

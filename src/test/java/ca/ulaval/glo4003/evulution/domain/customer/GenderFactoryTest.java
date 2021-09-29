@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 @ExtendWith(MockitoExtension.class)
 public class GenderFactoryTest {
 
@@ -16,7 +15,6 @@ public class GenderFactoryTest {
     private final String WOMEN_GENDER = "W";
     private final String OTHER_GENDER = "O";
     private final String INVALID_GENDER = "S";
-
 
     private GenderFactory genderFactory;
 
@@ -56,7 +54,5 @@ public class GenderFactoryTest {
     public void givenAInvalidSex_whenCreateGender_thenThrowError() {
         assertThrows(BadInputParameterException.class, () -> genderFactory.create(INVALID_GENDER));
     }
-
-
 
 }

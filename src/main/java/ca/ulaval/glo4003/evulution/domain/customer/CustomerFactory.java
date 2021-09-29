@@ -12,7 +12,8 @@ public class CustomerFactory {
 
     public Customer create(String name, String birthdate, String email, String password, Gender gender) {
         LocalDate date = LocalDate.parse(birthdate, formatter);
-        if (date.isAfter(LocalDate.now())) throw new InvalidDateFormatException();
+        if (date.isAfter(LocalDate.now()))
+            throw new InvalidDateFormatException();
         return new Customer(name, date, email, password, gender);
     }
 
