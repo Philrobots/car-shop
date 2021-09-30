@@ -5,6 +5,7 @@ import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.EstimatedRangeDto;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
 import ca.ulaval.glo4003.evulution.domain.exception.GenericException;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
@@ -57,9 +58,10 @@ public class SaleResourceImpl implements SaleResource {
     public Response chooseBattery(int transactionId, ChooseBatteryDto chooseBatteryDto) {
         try {
             this.constraintsValidator.validate(chooseBatteryDto);
-            this.saleService.chooseBattery(transactionId, chooseBatteryDto);
+            EstimatedRangeDto estimatedRangeDto = this.saleService.chooseBattery(transactionId, chooseBatteryDto);
 
-            return Response.ok().status(202, "Added selected battery capacity").build();
+            return Response.ok(estimatedRangeDto, MediaType.APPLICATION_JSON)
+                    .status(202, "Added selected battery capacity").build();
         } catch (GenericException e) {
             return httpExceptionResponseAssembler.assembleResponseFromExceptionClass(e.getClass());
         }

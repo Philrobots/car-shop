@@ -30,4 +30,8 @@ public class Sale {
     public void chooseBattery(Battery battery) {
         this.battery = battery;
     }
+
+    public Integer getBatteryAutonomy() {
+        return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
+    }
 }

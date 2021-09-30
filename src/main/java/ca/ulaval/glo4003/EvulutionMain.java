@@ -36,6 +36,7 @@ import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerAssembler;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
+import ca.ulaval.glo4003.evulution.service.sale.EstimatedRangeAssembler;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import ca.ulaval.glo4003.evulution.service.sale.TransactionIdAssembler;
 import org.checkerframework.checker.units.qual.A;
@@ -58,6 +59,7 @@ public class EvulutionMain {
     public static void main(String[] args) throws Exception {
         // add to delivery factory in corresponding PR
         List<String> deliveryLocationNameStrings = JsonFileMapper.parseDeliveryLocations();
+
         // Setup exception mapping
         HTTPExceptionMapper httpExceptionMapper = new HTTPExceptionMapper();
         ConstraintsValidator constraintsValidator = new ConstraintsValidator();
@@ -159,11 +161,12 @@ public class EvulutionMain {
                                                    TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
                                                    HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator, TransactionIdFactory transactionIdFactory) {
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
-        CarFactory carFactory = new CarFactory(JsonFileMapper.parseCarModels());
+        CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
+        EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         SaleService saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
-                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory);
+                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory, estimatedRangeAssembler);
 
         return new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler,
                 constraintsValidator);

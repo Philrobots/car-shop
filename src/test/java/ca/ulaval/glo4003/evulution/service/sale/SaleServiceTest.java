@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.service.sale;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.EstimatedRangeDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.TransactionIdDto;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
@@ -29,6 +30,8 @@ public class SaleServiceTest {
     private static final String AN_EMAIL = "jo@live.com";
 
     private static final int A_TRANSACTION_ID = 1;
+
+    private static final int AN_ESTIMATED_RANGE = 200;
 
     @Mock
     private SaleFactory saleFactory;
@@ -81,12 +84,18 @@ public class SaleServiceTest {
     @Mock
     private Battery battery;
 
+    @Mock
+    private EstimatedRangeAssembler estimatedRangeAssembler;
+
+    @Mock
+    private EstimatedRangeDto estimatedRangeDto;
+
     private SaleService saleService;
 
     @BeforeEach
     public void setUp() {
         saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
-                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory);
+                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory, estimatedRangeAssembler);
     }
 
     @Test
@@ -238,6 +247,8 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(batteryFactory.create(chooseBatteryDto.type)).willReturn(battery);
+        BDDMockito.given(sale.getBatteryAutonomy()).willReturn(AN_ESTIMATED_RANGE);
+        BDDMockito.given(estimatedRangeAssembler.EstimatedRangeToDto(AN_ESTIMATED_RANGE)).willReturn(estimatedRangeDto);
 
         // when
         saleService.chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
@@ -251,6 +262,8 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(batteryFactory.create(chooseBatteryDto.type)).willReturn(battery);
+        BDDMockito.given(sale.getBatteryAutonomy()).willReturn(AN_ESTIMATED_RANGE);
+        BDDMockito.given(estimatedRangeAssembler.EstimatedRangeToDto(AN_ESTIMATED_RANGE)).willReturn(estimatedRangeDto);
 
         // when
         saleService.chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
@@ -265,6 +278,8 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(batteryFactory.create(chooseBatteryDto.type)).willReturn(battery);
+        BDDMockito.given(sale.getBatteryAutonomy()).willReturn(AN_ESTIMATED_RANGE);
+        BDDMockito.given(estimatedRangeAssembler.EstimatedRangeToDto(AN_ESTIMATED_RANGE)).willReturn(estimatedRangeDto);
 
         // when
         saleService.chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
@@ -278,11 +293,43 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(batteryFactory.create(chooseBatteryDto.type)).willReturn(battery);
+        BDDMockito.given(sale.getBatteryAutonomy()).willReturn(AN_ESTIMATED_RANGE);
+        BDDMockito.given(estimatedRangeAssembler.EstimatedRangeToDto(AN_ESTIMATED_RANGE)).willReturn(estimatedRangeDto);
 
         // when
         saleService.chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
 
         // then
         Mockito.verify(sale).chooseBattery(battery);
+    }
+
+    @Test
+    public void whenChooseBattery_thenSaleGetsBatteryAutonomy() {
+        BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
+        BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
+        BDDMockito.given(batteryFactory.create(chooseBatteryDto.type)).willReturn(battery);
+        BDDMockito.given(sale.getBatteryAutonomy()).willReturn(AN_ESTIMATED_RANGE);
+        BDDMockito.given(estimatedRangeAssembler.EstimatedRangeToDto(AN_ESTIMATED_RANGE)).willReturn(estimatedRangeDto);
+
+        // when
+        saleService.chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
+
+        // then
+        Mockito.verify(sale).getBatteryAutonomy();
+    }
+
+    @Test
+    public void whenChooseBattery_thenEstimatedRangeAssemblerCreatesDto() {
+        BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
+        BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
+        BDDMockito.given(batteryFactory.create(chooseBatteryDto.type)).willReturn(battery);
+        BDDMockito.given(sale.getBatteryAutonomy()).willReturn(AN_ESTIMATED_RANGE);
+        BDDMockito.given(estimatedRangeAssembler.EstimatedRangeToDto(AN_ESTIMATED_RANGE)).willReturn(estimatedRangeDto);
+
+        // when
+        saleService.chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
+
+        // then
+        Mockito.verify(estimatedRangeAssembler).EstimatedRangeToDto(AN_ESTIMATED_RANGE);
     }
 }
