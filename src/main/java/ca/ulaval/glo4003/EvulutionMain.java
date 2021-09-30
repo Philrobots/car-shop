@@ -1,7 +1,9 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
-import ca.ulaval.glo4003.evulution.api.authorization.AuthorizationFilter;
+import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
+import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionId;
+import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.customer.CustomerResource;
 import ca.ulaval.glo4003.evulution.api.customer.CustomerResourceImpl;
@@ -36,6 +38,7 @@ import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import ca.ulaval.glo4003.evulution.service.sale.TransactionIdAssembler;
+import org.checkerframework.checker.units.qual.A;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -69,6 +72,7 @@ public class EvulutionMain {
                 httpExceptionMapper);
         TokenAssembler tokenAssembler = new TokenAssembler();
         TokenDtoAssembler tokenDtoAssembler = new TokenDtoAssembler();
+        TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
 
         // Setup resources (API)
         CustomerResource customerResource = createAccountResource(customerRepository, httpExceptionResponseAssembler,
@@ -76,7 +80,7 @@ public class EvulutionMain {
         LoginResource loginResource = createLoginResource(customerRepository, tokenRepository, tokenAssembler,
                 httpExceptionResponseAssembler, constraintsValidator);
         SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, tokenAssembler,
-                tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator);
+                tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator, transactionIdFactory);
 
         final AbstractBinder binder = new AbstractBinder() {
             @Override
@@ -88,9 +92,12 @@ public class EvulutionMain {
         };
 
         final ResourceConfig config = new ResourceConfig();
+        AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, tokenRepository, saleRepository, transactionIdFactory);
         config.register(binder);
         config.register(new CORSResponseFilter());
-        config.register(createAuthorizationFilter(tokenRepository, tokenAssembler, tokenDtoAssembler,
+        config.register(createSecuredAuthorizationFilter(authorizationService, tokenDtoAssembler,
+                httpExceptionResponseAssembler));
+        config.register(createSecuredWithTransactionIdAuthorizationFilter(authorizationService, tokenDtoAssembler,
                 httpExceptionResponseAssembler));
         config.packages("ca.ulaval.glo4003.evulution.api");
 
@@ -119,6 +126,10 @@ public class EvulutionMain {
 
     }
 
+    private static SecuredWithTransactionIdAuthorizationFilter createSecuredWithTransactionIdAuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+        return new SecuredWithTransactionIdAuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
+    }
+
     private static CustomerResource createAccountResource(CustomerRepository customerRepository,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
         CustomerFactory customerFactory = new CustomerFactory();
@@ -145,9 +156,8 @@ public class EvulutionMain {
     }
 
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
-            TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
-        TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
+                                                   TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
+                                                   HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator, TransactionIdFactory transactionIdFactory) {
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseCarModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
@@ -159,11 +169,9 @@ public class EvulutionMain {
                 constraintsValidator);
     }
 
-    private static AuthorizationFilter createAuthorizationFilter(TokenRepository tokenRepository,
-            TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
-        AuthorizationService authorizationService = new AuthorizationService(tokenAssembler, tokenRepository);
-
-        return new AuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
+    private static SecuredAuthorizationFilter createSecuredAuthorizationFilter(AuthorizationService authorizationService,
+                                                                               TokenDtoAssembler tokenDtoAssembler,
+                                                                               HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+        return new SecuredAuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 }

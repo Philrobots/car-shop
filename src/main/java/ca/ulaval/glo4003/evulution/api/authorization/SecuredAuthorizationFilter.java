@@ -10,6 +10,8 @@ import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.Provider;
 
 import java.io.IOException;
@@ -17,20 +19,20 @@ import java.io.IOException;
 @Secured
 @Provider
 @Priority(Priorities.AUTHORIZATION)
-public class AuthorizationFilter implements ContainerRequestFilter {
+public class SecuredAuthorizationFilter implements ContainerRequestFilter {
     private final AuthorizationService authorizationService;
     private final TokenDtoAssembler tokenDtoAssembler;
     private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
-    public AuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+    public SecuredAuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
+                                      HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         this.authorizationService = authorizationService;
         this.tokenDtoAssembler = tokenDtoAssembler;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
     }
 
     @Override
-    public void filter(ContainerRequestContext containerRequestContext) throws IOException {
+    public void filter(ContainerRequestContext containerRequestContext) {
         String authorizationToken = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         TokenDto tokenDto = tokenDtoAssembler.assembleFromString(authorizationToken);
 
@@ -43,6 +45,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     }
 
     private void validateToken(TokenDto tokenDto) {
-        this.authorizationService.ValidateToken(tokenDto);
+        this.authorizationService.validateToken(tokenDto);
     }
 }
