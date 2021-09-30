@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.service.sale;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.SaleCreatedDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.EstimatedRangeDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.TransactionIdDto;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
@@ -40,14 +41,14 @@ public class SaleService {
         this.estimatedRangeAssembler = estimatedRangeAssembler;
     }
 
-    public TransactionIdDto initSale(TokenDto tokenDto) {
+    public SaleCreatedDto initSale(TokenDto tokenDto) {
         Token token = tokenAssembler.dtoToToken(tokenDto);
         String email = tokenRepository.getEmail(token);
         Sale sale = saleFactory.create(email);
 
         saleRepository.registerSale(sale);
 
-        return transactionIdAssembler.transactionIdToDto(sale.getTransactionId());
+        return transactionIdAssembler.transactionIdToDto(sale.getTransactionId(), sale.getDelivery().getDeliveryId());
     }
 
     public void chooseVehicle(int transactionIdInt, ChooseVehicleDto chooseVehicleDto) {
@@ -65,4 +66,5 @@ public class SaleService {
         Integer estimatedRange = sale.getBatteryAutonomy();
         return estimatedRangeAssembler.EstimatedRangeToDto(estimatedRange);
     }
+
 }

@@ -3,12 +3,15 @@ package ca.ulaval.glo4003.evulution.service.sale;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.SaleCreatedDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.EstimatedRangeDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.TransactionIdDto;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
+import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.*;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
@@ -64,13 +67,19 @@ public class SaleServiceTest {
     private TransactionId transactionId;
 
     @Mock
+    private DeliveryId deliveryId;
+
+    @Mock
+    private Delivery delivery;
+
+    @Mock
     private TokenDto tokenDto;
 
     @Mock
     private Sale sale;
 
     @Mock
-    private TransactionIdDto transactionIdDto;
+    private SaleCreatedDto saleCreatedDto;
 
     @Mock
     private ChooseVehicleDto chooseVehicleDto;
@@ -104,7 +113,10 @@ public class SaleServiceTest {
         BDDMockito.given(tokenRepository.getEmail(token)).willReturn(AN_EMAIL);
         BDDMockito.given(saleFactory.create(AN_EMAIL)).willReturn(sale);
         BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId)).willReturn(transactionIdDto);
+        BDDMockito.given(sale.getDelivery()).willReturn(delivery);
+        BDDMockito.given(delivery.getDeliveryId()).willReturn(deliveryId);
+        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId, deliveryId))
+                .willReturn(saleCreatedDto);
 
         // when
         saleService.initSale(tokenDto);
@@ -119,7 +131,10 @@ public class SaleServiceTest {
         BDDMockito.given(tokenRepository.getEmail(token)).willReturn(AN_EMAIL);
         BDDMockito.given(saleFactory.create(AN_EMAIL)).willReturn(sale);
         BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId)).willReturn(transactionIdDto);
+        BDDMockito.given(sale.getDelivery()).willReturn(delivery);
+        BDDMockito.given(delivery.getDeliveryId()).willReturn(deliveryId);
+        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId, deliveryId))
+                .willReturn(saleCreatedDto);
 
         // when
         saleService.initSale(tokenDto);
@@ -135,7 +150,10 @@ public class SaleServiceTest {
         BDDMockito.given(tokenRepository.getEmail(token)).willReturn(AN_EMAIL);
         BDDMockito.given(saleFactory.create(AN_EMAIL)).willReturn(sale);
         BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId)).willReturn(transactionIdDto);
+        BDDMockito.given(sale.getDelivery()).willReturn(delivery);
+        BDDMockito.given(delivery.getDeliveryId()).willReturn(deliveryId);
+        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId, deliveryId))
+                .willReturn(saleCreatedDto);
 
         // when
         saleService.initSale(tokenDto);
@@ -150,7 +168,10 @@ public class SaleServiceTest {
         BDDMockito.given(tokenRepository.getEmail(token)).willReturn(AN_EMAIL);
         BDDMockito.given(saleFactory.create(AN_EMAIL)).willReturn(sale);
         BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId)).willReturn(transactionIdDto);
+        BDDMockito.given(sale.getDelivery()).willReturn(delivery);
+        BDDMockito.given(delivery.getDeliveryId()).willReturn(deliveryId);
+        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId, deliveryId))
+                .willReturn(saleCreatedDto);
 
         // when
         saleService.initSale(tokenDto);
@@ -165,13 +186,16 @@ public class SaleServiceTest {
         BDDMockito.given(tokenRepository.getEmail(token)).willReturn(AN_EMAIL);
         BDDMockito.given(saleFactory.create(AN_EMAIL)).willReturn(sale);
         BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId)).willReturn(transactionIdDto);
+        BDDMockito.given(sale.getDelivery()).willReturn(delivery);
+        BDDMockito.given(delivery.getDeliveryId()).willReturn(deliveryId);
+        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId, deliveryId))
+                .willReturn(saleCreatedDto);
 
         // when
         saleService.initSale(tokenDto);
 
         // then
-        Mockito.verify(transactionIdAssembler).transactionIdToDto(transactionId);
+        Mockito.verify(transactionIdAssembler).transactionIdToDto(transactionId, deliveryId);
     }
 
     @Test
@@ -180,13 +204,16 @@ public class SaleServiceTest {
         BDDMockito.given(tokenRepository.getEmail(token)).willReturn(AN_EMAIL);
         BDDMockito.given(saleFactory.create(AN_EMAIL)).willReturn(sale);
         BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId)).willReturn(transactionIdDto);
+        BDDMockito.given(sale.getDelivery()).willReturn(delivery);
+        BDDMockito.given(delivery.getDeliveryId()).willReturn(deliveryId);
+        BDDMockito.given(transactionIdAssembler.transactionIdToDto(transactionId, deliveryId))
+                .willReturn(this.saleCreatedDto);
 
         // when
-        TransactionIdDto transactionIdDto = saleService.initSale(tokenDto);
+        SaleCreatedDto saleCreatedDto = saleService.initSale(tokenDto);
 
         // then
-        assertTrue(transactionIdDto instanceof TransactionIdDto);
+        assertTrue(saleCreatedDto != null);
     }
 
     @Test

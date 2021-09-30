@@ -48,7 +48,8 @@ public class SecuredAuthorizationFilterTest {
 
     @Test
     public void whenFilter_thenContainerRequestContextGetsHeaderString() throws IOException {
-        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(A_HEADER_STRING);
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
 
         // when
@@ -60,7 +61,8 @@ public class SecuredAuthorizationFilterTest {
 
     @Test
     public void givenInvalidToken_whenFilter_thenContainerRequestContextGetsHeaderString() throws IOException {
-        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(A_HEADER_STRING);
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
         doThrow(UnauthorizedRequestException.class).when(authorizationService).validateToken(tokenDto);
 
@@ -68,6 +70,7 @@ public class SecuredAuthorizationFilterTest {
         securedAuthorizationFilter.filter(containerRequestContext);
 
         // then
-        BDDMockito.verify(httpExceptionResponseAssembler).assembleResponseFromExceptionClass(UnauthorizedRequestException.class);
+        BDDMockito.verify(httpExceptionResponseAssembler)
+                .assembleResponseFromExceptionClass(UnauthorizedRequestException.class);
     }
 }

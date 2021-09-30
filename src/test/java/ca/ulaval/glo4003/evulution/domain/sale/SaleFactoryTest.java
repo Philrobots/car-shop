@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +17,16 @@ public class SaleFactoryTest {
     @Mock
     private TransactionIdFactory transactionIdFactory;
 
+    @Mock
+    private DeliveryFactory deliveryFactory;
+
     private Sale sale;
 
     private static final String AN_EMAIL = "jo@live.com";
 
     @BeforeEach
     public void setUp() {
-        saleFactory = new SaleFactory(transactionIdFactory);
+        saleFactory = new SaleFactory(transactionIdFactory, deliveryFactory);
     }
 
     @Test

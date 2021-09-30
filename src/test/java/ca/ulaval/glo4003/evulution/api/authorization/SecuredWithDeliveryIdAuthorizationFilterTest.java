@@ -8,7 +8,6 @@ import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MultivaluedHashMap;
-import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.UriInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,18 +16,14 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class SecuredWithTransactionIdAuthorizationFilterTest {
+class SecuredWithDeliveryIdAuthorizationFilterTest {
 
     private final String A_HEADER_STRING = "ASDF";
     private final String A_VALID_PATH_PARAM = "1";
-    private final int A_VALID_TRANSACTION_ID = 1;
+    private final int A_VALID_DELIVERY_ID = 1;
     private final String AN_INVALID_PATH_PARAM = "invalid";
 
     @Mock
@@ -49,12 +44,12 @@ class SecuredWithTransactionIdAuthorizationFilterTest {
     @Mock
     UriInfo uriInfo;
 
-    SecuredWithTransactionIdAuthorizationFilter securedWithTransactionIdAuthorizationFilter;
+    SecuredWithDeliveryIdAuthorizationFilter securedWithDeliveryIdAuthorizationFilter;
 
     @BeforeEach
     void setUp() {
-        securedWithTransactionIdAuthorizationFilter = new SecuredWithTransactionIdAuthorizationFilter(
-                authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
+        securedWithDeliveryIdAuthorizationFilter = new SecuredWithDeliveryIdAuthorizationFilter(authorizationService,
+                tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 
     @Test
@@ -70,10 +65,10 @@ class SecuredWithTransactionIdAuthorizationFilterTest {
         });
 
         // when
-        securedWithTransactionIdAuthorizationFilter.filter(containerRequestContext);
+        securedWithDeliveryIdAuthorizationFilter.filter(containerRequestContext);
 
         // then
-        BDDMockito.verify(authorizationService).validateTokenWithTransactionId(tokenDto, A_VALID_TRANSACTION_ID);
+        BDDMockito.verify(authorizationService).validateTokenWithDeliveryId(tokenDto, A_VALID_DELIVERY_ID);
     }
 
     @Test
@@ -89,7 +84,7 @@ class SecuredWithTransactionIdAuthorizationFilterTest {
         });
 
         // when
-        securedWithTransactionIdAuthorizationFilter.filter(containerRequestContext);
+        securedWithDeliveryIdAuthorizationFilter.filter(containerRequestContext);
 
         // then
         BDDMockito.verify(httpExceptionResponseAssembler)

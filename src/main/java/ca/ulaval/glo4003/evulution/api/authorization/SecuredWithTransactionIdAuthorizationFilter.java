@@ -22,8 +22,8 @@ public class SecuredWithTransactionIdAuthorizationFilter implements ContainerReq
     private final TokenDtoAssembler tokenDtoAssembler;
     private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
-    public SecuredWithTransactionIdAuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
-                                                       HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+    public SecuredWithTransactionIdAuthorizationFilter(AuthorizationService authorizationService,
+            TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         this.authorizationService = authorizationService;
         this.tokenDtoAssembler = tokenDtoAssembler;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
@@ -44,9 +44,9 @@ public class SecuredWithTransactionIdAuthorizationFilter implements ContainerReq
     }
 
     private void validateToken(TokenDto tokenDto, String transactionId) {
-        try{
+        try {
             this.authorizationService.validateTokenWithTransactionId(tokenDto, Integer.parseInt(transactionId));
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new BadInputParameterException();
         }
     }

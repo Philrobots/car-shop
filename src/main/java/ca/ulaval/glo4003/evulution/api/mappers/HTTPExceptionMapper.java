@@ -5,6 +5,8 @@ import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.api.mappers.mapping.HTTPExceptionMapping;
 import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
+import ca.ulaval.glo4003.evulution.domain.delivery.exception.BadDeliveryLocationException;
+import ca.ulaval.glo4003.evulution.domain.delivery.exception.BadDeliveryModeException;
 import ca.ulaval.glo4003.evulution.domain.login.exception.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.domain.token.exception.UnauthorizedRequestException;
 
@@ -26,6 +28,8 @@ public class HTTPExceptionMapper {
             put(InvalidDateFormatException.class, badInputParameter);
             put(BadInputParameterException.class, badInputParameter);
             put(UnauthorizedRequestException.class, unauthorized);
+            put(BadDeliveryModeException.class, badInputParameter);
+            put(BadDeliveryLocationException.class, badInputParameter);
         }
     };
 

@@ -1,18 +1,15 @@
 package ca.ulaval.glo4003.evulution.infrastructure.sale;
 
-import ca.ulaval.glo4003.evulution.domain.customer.Customer;
+import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleRepositoryInMemoryTest {
@@ -21,6 +18,9 @@ public class SaleRepositoryInMemoryTest {
     private static final String AN_EMAIL = "rob@live.com";
 
     private SaleRepositoryInMemory saleRepositoryInMemory;
+
+    @Mock
+    private Delivery delivery;
 
     @BeforeEach
     public void setUp() {
@@ -31,7 +31,7 @@ public class SaleRepositoryInMemoryTest {
     public void givenASale_whenRegisterSale_thenRepositoryInMemoryContainsSale() {
 
         // given
-        Sale expectedSale = new Sale(AN_EMAIL, A_TRANSACTION_ID);
+        Sale expectedSale = new Sale(AN_EMAIL, A_TRANSACTION_ID, delivery);
 
         // when
         this.saleRepositoryInMemory.registerSale(expectedSale);
@@ -43,6 +43,7 @@ public class SaleRepositoryInMemoryTest {
     @Test
     public void givenNoSale_whenGetSale_thenRepositoryDoesNotContainSale() {
         // then
-        assertEquals(null, this.saleRepositoryInMemory.getSale(A_TRANSACTION_ID));
+        assertNull(this.saleRepositoryInMemory.getSale(A_TRANSACTION_ID));
     }
+
 }
