@@ -6,15 +6,21 @@ import java.util.List;
 
 public class CarFactory {
 
-    private List<String> possibleCarNames;
+    private List<ModelInformationDto> modelMapperDtos;
 
-    public CarFactory(List<String> possibleCarNames) {
-        this.possibleCarNames = possibleCarNames;
+    public CarFactory(List<ModelInformationDto> modelMapperDtos) {
+        this.modelMapperDtos = modelMapperDtos;
     }
 
     public Car create(String name, String color) {
-        if (!possibleCarNames.contains(name) || !color.equals("white"))
-            throw new BadCarSpecsException();
-        return new Car(name, color);
+        for (ModelInformationDto modelMapperDto : modelMapperDtos) {
+            if (modelMapperDto.name.equals(name) && color.equals("white")) {
+                return new Car(modelMapperDto.name, modelMapperDto.style, modelMapperDto.effeciency_equivalence_rate,
+                        modelMapperDto.base_price, modelMapperDto.time_to_produce, color);
+            }
+        }
+
+        throw new BadCarSpecsException();
+
     }
 }

@@ -33,6 +33,7 @@ import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerAssembler;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
+import ca.ulaval.glo4003.evulution.service.sale.EstimatedRangeAssembler;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import ca.ulaval.glo4003.evulution.service.sale.TransactionIdAssembler;
 import org.eclipse.jetty.server.Server;
@@ -48,12 +49,13 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 public class EvulutionMain {
-    public static final String BASE_URI = "http://localhost:8080/";
+    public static final String BASE_URI = "http://localhost:8081/";
     public static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     public static void main(String[] args) throws Exception {
         // add to delivery factory in corresponding PR
         List<String> deliveryLocationNameStrings = JsonFileMapper.parseDeliveryLocations();
+
         // Setup exception mapping
         HTTPExceptionMapper httpExceptionMapper = new HTTPExceptionMapper();
         ConstraintsValidator constraintsValidator = new ConstraintsValidator();
@@ -147,11 +149,12 @@ public class EvulutionMain {
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
         TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory);
-        CarFactory carFactory = new CarFactory(JsonFileMapper.parseCarModels());
+        CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
+        EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         SaleService saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
-                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory);
+                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory, estimatedRangeAssembler);
 
         return new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler,
                 constraintsValidator);

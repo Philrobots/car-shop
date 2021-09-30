@@ -3,12 +3,12 @@ package ca.ulaval.glo4003.evulution.domain.car;
 import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CarFactoryTest {
 
@@ -19,15 +19,18 @@ class CarFactoryTest {
 
     private CarFactory carFactory;
 
+    private ModelInformationDto modelMapperDto;
+
     @BeforeEach
     public void setup() {
-        carFactory = new CarFactory(Arrays.asList("Vandry"));
+        modelMapperDto = new ModelInformationDto();
+        modelMapperDto.name = A_GOOD_NAME;
+        carFactory = new CarFactory(Collections.singletonList(modelMapperDto));
     }
 
     @Test
     public void givenGoodSpecs_whenCreate_thenReturnsCar() {
 
-        // when
         Car car = carFactory.create(A_GOOD_NAME, A_GOOD_COLOR);
 
         // then
@@ -35,20 +38,18 @@ class CarFactoryTest {
     }
 
     @Test
-    public void givenBadName_whenCreate_thenThrowsBadCarSpecsException() {
-        // then
+    public void givenBadName_whenCreate_thenThrowsBadCarSpecsException() { // then
         assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_BAD_NAME, A_GOOD_COLOR));
     }
 
     @Test
-    public void givenBadColor_whenCreate_thenThrowsBadCarSpecsException() {
-        // then
+    public void givenBadColor_whenCreate_thenThrowsBadCarSpecsException() { // then
         assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_GOOD_NAME, A_BAD_COLOR));
     }
 
     @Test
-    public void givenBadSpecs_whenCreate_thenThrowsBadCarSpecsException() {
-        // then
+    public void givenBadSpecs_whenCreate_thenThrowsBadCarSpecsException() { // // then //
         assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_BAD_NAME, A_BAD_COLOR));
     }
+
 }
