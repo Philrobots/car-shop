@@ -50,7 +50,7 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 public class EvulutionMain {
-    public static final String BASE_URI = "http://localhost:8081/";
+    public static final String BASE_URI = "http://localhost:8080/";
     public static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     public static void main(String[] args) throws Exception {

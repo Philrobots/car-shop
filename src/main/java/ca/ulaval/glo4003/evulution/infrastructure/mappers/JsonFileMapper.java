@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.evulution.infrastructure.mappers;
 
-
 import ca.ulaval.glo4003.evulution.domain.car.BatteryInformationDto;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import com.fasterxml.jackson.core.type.TypeReference;
