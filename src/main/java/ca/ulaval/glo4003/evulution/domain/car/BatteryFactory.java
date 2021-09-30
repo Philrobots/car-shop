@@ -5,10 +5,12 @@ import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
 import java.util.List;
 
 public class BatteryFactory {
+
     private List<BatteryInformationDto> batteryMapperDtos;
 
     public BatteryFactory(List<BatteryInformationDto> batteryMapperDtos) {
         this.batteryMapperDtos = batteryMapperDtos;
+
     }
 
     public Battery create(String name) {

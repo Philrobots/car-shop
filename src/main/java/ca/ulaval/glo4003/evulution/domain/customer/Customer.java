@@ -13,21 +13,32 @@ public class Customer {
     // Faire attention cest peut etre preferable de faire un interface avec differentes implementations plutot qu'un
     // field
     private Role role;
+    private final Gender gender;
 
-    public Customer(String name, LocalDate birthDate, String email, String password) {
+    public Customer(String name, LocalDate birthDate, String email, String password, Gender gender) {
         this.name = name;
         this.birthDate = birthDate;
         this.email = email;
         this.password = password;
         this.role = Role.CUSTOMER;
+        this.gender = gender;
     }
 
-    public Customer(String name, LocalDate birthDate, String email, String password, Role role) {
+    public Customer(String name, LocalDate birthDate, String email, String password, Role role, Gender gender) {
         this.name = name;
         this.birthDate = birthDate;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public String getSex() {
+        return gender.getSex();
     }
 
     public LocalDate getBirthDate() {

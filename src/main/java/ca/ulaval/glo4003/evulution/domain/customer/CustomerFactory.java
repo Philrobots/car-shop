@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.customer;
 
+import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -8,9 +10,11 @@ public class CustomerFactory {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
-    public Customer create(String name, String birthdate, String email, String password) {
+    public Customer create(String name, String birthdate, String email, String password, Gender gender) {
         LocalDate date = LocalDate.parse(birthdate, formatter);
-        return new Customer(name, date, email, password);
+        if (date.isAfter(LocalDate.now()))
+            throw new InvalidDateFormatException();
+        return new Customer(name, date, email, password, gender);
     }
 
 }

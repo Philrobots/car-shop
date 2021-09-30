@@ -1,9 +1,11 @@
 package ca.ulaval.glo4003.evulution.infrastructure.mappers;
 
+
 import ca.ulaval.glo4003.evulution.domain.car.BatteryInformationDto;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonFileMapper {
+
     private static final JsonParser parser = new JsonParser();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
