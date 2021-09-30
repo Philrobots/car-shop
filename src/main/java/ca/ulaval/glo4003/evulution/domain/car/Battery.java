@@ -9,12 +9,12 @@ public class Battery {
     private BigDecimal price;
     private String timeToProduce;
 
-    public Battery(String name, String baseNRCANRange, Integer capacity, Integer price, String timeToProduce) {
+    public Battery(String name, String baseNRCANRange, Integer capacity, BigDecimal price, String timeToProduce) {
 
         this.name = name;
         this.baseNRCANRange = baseNRCANRange;
         this.capacity = capacity;
-        this.price = new BigDecimal(price);
+        this.price = price;
         this.timeToProduce = timeToProduce;
     }
 

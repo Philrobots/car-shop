@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.domain.car;
 
 import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class BatteryFactory {
@@ -17,7 +18,7 @@ public class BatteryFactory {
         for (BatteryInformationDto batteryMapperDto : batteryMapperDtos) {
             if (batteryMapperDto.name.equals(name)) {
                 return new Battery(batteryMapperDto.name, batteryMapperDto.base_NRCAN_range, batteryMapperDto.capacity,
-                        batteryMapperDto.price, batteryMapperDto.time_to_produce);
+                        BigDecimal.valueOf(batteryMapperDto.price), batteryMapperDto.time_to_produce);
             }
         }
         throw new BadCarSpecsException();

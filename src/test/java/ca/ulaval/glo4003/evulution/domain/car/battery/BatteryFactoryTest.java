@@ -16,6 +16,7 @@ public class BatteryFactoryTest {
 
     private static final String A_GOOD_NAME = "LONGUE AUTONOMIE";
     private static final String A_BAD_NAME = "a_bad_type";
+    private static final Integer A_PRICE = 1000;
 
     private BatteryFactory batteryFactory;
 
@@ -25,6 +26,7 @@ public class BatteryFactoryTest {
     public void setup() {
         batteryMapperDto = new BatteryInformationDto();
         batteryMapperDto.name = A_GOOD_NAME;
+        batteryMapperDto.price = A_PRICE;
         batteryFactory = new BatteryFactory(Collections.singletonList(batteryMapperDto));
     }
 
