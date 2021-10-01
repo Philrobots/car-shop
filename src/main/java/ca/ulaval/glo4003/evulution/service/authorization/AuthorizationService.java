@@ -47,7 +47,7 @@ public class AuthorizationService {
     }
 
     private void validateSaleAndEmailMatch(Sale sale, String email) {
-        if (!sale.getEmail().equals(email))
+        if (sale == null || !sale.getEmail().equals(email))
             throw new UnauthorizedRequestException();
     }
 }
