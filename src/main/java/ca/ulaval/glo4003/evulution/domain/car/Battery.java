@@ -10,7 +10,6 @@ public class Battery {
     private String timeToProduce;
 
     public Battery(String name, String baseNRCANRange, Integer capacity, BigDecimal price, String timeToProduce) {
-
         this.name = name;
         this.baseNRCANRange = baseNRCANRange;
         this.capacity = capacity;
@@ -19,6 +18,6 @@ public class Battery {
     }
 
     public Integer calculateEstimatedRange(Integer efficiencyEquivalenceRate) {
-        return (capacity * efficiencyEquivalenceRate) / 100;
+        return (Integer.parseInt(this.baseNRCANRange) * efficiencyEquivalenceRate) / 100;
     }
 }

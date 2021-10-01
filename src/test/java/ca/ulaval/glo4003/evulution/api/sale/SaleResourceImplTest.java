@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
 import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.InvoiceDto;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -28,11 +29,10 @@ public class SaleResourceImplTest {
     private static final String BAD_INPUT_PARAMETERS_ERROR_MESSAGE = "bad input parameter";
 
     private SaleResourceImpl saleResourceImpl;
+    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     @Mock
     private SaleService saleService;
-
-    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     @Mock
     private TokenDtoAssembler tokenDtoAssembler;
@@ -45,6 +45,9 @@ public class SaleResourceImplTest {
 
     @Mock
     private ChooseBatteryDto chooseBatteryDto;
+
+    @Mock
+    private InvoiceDto invoiceDto;
 
     @Mock
     private ContainerRequestContext containerRequestContext;
@@ -61,7 +64,7 @@ public class SaleResourceImplTest {
 
     @Test
     public void givenInvalidConstraints_whenChooseVehicle_thenReturnsAccordingErrorResponse() {
-
+        // given
         Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(chooseVehicleDto);
 
         // when
@@ -74,7 +77,7 @@ public class SaleResourceImplTest {
 
     @Test
     public void givenInvalidConstraints_whenChooseBattery_thenReturnsAccordingErrorResponse() {
-
+        // given
         Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(chooseBatteryDto);
 
         // when
@@ -116,4 +119,25 @@ public class SaleResourceImplTest {
         Mockito.verify(saleService).chooseBattery(A_TRANSACTION_ID, chooseBatteryDto);
     }
 
+    @Test
+    public void givenInvalidConstraints_whenCompleteSale_thenReturnsAccordingErrorResponse() {
+        // given
+        Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(invoiceDto);
+
+        // when
+        Response response = saleResourceImpl.completeSale(A_TRANSACTION_ID, invoiceDto);
+
+        // then
+        assertEquals(response.getStatus(), BAD_INPUT_PARAMETERS_ERROR_CODE);
+        assertEquals(response.getEntity(), BAD_INPUT_PARAMETERS_ERROR_MESSAGE);
+    }
+
+    @Test
+    public void whenCompleteSale_thenSaleServiceIsCalled() {
+        // when
+        saleResourceImpl.completeSale(A_TRANSACTION_ID, invoiceDto);
+
+        // then
+        Mockito.verify(saleService).completeSale(A_TRANSACTION_ID, invoiceDto);
+    }
 }

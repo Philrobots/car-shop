@@ -14,8 +14,6 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
-
 import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +45,7 @@ public class SecuredAuthorizationFilterTest {
     }
 
     @Test
-    public void whenFilter_thenContainerRequestContextGetsHeaderString() throws IOException {
+    public void whenFilter_thenContainerRequestContextGetsHeaderString() {
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
                 .willReturn(A_HEADER_STRING);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
@@ -60,7 +58,7 @@ public class SecuredAuthorizationFilterTest {
     }
 
     @Test
-    public void givenInvalidToken_whenFilter_thenContainerRequestContextGetsHeaderString() throws IOException {
+    public void givenInvalidToken_whenFilter_thenContainerRequestContextGetsHeaderString() {
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
                 .willReturn(A_HEADER_STRING);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);

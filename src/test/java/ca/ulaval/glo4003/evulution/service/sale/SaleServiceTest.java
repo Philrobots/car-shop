@@ -1,15 +1,15 @@
 package ca.ulaval.glo4003.evulution.service.sale;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
-import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryDto;
-import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
-import ca.ulaval.glo4003.evulution.api.sale.dto.SaleCreatedDto;
-import ca.ulaval.glo4003.evulution.api.sale.dto.EstimatedRangeDto;
-import ca.ulaval.glo4003.evulution.api.sale.dto.TransactionIdDto;
+import ca.ulaval.glo4003.evulution.api.sale.dto.*;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
+import ca.ulaval.glo4003.evulution.domain.customer.Customer;
+import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
+import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.*;
@@ -24,17 +24,19 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleServiceTest {
-
     private static final String AN_EMAIL = "jo@live.com";
-
+    private static final String A_FREQUENCY = "weekly";
     private static final int A_TRANSACTION_ID = 1;
+    private static final int A_BANK_NO = 123;
+    private static final int A_ACCOUNT_NO = 1234567;
 
     private static final int AN_ESTIMATED_RANGE = 200;
+
+    private InvoiceDto invoiceDto;
 
     @Mock
     private SaleFactory saleFactory;
@@ -99,12 +101,30 @@ public class SaleServiceTest {
     @Mock
     private EstimatedRangeDto estimatedRangeDto;
 
+    @Mock
+    private InvoiceFactory invoiceFactory;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @Mock
+    private Customer customer;
+
+    @Mock
+    private Invoice invoice;
+
     private SaleService saleService;
 
     @BeforeEach
     public void setUp() {
-        saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
-                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory, estimatedRangeAssembler);
+
+        this.invoiceDto = new InvoiceDto();
+        invoiceDto.bank_no = A_BANK_NO;
+        invoiceDto.account_no = A_ACCOUNT_NO;
+        invoiceDto.frequency = "B";
+        this.saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
+                transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
+                estimatedRangeAssembler);
     }
 
     @Test
@@ -358,5 +378,85 @@ public class SaleServiceTest {
 
         // then
         Mockito.verify(estimatedRangeAssembler).EstimatedRangeToDto(AN_ESTIMATED_RANGE);
+    }
+
+    @Test
+    public void whenCompleteSale_thenTransactionIdFactoryCreatesFromInt() {
+        BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
+        BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
+        BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
+        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+                .willReturn(invoice);
+
+        // when
+        saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
+
+        // then
+        Mockito.verify(transactionIdFactory).createFromInt(A_TRANSACTION_ID);
+    }
+
+    @Test
+    public void whenCompleteSale_thenSaleRepositoryGetsSale() {
+        BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
+        BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
+        BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
+        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+                .willReturn(invoice);
+
+        // when
+        saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
+
+        // then
+        Mockito.verify(saleRepository).getSale(transactionId);
+    }
+
+    @Test
+    public void whenCompleteSale_thenSaleGetEmail() {
+        BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
+        BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
+        BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
+        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+                .willReturn(invoice);
+
+        // when
+        saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
+
+        // then
+        Mockito.verify(sale).getEmail();
+    }
+
+    @Test
+    public void whenCompleteSale_thenCustomerRepositoryGetAccountByEmail() {
+        BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
+        BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
+        BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
+        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+                .willReturn(invoice);
+
+        // when
+        saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
+
+        // then
+        Mockito.verify(customerRepository).getAccountByEmail(AN_EMAIL);
+    }
+
+    @Test
+    public void whenCompleteSale_thenInvoiceFactoryCreate() {
+        BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
+        BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
+        BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
+        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+                .willReturn(invoice);
+
+        // when
+        saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
+
+        // then
+        Mockito.verify(invoiceFactory).create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency);
     }
 }

@@ -6,7 +6,6 @@ import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
-import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,17 +40,6 @@ public class CustomerServiceTest {
     public void setUp() {
         customerDto.email = AN_EMAIL;
         customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
-    }
-
-    @Test
-    public void givenACustomer_whenGetCustomers_thenCustomerRepositoryGetsAll() {
-        BDDMockito.given(customerRepository.getAll()).willReturn(Lists.newArrayList(customer));
-
-        // when
-        this.customerService.getCustomers();
-
-        // then
-        Mockito.verify(customerRepository).getAll();
     }
 
     @Test

@@ -8,8 +8,6 @@ import ca.ulaval.glo4003.evulution.domain.exception.GenericException;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import jakarta.ws.rs.core.Response;
 
-import java.util.List;
-
 public class CustomerResourceImpl implements CustomerResource {
     private final CustomerService customerService;
     private final DateFormatValidator dateFormatValidator;
@@ -22,11 +20,6 @@ public class CustomerResourceImpl implements CustomerResource {
         this.dateFormatValidator = dateFormatValidator;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
         this.constraintsValidator = constraintsValidator;
-    }
-
-    @Override
-    public List<CustomerDto> getAll() {
-        return this.customerService.getCustomers();
     }
 
     @Override

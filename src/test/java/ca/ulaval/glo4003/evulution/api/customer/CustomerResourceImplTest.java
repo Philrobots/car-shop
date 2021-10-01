@@ -69,7 +69,7 @@ public class CustomerResourceImplTest {
     }
 
     @Test
-    public void givenInvalidBirthdate_whenAddCustomer_thenThrowInvalidDateFormatException() {
+    public void givenInvalidBirthdate_whenAddCustomer_thenExpectBadInputParametersResponse() {
         // given
         customerDto.name = A_NAME;
         customerDto.email = AN_EMAIL;

@@ -10,11 +10,7 @@ import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.MultivaluedMap;
-import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.Provider;
-
-import java.io.IOException;
 
 @Secured
 @Provider
@@ -22,7 +18,7 @@ import java.io.IOException;
 public class SecuredAuthorizationFilter implements ContainerRequestFilter {
     private final AuthorizationService authorizationService;
     private final TokenDtoAssembler tokenDtoAssembler;
-    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
+    private final HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     public SecuredAuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {

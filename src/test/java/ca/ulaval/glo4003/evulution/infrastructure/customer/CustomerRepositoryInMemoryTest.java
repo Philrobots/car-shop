@@ -8,13 +8,10 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerRepositoryInMemoryTest {
-
     private static final String AN_EMAIL = "tiray@vincent.yuk.com";
 
     @Mock
@@ -25,17 +22,18 @@ public class CustomerRepositoryInMemoryTest {
     @BeforeEach
     public void setUp() {
         customerRepositoryInMemory = new CustomerRepositoryInMemory();
-        BDDMockito.given(customer.getEmail()).willReturn(AN_EMAIL);
     }
 
     @Test
     public void whenAddAccount_thenRepositoryInMemoryContainsAccount() {
+        // given
+        BDDMockito.given(this.customer.getEmail()).willReturn(AN_EMAIL);
 
         // when
-        this.customerRepositoryInMemory.addAccount(customer);
+        this.customerRepositoryInMemory.addAccount(this.customer);
 
         // then
-        List<Customer> customers = this.customerRepositoryInMemory.getAll();
-        assertThat(customers, org.hamcrest.Matchers.hasItem(customer));
+        Customer customer = this.customerRepositoryInMemory.getAccountByEmail(AN_EMAIL);
+        assertEquals(customer, this.customer);
     }
 }

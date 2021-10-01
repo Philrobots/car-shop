@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.customer;
 
+import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
 import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerFactoryTest {
@@ -18,12 +18,9 @@ public class CustomerFactoryTest {
     private static final String A_PASSWORD = "123456";
     private static final String A_BIRTH_DATE = "1999-08-08";
     private static final String A_NAME = "TI RAY EXPAT";
-    private static final Gender A_GENDER = Gender.WOMEN;
-
-    private final String DATE_FORMAT = "yyyy-MM-dd";
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-    private final LocalDate A_LOCAL_DATE = LocalDate.parse(A_BIRTH_DATE, formatter);
-    private String A_DATE_IN_THE_FUTURE = "2070-03-03";
+    private static final String A_VALID_GENDER = "W";
+    private static final String AN_INVALID_GENDER = "Y";
+    private static final String AN_INVALID_DATE = "2070-03-03";
 
     private CustomerFactory customerFactory;
 
@@ -33,21 +30,24 @@ public class CustomerFactoryTest {
     }
 
     @Test
-    public void givenInformation_whenCreateCustomer_thenCustomerHasTheSameInformations() {
+    public void whenCreateCustomer_thenCreatesCustomer() {
         // when
-        Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD, A_GENDER);
+        Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD, A_VALID_GENDER);
 
         // then
-        assertEquals(customer.getEmail(), AN_EMAIl);
-        assertEquals(customer.getBirthDate(), A_LOCAL_DATE);
-        assertEquals(customer.getName(), A_NAME);
-        assertEquals(customer.getPassword(), A_PASSWORD);
-        assertEquals(customer.getGender(), A_GENDER);
+        assertNotNull(customer);
     }
 
     @Test
-    public void givenBirthDateInTheFuture_whenCreateCustomer_thenShouldThrowException() {
+    public void givenInvalidDate_whenCreateCustomer_thenThrowsInvalidDateFormatException() {
         assertThrows(InvalidDateFormatException.class,
-                () -> customerFactory.create(A_NAME, A_DATE_IN_THE_FUTURE, AN_EMAIl, A_PASSWORD, A_GENDER));
+                () -> customerFactory.create(A_NAME, AN_INVALID_DATE, AN_EMAIl, A_PASSWORD, A_VALID_GENDER));
     }
+
+    @Test
+    public void givenInvalidGender_whenCreateCustomer_thenThrowsBadInputParameterException() {
+        assertThrows(BadInputParameterException.class,
+                () -> customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD, AN_INVALID_GENDER));
+    }
+
 }

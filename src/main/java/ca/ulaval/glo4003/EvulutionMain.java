@@ -2,7 +2,6 @@ package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
-import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryId;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
@@ -23,8 +22,8 @@ import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
-import ca.ulaval.glo4003.evulution.domain.customer.GenderFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
@@ -86,8 +85,9 @@ public class EvulutionMain {
                 constraintsValidator);
         LoginResource loginResource = createLoginResource(customerRepository, tokenRepository, tokenAssembler,
                 httpExceptionResponseAssembler, constraintsValidator);
-        SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, tokenAssembler,
-                tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator);
+        SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, customerRepository,
+                tokenAssembler, tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator,
+                transactionIdFactory);
         DeliveryResource deliveryResource = createDeliveryResource(constraintsValidator, httpExceptionResponseAssembler,
                 saleRepository, deliveryIdFactory);
 
@@ -156,8 +156,7 @@ public class EvulutionMain {
     private static CustomerResource createAccountResource(CustomerRepository customerRepository,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
         CustomerFactory customerFactory = new CustomerFactory();
-        GenderFactory genderFactory = new GenderFactory();
-        CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory, genderFactory);
+        CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
         CustomerValidator customerValidator = new CustomerValidator(customerRepository);
         DateFormatValidator dateFormatValidator = new DateFormatValidator(DATE_REGEX);
         CustomerService customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
@@ -179,19 +178,21 @@ public class EvulutionMain {
     }
 
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
-            TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
-        TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
+            CustomerRepository customerRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
+            TransactionIdFactory transactionIdFactory) {
+        TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
         DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
         DeliveryFactory deliveryFactory = new DeliveryFactory(deliveryIdFactory,
                 JsonFileMapper.parseDeliveryLocations());
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory, deliveryFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
-        TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
+        InvoiceFactory invoiceFactory = new InvoiceFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
-        SaleService saleService = new SaleService(saleFactory, saleRepository, tokenRepository, tokenAssembler,
-                transactionIdAssembler, transactionIdFactory, carFactory, batteryFactory, estimatedRangeAssembler);
+        SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
+                transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
+                estimatedRangeAssembler);
 
         return new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler,
                 constraintsValidator);

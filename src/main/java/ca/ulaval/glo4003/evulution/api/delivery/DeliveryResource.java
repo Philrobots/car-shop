@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.evulution.api.delivery;
 
-import ca.ulaval.glo4003.evulution.api.authorization.Secured;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryId;
 import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryLocationDto;
 import jakarta.ws.rs.POST;
@@ -13,6 +12,6 @@ public interface DeliveryResource {
 
     @POST
     @SecuredWithDeliveryId
-    @Path("/{delivery_id}")
+    @Path("/{delivery_id}/location")
     Response chooseDeliveryLocation(@PathParam("delivery_id") int deliveryId, DeliveryLocationDto deliveryLocationDto);
 }

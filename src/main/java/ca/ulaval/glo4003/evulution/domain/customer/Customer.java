@@ -1,17 +1,17 @@
 package ca.ulaval.glo4003.evulution.domain.customer;
 
+import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
+
 import java.time.LocalDate;
 
 public class Customer {
 
-    // rester attentif, peut être qu'on aura besoin d'un id dans le futur plutot que d'utiliser le email comme primary
-    // key
     private String name;
     private LocalDate birthDate;
     private String email;
     private String password;
-    // Faire attention cest peut etre preferable de faire un interface avec differentes implementations plutot qu'un
-    // field
+    private Invoice invoice;
+
     private Role role;
     private final Gender gender;
 
@@ -22,23 +22,6 @@ public class Customer {
         this.password = password;
         this.role = Role.CUSTOMER;
         this.gender = gender;
-    }
-
-    public Customer(String name, LocalDate birthDate, String email, String password, Role role, Gender gender) {
-        this.name = name;
-        this.birthDate = birthDate;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.gender = gender;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public String getSex() {
-        return gender.getSex();
     }
 
     public LocalDate getBirthDate() {
@@ -59,5 +42,9 @@ public class Customer {
 
     public boolean isAuthenticationValid(String email, String password) {
         return this.email.equals(email) && this.password.equals(password);
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 }

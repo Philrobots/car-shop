@@ -6,9 +6,6 @@ import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class CustomerService {
 
     private CustomerRepository customerRepository;
@@ -26,10 +23,5 @@ public class CustomerService {
         this.customerValidator.validateEmailIsNotInUse(customerDto.email);
         Customer customer = this.customerAssembler.DtoToCustomer(customerDto);
         this.customerRepository.addAccount(customer);
-    }
-
-    public List<CustomerDto> getCustomers() {
-        List<Customer> customers = this.customerRepository.getAll();
-        return customers.stream().map(customerAssembler::CustomerToDto).collect(Collectors.toList());
     }
 }
