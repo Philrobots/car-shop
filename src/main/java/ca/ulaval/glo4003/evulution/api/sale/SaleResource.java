@@ -19,14 +19,12 @@ public interface SaleResource {
     Response initSale(ContainerRequestContext containerRequestContext);
 
     @POST
-    @Secured
     @SecuredWithTransactionId
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{transaction_id}/vehicle")
     Response chooseVehicle(@PathParam("transaction_id") int transactionId, ChooseVehicleDto chooseVehicleDto);
 
     @POST
-    @Secured
     @SecuredWithTransactionId
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -34,7 +32,7 @@ public interface SaleResource {
     Response chooseBattery(@PathParam("transaction_id") int transactionId, ChooseBatteryDto chooseBatteryDto);
 
     @POST
-    @Secured
+    @SecuredWithTransactionId
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{transaction_id}/complete")
