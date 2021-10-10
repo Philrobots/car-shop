@@ -9,8 +9,8 @@ public class TransactionId {
         this.transactionId = transactionId;
     }
 
-    public Integer getId() {
-        return this.transactionId;
+    public String getId() {
+        return this.transactionId.toString();
     }
 
     @Override

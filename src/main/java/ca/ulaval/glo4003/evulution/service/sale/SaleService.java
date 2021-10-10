@@ -74,8 +74,10 @@ public class SaleService {
     public void completeSale(int transactionIdInt, InvoiceDto invoiceDto) {
         TransactionId transactionId = this.transactionIdFactory.createFromInt(transactionIdInt);
         Sale sale = this.saleRepository.getSale(transactionId);
+        sale.completeSale();
         Customer customer = customerRepository.getAccountByEmail(sale.getEmail());
-        Invoice invoice = this.invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency);
+        Invoice invoice = this.invoiceFactory.create(Integer.parseInt(invoiceDto.bank_no),
+                Integer.parseInt(invoiceDto.account_no), invoiceDto.frequency);
         customer.setInvoice(invoice);
     }
 }

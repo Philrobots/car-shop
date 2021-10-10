@@ -20,8 +20,8 @@ public class CustomerService {
     }
 
     public void addCustomer(CustomerDto customerDto) throws CustomerAlreadyExistsException {
-        this.customerValidator.validateEmailIsNotInUse(customerDto.email);
         Customer customer = this.customerAssembler.DtoToCustomer(customerDto);
+        this.customerValidator.validateEmailIsNotInUse(customerDto.email);
         this.customerRepository.addAccount(customer);
     }
 }

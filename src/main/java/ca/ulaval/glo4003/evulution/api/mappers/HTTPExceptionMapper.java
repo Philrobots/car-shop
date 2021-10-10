@@ -9,16 +9,21 @@ import ca.ulaval.glo4003.evulution.domain.delivery.exception.BadDeliveryLocation
 import ca.ulaval.glo4003.evulution.domain.delivery.exception.BadDeliveryModeException;
 import ca.ulaval.glo4003.evulution.domain.invoice.exceptions.InvalidInvoiceException;
 import ca.ulaval.glo4003.evulution.domain.login.exception.NoAccountFoundException;
+import ca.ulaval.glo4003.evulution.domain.sale.exception.CarNotChosenBeforeBatteryException;
+import ca.ulaval.glo4003.evulution.domain.sale.exception.MissingElementsForSaleException;
+import ca.ulaval.glo4003.evulution.domain.sale.exception.SaleCompleteException;
+import ca.ulaval.glo4003.evulution.domain.sale.exception.SaleNotCompletedException;
 import ca.ulaval.glo4003.evulution.domain.token.exception.UnauthorizedRequestException;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exception.SaleNotFoundFromDeliveryIdException;
 
 import java.util.HashMap;
 
 public class HTTPExceptionMapper {
     private static HTTPExceptionMapping badInputParameter = new HTTPExceptionMapping(400, "bad input parameter");
+    private static HTTPExceptionMapping badOrderOfOperations = new HTTPExceptionMapping(400, "bad order of operations");
     private static HTTPExceptionMapping customerAlreadyExists = new HTTPExceptionMapping(409,
             "an existing customer already exists");
     private static HTTPExceptionMapping unableToLogin = new HTTPExceptionMapping(400, "Unable to login");
-    // pas sur de celle la, cest pas spécifié dans la spec api
     private static HTTPExceptionMapping unauthorized = new HTTPExceptionMapping(401, "Unauthorized");
 
     private static HashMap<Class, HTTPExceptionMapping> map = new HashMap() {
@@ -32,6 +37,11 @@ public class HTTPExceptionMapper {
             put(UnauthorizedRequestException.class, unauthorized);
             put(BadDeliveryModeException.class, badInputParameter);
             put(BadDeliveryLocationException.class, badInputParameter);
+            put(SaleNotFoundFromDeliveryIdException.class, unauthorized);
+            put(CarNotChosenBeforeBatteryException.class, badOrderOfOperations);
+            put(MissingElementsForSaleException.class, badOrderOfOperations);
+            put(SaleNotCompletedException.class, badOrderOfOperations);
+            put(SaleCompleteException.class, unauthorized);
         }
     };
 

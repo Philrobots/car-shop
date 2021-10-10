@@ -3,10 +3,8 @@ package ca.ulaval.glo4003.evulution.api.customer;
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
-import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
-import ca.ulaval.glo4003.evulution.api.validators.DateFormatValidator;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,9 +30,6 @@ public class CustomerResourceImplTest {
     private CustomerService customerService;
 
     @Mock
-    private DateFormatValidator dateFormatValidator;
-
-    @Mock
     private ConstraintsValidator constraintsValidator;
 
     private CustomerDto customerDto;
@@ -47,7 +42,7 @@ public class CustomerResourceImplTest {
     public void setUp() {
         customerDto = new CustomerDto();
         httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(new HTTPExceptionMapper());
-        accountResource = new CustomerResourceImpl(customerService, dateFormatValidator, httpExceptionResponseAssembler,
+        accountResource = new CustomerResourceImpl(customerService, httpExceptionResponseAssembler,
                 constraintsValidator);
     }
 
@@ -75,7 +70,7 @@ public class CustomerResourceImplTest {
         customerDto.email = AN_EMAIL;
         customerDto.birthdate = "19920101";
         customerDto.password = A_PASSWORD;
-        Mockito.doThrow(InvalidDateFormatException.class).when(dateFormatValidator).validate(customerDto.birthdate);
+        Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(customerDto);
 
         // when
         Response response = this.accountResource.addCustomer(customerDto);

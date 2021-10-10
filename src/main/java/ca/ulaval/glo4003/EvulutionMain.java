@@ -15,7 +15,6 @@ import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
-import ca.ulaval.glo4003.evulution.api.validators.DateFormatValidator;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
@@ -158,11 +157,9 @@ public class EvulutionMain {
         CustomerFactory customerFactory = new CustomerFactory();
         CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
         CustomerValidator customerValidator = new CustomerValidator(customerRepository);
-        DateFormatValidator dateFormatValidator = new DateFormatValidator(DATE_REGEX);
         CustomerService customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
 
-        return new CustomerResourceImpl(customerService, dateFormatValidator, httpExceptionResponseAssembler,
-                constraintsValidator);
+        return new CustomerResourceImpl(customerService, httpExceptionResponseAssembler, constraintsValidator);
 
     }
 

@@ -31,8 +31,10 @@ public class SaleServiceTest {
     private static final String AN_EMAIL = "jo@live.com";
     private static final String A_FREQUENCY = "weekly";
     private static final int A_TRANSACTION_ID = 1;
-    private static final int A_BANK_NO = 123;
-    private static final int A_ACCOUNT_NO = 1234567;
+    private static final String A_BANK_NO = "123";
+    private static final Integer A_BANK_NO_INT = 123;
+    private static final String A_ACCOUNT_NO = "1234567";
+    private static final Integer A_ACCOUNT_NO_INT = 1234567;
 
     private static final int AN_ESTIMATED_RANGE = 200;
 
@@ -386,7 +388,7 @@ public class SaleServiceTest {
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
         BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
-        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
         // when
@@ -402,7 +404,7 @@ public class SaleServiceTest {
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
         BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
-        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
         // when
@@ -418,7 +420,7 @@ public class SaleServiceTest {
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
         BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
-        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
         // when
@@ -434,7 +436,7 @@ public class SaleServiceTest {
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
         BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
-        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
         // when
@@ -450,13 +452,13 @@ public class SaleServiceTest {
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
         BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
-        BDDMockito.given(invoiceFactory.create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency))
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
         // when
         saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
 
         // then
-        Mockito.verify(invoiceFactory).create(invoiceDto.bank_no, invoiceDto.account_no, invoiceDto.frequency);
+        Mockito.verify(invoiceFactory).create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency);
     }
 }

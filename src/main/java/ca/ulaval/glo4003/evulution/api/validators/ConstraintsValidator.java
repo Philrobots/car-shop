@@ -20,7 +20,8 @@ public class ConstraintsValidator {
     }
 
     public void validate(GenericDto dto) {
-        if (dto == null) throw new BadInputParameterException();
+        if (dto == null)
+            throw new BadInputParameterException();
         Set<ConstraintViolation<GenericDto>> violations = validator.validate(dto);
         if (!violations.isEmpty())
             throw new BadInputParameterException();
