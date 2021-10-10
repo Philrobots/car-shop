@@ -67,6 +67,14 @@
             <version>4.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>CarManufacture</groupId>
+            <artifactId>CarManufacture</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/car-manufacture-1.0.0.jar</systemPath>
+        </dependency>
+
 
         <!-- Test dependencies -->
         <dependency>
@@ -186,6 +194,26 @@
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-install-plugin</artifactId>-->
+<!--                <version>2.5.2</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>initialize</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>install-file</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <file>car-manufacture-1.0.0.jar</file>-->
+<!--                            <groupId>cours.CarManufacture</groupId>-->
+<!--                            <artifactId>cours.CarManufacture</artifactId>-->
+<!--                            <version>1.0.0</version>-->
+<!--                            <packaging>jar</packaging>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
         </plugins>
     </build>
