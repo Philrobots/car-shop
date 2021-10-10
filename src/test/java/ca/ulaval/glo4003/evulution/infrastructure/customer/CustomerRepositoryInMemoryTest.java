@@ -30,10 +30,10 @@ public class CustomerRepositoryInMemoryTest {
         BDDMockito.given(this.customer.getEmail()).willReturn(AN_EMAIL);
 
         // when
-        this.customerRepositoryInMemory.addAccount(this.customer);
+        this.customerRepositoryInMemory.addCustomer(this.customer);
 
         // then
-        Customer customer = this.customerRepositoryInMemory.getAccountByEmail(AN_EMAIL);
+        Customer customer = this.customerRepositoryInMemory.getCustomerByEmail(AN_EMAIL);
         assertEquals(customer, this.customer);
     }
 }

@@ -2,9 +2,10 @@ package ca.ulaval.glo4003.evulution.service.customer;
 
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
+import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
-import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
+import ca.ulaval.glo4003.evulution.domain.customer.AccountValidator;
 import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,17 +30,20 @@ public class CustomerServiceTest {
     private CustomerRepository customerRepository;
 
     @Mock
+    private AccountRepository accountRepository;
+
+    @Mock
     private CustomerAssembler customerAssembler;
 
     @Mock
-    private CustomerValidator customerValidator;
+    private AccountValidator accountValidator;
 
     private CustomerService customerService;
 
     @BeforeEach
     public void setUp() {
         customerDto.email = AN_EMAIL;
-        customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
+        customerService = new CustomerService(customerRepository, customerAssembler, accountValidator, accountRepository);
     }
 
     @Test
@@ -52,7 +56,7 @@ public class CustomerServiceTest {
         this.customerService.addCustomer(customerDto);
 
         // then
-        Mockito.verify(customerRepository).addAccount(customer);
+        Mockito.verify(customerRepository).addCustomer(customer);
     }
 
     @Test
@@ -78,7 +82,7 @@ public class CustomerServiceTest {
         this.customerService.addCustomer(customerDto);
 
         // then
-        Mockito.verify(customerValidator).validateEmailIsNotInUse(AN_EMAIL);
+        Mockito.verify(accountValidator).validateEmailIsNotInUse(AN_EMAIL);
     }
 
 }

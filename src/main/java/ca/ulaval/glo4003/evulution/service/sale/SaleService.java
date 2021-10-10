@@ -75,7 +75,7 @@ public class SaleService {
         TransactionId transactionId = this.transactionIdFactory.createFromInt(transactionIdInt);
         Sale sale = this.saleRepository.getSale(transactionId);
         sale.completeSale();
-        Customer customer = customerRepository.getAccountByEmail(sale.getEmail());
+        Customer customer = customerRepository.getCustomerByEmail(sale.getEmail());
         Invoice invoice = this.invoiceFactory.create(Integer.parseInt(invoiceDto.bank_no),
                 Integer.parseInt(invoiceDto.account_no), invoiceDto.frequency);
         customer.setInvoice(invoice);

@@ -2,6 +2,8 @@ package ca.ulaval.glo4003.evulution.service.login;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
+import ca.ulaval.glo4003.evulution.domain.account.Account;
+import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
@@ -15,21 +17,21 @@ public class LoginService {
     private TokenFactory tokenFactory;
     private TokenRepository tokenRepository;
     private TokenAssembler tokenAssembler;
-    private CustomerRepository customerRepository;
+    private AccountRepository accountRepository;
     private LoginValidator loginValidator;
 
     public LoginService(TokenFactory tokenFactory, TokenRepository tokenRepository, TokenAssembler tokenAssembler,
-            CustomerRepository customerRepository, LoginValidator loginValidator) {
+            AccountRepository accountRepository, LoginValidator loginValidator) {
         this.tokenFactory = tokenFactory;
         this.tokenRepository = tokenRepository;
         this.tokenAssembler = tokenAssembler;
-        this.customerRepository = customerRepository;
+        this.accountRepository = accountRepository;
         this.loginValidator = loginValidator;
     }
 
-    public TokenDto loginCustomer(LoginDto loginDto) throws NoAccountFoundException {
-        Customer customer = this.customerRepository.getAccountByEmail(loginDto.email);
-        this.loginValidator.validateLogin(customer, loginDto);
+    public TokenDto loginCustomer(LoginDto loginDto) {
+        Account account = this.accountRepository.getAccountByEmail(loginDto.email);
+        this.loginValidator.validateLogin(account, loginDto);
 
         Token token = tokenFactory.generateNewToken();
 

@@ -387,7 +387,7 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
-        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(customerRepository.getCustomerByEmail(AN_EMAIL)).willReturn(customer);
         BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
@@ -403,7 +403,7 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
-        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(customerRepository.getCustomerByEmail(AN_EMAIL)).willReturn(customer);
         BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
@@ -419,7 +419,7 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
-        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(customerRepository.getCustomerByEmail(AN_EMAIL)).willReturn(customer);
         BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
@@ -435,7 +435,7 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
-        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(customerRepository.getCustomerByEmail(AN_EMAIL)).willReturn(customer);
         BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 
@@ -443,7 +443,7 @@ public class SaleServiceTest {
         saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
 
         // then
-        Mockito.verify(customerRepository).getAccountByEmail(AN_EMAIL);
+        Mockito.verify(customerRepository).getCustomerByEmail(AN_EMAIL);
     }
 
     @Test
@@ -451,7 +451,7 @@ public class SaleServiceTest {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIL);
-        BDDMockito.given(customerRepository.getAccountByEmail(AN_EMAIL)).willReturn(customer);
+        BDDMockito.given(customerRepository.getCustomerByEmail(AN_EMAIL)).willReturn(customer);
         BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency))
                 .willReturn(invoice);
 

@@ -8,16 +8,16 @@ import java.util.Map;
 
 public class CustomerRepositoryInMemory implements CustomerRepository {
 
-    private Map<String, Customer> accounts = new HashMap<String, Customer>();
+    private Map<String, Customer> customers = new HashMap<String, Customer>();
 
     @Override
-    public void addAccount(Customer customer) {
+    public void addCustomer(Customer customer) {
         String email = customer.getEmail();
-        accounts.put(email, customer);
+        customers.put(email, customer);
     }
 
     @Override
-    public Customer getAccountByEmail(String email) {
-        return this.accounts.get(email);
+    public Customer getCustomerByEmail(String email) {
+        return this.customers.get(email);
     }
 }
