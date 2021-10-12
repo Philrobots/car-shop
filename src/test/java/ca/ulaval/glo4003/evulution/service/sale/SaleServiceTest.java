@@ -14,6 +14,7 @@ import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.*;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
+import ca.ulaval.glo4003.evulution.service.assemblyLine.VehicleAssemblyLineService;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -115,6 +116,9 @@ public class SaleServiceTest {
     @Mock
     private Invoice invoice;
 
+    @Mock
+    private VehicleAssemblyLineService vehicleAssemblyLineService;
+
     private SaleService saleService;
 
     @BeforeEach
@@ -126,7 +130,7 @@ public class SaleServiceTest {
         invoiceDto.frequency = "B";
         this.saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
-                estimatedRangeAssembler);
+                estimatedRangeAssembler, vehicleAssemblyLineService);
     }
 
     @Test

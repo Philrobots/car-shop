@@ -46,6 +46,10 @@ public class Sale {
         this.car = car;
     }
 
+    public Car getCar() {
+        return this.car;
+    }
+
     public void chooseBattery(Battery battery) {
         if (car == null)
             throw new CarNotChosenBeforeBatteryException();

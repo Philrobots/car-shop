@@ -24,4 +24,8 @@ public class Car {
         return efficiencyEquivalenceRate;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
 }

@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
+import ca.ulaval.glo4003.evulution.api.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;
@@ -38,6 +39,7 @@ import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInM
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.SaleRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.token.TokenRepositoryInMemory;
+import ca.ulaval.glo4003.evulution.service.assemblyLine.VehicleAssemblyLineService;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
@@ -200,9 +202,12 @@ public class EvulutionMain {
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
+        VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade();
+        VehicleAssemblyLineService vehicleAssemblyLineService = new VehicleAssemblyLineService(
+                vehicleAssemblyLineFacade);
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
-                estimatedRangeAssembler);
+                estimatedRangeAssembler, vehicleAssemblyLineService);
 
         return new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler,
                 constraintsValidator);

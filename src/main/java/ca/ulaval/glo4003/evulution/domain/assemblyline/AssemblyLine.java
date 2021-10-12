@@ -4,7 +4,7 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 import java.util.Map;
 
-public interface BatteryAssemblyLine {
+public interface AssemblyLine {
 
     AssemblyStatus getStatus(TransactionId transactionId);
 
