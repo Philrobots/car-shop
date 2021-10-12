@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class AccountRepositoryInMemory implements AccountRepository {
     private Map<String, Account> accounts = new HashMap<String, Account>();
+
     @Override
     public void addAccount(Account account) {
         accounts.put(account.getEmail(), account);

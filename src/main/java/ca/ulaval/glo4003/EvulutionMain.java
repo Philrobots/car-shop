@@ -164,11 +164,13 @@ public class EvulutionMain {
     }
 
     private static CustomerResource createAccountResource(CustomerRepository customerRepository,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator, AccountRepository accountRepository) {
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
+            AccountRepository accountRepository) {
         CustomerFactory customerFactory = new CustomerFactory();
         CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
         AccountValidator accountValidator = new AccountValidator(accountRepository);
-        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, accountValidator, accountRepository);
+        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, accountValidator,
+                accountRepository);
 
         return new CustomerResourceImpl(customerService, httpExceptionResponseAssembler, constraintsValidator);
 

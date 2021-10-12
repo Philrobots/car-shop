@@ -14,7 +14,7 @@ public class CustomerService {
     private AccountRepository accountRepository;
 
     public CustomerService(CustomerRepository customerRepository, CustomerAssembler customerAssembler,
-                           AccountValidator accountValidator, AccountRepository accountRepository) {
+            AccountValidator accountValidator, AccountRepository accountRepository) {
         this.customerRepository = customerRepository;
         this.customerAssembler = customerAssembler;
         this.accountValidator = accountValidator;

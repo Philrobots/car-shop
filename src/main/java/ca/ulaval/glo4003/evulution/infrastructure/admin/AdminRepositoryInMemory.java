@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AdminRepositoryInMemory implements AdminRepository {
-    private Map<String, Admin> admins= new HashMap<>();
+    private Map<String, Admin> admins = new HashMap<>();
+
     @Override
     public void addAdmin(Admin admin) {
         admins.put(admin.getEmail(), admin);
