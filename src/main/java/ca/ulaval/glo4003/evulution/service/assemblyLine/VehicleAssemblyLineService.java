@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.service.assemblyLine;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.CarAssemblyLineRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
@@ -7,7 +8,6 @@ import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +16,11 @@ public class VehicleAssemblyLineService {
     private List<Sale> salesWaitList = new ArrayList<>();
     private boolean aVehicleIsBeingAssembled = false;
     private final VehicleAssemblyLineFacade vehicleAssemblyLineFacade;
+    private final CarAssemblyLineRepository carAssemblyLineRepository;
 
-    public VehicleAssemblyLineService(VehicleAssemblyLineFacade vehicleAssemblyLineFacade) {
+    public VehicleAssemblyLineService(VehicleAssemblyLineFacade vehicleAssemblyLineFacade, CarAssemblyLineRepository carAssemblyLineRepository) {
         this.vehicleAssemblyLineFacade = vehicleAssemblyLineFacade;
+        this.carAssemblyLineRepository = carAssemblyLineRepository;
         this.configureAssemblyLine();
     }
 
@@ -74,9 +76,7 @@ public class VehicleAssemblyLineService {
     }
 
     public void configureAssemblyLine() {
-        // complète selon le fichier devis-vehicules.json qui est nul part
-        Map<String, Integer> productionTimeByVehicleType = new HashMap<>();
-        productionTimeByVehicleType.put("Vandry", 10); // temporaire
+        Map<String, Integer> productionTimeByVehicleType = this.carAssemblyLineRepository.getCarTimeToProduce();
         this.vehicleAssemblyLineFacade.configureAssemblyLine(productionTimeByVehicleType);
     }
 
