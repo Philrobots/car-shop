@@ -1,10 +1,8 @@
-package ca.ulaval.glo4003.evulution.api.assemblyline;
+package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
 import ca.ulaval.glo4003.evulution.car_manufacture.CommandID;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 import java.util.Map;
@@ -13,9 +11,8 @@ import java.util.UUID;
 
 public class VehicleAssemblyLineFacade implements AssemblyLine {
 
-    BasicVehicleAssemblyLine vehicleAssemblyLine = new BasicVehicleAssemblyLine();
-
-    Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
+    private final BasicVehicleAssemblyLine vehicleAssemblyLine = new BasicVehicleAssemblyLine();
+    private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
 
     @Override
     public AssemblyStatus getStatus(TransactionId transactionId) {

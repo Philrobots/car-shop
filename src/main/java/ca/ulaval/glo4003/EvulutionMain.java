@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
-import ca.ulaval.glo4003.evulution.api.assemblyline.VehicleAssemblyLineFacade;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;

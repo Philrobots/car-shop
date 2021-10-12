@@ -1,6 +1,6 @@
-package ca.ulaval.glo4003.evulution.api.assemblyLine;
+package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
-import ca.ulaval.glo4003.evulution.api.assemblyline.VehicleAssemblyLineFacade;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import org.junit.jupiter.api.BeforeEach;

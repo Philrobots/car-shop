@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.service.assemblyLine;
 
-import ca.ulaval.glo4003.evulution.api.assemblyline.VehicleAssemblyLineFacade;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
