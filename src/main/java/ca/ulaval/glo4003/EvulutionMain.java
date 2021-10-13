@@ -2,6 +2,7 @@ package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.CarAssemblyLineRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
@@ -206,8 +207,8 @@ public class EvulutionMain {
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade();
         CarAssemblyLineRepository carAssemblyLineRepository = new CarAssemblyLineRepositoryInMemory();
-        VehicleAssemblyLineService vehicleAssemblyLineService = new VehicleAssemblyLineService(
-                vehicleAssemblyLineFacade, carAssemblyLineRepository);
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade, carAssemblyLineRepository);
+        VehicleAssemblyLineService vehicleAssemblyLineService = new VehicleAssemblyLineService(vehicleAssemblyLine);
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
                 estimatedRangeAssembler, vehicleAssemblyLineService);
