@@ -73,6 +73,7 @@ public class VehicleAssemblyLineService {
     private void producesVehicleInWaitList() {
         Sale sale = this.salesWaitList.get(0);
         this.sendVehicleToProduction(sale);
+        this.salesWaitList.remove(0);
     }
 
     public void configureAssemblyLine() {
