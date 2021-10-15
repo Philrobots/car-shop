@@ -1,10 +1,7 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLineFacade;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;
@@ -53,6 +50,7 @@ import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import ca.ulaval.glo4003.evulution.service.sale.EstimatedRangeAssembler;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import ca.ulaval.glo4003.evulution.service.sale.TransactionIdAssembler;
+import org.checkerframework.checker.units.qual.C;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -218,7 +216,8 @@ public class EvulutionMain {
         BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(JsonFileMapper.parseBatteries());
         BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade, equivalenceOfOneWeekInSeconds);
         VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade, equivalenceOfOneWeekInSeconds);
-        AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine);
+        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds);
+        AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine, completeCarAssemblyLine);
 
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,

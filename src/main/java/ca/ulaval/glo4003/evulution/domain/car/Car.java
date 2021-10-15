@@ -9,6 +9,7 @@ public class Car {
     private Integer basePrice;
     private String timeToProduce;
     private String color;
+    private boolean isAssembled = false;
 
     public Car(String name, String style, Integer efficiencyEquivalenceRate, Integer basePrice, String timeToProduce,
             String color) {
@@ -26,6 +27,10 @@ public class Car {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setCarAsAssembled(){
+        isAssembled = true;
     }
 
 }

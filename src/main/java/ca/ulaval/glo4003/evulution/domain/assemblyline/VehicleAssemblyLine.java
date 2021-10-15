@@ -15,15 +15,8 @@ public class VehicleAssemblyLine {
 
     }
 
-    public void completeVehicleCommand(Sale sale) {
-        this.sendVehicleToProduction(sale);
-    }
-
-    private void sendVehicleToProduction(Sale sale) {
+    public void completeVehicleCommand(TransactionId transactionId, Car car) {
         try {
-
-            Car car = sale.getCar();
-            TransactionId transactionId = sale.getTransactionId();
             String vehicleType = car.getName();
 
             this.vehicleAssemblyLineFacade.newVehicleCommand(transactionId, vehicleType);
@@ -32,7 +25,6 @@ public class VehicleAssemblyLine {
 
             while (!isCarAssembled) {
                 AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
-
                 if (carStatus != AssemblyStatus.ASSEMBLED) {
                     this.vehicleAssemblyLineFacade.advance();
                 } else {
@@ -41,8 +33,8 @@ public class VehicleAssemblyLine {
 
                 Thread.sleep(timeOfWaitForOneWeek);
             }
+            car.setCarAsAssembled();
         } catch (InterruptedException e) {
         }
     }
-
 }

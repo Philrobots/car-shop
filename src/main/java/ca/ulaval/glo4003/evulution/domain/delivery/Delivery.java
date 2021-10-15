@@ -10,6 +10,7 @@ public class Delivery {
     private String location = null;
     private DeliveryId deliveryId;
     private List<String> possibleDeliveryLocation;
+    private boolean isAtCampus = false;
 
     public Delivery(DeliveryId deliveryId, List<String> possibleDeliveryLocation) {
         this.deliveryId = deliveryId;
@@ -18,6 +19,10 @@ public class Delivery {
 
     public DeliveryId getDeliveryId() {
         return deliveryId;
+    }
+
+    public void deliverToCampus(){
+        isAtCampus = true;
     }
 
     public void chooseDeliveryLocation(String mode, String location) {

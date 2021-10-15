@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-import ca.ulaval.glo4003.evulution.domain.sale.Sale;
+import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 public class BatteryAssemblyLine {
@@ -14,11 +14,9 @@ public class BatteryAssemblyLine {
         this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
     }
 
-    public void completeBatteryCommand(Sale sale) {
+    public void completeBatteryCommand(TransactionId transactionId, Battery battery) {
         try {
-            TransactionId transactionId = sale.getTransactionId();
-            String batteryType = sale.getBatteryType();
-            this.batteryAssemblyLineFacade.newBatteryCommand(transactionId, batteryType);
+            this.batteryAssemblyLineFacade.newBatteryCommand(transactionId, battery.getType());
 
             boolean isBatteryAssembled = false;
 
@@ -35,6 +33,7 @@ public class BatteryAssemblyLine {
                 Thread.sleep(timeOfWaitForOneWeek);
 
             }
+            battery.setBatteryAsAssembled();
         } catch (InterruptedException e) { }
 
     }
