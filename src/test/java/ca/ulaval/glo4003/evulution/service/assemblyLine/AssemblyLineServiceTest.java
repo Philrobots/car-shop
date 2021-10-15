@@ -47,7 +47,8 @@ public class AssemblyLineServiceTest {
 
     @BeforeEach
     public void setUp() {
-        assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine, completeCarAssemblyLine);
+        assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
+                completeCarAssemblyLine);
     }
 
     @Test

@@ -13,10 +13,12 @@ import java.util.UUID;
 
 public class VehicleAssemblyLineFacade implements VehicleAssemblyFacade {
 
-    private final BasicVehicleAssemblyLine vehicleAssemblyLine = new BasicVehicleAssemblyLine();
+    private final BasicVehicleAssemblyLine vehicleAssemblyLine;
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
 
-    public VehicleAssemblyLineFacade(List<ModelInformationDto> modelInformationDtos) {
+    public VehicleAssemblyLineFacade(BasicVehicleAssemblyLine vehicleAssemblyLine,
+            List<ModelInformationDto> modelInformationDtos) {
+        this.vehicleAssemblyLine = vehicleAssemblyLine;
         this.configureAssemblyLine(modelInformationDtos);
     }
 

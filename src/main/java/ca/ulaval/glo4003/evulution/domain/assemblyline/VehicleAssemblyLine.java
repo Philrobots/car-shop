@@ -1,15 +1,14 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
 import ca.ulaval.glo4003.evulution.domain.car.Car;
-import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 public class VehicleAssemblyLine {
 
-    private final VehicleAssemblyLineFacade vehicleAssemblyLineFacade;
+    private final VehicleAssemblyFacade vehicleAssemblyLineFacade;
     private final int timeOfWaitForOneWeek;
 
-    public VehicleAssemblyLine(VehicleAssemblyLineFacade vehicleAssemblyLineFacade, int equivalenceOfOneWeekInSeconds) {
+    public VehicleAssemblyLine(VehicleAssemblyFacade vehicleAssemblyLineFacade, int equivalenceOfOneWeekInSeconds) {
         this.vehicleAssemblyLineFacade = vehicleAssemblyLineFacade;
         this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
 

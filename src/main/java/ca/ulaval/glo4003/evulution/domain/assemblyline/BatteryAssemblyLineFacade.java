@@ -1,4 +1,5 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
+
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
 import ca.ulaval.glo4003.evulution.car_manufacture.CommandID;
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
@@ -10,12 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class BatteryAssemblyLineFacade implements BatteryAssemblyFacade  {
+public class BatteryAssemblyLineFacade implements BatteryAssemblyFacade {
 
     private final BasicBatteryAssemblyLine basicBatteryAssemblyLine;
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
 
-    public BatteryAssemblyLineFacade(BasicBatteryAssemblyLine basicBatteryAssemblyLine ,List<BatteryInformationDto> batteries) {
+    public BatteryAssemblyLineFacade(BasicBatteryAssemblyLine basicBatteryAssemblyLine,
+            List<BatteryInformationDto> batteries) {
         this.basicBatteryAssemblyLine = basicBatteryAssemblyLine;
         this.configureBatteryProductionTime(batteries);
     }

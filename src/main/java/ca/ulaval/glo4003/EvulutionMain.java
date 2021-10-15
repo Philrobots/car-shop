@@ -2,6 +2,7 @@ package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
@@ -51,7 +52,6 @@ import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import ca.ulaval.glo4003.evulution.service.sale.EstimatedRangeAssembler;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import ca.ulaval.glo4003.evulution.service.sale.TransactionIdAssembler;
-import org.checkerframework.checker.units.qual.C;
 import org.eclipse.jetty.server.Server;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
@@ -78,7 +78,7 @@ public class EvulutionMain {
         // Load env
         Map<String, String> env = System.getenv();
         String envVariable = env.get(ENV_WEEK_TO_SECONDS_KEY);
-        if (env.get(ENV_WEEK_TO_SECONDS_KEY) != null){
+        if (env.get(ENV_WEEK_TO_SECONDS_KEY) != null) {
             equivalenceOfOneWeekInSeconds = Integer.parseInt(envVariable);
         }
         // add to delivery factory in corresponding PR
@@ -213,13 +213,19 @@ public class EvulutionMain {
         InvoiceFactory invoiceFactory = new InvoiceFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
-                JsonFileMapper.parseModels());
+                new BasicVehicleAssemblyLine(), JsonFileMapper.parseModels());
+
         BasicBatteryAssemblyLine basicBatteryAssemblyLine = new BasicBatteryAssemblyLine();
-        BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(basicBatteryAssemblyLine, JsonFileMapper.parseBatteries());
-        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade, equivalenceOfOneWeekInSeconds);
-        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade, equivalenceOfOneWeekInSeconds);
+        BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(basicBatteryAssemblyLine,
+                JsonFileMapper.parseBatteries());
+        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade,
+                equivalenceOfOneWeekInSeconds);
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade,
+                equivalenceOfOneWeekInSeconds);
+
         CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds);
-        AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine, completeCarAssemblyLine);
+        AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
+                completeCarAssemblyLine);
 
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,

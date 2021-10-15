@@ -11,11 +11,13 @@ public class CompleteCarAssemblyLine {
     }
 
     public void completeCarCommand(Delivery delivery) {
-        try{
-            if (Math.random() < FIFTY_PERCENT_CHANCE) Thread.sleep(timeOfWaitForOneWeek);
-            else Thread.sleep(timeOfWaitForOneWeek  * 2);
-            System.out.println("Delivery");
+        try {
+            if (Math.random() < FIFTY_PERCENT_CHANCE)
+                Thread.sleep(timeOfWaitForOneWeek);
+            else
+                Thread.sleep(timeOfWaitForOneWeek * 2);
             delivery.deliverToCampus();
-        } catch (InterruptedException e){}
+        } catch (InterruptedException e) {
+        }
     }
 }

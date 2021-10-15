@@ -13,7 +13,8 @@ public class AssemblyLineService {
     private final BatteryAssemblyLine batteryAssemblyLine;
     private final CompleteCarAssemblyLine completeCarAssemblyLine;
 
-    public AssemblyLineService(VehicleAssemblyLine vehicleAssemblyLine, BatteryAssemblyLine batteryAssemblyLine, CompleteCarAssemblyLine completeCarAssemblyLine) {
+    public AssemblyLineService(VehicleAssemblyLine vehicleAssemblyLine, BatteryAssemblyLine batteryAssemblyLine,
+            CompleteCarAssemblyLine completeCarAssemblyLine) {
         this.vehicleAssemblyLine = vehicleAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeCarAssemblyLine = completeCarAssemblyLine;

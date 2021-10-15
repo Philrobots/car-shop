@@ -24,7 +24,6 @@ public class BatteryAssemblyLineFacadeTest {
 
     private BatteryAssemblyLineFacade batteryAssemblyLineFacade;
 
-
     @BeforeEach
     public void setUp() {
         batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(basicBatteryAssemblyLine, batteries);
