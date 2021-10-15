@@ -5,28 +5,37 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 public class BatteryAssemblyLine {
 
-    private FacadeAssemblyLine batteryFacadeAssemblyLine;
+    private final BatteryAssemblyFacade batteryAssemblyLineFacade;
+    private final int timeOfWaitForOneWeek;
 
-    public BatteryAssemblyLine(FacadeAssemblyLine batteryFacadeAssemblyLine) {
-        this.batteryFacadeAssemblyLine = batteryFacadeAssemblyLine;
+
+    public BatteryAssemblyLine(BatteryAssemblyFacade batteryFacadeAssemblyLine, int equivalenceOfOneWeekInSeconds) {
+        this.batteryAssemblyLineFacade = batteryFacadeAssemblyLine;
+        this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
     }
 
     public void completeBatteryCommand(Sale sale) {
-        TransactionId transactionId = sale.getTransactionId();
-        String batteryType = sale.getBatteryType();
-        this.batteryFacadeAssemblyLine.newCommand(transactionId, batteryType);
+        try {
+            TransactionId transactionId = sale.getTransactionId();
+            String batteryType = sale.getBatteryType();
+            this.batteryAssemblyLineFacade.newBatteryCommand(transactionId, batteryType);
 
-        boolean isBatteryAssembled = false;
+            boolean isBatteryAssembled = false;
 
-        while (!isBatteryAssembled) {
+            while (!isBatteryAssembled) {
 
-            AssemblyStatus batteryStatus = this.batteryFacadeAssemblyLine.getStatus(transactionId);
+                AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade.getStatus(transactionId);
 
-            if (batteryStatus != AssemblyStatus.ASSEMBLED) {
-                this.batteryFacadeAssemblyLine.advance();
-            } else {
-                isBatteryAssembled = true;
+                if (batteryStatus != AssemblyStatus.ASSEMBLED) {
+                    this.batteryAssemblyLineFacade.advance();
+                } else {
+                    isBatteryAssembled = true;
+                }
+
+                Thread.sleep(timeOfWaitForOneWeek);
+
             }
-        }
+        } catch (InterruptedException e) { }
+
     }
 }

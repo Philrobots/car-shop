@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class VehicleAssemblyLineFacade implements FacadeAssemblyLine {
+public class VehicleAssemblyLineFacade implements VehicleAssemblyFacade {
 
     private final BasicVehicleAssemblyLine vehicleAssemblyLine = new BasicVehicleAssemblyLine();
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
@@ -28,7 +28,7 @@ public class VehicleAssemblyLineFacade implements FacadeAssemblyLine {
     }
 
     @Override
-    public void newCommand(TransactionId transactionId, String command) {
+    public void newVehicleCommand(TransactionId transactionId, String command) {
         CommandID commandId = new CommandID(UUID.randomUUID().toString());
         transactionIdWithCommandId.put(transactionId, commandId);
         vehicleAssemblyLine.newCarCommand(commandId, command);

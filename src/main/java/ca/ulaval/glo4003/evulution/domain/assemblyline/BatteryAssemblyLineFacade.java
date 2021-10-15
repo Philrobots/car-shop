@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class BatteryAssemblyLineFacade implements FacadeAssemblyLine {
+public class BatteryAssemblyLineFacade implements BatteryAssemblyFacade  {
 
     private BasicBatteryAssemblyLine batteryAssemblyLine = new BasicBatteryAssemblyLine();
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
@@ -27,7 +27,7 @@ public class BatteryAssemblyLineFacade implements FacadeAssemblyLine {
     }
 
     @Override
-    public void newCommand(TransactionId transactionId, String command) {
+    public void newBatteryCommand(TransactionId transactionId, String command) {
         CommandID commandId = new CommandID(UUID.randomUUID().toString());
         transactionIdWithCommandId.put(transactionId, commandId);
         batteryAssemblyLine.newBatteryCommand(commandId, command);

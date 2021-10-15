@@ -73,7 +73,8 @@ public class EvulutionMain {
     public static String ADMIN_PASSWORD = "RoulezVert2021!";
     public static Admin ADMIN = new Admin(ADMIN_EMAIL, ADMIN_PASSWORD);
 
-    public static int equivalenceOfOneWeekInSeconds = 30;
+    public static int equivalenceOfOneWeekInSeconds = 1;
+
     public static void main(String[] args) throws Exception {
         // Load env
         Map<String, String> env = System.getenv();
@@ -215,7 +216,7 @@ public class EvulutionMain {
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
                 JsonFileMapper.parseModels());
         BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(JsonFileMapper.parseBatteries());
-        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade);
+        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade, equivalenceOfOneWeekInSeconds);
         VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade, equivalenceOfOneWeekInSeconds);
         AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine);
 

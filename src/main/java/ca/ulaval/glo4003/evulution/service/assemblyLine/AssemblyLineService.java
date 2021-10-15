@@ -17,10 +17,6 @@ public class AssemblyLineService {
 
     public void completeVehicleCommand(Sale sale) {
         this.vehicleAssemblyLine.completeVehicleCommand(sale);
-    }
-
-    public void completeBatteryCommand(Sale sale) {
         this.batteryAssemblyLine.completeBatteryCommand(sale);
     }
-
 }

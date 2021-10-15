@@ -4,9 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class VehicleAssemblyLine {
 
     private final VehicleAssemblyLineFacade vehicleAssemblyLineFacade;
@@ -19,7 +16,6 @@ public class VehicleAssemblyLine {
     }
 
     public void completeVehicleCommand(Sale sale) {
-        // 3. Injecter la variable d'environnement (.env)
         this.sendVehicleToProduction(sale);
     }
 
@@ -30,14 +26,11 @@ public class VehicleAssemblyLine {
             TransactionId transactionId = sale.getTransactionId();
             String vehicleType = car.getName();
 
-            // add command to vehicle assembly line
-            this.vehicleAssemblyLineFacade.newCommand(transactionId, vehicleType);
-            this.vehicleAssemblyLineFacade.advance();
+            this.vehicleAssemblyLineFacade.newVehicleCommand(transactionId, vehicleType);
 
-            // jusqu'à temps que le car est pas assemble, on attend
             boolean isCarAssembled = false;
 
-            while (isCarAssembled) {
+            while (!isCarAssembled) {
                 AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
 
                 if (carStatus != AssemblyStatus.ASSEMBLED) {
@@ -48,9 +41,6 @@ public class VehicleAssemblyLine {
 
                 Thread.sleep(timeOfWaitForOneWeek);
             }
-
-            sale.completeSale();
-
         } catch (InterruptedException e) {
         }
     }

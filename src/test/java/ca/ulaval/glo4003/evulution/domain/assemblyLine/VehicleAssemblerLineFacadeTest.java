@@ -5,14 +5,12 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
-import com.google.gson.JsonParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -59,13 +57,13 @@ public class VehicleAssemblerLineFacadeTest {
 
     private void givenNewVehicleCommand() {
         PRODUCTION_TIME_BY_VEHICLE_TYPE.put(A_VEHICLE_TYPE, A_TIME);
-        vehicleAssemblyLineFacade.newCommand(A_TRANSACTION_ID, A_VEHICLE_TYPE);
+        vehicleAssemblyLineFacade.newVehicleCommand(A_TRANSACTION_ID, A_VEHICLE_TYPE);
     }
 
     private void givenTwoNewVehicleCommand() {
         PRODUCTION_TIME_BY_VEHICLE_TYPE.put(A_VEHICLE_TYPE, A_TIME);
-        vehicleAssemblyLineFacade.newCommand(A_TRANSACTION_ID, A_VEHICLE_TYPE);
-        vehicleAssemblyLineFacade.newCommand(ANOTHER_TRANSACTION_ID, A_VEHICLE_TYPE);
+        vehicleAssemblyLineFacade.newVehicleCommand(A_TRANSACTION_ID, A_VEHICLE_TYPE);
+        vehicleAssemblyLineFacade.newVehicleCommand(ANOTHER_TRANSACTION_ID, A_VEHICLE_TYPE);
     }
 
 }
