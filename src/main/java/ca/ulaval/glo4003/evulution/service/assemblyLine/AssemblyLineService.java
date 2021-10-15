@@ -13,15 +13,17 @@ public class AssemblyLineService {
     private final BatteryAssemblyLine batteryAssemblyLine;
     private final CompleteCarAssemblyLine completeCarAssemblyLine;
 
-    public AssemblyLineService(VehicleAssemblyLine vehicleAssemblyLine, BatteryAssemblyLine batteryAssemblyLine, CompleteCarAssemblyLine completeCarAssemblyLine) {
+    public AssemblyLineService(VehicleAssemblyLine vehicleAssemblyLine, BatteryAssemblyLine batteryAssemblyLine,
+            CompleteCarAssemblyLine completeCarAssemblyLine) {
         this.vehicleAssemblyLine = vehicleAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeCarAssemblyLine = completeCarAssemblyLine;
     }
 
     public void completeVehicleCommand(Sale sale) {
-        this.vehicleAssemblyLine.completeVehicleCommand(sale.getTransactionId(), sale.getCar());
-        this.batteryAssemblyLine.completeBatteryCommand(sale.getTransactionId(), sale.getBattery());
+        TransactionId transactionId = sale.getTransactionId();
+        this.vehicleAssemblyLine.completeVehicleCommand(transactionId, sale.getCar());
+        this.batteryAssemblyLine.completeBatteryCommand(transactionId, sale.getBattery());
         this.completeCarAssemblyLine.completeCarCommand(sale.getDelivery());
     }
 }

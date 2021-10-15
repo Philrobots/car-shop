@@ -29,7 +29,7 @@ public class Car {
         return this.name;
     }
 
-    public void setCarAsAssembled(){
+    public void setCarAsAssembled() {
         isAssembled = true;
     }
 

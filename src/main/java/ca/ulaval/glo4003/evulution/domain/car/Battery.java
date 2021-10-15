@@ -26,7 +26,7 @@ public class Battery {
         return type;
     }
 
-    public void setBatteryAsAssembled(){
+    public void setBatteryAsAssembled() {
         isAssembled = true;
     }
 }

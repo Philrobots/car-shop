@@ -15,6 +15,7 @@ public class CompleteCarAssemblyLine {
             if (Math.random() < FIFTY_PERCENT_CHANCE) Thread.sleep(timeOfWaitForOneWeek);
             else Thread.sleep(timeOfWaitForOneWeek  * 2);
             delivery.deliverToCampus();
-        } catch (InterruptedException e){}
+        } catch (InterruptedException e) {
+        }
     }
 }

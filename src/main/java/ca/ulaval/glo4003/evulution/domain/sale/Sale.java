@@ -74,5 +74,7 @@ public class Sale {
         return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
     }
 
-    public Battery getBattery() {return this.battery;}
+    public Battery getBattery() {
+        return this.battery;
+    }
 }

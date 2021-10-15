@@ -8,7 +8,6 @@ public class BatteryAssemblyLine {
     private final BatteryAssemblyFacade batteryAssemblyLineFacade;
     private final int timeOfWaitForOneWeek;
 
-
     public BatteryAssemblyLine(BatteryAssemblyFacade batteryFacadeAssemblyLine, int equivalenceOfOneWeekInSeconds) {
         this.batteryAssemblyLineFacade = batteryFacadeAssemblyLine;
         this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
@@ -34,7 +33,8 @@ public class BatteryAssemblyLine {
 
             }
             battery.setBatteryAsAssembled();
-        } catch (InterruptedException e) { }
+        } catch (InterruptedException e) {
+        }
 
     }
 }
