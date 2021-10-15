@@ -60,18 +60,27 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RESTApi setup without using DI or spring
  */
 @SuppressWarnings("all")
 public class EvulutionMain {
+    public static final String ENV_WEEK_TO_SECONDS_KEY = "EQUIVALENCE_OF_ONE_WEEK_IN_SECONDS";
     public static final String BASE_URI = "http://localhost:8080/";
     public static String ADMIN_EMAIL = "catherineleuf@evul.ulaval.ca";
     public static String ADMIN_PASSWORD = "RoulezVert2021!";
     public static Admin ADMIN = new Admin(ADMIN_EMAIL, ADMIN_PASSWORD);
 
+    public static int equivalenceOfOneWeekInSeconds = 30;
     public static void main(String[] args) throws Exception {
+        // Load env
+        Map<String, String> env = System.getenv();
+        String envVariable = env.get(ENV_WEEK_TO_SECONDS_KEY);
+        if (env.get(ENV_WEEK_TO_SECONDS_KEY) != null){
+            equivalenceOfOneWeekInSeconds = Integer.parseInt(envVariable);
+        }
         // add to delivery factory in corresponding PR
         List<String> deliveryLocationNameStrings = JsonFileMapper.parseDeliveryLocations();
         // Setup exception mapping
@@ -205,10 +214,11 @@ public class EvulutionMain {
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
                 JsonFileMapper.parseModels());
-        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade);
         BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(JsonFileMapper.parseBatteries());
         BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade);
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade, equivalenceOfOneWeekInSeconds);
         AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine);
+
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
                 estimatedRangeAssembler, assemblyLineService);

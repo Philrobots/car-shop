@@ -10,9 +10,12 @@ import java.util.TimerTask;
 public class VehicleAssemblyLine {
 
     private final VehicleAssemblyLineFacade vehicleAssemblyLineFacade;
+    private final int timeOfWaitForOneWeek;
 
-    public VehicleAssemblyLine(VehicleAssemblyLineFacade vehicleAssemblyLineFacade) {
+    public VehicleAssemblyLine(VehicleAssemblyLineFacade vehicleAssemblyLineFacade, int equivalenceOfOneWeekInSeconds) {
         this.vehicleAssemblyLineFacade = vehicleAssemblyLineFacade;
+        this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
+
     }
 
     public void completeVehicleCommand(Sale sale) {
@@ -34,7 +37,6 @@ public class VehicleAssemblyLine {
             // jusqu'à temps que le car est pas assemble, on attend
             boolean isCarAssembled = false;
 
-
             while (isCarAssembled) {
                 AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
 
@@ -44,7 +46,7 @@ public class VehicleAssemblyLine {
                     isCarAssembled = true;
                 }
 
-                Thread.sleep(3000);
+                Thread.sleep(timeOfWaitForOneWeek);
             }
 
             sale.completeSale();
