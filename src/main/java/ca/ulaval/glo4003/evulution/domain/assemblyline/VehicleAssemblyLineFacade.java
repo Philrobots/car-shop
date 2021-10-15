@@ -5,14 +5,13 @@ import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
 import ca.ulaval.glo4003.evulution.car_manufacture.CommandID;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
-import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class VehicleAssemblyLineFacade implements AssemblyLine {
+public class VehicleAssemblyLineFacade implements FacadeAssemblyLine {
 
     private final BasicVehicleAssemblyLine vehicleAssemblyLine = new BasicVehicleAssemblyLine();
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();

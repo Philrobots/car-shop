@@ -44,14 +44,18 @@ public class VehicleAssemblerLineFacadeTest {
         // then
         assertEquals(status, AssemblyStatus.RECEIVED);
     }
-    /*
-     * @Test public void givenNewVehicleCommandThatIsAdvanced_whenGetStatus_thenAssemblyStatusIsReceived() { // given
-     * givenNewVehicleCommand(); vehicleAssemblyLineFacade.advance();
-     * 
-     * // when AssemblyStatus status = vehicleAssemblyLineFacade.getStatus(A_TRANSACTION_ID);
-     * 
-     * // then assertEquals(status, AssemblyStatus.IN_PROGRESS); }
-     */
+
+     @Test public void givenNewVehicleCommandThatIsAdvanced_whenGetStatus_thenAssemblyStatusIsReceived() {
+        // given
+        givenNewVehicleCommand(); vehicleAssemblyLineFacade.advance();
+
+        // when
+        AssemblyStatus status = vehicleAssemblyLineFacade.getStatus(A_TRANSACTION_ID);
+     
+       // then
+          assertEquals(status, AssemblyStatus.IN_PROGRESS);
+    }
+     
 
     private void givenNewVehicleCommand() {
         PRODUCTION_TIME_BY_VEHICLE_TYPE.put(A_VEHICLE_TYPE, A_TIME);

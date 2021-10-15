@@ -12,7 +12,7 @@ import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.*;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
-import ca.ulaval.glo4003.evulution.service.assemblyLine.VehicleAssemblyLineService;
+import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
 
@@ -28,14 +28,14 @@ public class SaleService {
     private BatteryFactory batteryFactory;
     private InvoiceFactory invoiceFactory;
     private EstimatedRangeAssembler estimatedRangeAssembler;
-    private VehicleAssemblyLineService vehicleAssemblyLineService;
+    private AssemblyLineService assemblyLineService;
 
     public SaleService(SaleRepository saleRepository, TokenRepository tokenRepository,
             CustomerRepository customerRepository, TokenAssembler tokenAssembler,
             TransactionIdAssembler transactionIdAssembler, SaleFactory saleFactory,
             TransactionIdFactory transactionIdFactory, CarFactory carFactory, BatteryFactory batteryFactory,
             InvoiceFactory invoiceFactory, EstimatedRangeAssembler estimatedRangeAssembler,
-            VehicleAssemblyLineService vehicleAssemblyLineService) {
+            AssemblyLineService assemblyLineService) {
 
         this.saleRepository = saleRepository;
         this.tokenRepository = tokenRepository;
@@ -48,7 +48,7 @@ public class SaleService {
         this.batteryFactory = batteryFactory;
         this.invoiceFactory = invoiceFactory;
         this.estimatedRangeAssembler = estimatedRangeAssembler;
-        this.vehicleAssemblyLineService = vehicleAssemblyLineService;
+        this.assemblyLineService = assemblyLineService;
     }
 
     public SaleCreatedDto initSale(TokenDto tokenDto) {
@@ -83,6 +83,6 @@ public class SaleService {
         Invoice invoice = this.invoiceFactory.create(Integer.parseInt(invoiceDto.bank_no),
                 Integer.parseInt(invoiceDto.account_no), invoiceDto.frequency);
         customer.setInvoice(invoice);
-        this.vehicleAssemblyLineService.completeVehicleCommand(sale);
+        this.assemblyLineService.completeVehicleCommand(sale);
     }
 }

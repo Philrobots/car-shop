@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
@@ -40,7 +42,7 @@ import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInM
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.SaleRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.token.TokenRepositoryInMemory;
-import ca.ulaval.glo4003.evulution.service.assemblyLine.VehicleAssemblyLineService;
+import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
@@ -204,10 +206,12 @@ public class EvulutionMain {
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
                 JsonFileMapper.parseModels());
         VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade);
-        VehicleAssemblyLineService vehicleAssemblyLineService = new VehicleAssemblyLineService(vehicleAssemblyLine);
+        BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(JsonFileMapper.parseBatteries());
+        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade);
+        AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine);
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
-                estimatedRangeAssembler, vehicleAssemblyLineService);
+                estimatedRangeAssembler, assemblyLineService);
 
         return new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler,
                 constraintsValidator);

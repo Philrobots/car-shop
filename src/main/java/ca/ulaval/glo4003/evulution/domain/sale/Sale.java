@@ -73,4 +73,8 @@ public class Sale {
     public Integer getBatteryAutonomy() {
         return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
     }
+
+    public String getBatteryType() {
+        return this.battery.getName();
+    }
 }

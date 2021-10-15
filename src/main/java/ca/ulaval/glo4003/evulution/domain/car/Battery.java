@@ -20,4 +20,8 @@ public class Battery {
     public Integer calculateEstimatedRange(Integer efficiencyEquivalenceRate) {
         return (Integer.parseInt(this.baseNRCANRange) * efficiencyEquivalenceRate) / 100;
     }
+
+    public String getName() {
+        return name;
+    }
 }
