@@ -20,8 +20,9 @@ public class AssemblyLineService {
     }
 
     public void completeVehicleCommand(Sale sale) {
-        this.vehicleAssemblyLine.completeVehicleCommand(sale.getTransactionId(), sale.getCar());
-        this.batteryAssemblyLine.completeBatteryCommand(sale.getTransactionId(), sale.getBattery());
+        TransactionId transactionId = sale.getTransactionId();
+        this.vehicleAssemblyLine.completeVehicleCommand(transactionId, sale.getCar());
+        this.batteryAssemblyLine.completeBatteryCommand(transactionId, sale.getBattery());
         this.completeCarAssemblyLine.completeCarCommand(sale.getDelivery());
     }
 }
