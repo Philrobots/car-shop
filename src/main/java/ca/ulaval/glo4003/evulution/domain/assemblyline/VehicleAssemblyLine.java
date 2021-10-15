@@ -4,35 +4,24 @@ import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class VehicleAssemblyLine {
 
-    private List<Sale> salesWaitList = new ArrayList<>();
-    private boolean aVehicleIsBeingAssembled = false;
     private final VehicleAssemblyLineFacade vehicleAssemblyLineFacade;
-    private final CarAssemblyLineRepository carAssemblyLineRepository;
 
-    public VehicleAssemblyLine(VehicleAssemblyLineFacade vehicleAssemblyLineFacade,
-            CarAssemblyLineRepository carAssemblyLineRepository) {
+    public VehicleAssemblyLine(VehicleAssemblyLineFacade vehicleAssemblyLineFacade) {
         this.vehicleAssemblyLineFacade = vehicleAssemblyLineFacade;
-        this.carAssemblyLineRepository = carAssemblyLineRepository;
-        this.configureAssemblyLine();
     }
 
     public void completeVehicleCommand(Sale sale) {
-        if (this.aVehicleIsBeingAssembled) {
-            this.salesWaitList.add(sale);
-        } else {
-            this.sendVehicleToProduction(sale);
-        }
+        // 3. Injecter la variable d'environnement (.env)
+        this.sendVehicleToProduction(sale);
     }
 
     private void sendVehicleToProduction(Sale sale) {
         try {
-            this.aVehicleIsBeingAssembled = true;
 
             Car car = sale.getCar();
             TransactionId transactionId = sale.getTransactionId();
@@ -40,38 +29,28 @@ public class VehicleAssemblyLine {
 
             // add command to vehicle assembly line
             this.vehicleAssemblyLineFacade.newCommand(transactionId, vehicleType);
-
             this.vehicleAssemblyLineFacade.advance();
 
             // jusqu'à temps que le car est pas assemble, on attend
-            AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
+            boolean isCarAssembled = false;
 
-            while (carStatus == AssemblyStatus.IN_PROGRESS) {
-                carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
-                System.out.println(carStatus);
+
+            while (isCarAssembled) {
+                AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
+
+                if (carStatus != AssemblyStatus.ASSEMBLED) {
+                    this.vehicleAssemblyLineFacade.advance();
+                } else {
+                    isCarAssembled = true;
+                }
+
                 Thread.sleep(3000);
             }
 
             sale.completeSale();
 
-            if (!this.salesWaitList.isEmpty()) {
-                this.producesVehicleInWaitList();
-            }
-
-            this.aVehicleIsBeingAssembled = false;
-
         } catch (InterruptedException e) {
         }
     }
 
-    private void producesVehicleInWaitList() {
-        Sale sale = this.salesWaitList.get(0);
-        this.sendVehicleToProduction(sale);
-        this.salesWaitList.remove(0);
-    }
-
-    private void configureAssemblyLine() {
-        Map<String, Integer> productionTimeByVehicleType = this.carAssemblyLineRepository.getCarTimeToProduce();
-        this.vehicleAssemblyLineFacade.configureAssemblyLine(productionTimeByVehicleType);
-    }
 }

@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.CarAssemblyLineRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
@@ -37,7 +36,6 @@ import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.http.CORSResponseFilter;
 import ca.ulaval.glo4003.evulution.infrastructure.account.AccountRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.admin.AdminRepositoryInMemory;
-import ca.ulaval.glo4003.evulution.infrastructure.assemblyLine.CarAssemblyLineRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.SaleRepositoryInMemory;
@@ -203,10 +201,9 @@ public class EvulutionMain {
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
-        VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade();
-        CarAssemblyLineRepository carAssemblyLineRepository = new CarAssemblyLineRepositoryInMemory();
-        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade,
-                carAssemblyLineRepository);
+        VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
+                JsonFileMapper.parseModels());
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade);
         VehicleAssemblyLineService vehicleAssemblyLineService = new VehicleAssemblyLineService(vehicleAssemblyLine);
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,

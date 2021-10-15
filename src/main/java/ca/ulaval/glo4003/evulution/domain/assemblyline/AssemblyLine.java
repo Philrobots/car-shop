@@ -10,7 +10,5 @@ public interface AssemblyLine {
 
     void newCommand(TransactionId transactionId, String command);
 
-    void configureAssemblyLine(Map<String, Integer> timeByCommand);
-
     void advance();
 }

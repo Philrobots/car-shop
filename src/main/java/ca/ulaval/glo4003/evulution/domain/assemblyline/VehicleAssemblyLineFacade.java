@@ -3,8 +3,11 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline;
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
 import ca.ulaval.glo4003.evulution.car_manufacture.CommandID;
+import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
+import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
@@ -13,6 +16,10 @@ public class VehicleAssemblyLineFacade implements AssemblyLine {
 
     private final BasicVehicleAssemblyLine vehicleAssemblyLine = new BasicVehicleAssemblyLine();
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
+
+    public VehicleAssemblyLineFacade(List<ModelInformationDto> modelInformationDtos) {
+        this.configureAssemblyLine(modelInformationDtos);
+    }
 
     @Override
     public AssemblyStatus getStatus(TransactionId transactionId) {
@@ -29,12 +36,18 @@ public class VehicleAssemblyLineFacade implements AssemblyLine {
     }
 
     @Override
-    public void configureAssemblyLine(Map<String, Integer> productionTimeByVehicleType) {
-        vehicleAssemblyLine.configureAssemblyLine(productionTimeByVehicleType);
-    }
-
-    @Override
     public void advance() {
         vehicleAssemblyLine.advance();
+    }
+
+    private void configureAssemblyLine(List<ModelInformationDto> modelInformationDtos) {
+
+        Map<String, Integer> carTimesProduce = new HashMap<>();
+
+        for (ModelInformationDto modelInformationDto : modelInformationDtos) {
+            Integer timeToProduce = Integer.parseInt(modelInformationDto.time_to_produce);
+            carTimesProduce.put(modelInformationDto.name, timeToProduce);
+        }
+        vehicleAssemblyLine.configureAssemblyLine(carTimesProduce);
     }
 }
