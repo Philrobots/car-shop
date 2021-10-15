@@ -12,30 +12,31 @@ import java.util.UUID;
 
 public class BatteryAssemblyLineFacade implements BatteryAssemblyFacade  {
 
-    private BasicBatteryAssemblyLine batteryAssemblyLine = new BasicBatteryAssemblyLine();
+    private final BasicBatteryAssemblyLine basicBatteryAssemblyLine;
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
 
-    public BatteryAssemblyLineFacade(List<BatteryInformationDto> batteries) {
+    public BatteryAssemblyLineFacade(BasicBatteryAssemblyLine basicBatteryAssemblyLine ,List<BatteryInformationDto> batteries) {
+        this.basicBatteryAssemblyLine = basicBatteryAssemblyLine;
         this.configureBatteryProductionTime(batteries);
     }
 
     @Override
     public AssemblyStatus getStatus(TransactionId transactionId) {
         CommandID commandId = transactionIdWithCommandId.get(transactionId);
-        BuildStatus status = batteryAssemblyLine.getBuildStatus(commandId);
+        BuildStatus status = this.basicBatteryAssemblyLine.getBuildStatus(commandId);
         return AssemblyStatus.valueOf(status.toString());
     }
 
     @Override
     public void newBatteryCommand(TransactionId transactionId, String command) {
         CommandID commandId = new CommandID(UUID.randomUUID().toString());
-        transactionIdWithCommandId.put(transactionId, commandId);
-        batteryAssemblyLine.newBatteryCommand(commandId, command);
+        this.transactionIdWithCommandId.put(transactionId, commandId);
+        this.basicBatteryAssemblyLine.newBatteryCommand(commandId, command);
     }
 
     @Override
     public void advance() {
-        batteryAssemblyLine.advance();
+        this.basicBatteryAssemblyLine.advance();
     }
 
     private void configureBatteryProductionTime(List<BatteryInformationDto> batteries) {
@@ -45,6 +46,6 @@ public class BatteryAssemblyLineFacade implements BatteryAssemblyFacade  {
             batteriesWithTimeToProduce.put(b.name, Integer.parseInt(b.time_to_produce));
         }
 
-        this.batteryAssemblyLine.configureAssemblyLine(batteriesWithTimeToProduce);
+        this.basicBatteryAssemblyLine.configureAssemblyLine(batteriesWithTimeToProduce);
     }
 }
