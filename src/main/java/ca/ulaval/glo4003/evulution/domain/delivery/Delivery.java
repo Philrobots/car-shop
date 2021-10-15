@@ -21,7 +21,7 @@ public class Delivery {
         return deliveryId;
     }
 
-    public void deliverToCampus(){
+    public void deliverToCampus() {
         isAtCampus = true;
     }
 
