@@ -207,7 +207,8 @@ public class EvulutionMain {
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade();
         CarAssemblyLineRepository carAssemblyLineRepository = new CarAssemblyLineRepositoryInMemory();
-        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade, carAssemblyLineRepository);
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade,
+                carAssemblyLineRepository);
         VehicleAssemblyLineService vehicleAssemblyLineService = new VehicleAssemblyLineService(vehicleAssemblyLine);
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,

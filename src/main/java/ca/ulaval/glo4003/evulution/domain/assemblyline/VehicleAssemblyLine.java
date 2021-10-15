@@ -15,7 +15,8 @@ public class VehicleAssemblyLine {
     private final VehicleAssemblyLineFacade vehicleAssemblyLineFacade;
     private final CarAssemblyLineRepository carAssemblyLineRepository;
 
-    public VehicleAssemblyLine(VehicleAssemblyLineFacade vehicleAssemblyLineFacade, CarAssemblyLineRepository carAssemblyLineRepository) {
+    public VehicleAssemblyLine(VehicleAssemblyLineFacade vehicleAssemblyLineFacade,
+            CarAssemblyLineRepository carAssemblyLineRepository) {
         this.vehicleAssemblyLineFacade = vehicleAssemblyLineFacade;
         this.carAssemblyLineRepository = carAssemblyLineRepository;
         this.configureAssemblyLine();
@@ -45,13 +46,11 @@ public class VehicleAssemblyLine {
             // jusqu'à temps que le car est pas assemble, on attend
             AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
 
-
             while (carStatus == AssemblyStatus.IN_PROGRESS) {
                 carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
                 System.out.println(carStatus);
                 Thread.sleep(3000);
             }
-
 
             sale.completeSale();
 

@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 
-
 public class VehicleAssemblyLineService {
 
     private VehicleAssemblyLine vehicleAssemblyLine;
@@ -14,7 +13,7 @@ public class VehicleAssemblyLineService {
     }
 
     public void completeVehicleCommand(Sale sale) {
-       this.vehicleAssemblyLine.completeVehicleCommand(sale);
+        this.vehicleAssemblyLine.completeVehicleCommand(sale);
     }
 
 }
