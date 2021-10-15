@@ -79,13 +79,12 @@ public class EvulutionMain {
         ConstraintsValidator constraintsValidator = new ConstraintsValidator();
 
         // Setup repositories
-        CustomerRepository customerRepository = new CustomerRepositoryInMemory();
         AccountRepository accountRepository = new AccountRepositoryInMemory();
+        CustomerRepository customerRepository = new CustomerRepositoryInMemory(accountRepository);
         TokenRepository tokenRepository = new TokenRepositoryInMemory();
         SaleRepository saleRepository = new SaleRepositoryInMemory();
-        AdminRepository adminRepository = new AdminRepositoryInMemory();
+        AdminRepository adminRepository = new AdminRepositoryInMemory(accountRepository);
         adminRepository.addAdmin(ADMIN);
-        accountRepository.addAccount(ADMIN);
 
         // Setup assemblers
         HTTPExceptionResponseAssembler httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(
@@ -174,8 +173,7 @@ public class EvulutionMain {
         CustomerFactory customerFactory = new CustomerFactory();
         CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
         AccountValidator accountValidator = new AccountValidator(accountRepository);
-        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, accountValidator,
-                accountRepository);
+        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, accountValidator);
 
         return new CustomerResourceImpl(customerService, httpExceptionResponseAssembler, constraintsValidator);
 

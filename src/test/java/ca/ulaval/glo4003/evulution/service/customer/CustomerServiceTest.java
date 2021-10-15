@@ -30,9 +30,6 @@ public class CustomerServiceTest {
     private CustomerRepository customerRepository;
 
     @Mock
-    private AccountRepository accountRepository;
-
-    @Mock
     private CustomerAssembler customerAssembler;
 
     @Mock
@@ -43,8 +40,7 @@ public class CustomerServiceTest {
     @BeforeEach
     public void setUp() {
         customerDto.email = AN_EMAIL;
-        customerService = new CustomerService(customerRepository, customerAssembler, accountValidator,
-                accountRepository);
+        customerService = new CustomerService(customerRepository, customerAssembler, accountValidator);
     }
 
     @Test

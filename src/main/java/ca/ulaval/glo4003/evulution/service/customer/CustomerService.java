@@ -11,20 +11,17 @@ public class CustomerService {
     private CustomerRepository customerRepository;
     private CustomerAssembler customerAssembler;
     private AccountValidator accountValidator;
-    private AccountRepository accountRepository;
 
     public CustomerService(CustomerRepository customerRepository, CustomerAssembler customerAssembler,
-            AccountValidator accountValidator, AccountRepository accountRepository) {
+            AccountValidator accountValidator) {
         this.customerRepository = customerRepository;
         this.customerAssembler = customerAssembler;
         this.accountValidator = accountValidator;
-        this.accountRepository = accountRepository;
     }
 
     public void addCustomer(CustomerDto customerDto) {
         Customer customer = this.customerAssembler.DtoToCustomer(customerDto);
         this.accountValidator.validateEmailIsNotInUse(customerDto.email);
         this.customerRepository.addCustomer(customer);
-        this.accountRepository.addAccount(customer);
     }
 }
