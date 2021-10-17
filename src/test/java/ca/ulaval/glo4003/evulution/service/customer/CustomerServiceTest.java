@@ -3,10 +3,9 @@ package ca.ulaval.glo4003.evulution.service.customer;
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
-import ca.ulaval.glo4003.evulution.domain.customer.Customer;
-import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
-import ca.ulaval.glo4003.evulution.domain.customer.AccountValidator;
-import ca.ulaval.glo4003.evulution.domain.customer.exception.CustomerAlreadyExistsException;
+import ca.ulaval.glo4003.evulution.domain.account.customer.AccountValidator;
+import ca.ulaval.glo4003.evulution.domain.account.customer.Customer;
+import ca.ulaval.glo4003.evulution.domain.account.exceptions.CustomerAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,7 @@ public class CustomerServiceTest {
     private CustomerDto customerDto;
 
     @Mock
-    private CustomerRepository customerRepository;
+    private AccountRepository accountRepository;
 
     @Mock
     private CustomerAssembler customerAssembler;
@@ -40,11 +39,11 @@ public class CustomerServiceTest {
     @BeforeEach
     public void setUp() {
         customerDto.email = AN_EMAIL;
-        customerService = new CustomerService(customerRepository, customerAssembler, accountValidator);
+        customerService = new CustomerService(accountRepository, customerAssembler, accountValidator);
     }
 
     @Test
-    public void givenAnAccountDto_whenAddCustomer_shouldCustomerRepositoryAddsTheAccount()
+    public void givenAnAccountDto_whenAddCustomer_shouldAddAccountToRepository()
             throws CustomerAlreadyExistsException, InvalidDateFormatException {
         // given
         BDDMockito.given(customerAssembler.DtoToCustomer(customerDto)).willReturn(customer);
@@ -53,7 +52,7 @@ public class CustomerServiceTest {
         this.customerService.addCustomer(customerDto);
 
         // then
-        Mockito.verify(customerRepository).addCustomer(customer);
+        Mockito.verify(accountRepository).addAccount(customer);
     }
 
     @Test

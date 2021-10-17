@@ -4,7 +4,7 @@ import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
-import ca.ulaval.glo4003.evulution.infrastructure.sale.exception.SaleNotFoundFromDeliveryIdException;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundFromDeliveryIdException;
 
 import java.util.HashMap;
 

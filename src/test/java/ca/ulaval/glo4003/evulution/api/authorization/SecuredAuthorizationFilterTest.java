@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.evulution.api.authorization;
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
-import ca.ulaval.glo4003.evulution.domain.token.exception.UnauthorizedRequestException;
+import ca.ulaval.glo4003.evulution.domain.token.exceptions.UnauthorizedRequestException;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;

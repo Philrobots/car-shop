@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.evulution.domain.car;
 
-import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
-
 public class Car {
     private String name;
     private String style;

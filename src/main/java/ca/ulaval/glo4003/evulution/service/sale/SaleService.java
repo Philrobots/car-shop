@@ -6,10 +6,9 @@ import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
-import ca.ulaval.glo4003.evulution.domain.customer.Customer;
-import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceRepository;
 import ca.ulaval.glo4003.evulution.domain.sale.*;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
@@ -19,7 +18,7 @@ import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
 public class SaleService {
     private SaleRepository saleRepository;
     private TokenRepository tokenRepository;
-    private CustomerRepository customerRepository;
+    private InvoiceRepository invoiceRepository;
     private TokenAssembler tokenAssembler;
     private TransactionIdAssembler transactionIdAssembler;
     private TransactionIdFactory transactionIdFactory;
@@ -31,15 +30,14 @@ public class SaleService {
     private AssemblyLineService assemblyLineService;
 
     public SaleService(SaleRepository saleRepository, TokenRepository tokenRepository,
-            CustomerRepository customerRepository, TokenAssembler tokenAssembler,
+            InvoiceRepository invoiceRepository, TokenAssembler tokenAssembler,
             TransactionIdAssembler transactionIdAssembler, SaleFactory saleFactory,
             TransactionIdFactory transactionIdFactory, CarFactory carFactory, BatteryFactory batteryFactory,
             InvoiceFactory invoiceFactory, EstimatedRangeAssembler estimatedRangeAssembler,
             AssemblyLineService assemblyLineService) {
-
         this.saleRepository = saleRepository;
         this.tokenRepository = tokenRepository;
-        this.customerRepository = customerRepository;
+        this.invoiceRepository = invoiceRepository;
         this.tokenAssembler = tokenAssembler;
         this.transactionIdAssembler = transactionIdAssembler;
         this.saleFactory = saleFactory;
@@ -56,7 +54,7 @@ public class SaleService {
         String email = tokenRepository.getEmail(token);
         Sale sale = saleFactory.create(email);
         saleRepository.registerSale(sale);
-        return transactionIdAssembler.transactionIdToDto(sale.getTransactionId(), sale.getDelivery().getDeliveryId());
+        return transactionIdAssembler.transactionIdToDto(sale.getTransactionId(), sale.getDeliveryId());
     }
 
     public void chooseVehicle(int transactionIdInt, ChooseVehicleDto chooseVehicleDto) {
@@ -79,10 +77,10 @@ public class SaleService {
         TransactionId transactionId = this.transactionIdFactory.createFromInt(transactionIdInt);
         Sale sale = this.saleRepository.getSale(transactionId);
         sale.completeSale();
-        Customer customer = customerRepository.getCustomerByEmail(sale.getEmail());
+
         Invoice invoice = this.invoiceFactory.create(Integer.parseInt(invoiceDto.bank_no),
                 Integer.parseInt(invoiceDto.account_no), invoiceDto.frequency);
-        customer.setInvoice(invoice);
+        this.invoiceRepository.addInvoice(transactionId, invoice);
         this.assemblyLineService.completeVehicleCommand(sale);
     }
 }

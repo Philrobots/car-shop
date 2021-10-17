@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.infrastructure.token;
 
 import ca.ulaval.glo4003.evulution.domain.token.Token;
-import ca.ulaval.glo4003.evulution.domain.token.exception.UnauthorizedRequestException;
+import ca.ulaval.glo4003.evulution.domain.token.exceptions.UnauthorizedRequestException;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
 
 import java.util.HashMap;
@@ -21,5 +21,4 @@ public class TokenRepositoryInMemory implements TokenRepository {
         if (!tokens.containsKey(token))
             throw new UnauthorizedRequestException();
     }
-
 }

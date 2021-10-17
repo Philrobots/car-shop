@@ -4,7 +4,7 @@ import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
-import ca.ulaval.glo4003.evulution.domain.exception.GenericException;
+import ca.ulaval.glo4003.evulution.domain.exceptions.GenericException;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

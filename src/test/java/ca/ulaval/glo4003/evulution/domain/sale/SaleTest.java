@@ -3,10 +3,8 @@ package ca.ulaval.glo4003.evulution.domain.sale;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.CarNotChosenBeforeBatteryException;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.MissingElementsForSaleException;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.SaleCompleteException;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.SaleNotCompletedException;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,12 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class SaleTest {
     private static final String AN_EMAIL = "email@email.com";
-    private static final String DELIVERY_MODE = "At campus";
-    private static final String DELIVERY_LOCATION = "Vachon";
     private static final Integer EFFICIENCY_EQUIVALENCE_RATE = 100;
 
     @Mock
     private TransactionId transactionId;
+
+    @Mock
+    private DeliveryId deliveryId;
 
     @Mock
     private Delivery delivery;
@@ -41,7 +40,7 @@ public class SaleTest {
 
     @BeforeEach
     public void setUp() {
-        this.sale = new Sale(AN_EMAIL, transactionId, delivery);
+        this.sale = new Sale(AN_EMAIL, transactionId, deliveryId);
     }
 
     @Test
@@ -99,8 +98,22 @@ public class SaleTest {
     }
 
     @Test
-    public void givenSaleNotComplete_whenchooseDelivery_thenThrowSaleNotCompletedException() {
-        assertThrows(SaleNotCompletedException.class, () -> this.sale.chooseDelivery(DELIVERY_MODE, DELIVERY_LOCATION));
+    public void givenSaleAlreadyCompleted_whenCompleteSale_thenThrowSaleAlreadyCompleteException() {
+        // given
+        sale.chooseCar(car);
+        sale.chooseBattery(battery);
+        sale.completeSale();
+
+        // when
+        Executable completeSale = () -> sale.completeSale();
+
+        // then
+        assertThrows(SaleAlreadyCompleteException.class, completeSale);
+    }
+
+    @Test
+    public void givenSaleNotComplete_whenChooseDelivery_thenThrowSaleNotCompletedException() {
+        assertThrows(SaleNotCompletedException.class, () -> this.sale.chooseDelivery(delivery));
     }
 
     @Test

@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseVehicleDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.EstimatedRangeDto;
 import ca.ulaval.glo4003.evulution.api.sale.dto.InvoiceDto;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
-import ca.ulaval.glo4003.evulution.domain.exception.GenericException;
+import ca.ulaval.glo4003.evulution.domain.exceptions.GenericException;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;

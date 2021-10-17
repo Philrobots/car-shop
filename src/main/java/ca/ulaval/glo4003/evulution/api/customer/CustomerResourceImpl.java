@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.evulution.api.customer;
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
-import ca.ulaval.glo4003.evulution.domain.exception.GenericException;
+import ca.ulaval.glo4003.evulution.domain.exceptions.GenericException;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import jakarta.ws.rs.core.Response;
 
