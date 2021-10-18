@@ -25,6 +25,7 @@ public class HTTPExceptionMapper {
             "an existing customer already exists");
     private static HTTPExceptionMapping unableToLogin = new HTTPExceptionMapping(400, "Unable to login");
     private static HTTPExceptionMapping unauthorized = new HTTPExceptionMapping(401, "Unauthorized");
+    private static HTTPExceptionMapping notFound = new HTTPExceptionMapping(404, "Not found");
 
     private static HashMap<Class, HTTPExceptionMapping> map = new HashMap() {
         {
@@ -34,7 +35,7 @@ public class HTTPExceptionMapper {
             put(InvalidDateFormatException.class, badInputParameter);
             put(BadInputParameterException.class, badInputParameter);
             put(InvalidInvoiceException.class, badInputParameter);
-            put(UnauthorizedRequestException.class, unauthorized);
+            put(UnauthorizedRequestException.class, notFound);
             put(BadDeliveryModeException.class, badInputParameter);
             put(BadDeliveryLocationException.class, badInputParameter);
             put(SaleNotFoundFromDeliveryIdException.class, unauthorized);

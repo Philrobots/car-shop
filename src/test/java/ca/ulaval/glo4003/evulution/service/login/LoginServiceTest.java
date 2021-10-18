@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.service.login;
 
 import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
+import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
@@ -40,7 +41,7 @@ public class LoginServiceTest {
     private TokenAssembler tokenAssembler;
 
     @Mock
-    private CustomerRepository customerRepository;
+    private AccountRepository accountRepository;
 
     @Mock
     private LoginDto loginDto;
@@ -56,10 +57,10 @@ public class LoginServiceTest {
     @BeforeEach
     public void setUp() {
         loginDto.email = A_STRING_EMAIL;
-        BDDMockito.given(customerRepository.getAccountByEmail(A_STRING_EMAIL)).willReturn(customer);
+        BDDMockito.given(accountRepository.getAccountByEmail(A_STRING_EMAIL)).willReturn(customer);
         BDDMockito.given(tokenAssembler.tokenToDto(token)).willReturn(tokenDto);
         BDDMockito.given(tokenFactory.generateNewToken()).willReturn(token);
-        loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, customerRepository,
+        loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, accountRepository,
                 loginValidator);
     }
 
@@ -70,7 +71,7 @@ public class LoginServiceTest {
         loginService.loginCustomer(loginDto);
 
         // then
-        Mockito.verify(customerRepository).getAccountByEmail(A_STRING_EMAIL);
+        Mockito.verify(accountRepository).getAccountByEmail(A_STRING_EMAIL);
     }
 
     @Test

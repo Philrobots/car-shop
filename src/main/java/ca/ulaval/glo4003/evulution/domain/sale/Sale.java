@@ -46,6 +46,10 @@ public class Sale {
         this.car = car;
     }
 
+    public Car getCar() {
+        return this.car;
+    }
+
     public void chooseBattery(Battery battery) {
         if (car == null)
             throw new CarNotChosenBeforeBatteryException();
@@ -68,5 +72,9 @@ public class Sale {
 
     public Integer getBatteryAutonomy() {
         return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
+    }
+
+    public Battery getBattery() {
+        return this.battery;
     }
 }

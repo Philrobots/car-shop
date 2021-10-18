@@ -1,6 +1,9 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
+import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;
@@ -15,11 +18,14 @@ import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
+import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
+import ca.ulaval.glo4003.evulution.domain.admin.Admin;
+import ca.ulaval.glo4003.evulution.domain.admin.AdminRepository;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
-import ca.ulaval.glo4003.evulution.domain.customer.CustomerValidator;
+import ca.ulaval.glo4003.evulution.domain.customer.AccountValidator;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
@@ -29,10 +35,13 @@ import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionIdFactory;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.http.CORSResponseFilter;
+import ca.ulaval.glo4003.evulution.infrastructure.account.AccountRepositoryInMemory;
+import ca.ulaval.glo4003.evulution.infrastructure.admin.AdminRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.SaleRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.token.TokenRepositoryInMemory;
+import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
@@ -50,16 +59,28 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RESTApi setup without using DI or spring
  */
 @SuppressWarnings("all")
 public class EvulutionMain {
+    public static final String ENV_WEEK_TO_SECONDS_KEY = "EQUIVALENCE_OF_ONE_WEEK_IN_SECONDS";
     public static final String BASE_URI = "http://localhost:8080/";
-    public static final String DATE_REGEX = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+    public static String ADMIN_EMAIL = "catherineleuf@evul.ulaval.ca";
+    public static String ADMIN_PASSWORD = "RoulezVert2021!";
+    public static Admin ADMIN = new Admin(ADMIN_EMAIL, ADMIN_PASSWORD);
+
+    public static int equivalenceOfOneWeekInSeconds = 1;
 
     public static void main(String[] args) throws Exception {
+        // Load env
+        Map<String, String> env = System.getenv();
+        String envVariable = env.get(ENV_WEEK_TO_SECONDS_KEY);
+        if (env.get(ENV_WEEK_TO_SECONDS_KEY) != null) {
+            equivalenceOfOneWeekInSeconds = Integer.parseInt(envVariable);
+        }
         // add to delivery factory in corresponding PR
         List<String> deliveryLocationNameStrings = JsonFileMapper.parseDeliveryLocations();
         // Setup exception mapping
@@ -67,9 +88,12 @@ public class EvulutionMain {
         ConstraintsValidator constraintsValidator = new ConstraintsValidator();
 
         // Setup repositories
-        CustomerRepository customerRepository = new CustomerRepositoryInMemory();
+        AccountRepository accountRepository = new AccountRepositoryInMemory();
+        CustomerRepository customerRepository = new CustomerRepositoryInMemory(accountRepository);
         TokenRepository tokenRepository = new TokenRepositoryInMemory();
         SaleRepository saleRepository = new SaleRepositoryInMemory();
+        AdminRepository adminRepository = new AdminRepositoryInMemory(accountRepository);
+        adminRepository.addAdmin(ADMIN);
 
         // Setup assemblers
         HTTPExceptionResponseAssembler httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(
@@ -81,8 +105,8 @@ public class EvulutionMain {
 
         // Setup resources (API)
         CustomerResource customerResource = createAccountResource(customerRepository, httpExceptionResponseAssembler,
-                constraintsValidator);
-        LoginResource loginResource = createLoginResource(customerRepository, tokenRepository, tokenAssembler,
+                constraintsValidator, accountRepository);
+        LoginResource loginResource = createLoginResource(accountRepository, tokenRepository, tokenAssembler,
                 httpExceptionResponseAssembler, constraintsValidator);
         SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, customerRepository,
                 tokenAssembler, tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator,
@@ -153,22 +177,23 @@ public class EvulutionMain {
     }
 
     private static CustomerResource createAccountResource(CustomerRepository customerRepository,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
+            AccountRepository accountRepository) {
         CustomerFactory customerFactory = new CustomerFactory();
         CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
-        CustomerValidator customerValidator = new CustomerValidator(customerRepository);
-        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, customerValidator);
+        AccountValidator accountValidator = new AccountValidator(accountRepository);
+        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, accountValidator);
 
         return new CustomerResourceImpl(customerService, httpExceptionResponseAssembler, constraintsValidator);
 
     }
 
-    private static LoginResource createLoginResource(CustomerRepository customerRepository,
+    private static LoginResource createLoginResource(AccountRepository accountRepository,
             TokenRepository tokenRepository, TokenAssembler tokenAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator) {
         TokenFactory tokenFactory = new TokenFactory();
         LoginValidator loginValidator = new LoginValidator();
-        LoginService loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, customerRepository,
+        LoginService loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, accountRepository,
                 loginValidator);
 
         return new LoginResourceImpl(loginService, httpExceptionResponseAssembler, constraintsValidator);
@@ -187,9 +212,24 @@ public class EvulutionMain {
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
+        VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
+                new BasicVehicleAssemblyLine(), JsonFileMapper.parseModels());
+
+        BasicBatteryAssemblyLine basicBatteryAssemblyLine = new BasicBatteryAssemblyLine();
+        BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(basicBatteryAssemblyLine,
+                JsonFileMapper.parseBatteries());
+        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade,
+                equivalenceOfOneWeekInSeconds);
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade,
+                equivalenceOfOneWeekInSeconds);
+
+        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds);
+        AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
+                completeCarAssemblyLine);
+
         SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
-                estimatedRangeAssembler);
+                estimatedRangeAssembler, assemblyLineService);
 
         return new SaleResourceImpl(saleService, tokenDtoAssembler, httpExceptionResponseAssembler,
                 constraintsValidator);

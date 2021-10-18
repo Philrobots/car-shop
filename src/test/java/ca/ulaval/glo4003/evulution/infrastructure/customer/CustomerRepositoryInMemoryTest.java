@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.infrastructure.customer;
 
+import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
 import ca.ulaval.glo4003.evulution.domain.customer.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,11 +18,14 @@ public class CustomerRepositoryInMemoryTest {
     @Mock
     private Customer customer;
 
+    @Mock
+    private AccountRepository accountRepository;
+
     private CustomerRepositoryInMemory customerRepositoryInMemory;
 
     @BeforeEach
     public void setUp() {
-        customerRepositoryInMemory = new CustomerRepositoryInMemory();
+        customerRepositoryInMemory = new CustomerRepositoryInMemory(accountRepository);
     }
 
     @Test
@@ -30,10 +34,10 @@ public class CustomerRepositoryInMemoryTest {
         BDDMockito.given(this.customer.getEmail()).willReturn(AN_EMAIL);
 
         // when
-        this.customerRepositoryInMemory.addAccount(this.customer);
+        this.customerRepositoryInMemory.addCustomer(this.customer);
 
         // then
-        Customer customer = this.customerRepositoryInMemory.getAccountByEmail(AN_EMAIL);
+        Customer customer = this.customerRepositoryInMemory.getCustomerByEmail(AN_EMAIL);
         assertEquals(customer, this.customer);
     }
 }
