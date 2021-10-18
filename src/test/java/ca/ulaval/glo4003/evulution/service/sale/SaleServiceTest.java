@@ -411,7 +411,7 @@ public class SaleServiceTest {
         saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
 
         // then
-        Mockito.verify(invoiceRepository).addInvoice(transactionId, invoice);
+        Mockito.verify(invoiceRepository).addInvoice(sale.getEmail(), invoice);
     }
 
     @Test

@@ -79,14 +79,11 @@ public class AssemblyLineServiceTest {
 
     @Test
     public void givenAnSale_whenCompleteVehicleCommand_thenShouldCompleteTheVehicleCommand() {
-        // given
-        BDDMockito.given(sale.getDelivery()).willReturn(delivery);
-
         // when
         assemblyLineService.completeVehicleCommand(sale);
 
         // then
-        Mockito.verify(completeCarAssemblyLine).completeCarCommand(delivery);
+        Mockito.verify(completeCarAssemblyLine).completeCarCommand(sale);
     }
 
 }

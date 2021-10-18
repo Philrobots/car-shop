@@ -32,4 +32,13 @@ class BatteryTest {
         // then
         assertEquals(400, range);
     }
+
+    @Test
+    public void whenGetToProduceAsInt_shouldReturnProductionTimeAsInteger() {
+        // when
+        Integer productionTime = battery.getTimeToProduceAsInt();
+
+        // then
+        assertEquals(3, productionTime);
+    }
 }

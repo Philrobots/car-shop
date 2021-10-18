@@ -2,18 +2,22 @@ package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
+import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
+import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-
 @ExtendWith(MockitoExtension.class)
 class CompleteCarAssemblyLineTest {
     private static final int ZERO_SECONDS = 0;
+
+    @Mock
+    private EmailSender emailSender;
+
+    @Mock
+    private EmailFactory emailFactory;
 
     private CompleteCarAssemblyLine completeCarAssemblyLine;
 
@@ -22,17 +26,8 @@ class CompleteCarAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-        completeCarAssemblyLine = new CompleteCarAssemblyLine(ZERO_SECONDS);
+        completeCarAssemblyLine = new CompleteCarAssemblyLine(ZERO_SECONDS, emailFactory, emailSender);
 
-    }
-
-    @Test
-    public void whenCompleteCarCommand_thenDeliveryIsDeliveredToCampus() {
-        // when
-        completeCarAssemblyLine.completeCarCommand(delivery);
-
-        // verify
-        verify(delivery).deliverToCampus();
     }
 
 }

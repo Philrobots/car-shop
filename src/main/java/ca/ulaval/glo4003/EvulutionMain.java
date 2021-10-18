@@ -26,6 +26,8 @@ import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
+import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
+import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceRepository;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
@@ -35,6 +37,7 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionIdFactory;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.http.CORSResponseFilter;
 import ca.ulaval.glo4003.evulution.infrastructure.account.AccountRepositoryInMemory;
+import ca.ulaval.glo4003.evulution.infrastructure.email.EmailSenderImpl;
 import ca.ulaval.glo4003.evulution.infrastructure.invoice.InvoiceRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.SaleRepositoryInMemory;
@@ -67,6 +70,10 @@ public class EvulutionMain {
     public static final String BASE_URI = "http://localhost:8080/";
     public static String MANAGER_EMAIL = "catherineleuf@evul.ulaval.ca";
     public static String MANAGER_PASSWORD = "RoulezVert2021!";
+
+    private static final String EMAIL = "evulution.equipe6@gmail.com";
+    private static final String EMAIL_PASSWORD = "architecture6";
+
     public static Manager Manager = new Manager(MANAGER_EMAIL, MANAGER_PASSWORD);
 
     public static int equivalenceOfOneWeekInSeconds = 1;
@@ -84,6 +91,7 @@ public class EvulutionMain {
         ConstraintsValidator constraintsValidator = new ConstraintsValidator();
 
         // Setup repositories
+        EmailSender emailSender = new EmailSenderImpl(EMAIL, EMAIL_PASSWORD);
         InvoiceRepository invoiceRepository = new InvoiceRepositoryInMemory();
         AccountRepository accountRepository = new AccountRepositoryInMemory();
         TokenRepository tokenRepository = new TokenRepositoryInMemory();
@@ -106,7 +114,7 @@ public class EvulutionMain {
                 httpExceptionResponseAssembler, constraintsValidator);
         SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, invoiceRepository,
                 tokenAssembler, tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator,
-                transactionIdFactory);
+                transactionIdFactory, emailSender);
         DeliveryResource deliveryResource = createDeliveryResource(constraintsValidator, httpExceptionResponseAssembler,
                 saleRepository, deliveryIdFactory, deliveryFactory);
 
@@ -197,13 +205,14 @@ public class EvulutionMain {
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
             InvoiceRepository invoiceRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
-            TransactionIdFactory transactionIdFactory) {
+            TransactionIdFactory transactionIdFactory, EmailSender emailSender) {
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
         DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory, deliveryIdFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
+        EmailFactory emailFactory = new EmailFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
                 new BasicVehicleAssemblyLine(), JsonFileMapper.parseModels());
@@ -216,7 +225,8 @@ public class EvulutionMain {
         VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade,
                 equivalenceOfOneWeekInSeconds);
 
-        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds);
+        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds,
+                emailFactory, emailSender);
         AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
                 completeCarAssemblyLine);
 

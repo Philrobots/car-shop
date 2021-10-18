@@ -29,4 +29,8 @@ public class Battery {
     public void setBatteryAsAssembled() {
         isAssembled = true;
     }
+
+    public int getTimeToProduceAsInt() {
+        return Integer.parseInt(timeToProduce);
+    }
 }

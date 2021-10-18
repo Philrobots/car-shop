@@ -4,10 +4,15 @@ import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.*;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleCompleteException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleNotCompletedException;
+
+import java.time.LocalDate;
 
 public class Sale {
-
+    private static final int assemblyTimeInWeek = 1;
     private String email;
     private TransactionId transactionId;
     private DeliveryId deliveryId;
@@ -15,6 +20,7 @@ public class Sale {
     private Car car;
     private Battery battery;
     private Boolean isSaleCompleted = false;
+    private LocalDate expectedDeliveryDate;
 
     public Sale(String email, TransactionId transactionId, DeliveryId deliveryId) {
         this.email = email;
@@ -46,6 +52,10 @@ public class Sale {
         return this.battery;
     }
 
+    public void setSaleAsCompleted() {
+        this.isSaleCompleted = true;
+    }
+
     public void chooseCar(Car car) {
         if (isSaleCompleted)
             throw new SaleCompleteException();
@@ -64,9 +74,13 @@ public class Sale {
         if (car == null || battery == null)
             throw new MissingElementsForSaleException();
         else if (isSaleCompleted) {
-            throw new SaleAlreadyCompleteException();
+            throw new SaleCompleteException();
         }
-        isSaleCompleted = true;
+
+        this.setSaleAsCompleted();
+        int expectedProductionTimeInWeeks = this.car.getTimeToProduceAsInt() + this.battery.getTimeToProduceAsInt()
+                + getAssemblyTimeInWeek();
+        this.expectedDeliveryDate = LocalDate.now().plusWeeks(expectedProductionTimeInWeeks);
     }
 
     public void chooseDelivery(Delivery delivery) {
@@ -77,5 +91,14 @@ public class Sale {
 
     public Integer getBatteryAutonomy() {
         return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
+    }
+
+    public int getAssemblyTimeInWeek() {
+        return assemblyTimeInWeek;
+    }
+
+    public LocalDate addDelayInWeeks(int weeks) {
+        this.expectedDeliveryDate = this.expectedDeliveryDate.plusWeeks(weeks);
+        return this.expectedDeliveryDate;
     }
 }

@@ -31,4 +31,8 @@ public class Car {
         isAssembled = true;
     }
 
+    public int getTimeToProduceAsInt() {
+        return Integer.parseInt(timeToProduce);
+    }
+
 }

@@ -80,7 +80,7 @@ public class SaleService {
 
         Invoice invoice = this.invoiceFactory.create(Integer.parseInt(invoiceDto.bank_no),
                 Integer.parseInt(invoiceDto.account_no), invoiceDto.frequency);
-        this.invoiceRepository.addInvoice(transactionId, invoice);
+        this.invoiceRepository.addInvoice(sale.getEmail(), invoice);
         this.assemblyLineService.completeVehicleCommand(sale);
     }
 }

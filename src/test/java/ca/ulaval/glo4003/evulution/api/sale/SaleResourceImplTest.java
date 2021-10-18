@@ -24,10 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleResourceImplTest {
-    private final int A_TRANSACTION_ID = 2;
     private static final Integer BAD_INPUT_PARAMETERS_ERROR_CODE = 400;
     private static final String BAD_INPUT_PARAMETERS_ERROR_MESSAGE = "bad input parameter";
-
+    private final int A_TRANSACTION_ID = 2;
     private SaleResourceImpl saleResourceImpl;
     private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 

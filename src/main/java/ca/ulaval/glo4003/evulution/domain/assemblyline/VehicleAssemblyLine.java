@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.VehicleAssemblyException;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
@@ -34,6 +35,7 @@ public class VehicleAssemblyLine {
             }
             car.setCarAsAssembled();
         } catch (InterruptedException e) {
+            throw new VehicleAssemblyException();
         }
     }
 }

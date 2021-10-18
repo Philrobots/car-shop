@@ -4,7 +4,10 @@ import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.*;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleCompleteException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleNotCompletedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,9 +49,7 @@ public class SaleTest {
     @Test
     public void givenCompleteSale_whenChooseCar_thenThrowSaleCompleteException() {
         // given
-        sale.chooseCar(car);
-        sale.chooseBattery(battery);
-        sale.completeSale();
+        sale.setSaleAsCompleted();
 
         // when
         Executable chooseCar = () -> sale.chooseCar(car);
@@ -61,8 +62,7 @@ public class SaleTest {
     public void givenCompleteSale_whenChooseBattery_thenThrowSaleCompleteException() {
         // given
         sale.chooseCar(car);
-        sale.chooseBattery(battery);
-        sale.completeSale();
+        sale.setSaleAsCompleted();
 
         // when
         Executable chooseBattery = () -> sale.chooseBattery(battery);
@@ -98,17 +98,17 @@ public class SaleTest {
     }
 
     @Test
-    public void givenSaleAlreadyCompleted_whenCompleteSale_thenThrowSaleAlreadyCompleteException() {
+    public void givenSaleAlreadyCompleted_whenCompleteSale_thenThrowSaleCompleteException() {
         // given
         sale.chooseCar(car);
         sale.chooseBattery(battery);
-        sale.completeSale();
+        sale.setSaleAsCompleted();
 
         // when
         Executable completeSale = () -> sale.completeSale();
 
         // then
-        assertThrows(SaleAlreadyCompleteException.class, completeSale);
+        assertThrows(SaleCompleteException.class, completeSale);
     }
 
     @Test
@@ -129,4 +129,5 @@ public class SaleTest {
         // then
         Mockito.verify(battery).calculateEstimatedRange(EFFICIENCY_EQUIVALENCE_RATE);
     }
+
 }
