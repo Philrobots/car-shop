@@ -20,7 +20,8 @@ public class DeliveryService {
     public void chooseDeliveryLocation(int deliveryIdInt, DeliveryLocationDto deliveryLocationDto) {
         DeliveryId deliveryId = this.deliveryIdFactory.createFromInt(deliveryIdInt);
         Sale sale = this.saleRepository.getSaleFromDeliveryId(deliveryId);
-        DeliveryDetails deliveryDetails = deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location);
+        DeliveryDetails deliveryDetails = deliveryDetailsFactory.create(deliveryLocationDto.mode,
+                deliveryLocationDto.location);
         sale.setDeliveryDetails(deliveryDetails);
     }
 }

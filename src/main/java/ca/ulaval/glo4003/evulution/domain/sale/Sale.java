@@ -76,7 +76,7 @@ public class Sale {
         }
 
         this.setSaleAsCompleted();
-        this.delivery.setDeliveryDate(this.car.getTimeToProduceAsInt(), this.battery.getTimeToProduceAsInt());
+        this.delivery.calculateDeliveryDate(this.car.getTimeToProduceAsInt(), this.battery.getTimeToProduceAsInt());
     }
 
     public Integer getBatteryAutonomy() {
@@ -87,7 +87,7 @@ public class Sale {
         return this.delivery.addDelayInWeeks(weeks);
     }
 
-    public void setDeliveryDetails(DeliveryDetails deliveryDetails){
+    public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
         if (!isSaleCompleted)
             throw new SaleNotCompletedException();
         this.delivery.setDeliveryDetails(deliveryDetails);

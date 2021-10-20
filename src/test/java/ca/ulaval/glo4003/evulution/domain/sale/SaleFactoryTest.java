@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +46,7 @@ public class SaleFactoryTest {
     }
 
     @Test
-    public void whenCreate_thenDeliveryIdFactoryIsCalled() {
+    public void whenCreate_thenDeliveryFactoryIsCalled() {
         // when
         saleFactory.create(AN_EMAIL);
 

@@ -101,7 +101,8 @@ public class EvulutionMain {
         TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
         DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
         DeliveryFactory deliveryFactory = new DeliveryFactory(ASSEMBLY_TIME_IN_WEEKS, deliveryIdFactory);
-        DeliveryDetailsFactory deliveryDetailsFactory = new DeliveryDetailsFactory(JsonFileMapper.parseDeliveryLocations());
+        DeliveryDetailsFactory deliveryDetailsFactory = new DeliveryDetailsFactory(
+                JsonFileMapper.parseDeliveryLocations());
         accountRepository.addAccount(Manager);
 
         // Setup assemblers
@@ -208,7 +209,7 @@ public class EvulutionMain {
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
             InvoiceRepository invoiceRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
-            TransactionIdFactory transactionIdFactory, EmailSender emailSender,DeliveryFactory deliveryFactory) {
+            TransactionIdFactory transactionIdFactory, EmailSender emailSender, DeliveryFactory deliveryFactory) {
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory, deliveryFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
@@ -243,7 +244,8 @@ public class EvulutionMain {
     private static DeliveryResource createDeliveryResource(ConstraintsValidator constraintsValidator,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, SaleRepository saleRepository,
             DeliveryIdFactory deliveryIdFactory, DeliveryDetailsFactory deliveryDetailsFactory) {
-        DeliveryService deliveryService = new DeliveryService(deliveryIdFactory, deliveryDetailsFactory, saleRepository);
+        DeliveryService deliveryService = new DeliveryService(deliveryIdFactory, deliveryDetailsFactory,
+                saleRepository);
 
         return new DeliveryResourceImpl(deliveryService, constraintsValidator, httpExceptionResponseAssembler);
     }

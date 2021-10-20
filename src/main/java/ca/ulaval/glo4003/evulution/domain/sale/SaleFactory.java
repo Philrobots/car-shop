@@ -9,8 +9,7 @@ public class SaleFactory {
     private final TransactionIdFactory transactionIdFactory;
     private final DeliveryFactory deliveryFactory;
 
-    public SaleFactory(TransactionIdFactory transactionIdFactory,
-            DeliveryFactory deliveryFactory) {
+    public SaleFactory(TransactionIdFactory transactionIdFactory, DeliveryFactory deliveryFactory) {
         this.transactionIdFactory = transactionIdFactory;
         this.deliveryFactory = deliveryFactory;
     }
