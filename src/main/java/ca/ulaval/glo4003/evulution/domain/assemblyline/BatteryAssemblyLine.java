@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.BatteryAssemblyException;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
@@ -34,6 +35,7 @@ public class BatteryAssemblyLine {
             }
             battery.setBatteryAsAssembled();
         } catch (InterruptedException e) {
+            throw new BatteryAssemblyException();
         }
 
     }

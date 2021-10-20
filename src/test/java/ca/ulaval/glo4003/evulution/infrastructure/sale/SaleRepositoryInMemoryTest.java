@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.evulution.infrastructure.sale;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
-import ca.ulaval.glo4003.evulution.infrastructure.sale.exception.SaleNotFoundFromDeliveryIdException;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundFromDeliveryIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

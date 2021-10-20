@@ -1,36 +1,39 @@
 package ca.ulaval.glo4003.evulution.domain.delivery;
 
-import ca.ulaval.glo4003.evulution.domain.delivery.exception.BadDeliveryLocationException;
-import ca.ulaval.glo4003.evulution.domain.delivery.exception.BadDeliveryModeException;
-
-import java.util.List;
+import java.time.LocalDate;
 
 public class Delivery {
-    private String mode = null;
-    private String location = null;
-    private DeliveryId deliveryId;
-    private List<String> possibleDeliveryLocation;
+    private final Integer assemblyTimeInWeeks;
+    private final DeliveryId deliveryId;
+
     private boolean isAtCampus = false;
+    private DeliveryDetails deliveryDetails;
+    private LocalDate deliveryDate;
 
-    public Delivery(DeliveryId deliveryId, List<String> possibleDeliveryLocation) {
+    public Delivery(DeliveryId deliveryId, Integer assemblyTimeInWeeks) {
         this.deliveryId = deliveryId;
-        this.possibleDeliveryLocation = possibleDeliveryLocation;
-    }
-
-    public DeliveryId getDeliveryId() {
-        return deliveryId;
+        this.assemblyTimeInWeeks = assemblyTimeInWeeks;
     }
 
     public void deliverToCampus() {
         isAtCampus = true;
     }
 
-    public void chooseDeliveryLocation(String mode, String location) {
-        if (!mode.equals("At campus"))
-            throw new BadDeliveryModeException();
-        if (!possibleDeliveryLocation.contains(location))
-            throw new BadDeliveryLocationException();
-        this.mode = mode;
-        this.location = location;
+    public DeliveryId getDeliveryId() {
+        return deliveryId;
+    }
+
+    public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
+        this.deliveryDetails = deliveryDetails;
+    }
+
+    public LocalDate addDelayInWeeks(Integer weeks) {
+        this.deliveryDate = this.deliveryDate.plusWeeks(weeks);
+        return this.deliveryDate;
+    }
+
+    public void calculateDeliveryDate(Integer carTimeToProduce, Integer batteryTimeToProduce) {
+        int expectedProductionTimeInWeeks = carTimeToProduce + batteryTimeToProduce + this.assemblyTimeInWeeks;
+        this.deliveryDate = LocalDate.now().plusWeeks(expectedProductionTimeInWeeks);
     }
 }

@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
 import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
 import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
-import ca.ulaval.glo4003.evulution.domain.login.exception.NoAccountFoundException;
+import ca.ulaval.glo4003.evulution.domain.login.exceptions.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.service.login.LoginService;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;

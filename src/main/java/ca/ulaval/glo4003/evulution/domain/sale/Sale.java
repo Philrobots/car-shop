@@ -3,19 +3,21 @@ package ca.ulaval.glo4003.evulution.domain.sale;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetails;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.CarNotChosenBeforeBatteryException;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.MissingElementsForSaleException;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.SaleCompleteException;
-import ca.ulaval.glo4003.evulution.domain.sale.exception.SaleNotCompletedException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleCompleteException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleNotCompletedException;
+
+import java.time.LocalDate;
 
 public class Sale {
-
-    private String email;
-    private TransactionId transactionId;
+    private final String email;
+    private final TransactionId transactionId;
+    private final Delivery delivery;
     private Car car;
     private Battery battery;
-    private Delivery delivery;
     private Boolean isSaleCompleted = false;
 
     public Sale(String email, TransactionId transactionId, Delivery delivery) {
@@ -24,30 +26,38 @@ public class Sale {
         this.delivery = delivery;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public TransactionId getTransactionId() {
         return transactionId;
     }
 
-    public String getEmail() {
-        return email;
+    public DeliveryId getDeliveryId() {
+        return delivery.getDeliveryId();
     }
 
     public Delivery getDelivery() {
         return delivery;
     }
 
-    public DeliveryId getDeliveryId() {
-        return this.delivery.getDeliveryId();
+    public Car getCar() {
+        return this.car;
+    }
+
+    public Battery getBattery() {
+        return this.battery;
+    }
+
+    public void setSaleAsCompleted() {
+        this.isSaleCompleted = true;
     }
 
     public void chooseCar(Car car) {
         if (isSaleCompleted)
             throw new SaleCompleteException();
         this.car = car;
-    }
-
-    public Car getCar() {
-        return this.car;
     }
 
     public void chooseBattery(Battery battery) {
@@ -61,20 +71,29 @@ public class Sale {
     public void completeSale() {
         if (car == null || battery == null)
             throw new MissingElementsForSaleException();
-        isSaleCompleted = true;
-    }
+        else if (isSaleCompleted) {
+            throw new SaleCompleteException();
+        }
 
-    public void chooseDelivery(String mode, String location) {
-        if (!isSaleCompleted)
-            throw new SaleNotCompletedException();
-        this.delivery.chooseDeliveryLocation(mode, location);
+        this.setSaleAsCompleted();
+        this.delivery.calculateDeliveryDate(this.car.getTimeToProduceAsInt(), this.battery.getTimeToProduceAsInt());
     }
 
     public Integer getBatteryAutonomy() {
         return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
     }
 
-    public Battery getBattery() {
-        return this.battery;
+    public LocalDate addDelayInWeeks(int weeks) {
+        return this.delivery.addDelayInWeeks(weeks);
+    }
+
+    public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
+        if (!isSaleCompleted)
+            throw new SaleNotCompletedException();
+        this.delivery.setDeliveryDetails(deliveryDetails);
+    }
+
+    public void deliverToCampus() {
+        delivery.deliverToCampus();
     }
 }

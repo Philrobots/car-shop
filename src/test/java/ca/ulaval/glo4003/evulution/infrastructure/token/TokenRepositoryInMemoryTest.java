@@ -1,14 +1,15 @@
 package ca.ulaval.glo4003.evulution.infrastructure.token;
 
 import ca.ulaval.glo4003.evulution.domain.token.Token;
+import ca.ulaval.glo4003.evulution.domain.token.exceptions.UnauthorizedRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TokenRepositoryInMemoryTest {
@@ -37,4 +38,18 @@ public class TokenRepositoryInMemoryTest {
         assertEquals(email, AN_EMAIL);
     }
 
+    @Test
+    public void givenNoTokenForEmail_whenGetEmail_thenRepositoryDoesNotContainEmail() {
+        // then
+        assertNull(this.tokenRepositoryInMemory.getEmail(token));
+    }
+
+    @Test
+    public void givenNoToken_whenValidateToken_thenThrowUnauthorizedRequestException() {
+        // when
+        Executable valideToken = () -> tokenRepositoryInMemory.validateToken(token);
+
+        // then
+        assertThrows(UnauthorizedRequestException.class, valideToken);
+    }
 }

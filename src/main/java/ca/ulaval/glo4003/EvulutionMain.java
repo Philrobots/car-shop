@@ -1,9 +1,6 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
-import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;
@@ -18,17 +15,23 @@ import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
+import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
-import ca.ulaval.glo4003.evulution.domain.admin.Admin;
-import ca.ulaval.glo4003.evulution.domain.admin.AdminRepository;
+import ca.ulaval.glo4003.evulution.domain.account.customer.AccountValidator;
+import ca.ulaval.glo4003.evulution.domain.account.customer.CustomerFactory;
+import ca.ulaval.glo4003.evulution.domain.account.manager.Manager;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
-import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
-import ca.ulaval.glo4003.evulution.domain.customer.CustomerRepository;
-import ca.ulaval.glo4003.evulution.domain.customer.AccountValidator;
+import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetailsFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
+import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
+import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceRepository;
 import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
@@ -36,8 +39,8 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionIdFactory;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
 import ca.ulaval.glo4003.evulution.http.CORSResponseFilter;
 import ca.ulaval.glo4003.evulution.infrastructure.account.AccountRepositoryInMemory;
-import ca.ulaval.glo4003.evulution.infrastructure.admin.AdminRepositoryInMemory;
-import ca.ulaval.glo4003.evulution.infrastructure.customer.CustomerRepositoryInMemory;
+import ca.ulaval.glo4003.evulution.infrastructure.email.EmailSenderImpl;
+import ca.ulaval.glo4003.evulution.infrastructure.invoice.InvoiceRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.SaleRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.token.TokenRepositoryInMemory;
@@ -58,7 +61,6 @@ import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,9 +70,13 @@ import java.util.Map;
 public class EvulutionMain {
     public static final String ENV_WEEK_TO_SECONDS_KEY = "EQUIVALENCE_OF_ONE_WEEK_IN_SECONDS";
     public static final String BASE_URI = "http://localhost:8080/";
-    public static String ADMIN_EMAIL = "catherineleuf@evul.ulaval.ca";
-    public static String ADMIN_PASSWORD = "RoulezVert2021!";
-    public static Admin ADMIN = new Admin(ADMIN_EMAIL, ADMIN_PASSWORD);
+    public static final String MANAGER_EMAIL = "catherineleuf@evul.ulaval.ca";
+    public static final String MANAGER_PASSWORD = "RoulezVert2021!";
+    private static final String EMAIL = "evulution.equipe6@gmail.com";
+    private static final String EMAIL_PASSWORD = "architecture6";
+    private static final Integer ASSEMBLY_TIME_IN_WEEKS = 1;
+
+    public static Manager Manager = new Manager(MANAGER_EMAIL, MANAGER_PASSWORD);
 
     public static int equivalenceOfOneWeekInSeconds = 1;
 
@@ -81,38 +87,40 @@ public class EvulutionMain {
         if (env.get(ENV_WEEK_TO_SECONDS_KEY) != null) {
             equivalenceOfOneWeekInSeconds = Integer.parseInt(envVariable);
         }
-        // add to delivery factory in corresponding PR
-        List<String> deliveryLocationNameStrings = JsonFileMapper.parseDeliveryLocations();
+
         // Setup exception mapping
         HTTPExceptionMapper httpExceptionMapper = new HTTPExceptionMapper();
         ConstraintsValidator constraintsValidator = new ConstraintsValidator();
 
         // Setup repositories
+        EmailSender emailSender = new EmailSenderImpl(EMAIL, EMAIL_PASSWORD);
+        InvoiceRepository invoiceRepository = new InvoiceRepositoryInMemory();
         AccountRepository accountRepository = new AccountRepositoryInMemory();
-        CustomerRepository customerRepository = new CustomerRepositoryInMemory(accountRepository);
         TokenRepository tokenRepository = new TokenRepositoryInMemory();
         SaleRepository saleRepository = new SaleRepositoryInMemory();
-        AdminRepository adminRepository = new AdminRepositoryInMemory(accountRepository);
-        adminRepository.addAdmin(ADMIN);
+        TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
+        DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
+        DeliveryFactory deliveryFactory = new DeliveryFactory(ASSEMBLY_TIME_IN_WEEKS, deliveryIdFactory);
+        DeliveryDetailsFactory deliveryDetailsFactory = new DeliveryDetailsFactory(
+                JsonFileMapper.parseDeliveryLocations());
+        accountRepository.addAccount(Manager);
 
         // Setup assemblers
         HTTPExceptionResponseAssembler httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(
                 httpExceptionMapper);
         TokenAssembler tokenAssembler = new TokenAssembler();
         TokenDtoAssembler tokenDtoAssembler = new TokenDtoAssembler();
-        TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
-        DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
 
         // Setup resources (API)
-        CustomerResource customerResource = createAccountResource(customerRepository, httpExceptionResponseAssembler,
-                constraintsValidator, accountRepository);
+        CustomerResource customerResource = createAccountResource(httpExceptionResponseAssembler, constraintsValidator,
+                accountRepository);
         LoginResource loginResource = createLoginResource(accountRepository, tokenRepository, tokenAssembler,
                 httpExceptionResponseAssembler, constraintsValidator);
-        SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, customerRepository,
+        SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, invoiceRepository,
                 tokenAssembler, tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator,
-                transactionIdFactory);
+                transactionIdFactory, emailSender, deliveryFactory);
         DeliveryResource deliveryResource = createDeliveryResource(constraintsValidator, httpExceptionResponseAssembler,
-                saleRepository, deliveryIdFactory);
+                saleRepository, deliveryIdFactory, deliveryDetailsFactory);
 
         final AbstractBinder binder = new AbstractBinder() {
             @Override
@@ -176,13 +184,12 @@ public class EvulutionMain {
                 httpExceptionResponseAssembler);
     }
 
-    private static CustomerResource createAccountResource(CustomerRepository customerRepository,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
-            AccountRepository accountRepository) {
+    private static CustomerResource createAccountResource(HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
+            ConstraintsValidator constraintsValidator, AccountRepository accountRepository) {
         CustomerFactory customerFactory = new CustomerFactory();
         CustomerAssembler customerAssembler = new CustomerAssembler(customerFactory);
         AccountValidator accountValidator = new AccountValidator(accountRepository);
-        CustomerService customerService = new CustomerService(customerRepository, customerAssembler, accountValidator);
+        CustomerService customerService = new CustomerService(accountRepository, customerAssembler, accountValidator);
 
         return new CustomerResourceImpl(customerService, httpExceptionResponseAssembler, constraintsValidator);
 
@@ -200,17 +207,15 @@ public class EvulutionMain {
     }
 
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
-            CustomerRepository customerRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
+            InvoiceRepository invoiceRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
-            TransactionIdFactory transactionIdFactory) {
+            TransactionIdFactory transactionIdFactory, EmailSender emailSender, DeliveryFactory deliveryFactory) {
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
-        DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
-        DeliveryFactory deliveryFactory = new DeliveryFactory(deliveryIdFactory,
-                JsonFileMapper.parseDeliveryLocations());
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory, deliveryFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
+        EmailFactory emailFactory = new EmailFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
         VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
                 new BasicVehicleAssemblyLine(), JsonFileMapper.parseModels());
@@ -223,11 +228,12 @@ public class EvulutionMain {
         VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade,
                 equivalenceOfOneWeekInSeconds);
 
-        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds);
+        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds,
+                ASSEMBLY_TIME_IN_WEEKS, emailFactory, emailSender);
         AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
                 completeCarAssemblyLine);
 
-        SaleService saleService = new SaleService(saleRepository, tokenRepository, customerRepository, tokenAssembler,
+        SaleService saleService = new SaleService(saleRepository, tokenRepository, invoiceRepository, tokenAssembler,
                 transactionIdAssembler, saleFactory, transactionIdFactory, carFactory, batteryFactory, invoiceFactory,
                 estimatedRangeAssembler, assemblyLineService);
 
@@ -237,8 +243,9 @@ public class EvulutionMain {
 
     private static DeliveryResource createDeliveryResource(ConstraintsValidator constraintsValidator,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, SaleRepository saleRepository,
-            DeliveryIdFactory deliveryIdFactory) {
-        DeliveryService deliveryService = new DeliveryService(deliveryIdFactory, saleRepository);
+            DeliveryIdFactory deliveryIdFactory, DeliveryDetailsFactory deliveryDetailsFactory) {
+        DeliveryService deliveryService = new DeliveryService(deliveryIdFactory, deliveryDetailsFactory,
+                saleRepository);
 
         return new DeliveryResourceImpl(deliveryService, constraintsValidator, httpExceptionResponseAssembler);
     }

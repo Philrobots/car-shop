@@ -1,9 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.car;
 
-import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
+import ca.ulaval.glo4003.evulution.domain.car.exceptions.BadCarSpecsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import java.util.Collections;
 

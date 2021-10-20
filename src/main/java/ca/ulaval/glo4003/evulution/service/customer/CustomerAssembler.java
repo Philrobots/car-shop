@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.evulution.service.customer;
 
 import ca.ulaval.glo4003.evulution.api.customer.dto.CustomerDto;
-import ca.ulaval.glo4003.evulution.domain.customer.Customer;
-import ca.ulaval.glo4003.evulution.domain.customer.CustomerFactory;
+import ca.ulaval.glo4003.evulution.domain.account.customer.Customer;
+import ca.ulaval.glo4003.evulution.domain.account.customer.CustomerFactory;
 
 public class CustomerAssembler {
     private final CustomerFactory customerFactory;

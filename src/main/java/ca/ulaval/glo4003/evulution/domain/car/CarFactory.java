@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.car;
 
-import ca.ulaval.glo4003.evulution.domain.car.exception.BadCarSpecsException;
+import ca.ulaval.glo4003.evulution.domain.car.exceptions.BadCarSpecsException;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionIdFactory;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
-import ca.ulaval.glo4003.evulution.domain.token.exception.UnauthorizedRequestException;
+import ca.ulaval.glo4003.evulution.domain.token.exceptions.UnauthorizedRequestException;
 
 public class AuthorizationService {
     private final TokenAssembler tokenAssembler;
