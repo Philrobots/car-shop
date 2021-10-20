@@ -25,6 +25,7 @@ import java.util.HashMap;
 public class HTTPExceptionMapper {
     private static HTTPExceptionMapping badInputParameter = new HTTPExceptionMapping(400, "bad input parameter");
     private static HTTPExceptionMapping badOrderOfOperations = new HTTPExceptionMapping(400, "bad order of operations");
+    private static HTTPExceptionMapping badRequest = new HTTPExceptionMapping(400, "Bad request");
     private static HTTPExceptionMapping customerAlreadyExists = new HTTPExceptionMapping(409,
             "an existing customer already exists");
     private static HTTPExceptionMapping unableToLogin = new HTTPExceptionMapping(400, "Unable to login");
@@ -47,7 +48,7 @@ public class HTTPExceptionMapper {
             put(CarNotChosenBeforeBatteryException.class, badOrderOfOperations);
             put(MissingElementsForSaleException.class, badOrderOfOperations);
             put(SaleNotCompletedException.class, badOrderOfOperations);
-            put(SaleCompleteException.class, unauthorized);
+            put(SaleCompleteException.class, badRequest);
             put(EmailException.class, internalServerError);
             put(BatteryAssemblyException.class, internalServerError);
             put(VehicleAssemblyException.class, internalServerError);
