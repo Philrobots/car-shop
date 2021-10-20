@@ -11,7 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CompleteCarAssemblyLineTest {
-    private static final int ZERO_SECONDS = 0;
+    private static final Integer AN_ASSEMBLY_TIME_IN_WEEKS = 1;
+    private static final Integer ZERO_SECONDS = 0;
 
     @Mock
     private EmailSender emailSender;
@@ -26,7 +27,8 @@ class CompleteCarAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-        completeCarAssemblyLine = new CompleteCarAssemblyLine(ZERO_SECONDS, emailFactory, emailSender);
+        completeCarAssemblyLine = new CompleteCarAssemblyLine(ZERO_SECONDS, AN_ASSEMBLY_TIME_IN_WEEKS, emailFactory,
+                emailSender);
 
     }
 

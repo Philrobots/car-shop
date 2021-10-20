@@ -68,11 +68,11 @@ import java.util.Map;
 public class EvulutionMain {
     public static final String ENV_WEEK_TO_SECONDS_KEY = "EQUIVALENCE_OF_ONE_WEEK_IN_SECONDS";
     public static final String BASE_URI = "http://localhost:8080/";
-    public static String MANAGER_EMAIL = "catherineleuf@evul.ulaval.ca";
-    public static String MANAGER_PASSWORD = "RoulezVert2021!";
-
+    public static final String MANAGER_EMAIL = "catherineleuf@evul.ulaval.ca";
+    public static final String MANAGER_PASSWORD = "RoulezVert2021!";
     private static final String EMAIL = "evulution.equipe6@gmail.com";
     private static final String EMAIL_PASSWORD = "architecture6";
+    private static final Integer ASSEMBLY_TIME_IN_WEEKS = 1;
 
     public static Manager Manager = new Manager(MANAGER_EMAIL, MANAGER_PASSWORD);
 
@@ -208,7 +208,7 @@ public class EvulutionMain {
             TransactionIdFactory transactionIdFactory, EmailSender emailSender) {
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
         DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
-        SaleFactory saleFactory = new SaleFactory(transactionIdFactory, deliveryIdFactory);
+        SaleFactory saleFactory = new SaleFactory(ASSEMBLY_TIME_IN_WEEKS, transactionIdFactory, deliveryIdFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
@@ -226,7 +226,7 @@ public class EvulutionMain {
                 equivalenceOfOneWeekInSeconds);
 
         CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds,
-                emailFactory, emailSender);
+                ASSEMBLY_TIME_IN_WEEKS, emailFactory, emailSender);
         AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
                 completeCarAssemblyLine);
 

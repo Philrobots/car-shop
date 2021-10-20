@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class SaleTest {
     private static final String AN_EMAIL = "email@email.com";
+    private static final Integer AN_ASSEMBLY_TIME_IN_WEEKS = 1;
     private static final Integer EFFICIENCY_EQUIVALENCE_RATE = 100;
 
     @Mock
@@ -43,7 +44,7 @@ public class SaleTest {
 
     @BeforeEach
     public void setUp() {
-        this.sale = new Sale(AN_EMAIL, transactionId, deliveryId);
+        this.sale = new Sale(AN_EMAIL, AN_ASSEMBLY_TIME_IN_WEEKS, transactionId, deliveryId);
     }
 
     @Test

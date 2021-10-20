@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleFactoryTest {
+    private static final Integer AN_ASSEMBLY_TIME_IN_WEEKS = 1;
     private static final String AN_EMAIL = "jo@live.com";
 
     private SaleFactory saleFactory;
@@ -24,7 +25,7 @@ public class SaleFactoryTest {
 
     @BeforeEach
     public void setUp() {
-        saleFactory = new SaleFactory(transactionIdFactory, deliveryIdFactory);
+        saleFactory = new SaleFactory(AN_ASSEMBLY_TIME_IN_WEEKS, transactionIdFactory, deliveryIdFactory);
     }
 
     @Test

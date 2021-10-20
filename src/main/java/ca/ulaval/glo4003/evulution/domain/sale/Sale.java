@@ -12,18 +12,19 @@ import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleNotCompletedExcept
 import java.time.LocalDate;
 
 public class Sale {
-    private static final int assemblyTimeInWeek = 1;
-    private String email;
-    private TransactionId transactionId;
-    private DeliveryId deliveryId;
+    private final String email;
+    private final TransactionId transactionId;
+    private final DeliveryId deliveryId;
+    private final Integer assemblyTimeInWeeks;
     private Delivery delivery;
     private Car car;
     private Battery battery;
     private Boolean isSaleCompleted = false;
     private LocalDate expectedDeliveryDate;
 
-    public Sale(String email, TransactionId transactionId, DeliveryId deliveryId) {
+    public Sale(String email, Integer assemblyTimeInWeeks, TransactionId transactionId, DeliveryId deliveryId) {
         this.email = email;
+        this.assemblyTimeInWeeks = assemblyTimeInWeeks;
         this.transactionId = transactionId;
         this.deliveryId = deliveryId;
     }
@@ -79,7 +80,7 @@ public class Sale {
 
         this.setSaleAsCompleted();
         int expectedProductionTimeInWeeks = this.car.getTimeToProduceAsInt() + this.battery.getTimeToProduceAsInt()
-                + getAssemblyTimeInWeek();
+                + this.assemblyTimeInWeeks;
         this.expectedDeliveryDate = LocalDate.now().plusWeeks(expectedProductionTimeInWeeks);
     }
 
@@ -91,10 +92,6 @@ public class Sale {
 
     public Integer getBatteryAutonomy() {
         return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
-    }
-
-    public int getAssemblyTimeInWeek() {
-        return assemblyTimeInWeek;
     }
 
     public LocalDate addDelayInWeeks(int weeks) {
