@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleFactoryTest {
-    private static final Integer AN_ASSEMBLY_TIME_IN_WEEKS = 1;
     private static final String AN_EMAIL = "jo@live.com";
 
     private SaleFactory saleFactory;
@@ -21,11 +21,11 @@ public class SaleFactoryTest {
     private TransactionIdFactory transactionIdFactory;
 
     @Mock
-    private DeliveryIdFactory deliveryIdFactory;
+    private DeliveryFactory deliveryFactory;
 
     @BeforeEach
     public void setUp() {
-        saleFactory = new SaleFactory(AN_ASSEMBLY_TIME_IN_WEEKS, transactionIdFactory, deliveryIdFactory);
+        saleFactory = new SaleFactory(transactionIdFactory, deliveryFactory);
     }
 
     @Test
@@ -52,6 +52,6 @@ public class SaleFactoryTest {
         saleFactory.create(AN_EMAIL);
 
         // then
-        Mockito.verify(deliveryIdFactory).create();
+        Mockito.verify(deliveryFactory).create();
     }
 }

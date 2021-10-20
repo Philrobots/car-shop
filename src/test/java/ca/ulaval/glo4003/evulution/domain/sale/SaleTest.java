@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.sale;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetails;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
@@ -22,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class SaleTest {
     private static final String AN_EMAIL = "email@email.com";
-    private static final Integer AN_ASSEMBLY_TIME_IN_WEEKS = 1;
     private static final Integer EFFICIENCY_EQUIVALENCE_RATE = 100;
 
     @Mock
@@ -30,6 +30,9 @@ public class SaleTest {
 
     @Mock
     private DeliveryId deliveryId;
+
+    @Mock
+    private DeliveryDetails deliveryDetails;
 
     @Mock
     private Delivery delivery;
@@ -44,7 +47,7 @@ public class SaleTest {
 
     @BeforeEach
     public void setUp() {
-        this.sale = new Sale(AN_EMAIL, AN_ASSEMBLY_TIME_IN_WEEKS, transactionId, deliveryId);
+        this.sale = new Sale(AN_EMAIL, transactionId, delivery);
     }
 
     @Test
@@ -114,7 +117,7 @@ public class SaleTest {
 
     @Test
     public void givenSaleNotComplete_whenChooseDelivery_thenThrowSaleNotCompletedException() {
-        assertThrows(SaleNotCompletedException.class, () -> this.sale.chooseDelivery(delivery));
+        assertThrows(SaleNotCompletedException.class, () -> this.sale.setDeliveryDetails(deliveryDetails));
     }
 
     @Test

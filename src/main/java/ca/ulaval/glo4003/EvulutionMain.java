@@ -24,6 +24,8 @@ import ca.ulaval.glo4003.evulution.domain.account.manager.Manager;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
+import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetailsFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
@@ -98,7 +100,8 @@ public class EvulutionMain {
         SaleRepository saleRepository = new SaleRepositoryInMemory();
         TransactionIdFactory transactionIdFactory = new TransactionIdFactory();
         DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
-        DeliveryFactory deliveryFactory = new DeliveryFactory(JsonFileMapper.parseDeliveryLocations());
+        DeliveryFactory deliveryFactory = new DeliveryFactory(ASSEMBLY_TIME_IN_WEEKS, deliveryIdFactory);
+        DeliveryDetailsFactory deliveryDetailsFactory = new DeliveryDetailsFactory(JsonFileMapper.parseDeliveryLocations());
         accountRepository.addAccount(Manager);
 
         // Setup assemblers
@@ -114,9 +117,9 @@ public class EvulutionMain {
                 httpExceptionResponseAssembler, constraintsValidator);
         SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, invoiceRepository,
                 tokenAssembler, tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator,
-                transactionIdFactory, emailSender);
+                transactionIdFactory, emailSender, deliveryFactory);
         DeliveryResource deliveryResource = createDeliveryResource(constraintsValidator, httpExceptionResponseAssembler,
-                saleRepository, deliveryIdFactory, deliveryFactory);
+                saleRepository, deliveryIdFactory, deliveryDetailsFactory);
 
         final AbstractBinder binder = new AbstractBinder() {
             @Override
@@ -205,10 +208,9 @@ public class EvulutionMain {
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
             InvoiceRepository invoiceRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
-            TransactionIdFactory transactionIdFactory, EmailSender emailSender) {
+            TransactionIdFactory transactionIdFactory, EmailSender emailSender,DeliveryFactory deliveryFactory) {
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
-        DeliveryIdFactory deliveryIdFactory = new DeliveryIdFactory();
-        SaleFactory saleFactory = new SaleFactory(ASSEMBLY_TIME_IN_WEEKS, transactionIdFactory, deliveryIdFactory);
+        SaleFactory saleFactory = new SaleFactory(transactionIdFactory, deliveryFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
@@ -240,8 +242,8 @@ public class EvulutionMain {
 
     private static DeliveryResource createDeliveryResource(ConstraintsValidator constraintsValidator,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler, SaleRepository saleRepository,
-            DeliveryIdFactory deliveryIdFactory, DeliveryFactory deliveryFactory) {
-        DeliveryService deliveryService = new DeliveryService(deliveryIdFactory, deliveryFactory, saleRepository);
+            DeliveryIdFactory deliveryIdFactory, DeliveryDetailsFactory deliveryDetailsFactory) {
+        DeliveryService deliveryService = new DeliveryService(deliveryIdFactory, deliveryDetailsFactory, saleRepository);
 
         return new DeliveryResourceImpl(deliveryService, constraintsValidator, httpExceptionResponseAssembler);
     }

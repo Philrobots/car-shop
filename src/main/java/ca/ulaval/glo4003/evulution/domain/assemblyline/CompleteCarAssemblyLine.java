@@ -37,6 +37,7 @@ public class CompleteCarAssemblyLine {
                 emailSender.sendEmail(email);
                 Thread.sleep((long) (this.assemblyTimeInWeeks + ASSEMBLY_DELAY_IN_WEEKS) * timeOfWaitForOneWeek);
             }
+            sale.deliverToCampus();
         } catch (InterruptedException e) {
             throw new CompleteAssemblyException();
         }

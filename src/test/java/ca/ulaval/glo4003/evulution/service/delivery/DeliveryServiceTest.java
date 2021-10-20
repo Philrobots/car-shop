@@ -1,10 +1,7 @@
 package ca.ulaval.glo4003.evulution.service.delivery;
 
 import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryLocationDto;
-import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
+import ca.ulaval.glo4003.evulution.domain.delivery.*;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +21,7 @@ class DeliveryServiceTest {
     private DeliveryIdFactory deliveryIdFactory;
 
     @Mock
-    private DeliveryFactory deliveryFactory;
+    private DeliveryDetailsFactory deliveryDetailsFactory;
 
     @Mock
     private SaleRepository saleRepository;
@@ -41,19 +38,22 @@ class DeliveryServiceTest {
     @Mock
     private Delivery delivery;
 
+    @Mock
+    private DeliveryDetails deliveryDetails;
+
     private DeliveryService deliveryService;
 
     @BeforeEach
     public void setUp() {
-        deliveryService = new DeliveryService(deliveryIdFactory, deliveryFactory, saleRepository);
+        deliveryService = new DeliveryService(deliveryIdFactory, deliveryDetailsFactory, saleRepository);
     }
 
     @Test
     public void whenChooseDeliveryLocation_thenDeliveryIdFactoryCreatesFromInt() {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
         BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(deliveryFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
-                .willReturn(delivery);
+        BDDMockito.given(deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
+                .willReturn(deliveryDetails);
 
         // when
         deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
@@ -66,8 +66,8 @@ class DeliveryServiceTest {
     public void whenChooseDeliveryLocation_thenSaleRepositoryGetsDelivery() {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
         BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(deliveryFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
-                .willReturn(delivery);
+        BDDMockito.given(deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
+                .willReturn(deliveryDetails);
 
         // when
         deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
@@ -80,13 +80,13 @@ class DeliveryServiceTest {
     public void whenChooseDeliveryLocation_thenSaleChoosesDelivery() {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
         BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(deliveryFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
-                .willReturn(delivery);
+        BDDMockito.given(deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
+                .willReturn(deliveryDetails);
 
         // when
         deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
 
         // then
-        Mockito.verify(sale).chooseDelivery(delivery);
+        Mockito.verify(sale).setDeliveryDetails(deliveryDetails);
     }
 }

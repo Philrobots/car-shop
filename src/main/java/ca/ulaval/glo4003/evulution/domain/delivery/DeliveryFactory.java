@@ -6,18 +6,15 @@ import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryModeExc
 import java.util.List;
 
 public class DeliveryFactory {
-    List<String> possibleDeliveryLocation;
+    private Integer assemblyTimeInWeeks;
+    private DeliveryIdFactory deliveryIdFactory;
 
-    public DeliveryFactory(List<String> possibleDeliveryLocation) {
-        this.possibleDeliveryLocation = possibleDeliveryLocation;
+    public DeliveryFactory(Integer assemblyTimeInWeeks, DeliveryIdFactory deliveryIdFactory) {
+        this.assemblyTimeInWeeks = assemblyTimeInWeeks;
+        this.deliveryIdFactory = deliveryIdFactory;
     }
 
-    public Delivery create(String mode, String location) {
-        if (!mode.equals("At campus"))
-            throw new BadDeliveryModeException();
-        if (!possibleDeliveryLocation.contains(location))
-            throw new BadDeliveryLocationException();
-
-        return new Delivery(mode, location);
+    public Delivery create() {
+        return new Delivery(deliveryIdFactory.create(), assemblyTimeInWeeks);
     }
 }

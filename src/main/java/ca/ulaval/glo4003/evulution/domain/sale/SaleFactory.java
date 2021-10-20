@@ -1,23 +1,23 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
+import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
 
 public class SaleFactory {
-    private final Integer assemblyTimeInWeeks;
     private final TransactionIdFactory transactionIdFactory;
-    private final DeliveryIdFactory deliveryIdFactory;
+    private final DeliveryFactory deliveryFactory;
 
-    public SaleFactory(Integer assemblyTimeInWeeks, TransactionIdFactory transactionIdFactory,
-            DeliveryIdFactory deliveryIdFactory) {
-        this.assemblyTimeInWeeks = assemblyTimeInWeeks;
+    public SaleFactory(TransactionIdFactory transactionIdFactory,
+            DeliveryFactory deliveryFactory) {
         this.transactionIdFactory = transactionIdFactory;
-        this.deliveryIdFactory = deliveryIdFactory;
+        this.deliveryFactory = deliveryFactory;
     }
 
     public Sale create(String email) {
         TransactionId transactionId = this.transactionIdFactory.create();
-        DeliveryId deliveryId = this.deliveryIdFactory.create();
-        return new Sale(email, this.assemblyTimeInWeeks, transactionId, deliveryId);
+        Delivery delivery = this.deliveryFactory.create();
+        return new Sale(email, transactionId, delivery);
     }
 }
