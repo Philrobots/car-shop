@@ -22,7 +22,6 @@ public class AssemblyLineService {
     }
 
     public void completeVehicleCommand(Sale sale) {
-        // Le service s'occupe d'ajouter le Car et le Battery dans les assemblys lines
         this.vehicleAssemblyLine.addProduction(productionAssembler.assembleVehicleProductionFromSale(sale));
         this.batteryAssemblyLine.addProduction(productionAssembler.assembleBatteryProductionFromSale(sale));
         this.completeCarAssemblyLine.addCommand(sale);
