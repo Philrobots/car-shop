@@ -1,10 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.BatteryAssemblyException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
-import ca.ulaval.glo4003.evulution.domain.car.Battery;
-import ca.ulaval.glo4003.evulution.domain.sale.Sale;
-import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
+import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
 
 import java.util.LinkedList;
 
@@ -12,18 +9,16 @@ public class BatteryAssemblyLine {
 
     private AssemblyLineMediator assemblyLineMediator;
     private final BatteryAssemblyAdapter batteryAssemblyLineFacade;
-    private final int timeOfWaitForOneWeek;
-    private LinkedList<Sale> batteries = new LinkedList<Sale>();
+    private LinkedList<BatteryProduction> batteryProductionsWaitingList = new LinkedList<>();
     private boolean isBatteryInProduction = false;
-    private Sale currentBattery;
+    private BatteryProduction currentBatteryProduction;
 
-    public BatteryAssemblyLine(BatteryAssemblyAdapter batteryFacadeAssemblyLine, int equivalenceOfOneWeekInSeconds) {
+    public BatteryAssemblyLine(BatteryAssemblyAdapter batteryFacadeAssemblyLine) {
         this.batteryAssemblyLineFacade = batteryFacadeAssemblyLine;
-        this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
     }
 
-    public void addCommand(Sale sale) {
-        this.batteries.add(sale);
+    public void addProduction(BatteryProduction batteryProduction) {
+        this.batteryProductionsWaitingList.add(batteryProduction);
     }
 
     public void advance() {
@@ -32,46 +27,46 @@ public class BatteryAssemblyLine {
 
         this.batteryAssemblyLineFacade.advance();
 
-        AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade.getStatus(this.currentBattery.getTransactionId());
+        AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade.getStatus(this.currentBatteryProduction.getTransactionId());
 
         if (batteryStatus == AssemblyStatus.ASSEMBLED) {
+            System.out.println("BATTERY ASSEMBLED");
             this.assemblyLineMediator.notify(this.getClass());
             this.isBatteryInProduction = false;
         }
 
     }
 
-    public void completeBatteryCommand(TransactionId transactionId, Battery battery) {
-        try {
-            this.batteryAssemblyLineFacade.newBatteryCommand(transactionId, battery.getType());
-
-            boolean isBatteryAssembled = false;
-
-            while (!isBatteryAssembled) {
-
-                AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade.getStatus(transactionId);
-
-                if (batteryStatus != AssemblyStatus.ASSEMBLED) {
-                    this.batteryAssemblyLineFacade.advance();
-                } else {
-                    isBatteryAssembled = true;
-                }
-
-                Thread.sleep(timeOfWaitForOneWeek);
-
-            }
-            battery.setBatteryAsAssembled();
-        } catch (InterruptedException e) {
-            throw new BatteryAssemblyException();
-        }
-
-    }
+//    public void completeBatteryCommand(TransactionId transactionId, Battery battery) {
+//        try {
+//            this.batteryAssemblyLineFacade.newBatteryCommand(transactionId, battery.getType());
+//
+//            boolean isBatteryAssembled = false;
+//
+//            while (!isBatteryAssembled) {
+//
+//                AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade.getStatus(transactionId);
+//
+//                if (batteryStatus != AssemblyStatus.ASSEMBLED) {
+//                    this.batteryAssemblyLineFacade.advance();
+//                } else {
+//                    isBatteryAssembled = true;
+//                }
+//
+//
+//            }
+//            battery.setBatteryAsAssembled();
+//        } catch (InterruptedException e) {
+//            throw new BatteryAssemblyException();
+//        }
+//
+//    }
 
     public void startNext() {
-        this.currentBattery = this.batteries.pop();
+        this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();
 
-        this.batteryAssemblyLineFacade.newBatteryCommand(this.currentBattery.getTransactionId(),
-                this.currentBattery.getBattery().getType());
+        this.batteryAssemblyLineFacade.newBatteryCommand(this.currentBatteryProduction.getTransactionId(),
+                this.currentBatteryProduction.getBatteryType());
 
         this.isBatteryInProduction = true;
     }

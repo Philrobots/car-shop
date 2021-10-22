@@ -15,8 +15,6 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
         this.completeCarAssemblyLine = completeCarAssemblyLine;
     }
 
-    // le mediateur sert à informer la battery et car complete assembly line qu'il peuvent commencer leur prochiane
-    // chaine de production
     @Override
     public void notify(Class assemblyLineClass) {
         if (assemblyLineClass.equals(VehicleAssemblyLine.class)) {

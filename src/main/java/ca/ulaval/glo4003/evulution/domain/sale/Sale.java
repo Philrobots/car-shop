@@ -46,6 +46,14 @@ public class Sale {
         return this.car;
     }
 
+    public String getCarName(){
+        return car.getName();
+    }
+
+    public String getBatteryType(){
+        return battery.getType();
+    }
+
     public Battery getBattery() {
         return this.battery;
     }
