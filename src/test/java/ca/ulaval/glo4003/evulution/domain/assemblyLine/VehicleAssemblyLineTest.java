@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
-import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import org.junit.jupiter.api.BeforeEach;
