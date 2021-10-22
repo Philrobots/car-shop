@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class VehicleAssemblyLineFacade implements VehicleAssemblyFacade {
+public class VehicleAssemblyLineAdapter implements VehicleAssemblyAdapter {
 
     private final BasicVehicleAssemblyLine vehicleAssemblyLine;
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
 
-    public VehicleAssemblyLineFacade(BasicVehicleAssemblyLine vehicleAssemblyLine,
+    public VehicleAssemblyLineAdapter(BasicVehicleAssemblyLine vehicleAssemblyLine,
             List<ModelInformationDto> modelInformationDtos) {
         this.vehicleAssemblyLine = vehicleAssemblyLine;
         this.configureAssemblyLine(modelInformationDtos);
