@@ -2,8 +2,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineFacade;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.HashMap;
 @ExtendWith(MockitoExtension.class)
 public class VehicleAssemblerLineFacadeTest {
 
-    private VehicleAssemblyLineFacade vehicleAssemblyLineFacade;
+    private VehicleAssemblyLineAdapter vehicleAssemblyLineFacade;
     private TransactionId A_TRANSACTION_ID = new TransactionId(123);
     private TransactionId ANOTHER_TRANSACTION_ID = new TransactionId(456);
     private String A_VEHICLE_TYPE = "Vandry";
@@ -37,7 +35,7 @@ public class VehicleAssemblerLineFacadeTest {
 
     @BeforeEach
     public void setUp() {
-        vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(basicVehicleAssemblyLine, modelInformationDtoList);
+        vehicleAssemblyLineFacade = new VehicleAssemblyLineAdapter(basicVehicleAssemblyLine, modelInformationDtoList);
     }
 
     @Test

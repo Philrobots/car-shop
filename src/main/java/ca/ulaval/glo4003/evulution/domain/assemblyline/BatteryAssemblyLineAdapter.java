@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class BatteryAssemblyLineFacade implements BatteryAssemblyFacade {
+public class BatteryAssemblyLineAdapter implements BatteryAssemblyAdapter {
 
     private final BasicBatteryAssemblyLine basicBatteryAssemblyLine;
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
 
-    public BatteryAssemblyLineFacade(BasicBatteryAssemblyLine basicBatteryAssemblyLine,
-            List<BatteryInformationDto> batteries) {
+    public BatteryAssemblyLineAdapter(BasicBatteryAssemblyLine basicBatteryAssemblyLine,
+                                      List<BatteryInformationDto> batteries) {
         this.basicBatteryAssemblyLine = basicBatteryAssemblyLine;
         this.configureBatteryProductionTime(batteries);
     }

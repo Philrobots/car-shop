@@ -24,7 +24,6 @@ import ca.ulaval.glo4003.evulution.domain.account.manager.Manager;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
-import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetailsFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
@@ -217,11 +216,11 @@ public class EvulutionMain {
         InvoiceFactory invoiceFactory = new InvoiceFactory();
         EmailFactory emailFactory = new EmailFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
-        VehicleAssemblyLineFacade vehicleAssemblyLineFacade = new VehicleAssemblyLineFacade(
+        VehicleAssemblyLineAdapter vehicleAssemblyLineFacade = new VehicleAssemblyLineAdapter(
                 new BasicVehicleAssemblyLine(), JsonFileMapper.parseModels());
 
         BasicBatteryAssemblyLine basicBatteryAssemblyLine = new BasicBatteryAssemblyLine();
-        BatteryAssemblyLineFacade batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(basicBatteryAssemblyLine,
+        BatteryAssemblyLineAdapter batteryAssemblyLineFacade = new BatteryAssemblyLineAdapter(basicBatteryAssemblyLine,
                 JsonFileMapper.parseBatteries());
         BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade,
                 equivalenceOfOneWeekInSeconds);

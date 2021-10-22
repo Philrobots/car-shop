@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyFacade;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,15 +25,15 @@ class VehicleAssemblyLineTest {
     private VehicleAssemblyLine vehicleAssemblyLine;
 
     @Mock
-    private VehicleAssemblyFacade vehicleAssemblyFacade;
+    private VehicleAssemblyAdapter vehicleAssemblyAdapter;
 
     @Mock
     private Car car;
 
     @BeforeEach
     public void setup() {
-        vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyFacade, ZERO_SECONDS);
-        when(vehicleAssemblyFacade.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+        vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyAdapter, ZERO_SECONDS);
+        when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
         when(car.getName()).thenReturn(A_CAR_NAME);
     }
 
@@ -53,7 +52,7 @@ class VehicleAssemblyLineTest {
         vehicleAssemblyLine.completeVehicleCommand(A_TRANSACTION_ID, car);
 
         // then
-        verify(vehicleAssemblyFacade).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
+        verify(vehicleAssemblyAdapter).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
     }
 
 }

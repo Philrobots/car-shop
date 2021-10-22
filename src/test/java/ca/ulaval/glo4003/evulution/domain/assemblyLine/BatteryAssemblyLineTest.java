@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyFacade;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
@@ -25,15 +25,15 @@ class BatteryAssemblyLineTest {
     private BatteryAssemblyLine batteryAssemblyLine;
 
     @Mock
-    private BatteryAssemblyFacade batteryAssemblyFacade;
+    private BatteryAssemblyAdapter batteryAssemblyAdapter;
 
     @Mock
     private Battery battery;
 
     @BeforeEach
     public void setup() {
-        batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyFacade, ZERO_SECONDS);
-        when(batteryAssemblyFacade.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+        batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyAdapter, ZERO_SECONDS);
+        when(batteryAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
         when(battery.getType()).thenReturn(A_BATTERY_TYPE);
     }
 
@@ -52,6 +52,6 @@ class BatteryAssemblyLineTest {
         batteryAssemblyLine.completeBatteryCommand(A_TRANSACTION_ID, battery);
 
         // then
-        verify(batteryAssemblyFacade).newBatteryCommand(A_TRANSACTION_ID, A_BATTERY_TYPE);
+        verify(batteryAssemblyAdapter).newBatteryCommand(A_TRANSACTION_ID, A_BATTERY_TYPE);
     }
 }

@@ -6,10 +6,10 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 public class BatteryAssemblyLine {
 
-    private final BatteryAssemblyFacade batteryAssemblyLineFacade;
+    private final BatteryAssemblyAdapter batteryAssemblyLineFacade;
     private final int timeOfWaitForOneWeek;
 
-    public BatteryAssemblyLine(BatteryAssemblyFacade batteryFacadeAssemblyLine, int equivalenceOfOneWeekInSeconds) {
+    public BatteryAssemblyLine(BatteryAssemblyAdapter batteryFacadeAssemblyLine, int equivalenceOfOneWeekInSeconds) {
         this.batteryAssemblyLineFacade = batteryFacadeAssemblyLine;
         this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
     }

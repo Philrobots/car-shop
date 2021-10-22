@@ -1,9 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLineFacade;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryInformationDto;
-import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,11 +21,11 @@ public class BatteryAssemblyLineFacadeTest {
 
     private List<BatteryInformationDto> batteries = JsonFileMapper.parseBatteries();
 
-    private BatteryAssemblyLineFacade batteryAssemblyLineFacade;
+    private BatteryAssemblyLineAdapter batteryAssemblyLineFacade;
 
     @BeforeEach
     public void setUp() {
-        batteryAssemblyLineFacade = new BatteryAssemblyLineFacade(basicBatteryAssemblyLine, batteries);
+        batteryAssemblyLineFacade = new BatteryAssemblyLineAdapter(basicBatteryAssemblyLine, batteries);
     }
 
     @Test

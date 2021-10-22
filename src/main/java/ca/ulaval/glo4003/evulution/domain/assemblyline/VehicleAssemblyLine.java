@@ -6,10 +6,10 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 public class VehicleAssemblyLine {
 
-    private final VehicleAssemblyFacade vehicleAssemblyLineFacade;
+    private final VehicleAssemblyAdapter vehicleAssemblyLineFacade;
     private final int timeOfWaitForOneWeek;
 
-    public VehicleAssemblyLine(VehicleAssemblyFacade vehicleAssemblyLineFacade, int equivalenceOfOneWeekInSeconds) {
+    public VehicleAssemblyLine(VehicleAssemblyAdapter vehicleAssemblyLineFacade, int equivalenceOfOneWeekInSeconds) {
         this.vehicleAssemblyLineFacade = vehicleAssemblyLineFacade;
         this.timeOfWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
 
