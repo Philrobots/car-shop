@@ -14,24 +14,24 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-public class BatteryAssemblyLineFacadeTest {
+public class BatteryAssemblyLineAdapterTest {
 
     @Mock
     private BasicBatteryAssemblyLine basicBatteryAssemblyLine;
 
     private List<BatteryInformationDto> batteries = JsonFileMapper.parseBatteries();
 
-    private BatteryAssemblyLineAdapter batteryAssemblyLineFacade;
+    private BatteryAssemblyLineAdapter batteryAssemblyLineAdapter;
 
     @BeforeEach
     public void setUp() {
-        batteryAssemblyLineFacade = new BatteryAssemblyLineAdapter(basicBatteryAssemblyLine, batteries);
+        batteryAssemblyLineAdapter = new BatteryAssemblyLineAdapter(basicBatteryAssemblyLine, batteries);
     }
 
     @Test
     public void whenAdvance_thenShouldCallTheBasicBatteryAssemblyLineToAdvance() {
         // when
-        batteryAssemblyLineFacade.advance();
+        batteryAssemblyLineAdapter.advance();
 
         // then
         Mockito.verify(basicBatteryAssemblyLine).advance();

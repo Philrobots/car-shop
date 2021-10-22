@@ -8,13 +8,13 @@ import java.util.LinkedList;
 public class BatteryAssemblyLine {
 
     private AssemblyLineMediator assemblyLineMediator;
-    private final BatteryAssemblyAdapter batteryAssemblyLineFacade;
+    private final BatteryAssemblyAdapter batteryAssemblyLineAdapter;
     private LinkedList<BatteryProduction> batteryProductionsWaitingList = new LinkedList<>();
     private boolean isBatteryInProduction = false;
     private BatteryProduction currentBatteryProduction;
 
-    public BatteryAssemblyLine(BatteryAssemblyAdapter batteryFacadeAssemblyLine) {
-        this.batteryAssemblyLineFacade = batteryFacadeAssemblyLine;
+    public BatteryAssemblyLine(BatteryAssemblyAdapter batteryAssemblyAdapter) {
+        this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
     }
 
     public void addProduction(BatteryProduction batteryProduction) {
@@ -25,13 +25,12 @@ public class BatteryAssemblyLine {
         if (!this.isBatteryInProduction)
             return;
 
-        this.batteryAssemblyLineFacade.advance();
+        this.batteryAssemblyLineAdapter.advance();
 
-        AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade
+        AssemblyStatus batteryStatus = this.batteryAssemblyLineAdapter
                 .getStatus(this.currentBatteryProduction.getTransactionId());
 
         if (batteryStatus == AssemblyStatus.ASSEMBLED) {
-            System.out.println("BATTERY ASSEMBLED");
             this.assemblyLineMediator.notify(this.getClass());
             this.isBatteryInProduction = false;
         }
@@ -41,7 +40,7 @@ public class BatteryAssemblyLine {
     public void startNext() {
         this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();
 
-        this.batteryAssemblyLineFacade.newBatteryCommand(this.currentBatteryProduction.getTransactionId(),
+        this.batteryAssemblyLineAdapter.newBatteryCommand(this.currentBatteryProduction.getTransactionId(),
                 this.currentBatteryProduction.getBatteryType());
 
         this.isBatteryInProduction = true;

@@ -81,7 +81,7 @@ public class EvulutionMain {
 
     public static Manager Manager = new Manager(MANAGER_EMAIL, MANAGER_PASSWORD);
 
-    public static int equivalenceOfOneWeekInSeconds = 1;
+    public static int equivalenceOfOneWeekInSeconds = 30;
 
     public static void main(String[] args) throws Exception {
         // Load env
@@ -109,15 +109,15 @@ public class EvulutionMain {
         accountRepository.addAccount(Manager);
 
         // Setup assembly lines
-        VehicleAssemblyLineAdapter vehicleAssemblyLineFacade = new VehicleAssemblyLineAdapter(
+        VehicleAssemblyLineAdapter vehicleAssemblyLineAdapter = new VehicleAssemblyLineAdapter(
                 new BasicVehicleAssemblyLine(), JsonFileMapper.parseModels());
 
         BasicBatteryAssemblyLine basicBatteryAssemblyLine = new BasicBatteryAssemblyLine();
-        BatteryAssemblyLineAdapter batteryAssemblyLineFacade = new BatteryAssemblyLineAdapter(basicBatteryAssemblyLine,
+        BatteryAssemblyLineAdapter batteryAssemblyLineAdapter = new BatteryAssemblyLineAdapter(basicBatteryAssemblyLine,
                 JsonFileMapper.parseBatteries());
 
-        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineFacade);
-        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineFacade);
+        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineAdapter);
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineAdapter);
 
         EmailFactory emailFactory = new EmailFactory();
         CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(emailFactory, emailSender);

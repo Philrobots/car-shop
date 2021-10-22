@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CompleteCarAssemblyLine {
-    // TODO : variable d'environnement
     private static final double FIFTY_PERCENT_CHANCE = 0.5;
     private static final Integer ASSEMBLY_DELAY_IN_WEEKS = 1;
 
@@ -30,22 +29,6 @@ public class CompleteCarAssemblyLine {
         this.waitingList.add(sale);
     }
 
-    // public void completeCarCommand(Sale sale) {
-    // try {
-    // if (Math.random() < FIFTY_PERCENT_CHANCE)
-    // Thread.sleep((long) this.assemblyTimeInWeeks * timeOfWaitForOneWeek);
-    // else {
-    // LocalDate newExpectedDeliveryDate = sale.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);
-    // Email email = emailFactory.createAssemblyDelayEmail(List.of(sale.getEmail()), newExpectedDeliveryDate);
-    // emailSender.sendEmail(email);
-    // Thread.sleep((long) (this.assemblyTimeInWeeks + ASSEMBLY_DELAY_IN_WEEKS) * timeOfWaitForOneWeek);
-    // }
-    // sale.deliverToCampus();
-    // } catch (InterruptedException e) {
-    // throw new CompleteAssemblyException();
-    // }
-    // }
-
     public void advance() {
 
         if (!isCarCompleteInProduction)
@@ -60,7 +43,6 @@ public class CompleteCarAssemblyLine {
         } else if (weeksRemaining == 1) {
             this.weeksRemaining--;
         } else if (weeksRemaining == 0) {
-            System.out.println("CAR FULLY ASSEMBLED");
             this.isCarCompleteInProduction = false;
         }
     }

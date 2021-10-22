@@ -19,9 +19,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 @ExtendWith(MockitoExtension.class)
-public class VehicleAssemblerLineFacadeTest {
+public class VehicleAssemblerLineAdapterTest {
 
-    private VehicleAssemblyLineAdapter vehicleAssemblyLineFacade;
+    private VehicleAssemblyLineAdapter vehicleAssemblyLineAdapter;
     private TransactionId A_TRANSACTION_ID = new TransactionId(123);
     private TransactionId ANOTHER_TRANSACTION_ID = new TransactionId(456);
     private String A_VEHICLE_TYPE = "Vandry";
@@ -35,13 +35,13 @@ public class VehicleAssemblerLineFacadeTest {
 
     @BeforeEach
     public void setUp() {
-        vehicleAssemblyLineFacade = new VehicleAssemblyLineAdapter(basicVehicleAssemblyLine, modelInformationDtoList);
+        vehicleAssemblyLineAdapter = new VehicleAssemblyLineAdapter(basicVehicleAssemblyLine, modelInformationDtoList);
     }
 
     @Test
     public void whenAdvance_thenAdvanceIsCalled() {
         // when
-        vehicleAssemblyLineFacade.advance();
+        vehicleAssemblyLineAdapter.advance();
 
         // then
         verify(basicVehicleAssemblyLine, times(1)).advance();
@@ -53,7 +53,7 @@ public class VehicleAssemblerLineFacadeTest {
         when(basicVehicleAssemblyLine.getBuildStatus(any())).thenReturn(A_BUILD_STATUS);
 
         // when
-        vehicleAssemblyLineFacade.getStatus(A_TRANSACTION_ID);
+        vehicleAssemblyLineAdapter.getStatus(A_TRANSACTION_ID);
 
         // then
         verify(basicVehicleAssemblyLine).getBuildStatus(any());
@@ -62,7 +62,7 @@ public class VehicleAssemblerLineFacadeTest {
     @Test
     public void whenNewVehicleCommand_thenNewCarCommandIsCalledWithGoodParameters() {
         // when
-        vehicleAssemblyLineFacade.newVehicleCommand(A_TRANSACTION_ID, A_VEHICLE_TYPE);
+        vehicleAssemblyLineAdapter.newVehicleCommand(A_TRANSACTION_ID, A_VEHICLE_TYPE);
 
         // then
         verify(basicVehicleAssemblyLine).newCarCommand(any(), any());
