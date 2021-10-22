@@ -22,6 +22,8 @@ import ca.ulaval.glo4003.evulution.domain.account.customer.AccountValidator;
 import ca.ulaval.glo4003.evulution.domain.account.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.account.manager.Manager;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
 import ca.ulaval.glo4003.evulution.domain.car.CarFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetailsFactory;
@@ -229,6 +231,10 @@ public class EvulutionMain {
 
         CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(equivalenceOfOneWeekInSeconds,
                 ASSEMBLY_TIME_IN_WEEKS, emailFactory, emailSender);
+        AssemblyLineMediator assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine,
+                completeCarAssemblyLine);
+        vehicleAssemblyLine.setMediator(assemblyLineMediator);
+        batteryAssemblyLine.setMediator(assemblyLineMediator);
         AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
                 completeCarAssemblyLine);
 

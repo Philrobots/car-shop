@@ -17,7 +17,7 @@ public class VehicleAssemblyLineAdapter implements VehicleAssemblyAdapter {
     private final Map<TransactionId, CommandID> transactionIdWithCommandId = new HashMap<>();
 
     public VehicleAssemblyLineAdapter(BasicVehicleAssemblyLine vehicleAssemblyLine,
-                                      List<ModelInformationDto> modelInformationDtos) {
+            List<ModelInformationDto> modelInformationDtos) {
         this.vehicleAssemblyLine = vehicleAssemblyLine;
         this.configureAssemblyLine(modelInformationDtos);
     }

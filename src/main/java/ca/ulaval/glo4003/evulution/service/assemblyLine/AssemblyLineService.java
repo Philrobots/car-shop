@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
-import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 public class AssemblyLineService {
 
@@ -20,9 +19,9 @@ public class AssemblyLineService {
     }
 
     public void completeVehicleCommand(Sale sale) {
-        TransactionId transactionId = sale.getTransactionId();
-        this.vehicleAssemblyLine.completeVehicleCommand(transactionId, sale.getCar());
-        this.batteryAssemblyLine.completeBatteryCommand(transactionId, sale.getBattery());
-        this.completeCarAssemblyLine.completeCarCommand(sale);
+        // Le service s'occupe d'ajouter le Car et le Battery dans les assemblys lines
+        this.vehicleAssemblyLine.addCommand(sale);
+        this.batteryAssemblyLine.addCommand(sale);
+        this.completeCarAssemblyLine.addCommand(sale);
     }
 }
