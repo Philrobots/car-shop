@@ -27,8 +27,8 @@ class CompleteCarAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-//        completeCarAssemblyLine = new CompleteCarAssemblyLine(ZERO_SECONDS, AN_ASSEMBLY_TIME_IN_WEEKS, emailFactory,
-//                emailSender);
+        // completeCarAssemblyLine = new CompleteCarAssemblyLine(ZERO_SECONDS, AN_ASSEMBLY_TIME_IN_WEEKS, emailFactory,
+        // emailSender);
 
     }
 

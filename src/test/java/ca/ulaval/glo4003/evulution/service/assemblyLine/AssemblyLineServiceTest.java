@@ -48,43 +48,43 @@ public class AssemblyLineServiceTest {
 
     @BeforeEach
     public void setUp() {
-        assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
-                completeCarAssemblyLine, new ProductionAssembler());
+        assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine, completeCarAssemblyLine,
+                new ProductionAssembler());
     }
 
-//    @Test
-//    public void givenASale_whenCompleteVehicleCommand_thenShouldCallTheVehicleAssemblyLineToAddVehicle() {
-//        // given
-//        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-//        BDDMockito.given(sale.getCar()).willReturn(car);
-//
-//        // when
-//        assemblyLineService.completeVehicleCommand(sale);
-//
-//        // then
-//        Mockito.verify(vehicleAssemblyLine).completeVehicleCommand(transactionId, car);
-//    }
-//
-//    @Test
-//    public void givenAnSale_whenCompleteVehicleCommand_thenShouldCallTheBatteryAssemblyLine() {
-//        // given
-//        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-//        BDDMockito.given(sale.getBattery()).willReturn(battery);
-//
-//        // when
-//        assemblyLineService.completeVehicleCommand(sale);
-//
-//        // then
-//        Mockito.verify(batteryAssemblyLine).completeBatteryCommand(transactionId, battery);
-//    }
-//
-//    @Test
-//    public void givenAnSale_whenCompleteVehicleCommand_thenShouldCompleteTheVehicleCommand() {
-//        // when
-//        assemblyLineService.completeVehicleCommand(sale);
-//
-//        // then
-//        Mockito.verify(completeCarAssemblyLine).completeCarCommand(sale);
-//    }
+    // @Test
+    // public void givenASale_whenCompleteVehicleCommand_thenShouldCallTheVehicleAssemblyLineToAddVehicle() {
+    // // given
+    // BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
+    // BDDMockito.given(sale.getCar()).willReturn(car);
+    //
+    // // when
+    // assemblyLineService.completeVehicleCommand(sale);
+    //
+    // // then
+    // Mockito.verify(vehicleAssemblyLine).completeVehicleCommand(transactionId, car);
+    // }
+    //
+    // @Test
+    // public void givenAnSale_whenCompleteVehicleCommand_thenShouldCallTheBatteryAssemblyLine() {
+    // // given
+    // BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
+    // BDDMockito.given(sale.getBattery()).willReturn(battery);
+    //
+    // // when
+    // assemblyLineService.completeVehicleCommand(sale);
+    //
+    // // then
+    // Mockito.verify(batteryAssemblyLine).completeBatteryCommand(transactionId, battery);
+    // }
+    //
+    // @Test
+    // public void givenAnSale_whenCompleteVehicleCommand_thenShouldCompleteTheVehicleCommand() {
+    // // when
+    // assemblyLineService.completeVehicleCommand(sale);
+    //
+    // // then
+    // Mockito.verify(completeCarAssemblyLine).completeCarCommand(sale);
+    // }
 
 }

@@ -28,7 +28,8 @@ public class VehicleAssemblyLine {
         } else {
             this.currentVehicleProduction = vehicleProduction;
             this.isCarInProduction = true;
-            this.vehicleAssemblyLineFacade.newVehicleCommand(vehicleProduction.getTransactionId(), vehicleProduction.getName());
+            this.vehicleAssemblyLineFacade.newVehicleCommand(vehicleProduction.getTransactionId(),
+                    vehicleProduction.getName());
         }
     }
 
@@ -38,7 +39,8 @@ public class VehicleAssemblyLine {
 
         this.vehicleAssemblyLineFacade.advance();
 
-        AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(this.currentVehicleProduction.getTransactionId());
+        AssemblyStatus carStatus = this.vehicleAssemblyLineFacade
+                .getStatus(this.currentVehicleProduction.getTransactionId());
 
         if (carStatus == AssemblyStatus.ASSEMBLED) {
             this.assemblyLineMediator.notify(this.getClass());
@@ -54,27 +56,27 @@ public class VehicleAssemblyLine {
         }
     }
 
-//    public void completeVehicleCommand(TransactionId transactionId, Car car) {
-//        try {
-//            String vehicleType = car.getName();
-//
-//            this.vehicleAssemblyLineFacade.newVehicleCommand(transactionId, vehicleType);
-//
-//            boolean isCarAssembled = false;
-//
-//            while (!isCarAssembled) {
-//                AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
-//                if (carStatus != AssemblyStatus.ASSEMBLED) {
-//                    this.vehicleAssemblyLineFacade.advance();
-//                } else {
-//                    isCarAssembled = true;
-//                }
-//
-//                Thread.sleep(timeOfWaitForOneWeek);
-//            }
-//            car.setCarAsAssembled();
-//        } catch (InterruptedException e) {
-//            throw new VehicleAssemblyException();
-//        }
-//    }
+    // public void completeVehicleCommand(TransactionId transactionId, Car car) {
+    // try {
+    // String vehicleType = car.getName();
+    //
+    // this.vehicleAssemblyLineFacade.newVehicleCommand(transactionId, vehicleType);
+    //
+    // boolean isCarAssembled = false;
+    //
+    // while (!isCarAssembled) {
+    // AssemblyStatus carStatus = this.vehicleAssemblyLineFacade.getStatus(transactionId);
+    // if (carStatus != AssemblyStatus.ASSEMBLED) {
+    // this.vehicleAssemblyLineFacade.advance();
+    // } else {
+    // isCarAssembled = true;
+    // }
+    //
+    // Thread.sleep(timeOfWaitForOneWeek);
+    // }
+    // car.setCarAsAssembled();
+    // } catch (InterruptedException e) {
+    // throw new VehicleAssemblyException();
+    // }
+    // }
 }

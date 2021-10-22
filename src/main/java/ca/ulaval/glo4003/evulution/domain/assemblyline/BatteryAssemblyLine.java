@@ -27,7 +27,8 @@ public class BatteryAssemblyLine {
 
         this.batteryAssemblyLineFacade.advance();
 
-        AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade.getStatus(this.currentBatteryProduction.getTransactionId());
+        AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade
+                .getStatus(this.currentBatteryProduction.getTransactionId());
 
         if (batteryStatus == AssemblyStatus.ASSEMBLED) {
             System.out.println("BATTERY ASSEMBLED");
@@ -36,31 +37,6 @@ public class BatteryAssemblyLine {
         }
 
     }
-
-//    public void completeBatteryCommand(TransactionId transactionId, Battery battery) {
-//        try {
-//            this.batteryAssemblyLineFacade.newBatteryCommand(transactionId, battery.getType());
-//
-//            boolean isBatteryAssembled = false;
-//
-//            while (!isBatteryAssembled) {
-//
-//                AssemblyStatus batteryStatus = this.batteryAssemblyLineFacade.getStatus(transactionId);
-//
-//                if (batteryStatus != AssemblyStatus.ASSEMBLED) {
-//                    this.batteryAssemblyLineFacade.advance();
-//                } else {
-//                    isBatteryAssembled = true;
-//                }
-//
-//
-//            }
-//            battery.setBatteryAsAssembled();
-//        } catch (InterruptedException e) {
-//            throw new BatteryAssemblyException();
-//        }
-//
-//    }
 
     public void startNext() {
         this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();

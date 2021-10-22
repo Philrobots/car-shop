@@ -46,11 +46,11 @@ public class Sale {
         return this.car;
     }
 
-    public String getCarName(){
+    public String getCarName() {
         return car.getName();
     }
 
-    public String getBatteryType(){
+    public String getBatteryType() {
         return battery.getType();
     }
 

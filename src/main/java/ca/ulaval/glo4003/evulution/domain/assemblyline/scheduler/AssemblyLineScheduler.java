@@ -14,23 +14,24 @@ public class AssemblyLineScheduler {
     private int timeToWaitForOneWeek;
     private Timer timer = new Timer();
 
-    public AssemblyLineScheduler(BatteryAssemblyLine batteryAssemblyLine, VehicleAssemblyLine vehicleAssemblyLine, CompleteCarAssemblyLine completeCarAssemblyLine, int equivalenceOfOneWeekInSeconds) {
+    public AssemblyLineScheduler(BatteryAssemblyLine batteryAssemblyLine, VehicleAssemblyLine vehicleAssemblyLine,
+            CompleteCarAssemblyLine completeCarAssemblyLine, int equivalenceOfOneWeekInSeconds) {
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.vehicleAssemblyLine = vehicleAssemblyLine;
         this.completeCarAssemblyLine = completeCarAssemblyLine;
         this.timeToWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
     }
 
-    public void startScheduling(){
+    public void startScheduling() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 advanceAssemblyLines();
             }
-        }, 0 , timeToWaitForOneWeek);
+        }, 0, timeToWaitForOneWeek);
     }
 
-    private void advanceAssemblyLines(){
+    private void advanceAssemblyLines() {
         this.vehicleAssemblyLine.advance();
         this.batteryAssemblyLine.advance();
         this.completeCarAssemblyLine.advance();

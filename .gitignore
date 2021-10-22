@@ -8,7 +8,7 @@
 
 # Package Files #
 *.jar
-!car-manufacture-1.0.0.jar
+!lib/car-manufacture-1.0.0.jar
 *.war
 *.ear
 

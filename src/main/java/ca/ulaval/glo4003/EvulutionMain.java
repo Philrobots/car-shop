@@ -126,7 +126,8 @@ public class EvulutionMain {
                 completeCarAssemblyLine);
         vehicleAssemblyLine.setMediator(assemblyLineMediator);
         batteryAssemblyLine.setMediator(assemblyLineMediator);
-        AssemblyLineScheduler assemblyLineScheduler = new AssemblyLineScheduler(batteryAssemblyLine, vehicleAssemblyLine, completeCarAssemblyLine, equivalenceOfOneWeekInSeconds);
+        AssemblyLineScheduler assemblyLineScheduler = new AssemblyLineScheduler(batteryAssemblyLine,
+                vehicleAssemblyLine, completeCarAssemblyLine, equivalenceOfOneWeekInSeconds);
 
         // Setup assemblers
         HTTPExceptionResponseAssembler httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(
@@ -141,7 +142,8 @@ public class EvulutionMain {
                 httpExceptionResponseAssembler, constraintsValidator);
         SaleResource saleResource = createSaleResource(saleRepository, tokenRepository, invoiceRepository,
                 tokenAssembler, tokenDtoAssembler, httpExceptionResponseAssembler, constraintsValidator,
-                transactionIdFactory, emailSender, deliveryFactory, batteryAssemblyLine, vehicleAssemblyLine, completeCarAssemblyLine);
+                transactionIdFactory, emailSender, deliveryFactory, batteryAssemblyLine, vehicleAssemblyLine,
+                completeCarAssemblyLine);
         DeliveryResource deliveryResource = createDeliveryResource(constraintsValidator, httpExceptionResponseAssembler,
                 saleRepository, deliveryIdFactory, deliveryDetailsFactory);
 
@@ -231,16 +233,17 @@ public class EvulutionMain {
     }
 
     private static SaleResource createSaleResource(SaleRepository saleRepository, TokenRepository tokenRepository,
-                                                   InvoiceRepository invoiceRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
-                                                   HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
-                                                   TransactionIdFactory transactionIdFactory, EmailSender emailSender, DeliveryFactory deliveryFactory, BatteryAssemblyLine batteryAssemblyLine, VehicleAssemblyLine vehicleAssemblyLine, CompleteCarAssemblyLine completeCarAssemblyLine) {
+            InvoiceRepository invoiceRepository, TokenAssembler tokenAssembler, TokenDtoAssembler tokenDtoAssembler,
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ConstraintsValidator constraintsValidator,
+            TransactionIdFactory transactionIdFactory, EmailSender emailSender, DeliveryFactory deliveryFactory,
+            BatteryAssemblyLine batteryAssemblyLine, VehicleAssemblyLine vehicleAssemblyLine,
+            CompleteCarAssemblyLine completeCarAssemblyLine) {
         TransactionIdAssembler transactionIdAssembler = new TransactionIdAssembler();
         SaleFactory saleFactory = new SaleFactory(transactionIdFactory, deliveryFactory);
         CarFactory carFactory = new CarFactory(JsonFileMapper.parseModels());
         BatteryFactory batteryFactory = new BatteryFactory(JsonFileMapper.parseBatteries());
         InvoiceFactory invoiceFactory = new InvoiceFactory();
         EstimatedRangeAssembler estimatedRangeAssembler = new EstimatedRangeAssembler();
-
 
         AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
                 completeCarAssemblyLine, new ProductionAssembler());

@@ -30,29 +30,29 @@ class VehicleAssemblyLineTest {
     @Mock
     private Car car;
 
-//    @BeforeEach
-//    public void setup() {
-//        vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyAdapter, ZERO_SECONDS);
-//        when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-//        when(car.getName()).thenReturn(A_CAR_NAME);
-//    }
-//
-//    @Test
-//    public void whenCompleteVehicleCommand_thenShouldSetCarAsAssembled() {
-//        // when
-//        vehicleAssemblyLine.completeVehicleCommand(A_TRANSACTION_ID, car);
-//
-//        // then
-//        verify(car).setCarAsAssembled();
-//    }
-//
-//    @Test
-//    public void whenCompleteVehicleCommand_thenCallsNewBatteryCommand() {
-//        // when
-//        vehicleAssemblyLine.completeVehicleCommand(A_TRANSACTION_ID, car);
-//
-//        // then
-//        verify(vehicleAssemblyAdapter).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
-//    }
+    // @BeforeEach
+    // public void setup() {
+    // vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyAdapter, ZERO_SECONDS);
+    // when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+    // when(car.getName()).thenReturn(A_CAR_NAME);
+    // }
+    //
+    // @Test
+    // public void whenCompleteVehicleCommand_thenShouldSetCarAsAssembled() {
+    // // when
+    // vehicleAssemblyLine.completeVehicleCommand(A_TRANSACTION_ID, car);
+    //
+    // // then
+    // verify(car).setCarAsAssembled();
+    // }
+    //
+    // @Test
+    // public void whenCompleteVehicleCommand_thenCallsNewBatteryCommand() {
+    // // when
+    // vehicleAssemblyLine.completeVehicleCommand(A_TRANSACTION_ID, car);
+    //
+    // // then
+    // verify(vehicleAssemblyAdapter).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
+    // }
 
 }

@@ -30,28 +30,28 @@ class BatteryAssemblyLineTest {
     @Mock
     private Battery battery;
 
-//    @BeforeEach
-//    public void setup() {
-//        batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyAdapter, ZERO_SECONDS);
-//        when(batteryAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-//        when(battery.getType()).thenReturn(A_BATTERY_TYPE);
-//    }
-//
-//    @Test
-//    public void whenCompleteBatteryCommand_thenShouldSetBatteryAsAssembled() {
-//        // when
-//        batteryAssemblyLine.completeBatteryCommand(A_TRANSACTION_ID, battery);
-//
-//        // then
-//        verify(battery).setBatteryAsAssembled();
-//    }
-//
-//    @Test
-//    public void whenCompleteBatteryCommand_thenCallsNewBatteryCommand() {
-//        // when
-//        batteryAssemblyLine.completeBatteryCommand(A_TRANSACTION_ID, battery);
-//
-//        // then
-//        verify(batteryAssemblyAdapter).newBatteryCommand(A_TRANSACTION_ID, A_BATTERY_TYPE);
-//    }
+    // @BeforeEach
+    // public void setup() {
+    // batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyAdapter, ZERO_SECONDS);
+    // when(batteryAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+    // when(battery.getType()).thenReturn(A_BATTERY_TYPE);
+    // }
+    //
+    // @Test
+    // public void whenCompleteBatteryCommand_thenShouldSetBatteryAsAssembled() {
+    // // when
+    // batteryAssemblyLine.completeBatteryCommand(A_TRANSACTION_ID, battery);
+    //
+    // // then
+    // verify(battery).setBatteryAsAssembled();
+    // }
+    //
+    // @Test
+    // public void whenCompleteBatteryCommand_thenCallsNewBatteryCommand() {
+    // // when
+    // batteryAssemblyLine.completeBatteryCommand(A_TRANSACTION_ID, battery);
+    //
+    // // then
+    // verify(batteryAssemblyAdapter).newBatteryCommand(A_TRANSACTION_ID, A_BATTERY_TYPE);
+    // }
 }
