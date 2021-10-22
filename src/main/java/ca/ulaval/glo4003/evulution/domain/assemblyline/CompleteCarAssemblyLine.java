@@ -47,10 +47,30 @@ public class CompleteCarAssemblyLine {
         }
     }
 
+    public void setWeeksRemaining(int weeksRemaining) {
+        this.weeksRemaining = weeksRemaining;
+    }
+
+    public void setCurrentSale(Sale sale) {
+        this.currentSale = sale;
+    }
+
+    public void setIsCarCompleteInProduction(boolean isCarCompleteInProduction) {
+        this.isCarCompleteInProduction = isCarCompleteInProduction;
+    }
+
     public void startNext() {
         this.currentSale = this.waitingList.pop();
         this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
                 : ASSEMBLY_DELAY_IN_WEEKS;
         this.isCarCompleteInProduction = true;
+    }
+
+    public List<Sale> getSalesWaitingList() {
+        return this.waitingList;
+    }
+
+    public boolean getIsCarInProduction() {
+        return this.isCarCompleteInProduction;
     }
 }
