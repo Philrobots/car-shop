@@ -55,6 +55,7 @@ class VehicleAssemblyLineTest {
         // then
         verify(vehicleAssemblyAdapter, times(0)).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
         verify(vehicleAssemblyAdapter, times(0)).getStatus(A_TRANSACTION_ID);
+        verify(vehicleAssemblyAdapter, times(0)).advance();
         verify(assemblyLineMediator, times(0)).notify(VehicleAssemblyLine.class);
     }
 
@@ -70,6 +71,7 @@ class VehicleAssemblyLineTest {
         // then
         verify(vehicleAssemblyAdapter, times(1)).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
         verify(vehicleAssemblyAdapter, times(1)).getStatus(A_TRANSACTION_ID);
+        verify(vehicleAssemblyAdapter, times(1)).advance();
         verify(assemblyLineMediator, times(1)).notify(VehicleAssemblyLine.class);
     }
 
@@ -86,6 +88,7 @@ class VehicleAssemblyLineTest {
         // then
         verify(vehicleAssemblyAdapter, times(2)).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
         verify(vehicleAssemblyAdapter, times(1)).getStatus(A_TRANSACTION_ID);
+        verify(vehicleAssemblyAdapter, times(1)).advance();
         verify(assemblyLineMediator, times(1)).notify(VehicleAssemblyLine.class);
     }
 }
