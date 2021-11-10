@@ -21,9 +21,15 @@ public class AssemblyLineService {
         this.productionAssembler = productionAssembler;
     }
 
-    public void completeVehicleCommand(Sale sale) {
+    public void addSaleToAssemblyLines(Sale sale) {
         this.vehicleAssemblyLine.addProduction(productionAssembler.assembleVehicleProductionFromSale(sale));
         this.batteryAssemblyLine.addProduction(productionAssembler.assembleBatteryProductionFromSale(sale));
         this.completeCarAssemblyLine.addCommand(sale);
+    }
+
+    public void advanceAssemblyLines() {
+        this.vehicleAssemblyLine.advance();
+        this.batteryAssemblyLine.advance();
+        this.completeCarAssemblyLine.advance();
     }
 }

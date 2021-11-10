@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SaleTest {
     private static final String AN_EMAIL = "email@email.com";
     private static final Integer EFFICIENCY_EQUIVALENCE_RATE = 100;
+    private static final SaleStatus SALE_STATUS_COMPLETED = SaleStatus.COMPLETED;
 
     @Mock
     private TransactionId transactionId;
@@ -49,7 +50,7 @@ public class SaleTest {
     @Test
     public void givenCompleteSale_whenChooseCar_thenThrowSaleCompleteException() {
         // given
-        sale.setSaleAsCompleted();
+        sale.setStatus(SALE_STATUS_COMPLETED);
 
         // when
         Executable chooseCar = () -> sale.chooseCar(car);
@@ -62,7 +63,7 @@ public class SaleTest {
     public void givenCompleteSale_whenChooseBattery_thenThrowSaleCompleteException() {
         // given
         sale.chooseCar(car);
-        sale.setSaleAsCompleted();
+        sale.setStatus(SALE_STATUS_COMPLETED);
 
         // when
         Executable chooseBattery = () -> sale.chooseBattery(battery);
@@ -102,7 +103,7 @@ public class SaleTest {
         // given
         sale.chooseCar(car);
         sale.chooseBattery(battery);
-        sale.setSaleAsCompleted();
+        sale.setStatus(SALE_STATUS_COMPLETED);
 
         // when
         Executable completeSale = () -> sale.completeSale();
@@ -148,21 +149,12 @@ public class SaleTest {
         // given
         sale.chooseCar(car);
         sale.chooseBattery(battery);
-        sale.setSaleAsCompleted();
+        sale.setStatus(SALE_STATUS_COMPLETED);
 
         // when
         sale.setDeliveryDetails(deliveryDetails);
 
         // then
         Mockito.verify(delivery).setDeliveryDetails(deliveryDetails);
-    }
-
-    @Test
-    public void whenDeliverToCampus_thenDeliverySetToCampus() {
-        // when
-        sale.deliverToCampus();
-
-        // then
-        Mockito.verify(delivery).deliverToCampus();
     }
 }

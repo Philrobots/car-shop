@@ -8,8 +8,4 @@ public enum Frequency {
     Frequency(String frequency) {
         this.frequency = frequency;
     }
-
-    public String getFrequency() {
-        return frequency;
-    }
 }

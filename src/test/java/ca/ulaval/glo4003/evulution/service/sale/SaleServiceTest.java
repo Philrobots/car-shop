@@ -24,6 +24,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +37,7 @@ public class SaleServiceTest {
     private static final Integer A_BANK_NO_INT = 123;
     private static final String A_ACCOUNT_NO = "1234567";
     private static final Integer A_ACCOUNT_NO_INT = 1234567;
+    private static final BigDecimal A_BALANCE = BigDecimal.valueOf(4);
 
     private static final int AN_ESTIMATED_RANGE = 200;
 
@@ -72,9 +75,6 @@ public class SaleServiceTest {
 
     @Mock
     private DeliveryId deliveryId;
-
-    @Mock
-    private Delivery delivery;
 
     @Mock
     private TokenDto tokenDto;
@@ -379,7 +379,9 @@ public class SaleServiceTest {
     public void whenCompleteSale_thenTransactionIdFactoryCreatesFromInt() {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
-        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY)).willReturn(invoice);
+        BDDMockito.given(sale.getPrice()).willReturn(A_BALANCE);
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY, A_BALANCE))
+                .willReturn(invoice);
 
         // when
         saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
@@ -392,7 +394,9 @@ public class SaleServiceTest {
     public void whenCompleteSale_thenSaleRepositoryGetsSale() {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
-        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY)).willReturn(invoice);
+        BDDMockito.given(sale.getPrice()).willReturn(A_BALANCE);
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY, A_BALANCE))
+                .willReturn(invoice);
 
         // when
         saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
@@ -405,25 +409,29 @@ public class SaleServiceTest {
     public void whenCompleteSale_thenAddInvoiceToRepository() {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
-        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY)).willReturn(invoice);
+        BDDMockito.given(sale.getPrice()).willReturn(A_BALANCE);
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY, A_BALANCE))
+                .willReturn(invoice);
 
         // when
         saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
 
         // then
-        Mockito.verify(invoiceRepository).addInvoice(sale.getEmail(), invoice);
+        Mockito.verify(invoiceRepository).addInvoice(sale.getTransactionId(), invoice);
     }
 
     @Test
     public void whenCompleteSale_thenInvoiceFactoryCreate() {
         BDDMockito.given(transactionIdFactory.createFromInt(A_TRANSACTION_ID)).willReturn(transactionId);
         BDDMockito.given(saleRepository.getSale(transactionId)).willReturn(sale);
-        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY)).willReturn(invoice);
+        BDDMockito.given(sale.getPrice()).willReturn(A_BALANCE);
+        BDDMockito.given(invoiceFactory.create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, A_FREQUENCY, A_BALANCE))
+                .willReturn(invoice);
 
         // when
         saleService.completeSale(A_TRANSACTION_ID, invoiceDto);
 
         // then
-        Mockito.verify(invoiceFactory).create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency);
+        Mockito.verify(invoiceFactory).create(A_BANK_NO_INT, A_ACCOUNT_NO_INT, invoiceDto.frequency, A_BALANCE);
     }
 }

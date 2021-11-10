@@ -6,15 +6,16 @@ import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import java.util.LinkedList;
 
 public class VehicleAssemblyLine {
-
-    private AssemblyLineMediator assemblyLineMediator;
     private final VehicleAssemblyAdapter vehicleAssemblyAdapter;
     private final LinkedList<VehicleProduction> vehicleProductionWaitList = new LinkedList<>();
+    private final VehicleRepository vehicleRepository;
     private boolean isCarInProduction = false;
+    private AssemblyLineMediator assemblyLineMediator;
     private VehicleProduction currentVehicleProduction;
 
-    public VehicleAssemblyLine(VehicleAssemblyAdapter vehicleAssemblyAdapter) {
+    public VehicleAssemblyLine(VehicleAssemblyAdapter vehicleAssemblyAdapter, VehicleRepository vehicleRepository) {
         this.vehicleAssemblyAdapter = vehicleAssemblyAdapter;
+        this.vehicleRepository = vehicleRepository;
     }
 
     public void setMediator(AssemblyLineMediator assemblyLineMediator) {
@@ -42,6 +43,7 @@ public class VehicleAssemblyLine {
                 .getStatus(this.currentVehicleProduction.getTransactionId());
 
         if (carStatus == AssemblyStatus.ASSEMBLED) {
+            this.vehicleRepository.add(currentVehicleProduction.getName(), currentVehicleProduction);
             this.assemblyLineMediator.notify(this.getClass());
 
             if (this.vehicleProductionWaitList.isEmpty()) {

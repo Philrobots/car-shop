@@ -1,15 +1,17 @@
 package ca.ulaval.glo4003.evulution.domain.car;
 
+import java.math.BigDecimal;
+
 public class Car {
     private String name;
     private String style;
     private Integer efficiencyEquivalenceRate;
-    private Integer basePrice;
+    private BigDecimal basePrice;
     private String timeToProduce;
     private String color;
     private boolean isAssembled = false;
 
-    public Car(String name, String style, Integer efficiencyEquivalenceRate, Integer basePrice, String timeToProduce,
+    public Car(String name, String style, Integer efficiencyEquivalenceRate, BigDecimal basePrice, String timeToProduce,
             String color) {
         this.name = name;
         this.style = style;
@@ -35,4 +37,7 @@ public class Car {
         return Integer.parseInt(timeToProduce);
     }
 
+    public BigDecimal getBasePrice() {
+        return basePrice;
+    }
 }

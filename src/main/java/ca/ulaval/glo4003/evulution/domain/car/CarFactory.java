@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.domain.car;
 
 import ca.ulaval.glo4003.evulution.domain.car.exceptions.BadCarSpecsException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class CarFactory {
@@ -16,7 +17,7 @@ public class CarFactory {
         for (ModelInformationDto modelMapperDto : modelMapperDtos) {
             if (modelMapperDto.name.equals(name) && color.equals("white")) {
                 return new Car(modelMapperDto.name, modelMapperDto.style, modelMapperDto.effeciency_equivalence_rate,
-                        modelMapperDto.base_price, modelMapperDto.time_to_produce, color);
+                        BigDecimal.valueOf(modelMapperDto.base_price), modelMapperDto.time_to_produce, color);
             }
         }
 

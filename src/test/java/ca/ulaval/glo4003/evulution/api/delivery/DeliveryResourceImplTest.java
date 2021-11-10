@@ -26,13 +26,12 @@ class DeliveryResourceImplTest {
     @Mock
     private ConstraintsValidator constraintsValidator;
 
-    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
-
     private DeliveryResourceImpl deliveryResourceImpl;
 
     @BeforeEach
-    private void setUp() {
-        httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(new HTTPExceptionMapper());
+    public void setUp() {
+        HTTPExceptionResponseAssembler httpExceptionResponseAssembler = new HTTPExceptionResponseAssembler(
+                new HTTPExceptionMapper());
         deliveryResourceImpl = new DeliveryResourceImpl(deliveryService, constraintsValidator,
                 httpExceptionResponseAssembler);
     }
@@ -44,5 +43,24 @@ class DeliveryResourceImplTest {
 
         // then
         Mockito.verify(deliveryService).chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+    }
+
+    @Test
+    public void whenChooseDeliveryLocation_thenConstraintValidatorValidates() {
+        // when
+        deliveryResourceImpl.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+
+        // then
+        Mockito.verify(constraintsValidator).validate(deliveryLocationDto);
+
+    }
+
+    @Test
+    public void whenCompleteDelivery_thenDeliveryServiceIsCalled() {
+        // when
+        deliveryResourceImpl.completeDelivery(A_DELIVERY_ID);
+
+        // then
+        Mockito.verify(deliveryService).completeDelivery(A_DELIVERY_ID);
     }
 }

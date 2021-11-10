@@ -9,4 +9,6 @@ public interface SaleRepository {
     Sale getSale(TransactionId transactionId);
 
     Sale getSaleFromDeliveryId(DeliveryId deliveryId);
+
+    void setStatus(TransactionId transactionId, SaleStatus status);
 }

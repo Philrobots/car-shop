@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.infrastructure.sale;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
+import ca.ulaval.glo4003.evulution.domain.sale.SaleStatus;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundFromDeliveryIdException;
 
@@ -29,5 +30,10 @@ public class SaleRepositoryInMemory implements SaleRepository {
             }
         }
         throw new SaleNotFoundFromDeliveryIdException();
+    }
+
+    @Override
+    public void setStatus(TransactionId transactionId, SaleStatus status) {
+        this.getSale(transactionId).setStatus(status);
     }
 }

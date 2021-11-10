@@ -3,18 +3,13 @@ package ca.ulaval.glo4003.evulution.service.assemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.car.Battery;
-import ca.ulaval.glo4003.evulution.domain.car.Car;
-import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.production.ProductionAssembler;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
-import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -47,39 +42,67 @@ public class AssemblyLineServiceTest {
 
     @BeforeEach
     public void setUp() {
-        assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine, completeCarAssemblyLine, productionAssembler);
+        assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine, completeCarAssemblyLine,
+                productionAssembler);
     }
 
-     @Test
-     public void whenCompleteVehicleCommand_thenShouldCallTheVehicleAssemblyLineToAddVehicle() {
-         // given
-         Mockito.when(productionAssembler.assembleVehicleProductionFromSale(sale)).thenReturn(vehicleProduction);
+    @Test
+    public void whenAddSaleToAssemblyLines_thenVehicleAssemblyLineAddsVehicle() {
+        // given
+        Mockito.when(productionAssembler.assembleVehicleProductionFromSale(sale)).thenReturn(vehicleProduction);
 
-         // when
-         assemblyLineService.completeVehicleCommand(sale);
+        // when
+        assemblyLineService.addSaleToAssemblyLines(sale);
 
-         // then
-         Mockito.verify(vehicleAssemblyLine).addProduction(vehicleProduction);
-     }
+        // then
+        Mockito.verify(vehicleAssemblyLine).addProduction(vehicleProduction);
+    }
 
-     @Test
-     public void givenAnSale_whenCompleteVehicleCommand_thenShouldCallTheBatteryAssemblyLine() {
-         // given
-         Mockito.when(productionAssembler.assembleBatteryProductionFromSale(sale)).thenReturn(batteryProduction);
+    @Test
+    public void whenAddSaleToAssemblyLines_thenBatteryAssemblyLineAddsBattery() {
+        // given
+        Mockito.when(productionAssembler.assembleBatteryProductionFromSale(sale)).thenReturn(batteryProduction);
 
-         // when
-         assemblyLineService.completeVehicleCommand(sale);
+        // when
+        assemblyLineService.addSaleToAssemblyLines(sale);
 
-         // then
-         Mockito.verify(batteryAssemblyLine).addProduction(batteryProduction);
-     }
+        // then
+        Mockito.verify(batteryAssemblyLine).addProduction(batteryProduction);
+    }
 
-     @Test
-     public void givenAnSale_whenCompleteVehicleCommand_thenShouldCompleteTheVehicleCommand() {
-         // when
-         assemblyLineService.completeVehicleCommand(sale);
+    @Test
+    public void whenAddSaleToAssemblyLine_thenCompletesTheVehicleCommand() {
+        // when
+        assemblyLineService.addSaleToAssemblyLines(sale);
 
-         // then
-         Mockito.verify(completeCarAssemblyLine).addCommand(sale);
-     }
+        // then
+        Mockito.verify(completeCarAssemblyLine).addCommand(sale);
+    }
+
+    @Test
+    public void whenAdvanceAssemblyLines_thenVehicleAssemblyLineAdvanceIsCalled() {
+        // when
+        this.assemblyLineService.advanceAssemblyLines();
+
+        // then
+        Mockito.verify(vehicleAssemblyLine).advance();
+    }
+
+    @Test
+    public void whenAdvanceAssemblyLines_thenBatteryAssemblyLineAdvanceIsCalled() {
+        // when
+        this.assemblyLineService.advanceAssemblyLines();
+
+        // then
+        Mockito.verify(batteryAssemblyLine).advance();
+    }
+
+    @Test
+    public void whenAdvanceAssemblyLines_thenCompleteCarAssemblyLineAdvanceIsCalled() {
+        // when
+        this.assemblyLineService.advanceAssemblyLines();
+
+        // then
+        Mockito.verify(completeCarAssemblyLine).advance();
+    }
 }

@@ -33,4 +33,8 @@ public class Battery {
     public int getTimeToProduceAsInt() {
         return Integer.parseInt(timeToProduce);
     }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
 }

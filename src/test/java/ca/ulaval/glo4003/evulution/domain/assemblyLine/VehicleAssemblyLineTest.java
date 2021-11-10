@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
@@ -20,7 +21,7 @@ class VehicleAssemblyLineTest {
     private static final int AN_INT = 1;
     private static final TransactionId A_TRANSACTION_ID = new TransactionId(AN_INT);
     private static final String A_CAR_NAME = "name";
-    private static final VehicleProduction vehicleProduction = new VehicleProduction(A_TRANSACTION_ID, A_CAR_NAME);
+    private static final VehicleProduction VEHICLE_PRODUCTION = new VehicleProduction(A_TRANSACTION_ID, A_CAR_NAME);
 
     private VehicleAssemblyLine vehicleAssemblyLine;
 
@@ -28,19 +29,22 @@ class VehicleAssemblyLineTest {
     private VehicleAssemblyAdapter vehicleAssemblyAdapter;
 
     @Mock
+    private VehicleRepository vehicleRepository;
+
+    @Mock
     private AssemblyLineMediator assemblyLineMediator;
 
     @BeforeEach
     public void setup() {
-        vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyAdapter);
+        vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyAdapter, vehicleRepository);
         vehicleAssemblyLine.setMediator(assemblyLineMediator);
     }
 
     @Test
-    public void givenMultipleProductions_whenAddProduction_thenShouldCreateVehicleCommandOnce() {
+    public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
         // when
-        vehicleAssemblyLine.addProduction(vehicleProduction);
-        vehicleAssemblyLine.addProduction(vehicleProduction);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
         // then
         verify(vehicleAssemblyAdapter, times(1)).newVehicleCommand(A_TRANSACTION_ID, A_CAR_NAME);
@@ -59,9 +63,9 @@ class VehicleAssemblyLineTest {
     }
 
     @Test
-    public void givenOneProduction_whenAdvance_thenGetsStatusAndNotifies() {
+    public void givenAProduction_whenAdvance_thenGetsStatusAndNotifies() {
         // given
-        vehicleAssemblyLine.addProduction(vehicleProduction);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
 
         // when
@@ -75,10 +79,23 @@ class VehicleAssemblyLineTest {
     }
 
     @Test
+    public void whenAdvance_thenAddsInVehicleRepository() {
+        // given
+        when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+
+        // when
+        vehicleAssemblyLine.advance();
+
+        // then
+        verify(vehicleRepository).add(A_CAR_NAME, VEHICLE_PRODUCTION);
+    }
+
+    @Test
     public void givenTwoProductions_whenAdvance_thenGetsStatusNotifiesAndAddsCommand() {
         // given
-        vehicleAssemblyLine.addProduction(vehicleProduction);
-        vehicleAssemblyLine.addProduction(vehicleProduction);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
 
         // when

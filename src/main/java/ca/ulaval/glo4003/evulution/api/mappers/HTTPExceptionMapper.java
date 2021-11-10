@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.evulution.domain.account.exceptions.CustomerAlreadyExis
 import ca.ulaval.glo4003.evulution.domain.car.exceptions.BadCarSpecsException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryLocationException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryModeException;
+import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.invoice.exceptions.InvalidInvoiceException;
 import ca.ulaval.glo4003.evulution.domain.login.exceptions.NoAccountFoundException;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
@@ -15,6 +16,7 @@ import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleCompleteException;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleNotCompletedException;
 import ca.ulaval.glo4003.evulution.domain.token.exceptions.UnauthorizedRequestException;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.infrastructure.invoice.exceptions.InvoiceNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundFromDeliveryIdException;
 
 import java.util.HashMap;
@@ -42,9 +44,11 @@ public class HTTPExceptionMapper {
             put(BadDeliveryModeException.class, badInputParameter);
             put(BadDeliveryLocationException.class, badInputParameter);
             put(SaleNotFoundFromDeliveryIdException.class, notFound);
+            put(InvoiceNotFoundException.class, notFound);
             put(CarNotChosenBeforeBatteryException.class, badOrderOfOperations);
             put(MissingElementsForSaleException.class, badOrderOfOperations);
             put(SaleNotCompletedException.class, badOrderOfOperations);
+            put(DeliveryIncompleteException.class, badOrderOfOperations);
             put(SaleCompleteException.class, badRequest);
             put(EmailException.class, internalServerError);
         }

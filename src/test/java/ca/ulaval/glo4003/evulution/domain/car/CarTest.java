@@ -3,13 +3,15 @@ package ca.ulaval.glo4003.evulution.domain.car;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CarTest {
     private final String A_NAME = "Vandry";
     private final String A_STYLE = "Compact";
     private final Integer AN_EFFICIENCY_EQUIVALENCE_RATE = 100;
-    private final Integer A_BASE_PRICE = 27000;
+    private final BigDecimal A_BASE_PRICE = BigDecimal.valueOf(27000);
     private final String A_TIME_TO_PRODUCE = "3";
     private final String A_COLOR = "white";
 

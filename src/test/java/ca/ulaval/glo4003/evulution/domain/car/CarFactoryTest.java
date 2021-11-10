@@ -13,6 +13,7 @@ class CarFactoryTest {
 
     private static final String A_GOOD_NAME = "Vandry";
     private static final String A_GOOD_COLOR = "white";
+    private static final Integer A_GOOD_PRICE = 5;
     private static final String A_BAD_NAME = "a_bad_name";
     private static final String A_BAD_COLOR = "a_bad_color";
 
@@ -24,6 +25,7 @@ class CarFactoryTest {
     public void setup() {
         modelMapperDto = new ModelInformationDto();
         modelMapperDto.name = A_GOOD_NAME;
+        modelMapperDto.base_price = A_GOOD_PRICE;
         carFactory = new CarFactory(Collections.singletonList(modelMapperDto));
     }
 

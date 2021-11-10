@@ -79,8 +79,8 @@ public class SaleService {
         sale.completeSale();
 
         Invoice invoice = this.invoiceFactory.create(Integer.parseInt(invoiceDto.bank_no),
-                Integer.parseInt(invoiceDto.account_no), invoiceDto.frequency);
-        this.invoiceRepository.addInvoice(sale.getEmail(), invoice);
-        this.assemblyLineService.completeVehicleCommand(sale);
+                Integer.parseInt(invoiceDto.account_no), invoiceDto.frequency, sale.getPrice());
+        this.invoiceRepository.addInvoice(sale.getTransactionId(), invoice);
+        this.assemblyLineService.addSaleToAssemblyLines(sale);
     }
 }

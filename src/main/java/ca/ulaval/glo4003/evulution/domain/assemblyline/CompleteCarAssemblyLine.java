@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryStatus;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
@@ -15,14 +16,19 @@ public class CompleteCarAssemblyLine {
 
     private final EmailFactory emailFactory;
     private final EmailSender emailSender;
+    private final VehicleRepository vehicleRepository;
+    private final BatteryRepository batteryRepository;
     private LinkedList<Sale> waitingList = new LinkedList<>();
     private Sale currentSale;
     private int weeksRemaining;
     private boolean isCarCompleteInProduction = false;
 
-    public CompleteCarAssemblyLine(EmailFactory emailFactory, EmailSender emailSender) {
+    public CompleteCarAssemblyLine(EmailFactory emailFactory, EmailSender emailSender,
+            VehicleRepository vehicleRepository, BatteryRepository batteryRepository) {
         this.emailFactory = emailFactory;
         this.emailSender = emailSender;
+        this.vehicleRepository = vehicleRepository;
+        this.batteryRepository = batteryRepository;
     }
 
     public void addCommand(Sale sale) {
@@ -43,6 +49,7 @@ public class CompleteCarAssemblyLine {
         } else if (weeksRemaining == 1) {
             this.weeksRemaining--;
         } else if (weeksRemaining == 0) {
+            this.currentSale.setDeliveryStatus(DeliveryStatus.SHIPPED);
             this.isCarCompleteInProduction = false;
         }
     }
@@ -61,6 +68,8 @@ public class CompleteCarAssemblyLine {
 
     public void startNext() {
         this.currentSale = this.waitingList.pop();
+        this.vehicleRepository.remove(this.currentSale.getCarName());
+        this.batteryRepository.remove(this.currentSale.getBatteryType());
         this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
                 : ASSEMBLY_DELAY_IN_WEEKS;
         this.isCarCompleteInProduction = true;
