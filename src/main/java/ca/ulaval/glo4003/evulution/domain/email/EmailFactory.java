@@ -10,9 +10,9 @@ public class EmailFactory {
     private String FIRE_BATTERIES_EMAIL = "We are sorry to inform you we encountered problems during the battery building stage. The new delivery date is undetermined";
     private String NEW_DELAY_EMAIL = "We are sorry to inform you we encountered difficulties during the assembly step. Expecting new delivery date: ";
     private String STATUS_UPDATE_SUBJECT = "Update on your Evulution order";
-    private String BATTERY_BUILT_EMAIL = "We are happy to inform you that your battery has been built. We will continue to keep you updated regarding the state of your vehicle.";
-    private String VEHICLE_BUILT_EMAIL = "We are happy to inform you that your vehicle has been built. We will continue to keep you updated regarding the state of your vehicle.";
-    private String VEHICLE_COMPLETED_EMAIL = "We are happy to inform you that your vehicle assembly is completed. We will send you an email soon regarding delivery.";
+    private String BATTERY_BUILT_EMAIL = "Your battery is currently in production. Expected build time in weeks: ";
+    private String VEHICLE_BUILT_EMAIL = "Your vehicle is currently in production. Expected build time in weeks: ";
+    private String VEHICLE_COMPLETED_EMAIL = "Your command is currently in assembly. Expected build time in weeks: ";
 
     public EmailFactory(EmailSender emailSender) {
         this.emailSender = emailSender;
@@ -27,15 +27,18 @@ public class EmailFactory {
         return new Email(recipients, DELAY_SUBJECT, FIRE_BATTERIES_EMAIL, emailSender);
     }
 
-    public Email createBatteryBuiltEmail(List<String> recipients) {
-        return new Email(recipients, STATUS_UPDATE_SUBJECT, BATTERY_BUILT_EMAIL, emailSender);
+    public Email createBatteryBuiltEmail(List<String> recipients, Integer productionTimeInWeeks) {
+        String message = BATTERY_BUILT_EMAIL + productionTimeInWeeks;
+        return new Email(recipients, STATUS_UPDATE_SUBJECT, message, emailSender);
     }
 
-    public Email createVehicleBuiltEmail(List<String> recipients) {
-        return new Email(recipients, STATUS_UPDATE_SUBJECT, VEHICLE_BUILT_EMAIL, emailSender);
+    public Email createVehicleBuiltEmail(List<String> recipients, Integer productionTimeInWeeks) {
+        String message = VEHICLE_BUILT_EMAIL + productionTimeInWeeks;
+        return new Email(recipients, STATUS_UPDATE_SUBJECT, message, emailSender);
     }
 
-    public Email createVehicleCompletedEmail(List<String> recipients) {
-        return new Email(recipients, STATUS_UPDATE_SUBJECT, VEHICLE_COMPLETED_EMAIL, emailSender);
+    public Email createVehicleCompletedEmail(List<String> recipients, Integer productionTimeInWeeks) {
+        String message = VEHICLE_COMPLETED_EMAIL + productionTimeInWeeks;
+        return new Email(recipients, STATUS_UPDATE_SUBJECT, message, emailSender);
     }
 }

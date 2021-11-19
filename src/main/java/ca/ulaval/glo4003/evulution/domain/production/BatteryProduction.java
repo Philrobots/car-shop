@@ -6,11 +6,14 @@ public class BatteryProduction {
     private TransactionId transactionId;
     private String batteryType;
     private String email;
+    private Integer productionTimeInWeeks;
 
-    public BatteryProduction(TransactionId transactionId, String batteryType, String email) {
+    public BatteryProduction(TransactionId transactionId, String batteryType, String email,
+            Integer productionTimeInWeeks) {
         this.transactionId = transactionId;
         this.batteryType = batteryType;
         this.email = email;
+        this.productionTimeInWeeks = productionTimeInWeeks;
     }
 
     public String getBatteryType() {
@@ -23,5 +26,9 @@ public class BatteryProduction {
 
     public String getEmail() {
         return email;
+    }
+
+    public Integer getProductionTimeInWeeks() {
+        return productionTimeInWeeks;
     }
 }

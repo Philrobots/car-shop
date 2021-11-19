@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,8 +26,9 @@ class VehicleAssemblyLineTest {
     private static final TransactionId A_TRANSACTION_ID = new TransactionId(AN_INT);
     private static final String A_CAR_NAME = "name";
     private static final String AN_EMAIL = "email@email.com";
+    private static final Integer A_PRODUCTION_TIME = 2;
     private static final VehicleProduction VEHICLE_PRODUCTION = new VehicleProduction(A_TRANSACTION_ID, A_CAR_NAME,
-            AN_EMAIL);
+            AN_EMAIL, A_PRODUCTION_TIME);
 
     private VehicleAssemblyLine vehicleAssemblyLine;
 
@@ -53,6 +56,7 @@ class VehicleAssemblyLineTest {
     @Test
     public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
         // when
+        when(emailFactory.createVehicleBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
@@ -75,9 +79,9 @@ class VehicleAssemblyLineTest {
     @Test
     public void givenAProduction_whenAdvance_thenGetsStatusAndNotifies() {
         // given
-        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createVehicleBuiltEmail(any())).thenReturn(email);
+        when(emailFactory.createVehicleBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
         // when
         vehicleAssemblyLine.advance();
@@ -93,7 +97,7 @@ class VehicleAssemblyLineTest {
     public void whenAdvance_thenAddsInVehicleRepository() {
         // given
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createVehicleBuiltEmail(any())).thenReturn(email);
+        when(emailFactory.createVehicleBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
         // when
@@ -106,10 +110,10 @@ class VehicleAssemblyLineTest {
     @Test
     public void givenTwoProductions_whenAdvance_thenGetsStatusNotifiesAndAddsCommand() {
         // given
-        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
-        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createVehicleBuiltEmail(any())).thenReturn(email);
+        when(emailFactory.createVehicleBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+        vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
         // when
         vehicleAssemblyLine.advance();

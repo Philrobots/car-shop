@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
@@ -80,6 +80,8 @@ class CompleteCarAssemblyLineTest {
     @Test
     public void whenStartNext_thenCarShouldBeInProductionMode() {
         // when
+        BDDMockito.given(emailFactory.createVehicleCompletedEmail(any(), any())).willReturn(email);
+        BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIl);
         completeCarAssemblyLine.addCommand(sale);
         completeCarAssemblyLine.startNext();
 
@@ -91,6 +93,8 @@ class CompleteCarAssemblyLineTest {
     @Test
     public void givenASale_whenStartNext_thenWaitListShouldBeEmpty() {
         // given
+        BDDMockito.given(emailFactory.createVehicleCompletedEmail(any(), any())).willReturn(email);
+        BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIl);
         completeCarAssemblyLine.addCommand(sale);
 
         // when
@@ -103,11 +107,11 @@ class CompleteCarAssemblyLineTest {
     @Test
     public void givenTwoWeeksRemaining_whenAdvance_thenCallsEmailFactory() {
         // given
-        completeCarAssemblyLine.setIsCarCompleteInProduction(true);
-        completeCarAssemblyLine.setWeeksRemaining(2);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIl);
         BDDMockito.given(sale.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS)).willReturn(A_LOCAL_DATE);
         BDDMockito.given(emailFactory.createAssemblyDelayEmail(any(), any())).willReturn(email);
+        completeCarAssemblyLine.setIsCarCompleteInProduction(true);
+        completeCarAssemblyLine.setWeeksRemaining(2);
 
         // when
         completeCarAssemblyLine.setCurrentSale(sale);

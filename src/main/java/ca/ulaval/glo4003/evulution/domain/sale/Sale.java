@@ -53,12 +53,20 @@ public class Sale {
         return car.getName();
     }
 
+    public Integer getCarTimeProduction() {
+        return this.car.getTimeToProduceAsInt();
+    }
+
     public String getBatteryType() {
         return battery.getType();
     }
 
     public Battery getBattery() {
         return this.battery;
+    }
+
+    public Integer getBatteryTimeProduction() {
+        return this.battery.getTimeToProduceAsInt();
     }
 
     public Integer getBatteryAutonomy() {
