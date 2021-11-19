@@ -21,10 +21,8 @@ public class Delivery {
     public void setStatus(DeliveryStatus status) {
         switch (status) {
         case SHIPPED:
-            if (!this.status.contains(DeliveryStatus.CONFIRMED)) {
-                // TODO Ask client about potential exception
-                break;
-            }
+            // TODO Ask client about potential exception if delivery not confirmed
+            break;
         case COMPLETED:
             if (!this.status.contains(DeliveryStatus.CONFIRMED) || !this.status.contains(DeliveryStatus.SHIPPED)) {
                 throw new DeliveryIncompleteException();
