@@ -9,4 +9,6 @@ public interface TokenRepository {
     String getEmail(Token token);
 
     void validateToken(Token token);
+
+    void validateAdminToken(Token token);
 }

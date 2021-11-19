@@ -7,8 +7,11 @@ public class Token {
 
     private String token;
 
-    public Token() {
+    private boolean isAdmin = false;
+
+    public Token(boolean isAdmin) {
         this.token = UUID.randomUUID().toString();
+        this.isAdmin = isAdmin;
     }
 
     public Token(String uuid) {
@@ -17,6 +20,10 @@ public class Token {
 
     public String getToken() {
         return token;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
     }
 
     @Override

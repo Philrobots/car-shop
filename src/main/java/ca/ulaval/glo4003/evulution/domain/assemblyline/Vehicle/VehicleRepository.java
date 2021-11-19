@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
 
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 

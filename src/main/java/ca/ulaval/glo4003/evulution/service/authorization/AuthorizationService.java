@@ -30,6 +30,11 @@ public class AuthorizationService {
         this.tokenRepository.validateToken(token);
     }
 
+    public void validateAdminToken(TokenDto tokenDto) {
+        Token token = this.tokenAssembler.dtoToToken(tokenDto);
+        this.tokenRepository.validateAdminToken(token);
+    }
+
     public void validateTokenWithTransactionId(TokenDto tokenDto, int transactionId) {
         Sale sale = this.saleRepository.getSale(transactionIdFactory.createFromInt(transactionId));
         validateSaleAndEmailMatch(sale, getEmailFromTokenDto(tokenDto));

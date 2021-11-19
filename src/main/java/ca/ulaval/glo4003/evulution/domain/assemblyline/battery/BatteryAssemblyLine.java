@@ -1,17 +1,23 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
 
 import java.util.LinkedList;
 
 public class BatteryAssemblyLine {
+
+    private LinkedList<BatteryProduction> batteryProductionsWaitingList = new LinkedList<>();
+
     private final BatteryAssemblyAdapter batteryAssemblyLineAdapter;
     private final BatteryRepository batteryRepository;
-    private boolean isBatteryInProduction = false;
     private AssemblyLineMediator assemblyLineMediator;
-    private LinkedList<BatteryProduction> batteryProductionsWaitingList = new LinkedList<>();
     private BatteryProduction currentBatteryProduction;
+
+    private boolean isBatteryInProduction = false;
+    private boolean isBatteryInFire = false;
 
     public BatteryAssemblyLine(BatteryAssemblyAdapter batteryAssemblyAdapter, BatteryRepository batteryRepository) {
         this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
@@ -23,8 +29,9 @@ public class BatteryAssemblyLine {
     }
 
     public void advance() {
-        if (!this.isBatteryInProduction)
+        if (!this.isBatteryInProduction || this.isBatteryInFire) {
             return;
+        }
 
         this.batteryAssemblyLineAdapter.advance();
 
@@ -38,16 +45,42 @@ public class BatteryAssemblyLine {
         }
     }
 
+    public void shutdown() {
+        this.isBatteryInFire = true;
+        if (isBatteryInProduction)
+            this.batteryProductionsWaitingList.add(currentBatteryProduction);
+        this.isBatteryInProduction = false;
+    }
+
+    public void reactivate() {
+        this.isBatteryInFire = false;
+
+        for (BatteryProduction batteryProduction : batteryRepository.getAndSendToProduction()) {
+            this.batteryProductionsWaitingList.addFirst(batteryProduction);
+        }
+
+        if (!batteryProductionsWaitingList.isEmpty() && (assemblyLineMediator.getState() == AssemblyState.BATTERY
+                || assemblyLineMediator.getState() == AssemblyState.ASSEMBLY))
+            setUpNextBatteryForProduction();
+    }
+
     public void startNext() {
+        if (this.isBatteryInFire)
+            return;
+
+        setUpNextBatteryForProduction();
+    }
+
+    public void setMediator(AssemblyLineMediator assemblyLineMediator) {
+        this.assemblyLineMediator = assemblyLineMediator;
+    }
+
+    private void setUpNextBatteryForProduction() {
         this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();
 
         this.batteryAssemblyLineAdapter.newBatteryCommand(this.currentBatteryProduction.getTransactionId(),
                 this.currentBatteryProduction.getBatteryType());
 
         this.isBatteryInProduction = true;
-    }
-
-    public void setMediator(AssemblyLineMediator assemblyLineMediator) {
-        this.assemblyLineMediator = assemblyLineMediator;
     }
 }

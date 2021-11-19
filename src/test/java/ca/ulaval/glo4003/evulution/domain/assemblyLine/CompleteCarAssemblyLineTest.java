@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
@@ -102,33 +102,6 @@ class CompleteCarAssemblyLineTest {
 
         // then
         assertTrue(completeCarAssemblyLine.getSalesWaitingList().isEmpty());
-    }
-
-    @Test
-    public void givenASale_whenStartNext_thenVehicleRepositoryRemovesCar() {
-        // given
-        BDDMockito.given(sale.getCarName()).willReturn(A_CAR_NAME);
-        completeCarAssemblyLine.addCommand(sale);
-
-        // when
-        completeCarAssemblyLine.startNext();
-
-        // then
-        Mockito.verify(vehicleRepository).remove(sale.getCarName());
-    }
-
-    @Test
-    public void givenASale_whenStartNext_thenVehicleRepositoryRemovesBattery() {
-        // given
-        BDDMockito.given(sale.getBatteryType()).willReturn(A_BATTERY_NAME);
-        completeCarAssemblyLine.addCommand(sale);
-
-        // when
-        completeCarAssemblyLine.startNext();
-
-        // then
-        Mockito.verify(batteryRepository).remove(sale.getBatteryType());
-
     }
 
     @Test

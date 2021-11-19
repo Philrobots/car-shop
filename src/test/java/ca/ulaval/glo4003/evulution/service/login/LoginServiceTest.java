@@ -58,7 +58,7 @@ public class LoginServiceTest {
         loginDto.email = A_STRING_EMAIL;
         BDDMockito.given(accountRepository.getAccountByEmail(A_STRING_EMAIL)).willReturn(customer);
         BDDMockito.given(tokenAssembler.tokenToDto(token)).willReturn(tokenDto);
-        BDDMockito.given(tokenFactory.generateNewToken()).willReturn(token);
+        BDDMockito.given(tokenFactory.generateNewToken(false)).willReturn(token);
         loginService = new LoginService(tokenFactory, tokenRepository, tokenAssembler, accountRepository,
                 loginValidator);
     }

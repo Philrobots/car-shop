@@ -4,6 +4,8 @@ public abstract class Account {
     public String email;
     public String password;
 
+    protected boolean isAdmin = false;
+
     public Account(String email, String password) {
         this.email = email;
         this.password = password;
@@ -19,5 +21,9 @@ public abstract class Account {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
     }
 }

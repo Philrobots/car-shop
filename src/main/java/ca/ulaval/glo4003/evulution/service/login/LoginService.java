@@ -30,7 +30,7 @@ public class LoginService {
         Account account = this.accountRepository.getAccountByEmail(loginDto.email);
         this.loginValidator.validateLogin(account, loginDto);
 
-        Token token = tokenFactory.generateNewToken();
+        Token token = tokenFactory.generateNewToken(account.getIsAdmin());
 
         this.tokenRepository.addTokenWithEmail(token, loginDto.email);
         return this.tokenAssembler.tokenToDto(token);

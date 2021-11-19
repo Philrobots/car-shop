@@ -21,4 +21,11 @@ public class TokenRepositoryInMemory implements TokenRepository {
         if (!tokens.containsKey(token))
             throw new UnauthorizedRequestException();
     }
+
+    public void validateAdminToken(Token token) {
+        for (Token aToken : tokens.keySet())
+            if (aToken.equals(token) && aToken.isAdmin())
+                return;
+        throw new UnauthorizedRequestException();
+    }
 }

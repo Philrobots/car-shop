@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyAdapter;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;

@@ -1,5 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryStatus;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
@@ -11,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CompleteCarAssemblyLine {
+
     private static final double FIFTY_PERCENT_CHANCE = 0.5;
     private static final Integer ASSEMBLY_DELAY_IN_WEEKS = 1;
 
@@ -18,10 +22,12 @@ public class CompleteCarAssemblyLine {
     private final EmailSender emailSender;
     private final VehicleRepository vehicleRepository;
     private final BatteryRepository batteryRepository;
+    private AssemblyLineMediator assemblyLineMediator;
     private LinkedList<Sale> waitingList = new LinkedList<>();
     private Sale currentSale;
     private int weeksRemaining;
     private boolean isCarCompleteInProduction = false;
+    private boolean isBatteryInFire = false;
 
     public CompleteCarAssemblyLine(EmailFactory emailFactory, EmailSender emailSender,
             VehicleRepository vehicleRepository, BatteryRepository batteryRepository) {
@@ -37,8 +43,10 @@ public class CompleteCarAssemblyLine {
 
     public void advance() {
 
-        if (!isCarCompleteInProduction)
+        if (!isCarCompleteInProduction || isBatteryInFire) {
             return;
+
+        }
 
         if (weeksRemaining == 2) {
             LocalDate newExpectedDeliveryDate = this.currentSale.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);
@@ -50,8 +58,22 @@ public class CompleteCarAssemblyLine {
             this.weeksRemaining--;
         } else if (weeksRemaining == 0) {
             this.currentSale.setDeliveryStatus(DeliveryStatus.SHIPPED);
+            this.vehicleRepository.remove(this.currentSale.getCarName());
+            this.batteryRepository.remove(this.currentSale.getBatteryType());
+            assemblyLineMediator.notify(this.getClass());
             this.isCarCompleteInProduction = false;
         }
+    }
+
+    public void shutdown() {
+        this.isBatteryInFire = true;
+        if (isCarCompleteInProduction)
+            this.waitingList.add(currentSale);
+        this.isCarCompleteInProduction = false;
+    }
+
+    public void reactivate() {
+        this.isBatteryInFire = false;
     }
 
     public void setWeeksRemaining(int weeksRemaining) {
@@ -67,12 +89,11 @@ public class CompleteCarAssemblyLine {
     }
 
     public void startNext() {
-        this.currentSale = this.waitingList.pop();
-        this.vehicleRepository.remove(this.currentSale.getCarName());
-        this.batteryRepository.remove(this.currentSale.getBatteryType());
-        this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
-                : ASSEMBLY_DELAY_IN_WEEKS;
-        this.isCarCompleteInProduction = true;
+
+        if (this.isBatteryInFire)
+            return;
+
+        setUpForProduction();
     }
 
     public List<Sale> getSalesWaitingList() {
@@ -81,5 +102,16 @@ public class CompleteCarAssemblyLine {
 
     public boolean getIsCarInProduction() {
         return this.isCarCompleteInProduction;
+    }
+
+    private void setUpForProduction() {
+        this.currentSale = this.waitingList.pop();
+        this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
+                : ASSEMBLY_DELAY_IN_WEEKS;
+        this.isCarCompleteInProduction = true;
+    }
+
+    public void setMediator(AssemblyLineMediator assemblyLineMediator) {
+        this.assemblyLineMediator = assemblyLineMediator;
     }
 }

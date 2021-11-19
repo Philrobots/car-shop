@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.evulution.domain.production;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 
 public class ProductionAssembler {

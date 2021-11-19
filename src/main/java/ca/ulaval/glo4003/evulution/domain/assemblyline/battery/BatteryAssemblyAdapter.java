@@ -1,5 +1,6 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 
 public interface BatteryAssemblyAdapter {

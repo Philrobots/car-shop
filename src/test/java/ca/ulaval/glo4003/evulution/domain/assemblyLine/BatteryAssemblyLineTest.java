@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyAdapter;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;

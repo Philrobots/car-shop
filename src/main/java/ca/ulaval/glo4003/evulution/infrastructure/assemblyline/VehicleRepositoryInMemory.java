@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.infrastructure.assemblyline;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 

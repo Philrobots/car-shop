@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.BatteryAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryInformationDto;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,17 +1,22 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 
 import java.util.LinkedList;
 
 public class VehicleAssemblyLine {
-    private final VehicleAssemblyAdapter vehicleAssemblyAdapter;
     private final LinkedList<VehicleProduction> vehicleProductionWaitList = new LinkedList<>();
+
+    private final VehicleAssemblyAdapter vehicleAssemblyAdapter;
     private final VehicleRepository vehicleRepository;
-    private boolean isCarInProduction = false;
     private AssemblyLineMediator assemblyLineMediator;
     private VehicleProduction currentVehicleProduction;
+
+    private boolean isBatteryInFire = false;
+    private boolean isCarInProduction = false;
 
     public VehicleAssemblyLine(VehicleAssemblyAdapter vehicleAssemblyAdapter, VehicleRepository vehicleRepository) {
         this.vehicleAssemblyAdapter = vehicleAssemblyAdapter;
@@ -23,19 +28,16 @@ public class VehicleAssemblyLine {
     }
 
     public void addProduction(VehicleProduction vehicleProduction) {
-        if (isCarInProduction) {
-            this.vehicleProductionWaitList.add(vehicleProduction);
-        } else {
-            this.currentVehicleProduction = vehicleProduction;
-            this.isCarInProduction = true;
-            this.vehicleAssemblyAdapter.newVehicleCommand(vehicleProduction.getTransactionId(),
-                    vehicleProduction.getName());
+        this.vehicleProductionWaitList.add(vehicleProduction);
+        if (!(isCarInProduction || this.isBatteryInFire)) {
+            setupNextProduction();
         }
     }
 
     public void advance() {
-        if (!isCarInProduction)
+        if (!isCarInProduction || this.isBatteryInFire) {
             return;
+        }
 
         this.vehicleAssemblyAdapter.advance();
 
@@ -49,10 +51,31 @@ public class VehicleAssemblyLine {
             if (this.vehicleProductionWaitList.isEmpty()) {
                 this.isCarInProduction = false;
             } else {
-                this.currentVehicleProduction = this.vehicleProductionWaitList.pop();
-                this.vehicleAssemblyAdapter.newVehicleCommand(currentVehicleProduction.getTransactionId(),
-                        currentVehicleProduction.getName());
+                setupNextProduction();
             }
         }
+    }
+
+    public void shutdown() {
+        this.isBatteryInFire = true;
+    }
+
+    public void reactivate() {
+        this.isBatteryInFire = false;
+        if (assemblyLineMediator.getState() == AssemblyState.CAR && !vehicleProductionWaitList.isEmpty())
+            setupNextProduction();
+    }
+
+    public void startNext() {
+        if (!vehicleProductionWaitList.isEmpty())
+            setupNextProduction();
+    }
+
+    private void setupNextProduction() {
+        this.isCarInProduction = true;
+        this.currentVehicleProduction = this.vehicleProductionWaitList.pop();
+        this.vehicleAssemblyAdapter.newVehicleCommand(currentVehicleProduction.getTransactionId(),
+                currentVehicleProduction.getName());
+
     }
 }

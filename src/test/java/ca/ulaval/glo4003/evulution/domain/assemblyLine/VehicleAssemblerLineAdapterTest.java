@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.VehicleAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;

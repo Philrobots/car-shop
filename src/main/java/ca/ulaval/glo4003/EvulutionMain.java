@@ -2,6 +2,7 @@ package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.evulution.Scheduler;
 import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
+import ca.ulaval.glo4003.evulution.api.authorization.SecuredAdminAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithDeliveryIdAuthorizationFilter;
 import ca.ulaval.glo4003.evulution.api.authorization.SecuredWithTransactionIdAuthorizationFilter;
@@ -13,6 +14,7 @@ import ca.ulaval.glo4003.evulution.api.delivery.DeliveryResourceImpl;
 import ca.ulaval.glo4003.evulution.api.login.LoginResource;
 import ca.ulaval.glo4003.evulution.api.login.LoginResourceImpl;
 import ca.ulaval.glo4003.evulution.api.mappers.HTTPExceptionMapper;
+import ca.ulaval.glo4003.evulution.api.productions.ProductionRessource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResourceImpl;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
@@ -23,6 +25,12 @@ import ca.ulaval.glo4003.evulution.domain.account.customer.AccountValidator;
 import ca.ulaval.glo4003.evulution.domain.account.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.account.manager.Manager;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryFactory;
@@ -129,13 +137,15 @@ public class EvulutionMain {
         CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(emailFactory, emailSender,
                 vehicleRepository, batteryRepository);
         AssemblyLineMediator assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine,
-                completeCarAssemblyLine);
+                completeCarAssemblyLine, vehicleAssemblyLine);
         vehicleAssemblyLine.setMediator(assemblyLineMediator);
         batteryAssemblyLine.setMediator(assemblyLineMediator);
+        completeCarAssemblyLine.setMediator(assemblyLineMediator);
 
         // Setup services
-        AssemblyLineService assemblyLineService = new AssemblyLineService(vehicleAssemblyLine, batteryAssemblyLine,
-                completeCarAssemblyLine, new ProductionAssembler());
+        ProductionLine productionLine = new ProductionLine(vehicleAssemblyLine, batteryAssemblyLine,
+                completeCarAssemblyLine, emailFactory, emailSender);
+        AssemblyLineService assemblyLineService = new AssemblyLineService(new ProductionAssembler(), productionLine);
         InvoiceService invoiceService = new InvoiceService(invoiceRepository, saleRepository);
 
         // Setup scheduler
@@ -165,6 +175,8 @@ public class EvulutionMain {
                 bind(loginResource).to(LoginResource.class);
                 bind(saleResource).to(SaleResource.class);
                 bind(deliveryResource).to(DeliveryResource.class);
+                bind(new ProductionRessource(httpExceptionResponseAssembler, assemblyLineService))
+                        .to(ProductionRessource.class);
             }
         };
 
@@ -178,6 +190,8 @@ public class EvulutionMain {
         config.register(createSecuredWithTransactionIdAuthorizationFilter(authorizationService, tokenDtoAssembler,
                 httpExceptionResponseAssembler));
         config.register(createSecuredWithDeliveryIdAuthorizationFilter(authorizationService, tokenDtoAssembler,
+                httpExceptionResponseAssembler));
+        config.register(new SecuredAdminAuthorizationFilter(authorizationService, tokenDtoAssembler,
                 httpExceptionResponseAssembler));
         config.packages("ca.ulaval.glo4003.evulution.api");
 
