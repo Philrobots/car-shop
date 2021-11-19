@@ -3,9 +3,12 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
+import ca.ulaval.glo4003.evulution.domain.email.Email;
+import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class BatteryAssemblyLine {
 
@@ -15,13 +18,16 @@ public class BatteryAssemblyLine {
     private final BatteryRepository batteryRepository;
     private AssemblyLineMediator assemblyLineMediator;
     private BatteryProduction currentBatteryProduction;
+    private final EmailFactory emailFactory;
 
     private boolean isBatteryInProduction = false;
     private boolean isBatteryInFire = false;
 
-    public BatteryAssemblyLine(BatteryAssemblyAdapter batteryAssemblyAdapter, BatteryRepository batteryRepository) {
+    public BatteryAssemblyLine(BatteryAssemblyAdapter batteryAssemblyAdapter, BatteryRepository batteryRepository,
+            EmailFactory emailFactory) {
         this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
         this.batteryRepository = batteryRepository;
+        this.emailFactory = emailFactory;
     }
 
     public void addProduction(BatteryProduction batteryProduction) {
@@ -39,6 +45,7 @@ public class BatteryAssemblyLine {
                 .getStatus(this.currentBatteryProduction.getTransactionId());
 
         if (batteryStatus == AssemblyStatus.ASSEMBLED) {
+            emailFactory.createBatteryBuiltEmail(List.of(this.currentBatteryProduction.getEmail())).send();
             this.batteryRepository.add(currentBatteryProduction.getBatteryType(), currentBatteryProduction);
             this.assemblyLineMediator.notify(this.getClass());
             this.isBatteryInProduction = false;

@@ -5,10 +5,12 @@ import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 public class VehicleProduction {
     private TransactionId transactionId;
     private String name;
+    private String email;
 
-    public VehicleProduction(TransactionId transactionId, String name) {
+    public VehicleProduction(TransactionId transactionId, String name, String email) {
         this.transactionId = transactionId;
         this.name = name;
+        this.email = email;
     }
 
     public TransactionId getTransactionId() {
@@ -17,5 +19,9 @@ public class VehicleProduction {
 
     public String getName() {
         return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

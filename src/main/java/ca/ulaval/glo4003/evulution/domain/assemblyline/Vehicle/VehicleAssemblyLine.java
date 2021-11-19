@@ -3,9 +3,12 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
+import ca.ulaval.glo4003.evulution.domain.email.Email;
+import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class VehicleAssemblyLine {
     private final LinkedList<VehicleProduction> vehicleProductionWaitList = new LinkedList<>();
@@ -14,13 +17,16 @@ public class VehicleAssemblyLine {
     private final VehicleRepository vehicleRepository;
     private AssemblyLineMediator assemblyLineMediator;
     private VehicleProduction currentVehicleProduction;
+    private final EmailFactory emailFactory;
 
     private boolean isBatteryInFire = false;
     private boolean isCarInProduction = false;
 
-    public VehicleAssemblyLine(VehicleAssemblyAdapter vehicleAssemblyAdapter, VehicleRepository vehicleRepository) {
+    public VehicleAssemblyLine(VehicleAssemblyAdapter vehicleAssemblyAdapter, VehicleRepository vehicleRepository,
+            EmailFactory emailFactory) {
         this.vehicleAssemblyAdapter = vehicleAssemblyAdapter;
         this.vehicleRepository = vehicleRepository;
+        this.emailFactory = emailFactory;
     }
 
     public void setMediator(AssemblyLineMediator assemblyLineMediator) {
@@ -45,6 +51,7 @@ public class VehicleAssemblyLine {
                 .getStatus(this.currentVehicleProduction.getTransactionId());
 
         if (carStatus == AssemblyStatus.ASSEMBLED) {
+            emailFactory.createVehicleBuiltEmail(List.of(this.currentVehicleProduction.getEmail())).send();
             this.vehicleRepository.add(currentVehicleProduction.getName(), currentVehicleProduction);
             this.assemblyLineMediator.notify(this.getClass());
 

@@ -6,7 +6,6 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIs
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
-import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
 import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
@@ -19,17 +18,15 @@ public class ProductionLine {
     private final BatteryAssemblyLine batteryAssemblyLine;
     private final CompleteCarAssemblyLine completeCarAssemblyLine;
     private final EmailFactory emailFactory;
-    private final EmailSender emailSender;
     private Set<String> emails = new HashSet<String>();
     private boolean isShutdown = false;
 
     public ProductionLine(VehicleAssemblyLine vehicleAssemblyLine, BatteryAssemblyLine batteryAssemblyLine,
-            CompleteCarAssemblyLine completeCarAssemblyLine, EmailFactory emailFactory, EmailSender emailSender) {
+            CompleteCarAssemblyLine completeCarAssemblyLine, EmailFactory emailFactory) {
         this.vehicleAssemblyLine = vehicleAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeCarAssemblyLine = completeCarAssemblyLine;
         this.emailFactory = emailFactory;
-        this.emailSender = emailSender;
     }
 
     public void addSaleToAssemblyLines(VehicleProduction vehicleProduction, BatteryProduction batteryProduction,
@@ -59,8 +56,7 @@ public class ProductionLine {
     private void sendEmailToConsumers() {
         List<String> recipients = new ArrayList<String>();
         recipients.addAll(this.emails);
-        Email e = this.emailFactory.createAssemblyFireBatteriesEmail(recipients);
-        this.emailSender.sendEmail(e);
+        this.emailFactory.createAssemblyFireBatteriesEmail(recipients).send();
     }
 
     public void reactivate() {

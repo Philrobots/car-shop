@@ -25,7 +25,6 @@ class EmailSenderImplTest {
 
     private EmailSenderImpl emailSenderImpl;
 
-    @Mock
     private Email email;
 
     @BeforeEach
@@ -37,12 +36,9 @@ class EmailSenderImplTest {
     void givenListOfOneValidEmail_whenSendEmail_thenDoesNotThrow() {
         // given
         List<String> recipients = List.of(A_RECIPIENT_EMAIL);
-        BDDMockito.given(email.getRecipients()).willReturn(recipients);
-        BDDMockito.given(email.getSubject()).willReturn(A_SUBJECT);
-        BDDMockito.given(email.getMessage()).willReturn(A_MESSAGE);
 
         // when
-        Executable emailSenderExecution = () -> emailSenderImpl.sendEmail(email);
+        Executable emailSenderExecution = () -> emailSenderImpl.sendEmail(recipients, A_SUBJECT, A_MESSAGE);
 
         // then
         assertDoesNotThrow(emailSenderExecution);
@@ -52,12 +48,9 @@ class EmailSenderImplTest {
     void givenListOfMultipleValidEmail_whenSendEmail_thenDoesNotThrow() {
         // given
         List<String> recipients = List.of(A_RECIPIENT_EMAIL, A_RECIPIENT_EMAIL);
-        BDDMockito.given(email.getRecipients()).willReturn(recipients);
-        BDDMockito.given(email.getSubject()).willReturn(A_SUBJECT);
-        BDDMockito.given(email.getMessage()).willReturn(A_MESSAGE);
 
         // when
-        Executable emailSenderExecution = () -> emailSenderImpl.sendEmail(email);
+        Executable emailSenderExecution = () -> emailSenderImpl.sendEmail(recipients, A_SUBJECT, A_MESSAGE);
 
         // then
         assertDoesNotThrow(emailSenderExecution);
@@ -67,12 +60,9 @@ class EmailSenderImplTest {
     void givenInvalidEmail_whenSendEmail_thenDoesThrow() {
         // given
         List<String> recipients = List.of("invalidEmail");
-        BDDMockito.given(email.getRecipients()).willReturn(recipients);
-        BDDMockito.given(email.getSubject()).willReturn(A_SUBJECT);
-        BDDMockito.given(email.getMessage()).willReturn(A_MESSAGE);
 
         // when
-        Executable emailSenderExecution = () -> emailSenderImpl.sendEmail(email);
+        Executable emailSenderExecution = () -> emailSenderImpl.sendEmail(recipients, A_SUBJECT, A_MESSAGE);
 
         // then
         assertThrows(EmailException.class, emailSenderExecution);

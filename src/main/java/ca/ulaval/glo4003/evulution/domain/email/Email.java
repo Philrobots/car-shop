@@ -6,11 +6,13 @@ public class Email {
     private final List<String> recipients;
     private final String subject;
     private final String message;
+    private final EmailSender emailSender;
 
-    public Email(List<String> recipients, String subject, String message) {
+    public Email(List<String> recipients, String subject, String message, EmailSender emailSender) {
         this.recipients = recipients;
         this.subject = subject;
         this.message = message;
+        this.emailSender = emailSender;
     }
 
     public List<String> getRecipients() {
@@ -23,5 +25,9 @@ public class Email {
 
     public String getMessage() {
         return message;
+    }
+
+    public void send() {
+        emailSender.sendEmail(recipients, subject, message);
     }
 }

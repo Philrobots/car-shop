@@ -5,7 +5,6 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
-import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class CompleteCarAssemblyLineTest {
@@ -27,9 +27,6 @@ class CompleteCarAssemblyLineTest {
     private static final String A_BATTERY_NAME = "AAA";
     private final String AN_EMAIl = "expat.@tiray.com";
     private final LocalDate A_LOCAL_DATE = LocalDate.now();
-
-    @Mock
-    private EmailSender emailSender;
 
     @Mock
     private EmailFactory emailFactory;
@@ -50,8 +47,7 @@ class CompleteCarAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-        completeCarAssemblyLine = new CompleteCarAssemblyLine(emailFactory, emailSender, vehicleRepository,
-                batteryRepository);
+        completeCarAssemblyLine = new CompleteCarAssemblyLine(emailFactory, vehicleRepository, batteryRepository);
     }
 
     @Test
@@ -111,6 +107,7 @@ class CompleteCarAssemblyLineTest {
         completeCarAssemblyLine.setWeeksRemaining(2);
         BDDMockito.given(sale.getEmail()).willReturn(AN_EMAIl);
         BDDMockito.given(sale.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS)).willReturn(A_LOCAL_DATE);
+        BDDMockito.given(emailFactory.createAssemblyDelayEmail(any(), any())).willReturn(email);
 
         // when
         completeCarAssemblyLine.setCurrentSale(sale);
@@ -134,6 +131,6 @@ class CompleteCarAssemblyLineTest {
         completeCarAssemblyLine.advance();
 
         // then
-        Mockito.verify(emailSender).sendEmail(email);
+        Mockito.verify(email).send();
     }
 }

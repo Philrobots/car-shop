@@ -121,7 +121,7 @@ public class EvulutionMain {
 
         // Setup email infra
         EmailSender emailSender = new EmailSenderImpl(EMAIL, EMAIL_PASSWORD);
-        EmailFactory emailFactory = new EmailFactory();
+        EmailFactory emailFactory = new EmailFactory(emailSender);
 
         // Setup assembly lines
         VehicleAssemblyLineAdapter vehicleAssemblyLineAdapter = new VehicleAssemblyLineAdapter(
@@ -130,12 +130,12 @@ public class EvulutionMain {
                 new BasicBatteryAssemblyLine(), JsonFileMapper.parseBatteries());
         VehicleRepository vehicleRepository = new VehicleRepositoryInMemory();
         BatteryRepository batteryRepository = new BatteryRepositoryInMemory();
-        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineAdapter,
+        BatteryAssemblyLine batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineAdapter, batteryRepository,
+                emailFactory);
+        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineAdapter, vehicleRepository,
+                emailFactory);
+        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(emailFactory, vehicleRepository,
                 batteryRepository);
-        VehicleAssemblyLine vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyLineAdapter,
-                vehicleRepository);
-        CompleteCarAssemblyLine completeCarAssemblyLine = new CompleteCarAssemblyLine(emailFactory, emailSender,
-                vehicleRepository, batteryRepository);
         AssemblyLineMediator assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine,
                 completeCarAssemblyLine, vehicleAssemblyLine);
         vehicleAssemblyLine.setMediator(assemblyLineMediator);
@@ -144,7 +144,7 @@ public class EvulutionMain {
 
         // Setup services
         ProductionLine productionLine = new ProductionLine(vehicleAssemblyLine, batteryAssemblyLine,
-                completeCarAssemblyLine, emailFactory, emailSender);
+                completeCarAssemblyLine, emailFactory);
         AssemblyLineService assemblyLineService = new AssemblyLineService(new ProductionAssembler(), productionLine);
         InvoiceService invoiceService = new InvoiceService(invoiceRepository, saleRepository);
 

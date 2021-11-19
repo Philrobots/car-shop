@@ -5,6 +5,8 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyAd
 import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
+import ca.ulaval.glo4003.evulution.domain.email.Email;
+import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +23,9 @@ class VehicleAssemblyLineTest {
     private static final int AN_INT = 1;
     private static final TransactionId A_TRANSACTION_ID = new TransactionId(AN_INT);
     private static final String A_CAR_NAME = "name";
-    private static final VehicleProduction VEHICLE_PRODUCTION = new VehicleProduction(A_TRANSACTION_ID, A_CAR_NAME);
+    private static final String AN_EMAIL = "email@email.com";
+    private static final VehicleProduction VEHICLE_PRODUCTION = new VehicleProduction(A_TRANSACTION_ID, A_CAR_NAME,
+            AN_EMAIL);
 
     private VehicleAssemblyLine vehicleAssemblyLine;
 
@@ -34,9 +38,15 @@ class VehicleAssemblyLineTest {
     @Mock
     private AssemblyLineMediator assemblyLineMediator;
 
+    @Mock
+    private EmailFactory emailFactory;
+
+    @Mock
+    private Email email;
+
     @BeforeEach
     public void setup() {
-        vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyAdapter, vehicleRepository);
+        vehicleAssemblyLine = new VehicleAssemblyLine(vehicleAssemblyAdapter, vehicleRepository, emailFactory);
         vehicleAssemblyLine.setMediator(assemblyLineMediator);
     }
 
@@ -67,6 +77,7 @@ class VehicleAssemblyLineTest {
         // given
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+        when(emailFactory.createVehicleBuiltEmail(any())).thenReturn(email);
 
         // when
         vehicleAssemblyLine.advance();
@@ -82,6 +93,7 @@ class VehicleAssemblyLineTest {
     public void whenAdvance_thenAddsInVehicleRepository() {
         // given
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+        when(emailFactory.createVehicleBuiltEmail(any())).thenReturn(email);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
         // when
@@ -97,6 +109,7 @@ class VehicleAssemblyLineTest {
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+        when(emailFactory.createVehicleBuiltEmail(any())).thenReturn(email);
 
         // when
         vehicleAssemblyLine.advance();

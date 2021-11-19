@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailExceptio
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Properties;
 
 public class EmailSenderImpl implements EmailSender {
@@ -28,16 +29,16 @@ public class EmailSenderImpl implements EmailSender {
         });
     }
 
-    public void sendEmail(Email email) {
-        for (String recipientAddress : email.getRecipients()) {
+    public void sendEmail(List<String> recipients, String subject, String message) {
+        for (String recipientAddress : recipients) {
             try {
-                Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(this.email));
-                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientAddress));
-                message.setSubject(email.getSubject());
-                message.setText(email.getMessage());
+                Message mimeMessage = new MimeMessage(session);
+                mimeMessage.setFrom(new InternetAddress(this.email));
+                mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientAddress));
+                mimeMessage.setSubject(subject);
+                mimeMessage.setText(message);
 
-                Transport.send(message);
+                Transport.send(mimeMessage);
             } catch (MessagingException e) {
                 throw new EmailException();
             }
