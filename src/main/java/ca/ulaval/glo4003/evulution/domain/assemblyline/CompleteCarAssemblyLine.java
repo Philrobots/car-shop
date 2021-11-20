@@ -40,11 +40,9 @@ public class CompleteCarAssemblyLine {
     public void advance() {
 
         if (!isCarCompleteInProduction || isBatteryInFire) {
-            System.out.println("CompleteCarAssemblyLine skipped");
             return;
         }
 
-        System.out.println("CompleteCarAssemblyLine advance with: " + this.currentSale.getEmail());
 
         if (weeksRemaining == 2) {
             LocalDate newExpectedDeliveryDate = this.currentSale.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);

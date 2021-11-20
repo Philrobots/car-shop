@@ -41,7 +41,6 @@ public class VehicleAssemblyLine {
 
     public void advance() {
         if (!isCarInProduction || this.isBatteryInFire) {
-            System.out.println("VehicleAssemblyLine skipped");
             return;
         }
 
@@ -51,7 +50,6 @@ public class VehicleAssemblyLine {
             this.currentVehicleProduction.setEmailSent(true);
         }
 
-        System.out.println("VehicleAssemblyLine advance with: " + this.currentVehicleProduction.getName());
 
         this.vehicleAssemblyAdapter.advance();
 

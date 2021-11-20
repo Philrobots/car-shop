@@ -35,11 +35,9 @@ public class BatteryAssemblyLine {
 
     public void advance() {
         if (!this.isBatteryInProduction || this.isBatteryInFire) {
-            System.out.println("BatteryAssemblyLine skipped");
             return;
         }
 
-        System.out.println("BatteryAssemblyLine advance with: " + this.currentBatteryProduction.getBatteryType());
 
         this.batteryAssemblyLineAdapter.advance();
 

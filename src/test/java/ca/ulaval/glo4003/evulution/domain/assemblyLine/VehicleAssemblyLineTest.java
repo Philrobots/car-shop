@@ -56,7 +56,6 @@ class VehicleAssemblyLineTest {
     @Test
     public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
         // when
-        when(emailFactory.createVehicleBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
@@ -97,7 +96,6 @@ class VehicleAssemblyLineTest {
     public void whenAdvance_thenAddsInVehicleRepository() {
         // given
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createVehicleBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
         // when
@@ -111,7 +109,6 @@ class VehicleAssemblyLineTest {
     public void givenTwoProductions_whenAdvance_thenGetsStatusNotifiesAndAddsCommand() {
         // given
         when(vehicleAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createVehicleBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
         vehicleAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
