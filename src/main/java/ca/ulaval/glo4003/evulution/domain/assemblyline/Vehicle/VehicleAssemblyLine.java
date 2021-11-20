@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
-import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
 
@@ -45,13 +44,19 @@ public class VehicleAssemblyLine {
             return;
         }
 
+        if (!this.currentVehicleProduction.isEmailSent()) {
+            emailFactory.createVehicleBuiltEmail(List.of(this.currentVehicleProduction.getEmail()),
+                this.currentVehicleProduction.getProductionTimeInWeeks()).send();
+            this.currentVehicleProduction.setEmailSent(true);
+        }
+
+
         this.vehicleAssemblyAdapter.advance();
 
         AssemblyStatus carStatus = this.vehicleAssemblyAdapter
                 .getStatus(this.currentVehicleProduction.getTransactionId());
 
         if (carStatus == AssemblyStatus.ASSEMBLED) {
-            emailFactory.createVehicleBuiltEmail(List.of(this.currentVehicleProduction.getEmail())).send();
             this.vehicleRepository.add(currentVehicleProduction.getName(), currentVehicleProduction);
             this.assemblyLineMediator.notify(this.getClass());
 
@@ -83,6 +88,5 @@ public class VehicleAssemblyLine {
         this.currentVehicleProduction = this.vehicleProductionWaitList.pop();
         this.vehicleAssemblyAdapter.newVehicleCommand(currentVehicleProduction.getTransactionId(),
                 currentVehicleProduction.getName());
-
     }
 }

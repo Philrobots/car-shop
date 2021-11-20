@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
-import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
 
@@ -39,13 +38,13 @@ public class BatteryAssemblyLine {
             return;
         }
 
+
         this.batteryAssemblyLineAdapter.advance();
 
         AssemblyStatus batteryStatus = this.batteryAssemblyLineAdapter
                 .getStatus(this.currentBatteryProduction.getTransactionId());
 
         if (batteryStatus == AssemblyStatus.ASSEMBLED) {
-            emailFactory.createBatteryBuiltEmail(List.of(this.currentBatteryProduction.getEmail())).send();
             this.batteryRepository.add(currentBatteryProduction.getBatteryType(), currentBatteryProduction);
             this.assemblyLineMediator.notify(this.getClass());
             this.isBatteryInProduction = false;
@@ -84,7 +83,8 @@ public class BatteryAssemblyLine {
 
     private void setUpNextBatteryForProduction() {
         this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();
-
+        emailFactory.createBatteryBuiltEmail(List.of(this.currentBatteryProduction.getEmail()),
+                this.currentBatteryProduction.getProductionTimeInWeeks()).send();
         this.batteryAssemblyLineAdapter.newBatteryCommand(this.currentBatteryProduction.getTransactionId(),
                 this.currentBatteryProduction.getBatteryType());
 

@@ -25,6 +25,7 @@ public class Scheduler {
             public void run() {
                 assemblyLineService.advanceAssemblyLines();
                 invoiceService.makePayments();
+                System.out.println("-----------------------------------------------");
             }
         }, 0, timeToWaitForOneWeek);
     }

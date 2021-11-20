@@ -15,7 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
+import java.util.List;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,8 +27,9 @@ class BatteryAssemblyLineTest {
     private static final TransactionId A_TRANSACTION_ID = new TransactionId(AN_INT);
     private static final String A_BATTERY_TYPE = "type";
     private static final String AN_EMAIL = "email@email.com";
+    private static final Integer A_PRODUCTION_TIME = 2;
     private static final BatteryProduction A_PRODUCTION_BATTERY = new BatteryProduction(A_TRANSACTION_ID,
-            A_BATTERY_TYPE, AN_EMAIL);
+            A_BATTERY_TYPE, AN_EMAIL, A_PRODUCTION_TIME);
 
     private BatteryAssemblyLine batteryAssemblyLine;
 
@@ -56,7 +58,7 @@ class BatteryAssemblyLineTest {
     public void givenBatteryInProduction_whenAdvanceAssemblyLine_thenAdvanceIsCalledInAdapter() {
         // given
         when(batteryAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createBatteryBuiltEmail(any())).thenReturn(email);
+        when(emailFactory.createBatteryBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         batteryAssemblyLine.addProduction(A_PRODUCTION_BATTERY);
         batteryAssemblyLine.startNext();
 
@@ -71,7 +73,7 @@ class BatteryAssemblyLineTest {
     public void givenBatteryReadyToBeBeAssembled_whenAdvanceAssemblyLine_thenNotifiesMediator() {
         // given
         when(batteryAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createBatteryBuiltEmail(any())).thenReturn(email);
+        when(emailFactory.createBatteryBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         batteryAssemblyLine.addProduction(A_PRODUCTION_BATTERY);
         batteryAssemblyLine.startNext();
 
@@ -86,7 +88,7 @@ class BatteryAssemblyLineTest {
     public void whenAdvance_thenAddsInBatteryRepository() {
         // given
         when(batteryAssemblyAdapter.getStatus(A_TRANSACTION_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-        when(emailFactory.createBatteryBuiltEmail(any())).thenReturn(email);
+        when(emailFactory.createBatteryBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         batteryAssemblyLine.addProduction(A_PRODUCTION_BATTERY);
         batteryAssemblyLine.startNext();
 
@@ -100,6 +102,7 @@ class BatteryAssemblyLineTest {
     @Test
     public void givenBatteryToProduce_whenStartNext_thenNewBatteryCommandIsCalledInAdapter() {
         // given
+        when(emailFactory.createBatteryBuiltEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
         batteryAssemblyLine.addProduction(A_PRODUCTION_BATTERY);
 
         // when

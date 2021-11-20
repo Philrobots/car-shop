@@ -6,11 +6,14 @@ public class VehicleProduction {
     private TransactionId transactionId;
     private String name;
     private String email;
+    private Integer productionTimeInWeeks;
+    private boolean emailSent = false;
 
-    public VehicleProduction(TransactionId transactionId, String name, String email) {
+    public VehicleProduction(TransactionId transactionId, String name, String email, Integer productionTimeInWeeks) {
         this.transactionId = transactionId;
         this.name = name;
         this.email = email;
+        this.productionTimeInWeeks = productionTimeInWeeks;
     }
 
     public TransactionId getTransactionId() {
@@ -23,5 +26,17 @@ public class VehicleProduction {
 
     public String getEmail() {
         return email;
+    }
+
+    public Integer getProductionTimeInWeeks() {
+        return productionTimeInWeeks;
+    }
+
+    public void setEmailSent(boolean emailSent) {
+        this.emailSent = emailSent;
+    }
+
+    public boolean isEmailSent() {
+        return emailSent;
     }
 }

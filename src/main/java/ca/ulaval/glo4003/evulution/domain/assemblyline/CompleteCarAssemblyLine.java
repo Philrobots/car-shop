@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryStatus;
-import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 
@@ -44,6 +43,7 @@ public class CompleteCarAssemblyLine {
             return;
         }
 
+
         if (weeksRemaining == 2) {
             LocalDate newExpectedDeliveryDate = this.currentSale.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);
             emailFactory.createAssemblyDelayEmail(List.of(this.currentSale.getEmail()), newExpectedDeliveryDate).send();
@@ -51,7 +51,6 @@ public class CompleteCarAssemblyLine {
         } else if (weeksRemaining == 1) {
             this.weeksRemaining--;
         } else if (weeksRemaining == 0) {
-            emailFactory.createVehicleCompletedEmail(List.of(this.currentSale.getEmail())).send();
             this.currentSale.setDeliveryStatus(DeliveryStatus.SHIPPED);
             this.vehicleRepository.remove(this.currentSale.getCarName());
             this.batteryRepository.remove(this.currentSale.getBatteryType());
@@ -103,6 +102,7 @@ public class CompleteCarAssemblyLine {
         this.currentSale = this.waitingList.pop();
         this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
                 : ASSEMBLY_DELAY_IN_WEEKS;
+        emailFactory.createVehicleCompletedEmail(List.of(this.currentSale.getEmail()), this.weeksRemaining).send();
         this.isCarCompleteInProduction = true;
     }
 
