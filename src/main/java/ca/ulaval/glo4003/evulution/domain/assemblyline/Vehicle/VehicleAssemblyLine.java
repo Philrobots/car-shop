@@ -79,10 +79,9 @@ public class VehicleAssemblyLine {
     private void setupNextProduction() {
         this.isCarInProduction = true;
         this.currentVehicleProduction = this.vehicleProductionWaitList.pop();
-        emailFactory.createVehicleBuiltEmail(List.of(this.currentVehicleProduction.getEmail()),
-                this.currentVehicleProduction.getProductionTimeInWeeks()).send();
         this.vehicleAssemblyAdapter.newVehicleCommand(currentVehicleProduction.getTransactionId(),
                 currentVehicleProduction.getName());
-
+        emailFactory.createVehicleBuiltEmail(List.of(this.currentVehicleProduction.getEmail()),
+            this.currentVehicleProduction.getProductionTimeInWeeks()).send();
     }
 }
