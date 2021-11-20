@@ -7,6 +7,7 @@ public class VehicleProduction {
     private String name;
     private String email;
     private Integer productionTimeInWeeks;
+    private boolean emailSent = false;
 
     public VehicleProduction(TransactionId transactionId, String name, String email, Integer productionTimeInWeeks) {
         this.transactionId = transactionId;
@@ -29,5 +30,13 @@ public class VehicleProduction {
 
     public Integer getProductionTimeInWeeks() {
         return productionTimeInWeeks;
+    }
+
+    public void setEmailSent(boolean emailSent) {
+        this.emailSent = emailSent;
+    }
+
+    public boolean isEmailSent() {
+        return emailSent;
     }
 }

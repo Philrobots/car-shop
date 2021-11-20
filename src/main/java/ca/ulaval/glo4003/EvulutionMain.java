@@ -24,7 +24,8 @@ import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
 import ca.ulaval.glo4003.evulution.domain.account.customer.AccountValidator;
 import ca.ulaval.glo4003.evulution.domain.account.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.account.manager.Manager;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.*;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
@@ -93,7 +94,7 @@ public class EvulutionMain {
 
     public static Manager Manager = new Manager(MANAGER_EMAIL, MANAGER_PASSWORD);
 
-    public static int equivalenceOfOneWeekInSeconds = 30;
+    public static int equivalenceOfOneWeekInSeconds = 10;
 
     public static void main(String[] args) throws Exception {
         // Load env

@@ -41,8 +41,17 @@ public class VehicleAssemblyLine {
 
     public void advance() {
         if (!isCarInProduction || this.isBatteryInFire) {
+            System.out.println("VehicleAssemblyLine skipped");
             return;
         }
+
+        if (!this.currentVehicleProduction.isEmailSent()) {
+            emailFactory.createVehicleBuiltEmail(List.of(this.currentVehicleProduction.getEmail()),
+                this.currentVehicleProduction.getProductionTimeInWeeks()).send();
+            this.currentVehicleProduction.setEmailSent(true);
+        }
+
+        System.out.println("VehicleAssemblyLine advance with: " + this.currentVehicleProduction.getName());
 
         this.vehicleAssemblyAdapter.advance();
 
@@ -81,7 +90,5 @@ public class VehicleAssemblyLine {
         this.currentVehicleProduction = this.vehicleProductionWaitList.pop();
         this.vehicleAssemblyAdapter.newVehicleCommand(currentVehicleProduction.getTransactionId(),
                 currentVehicleProduction.getName());
-        emailFactory.createVehicleBuiltEmail(List.of(this.currentVehicleProduction.getEmail()),
-            this.currentVehicleProduction.getProductionTimeInWeeks()).send();
     }
 }
