@@ -50,6 +50,7 @@ public class SaleService {
     }
 
     public SaleCreatedDto initSale(TokenDto tokenDto) {
+        // TODO salefactory a le token repo et le token assembler, juste a caller create de salefactory
         Token token = tokenAssembler.dtoToToken(tokenDto);
         String email = tokenRepository.getEmail(token);
         Sale sale = saleFactory.create(email);
@@ -69,6 +70,7 @@ public class SaleService {
         Sale sale = this.saleRepository.getSale(transactionId);
         Battery battery = this.batteryFactory.create(chooseBatteryDto.type);
         sale.chooseBattery(battery);
+        // TODO stocker la batterie dans un repository laisser l'object battery faire les calculs ( autonomie )
         Integer estimatedRange = sale.getBatteryAutonomy();
         return estimatedRangeAssembler.EstimatedRangeToDto(estimatedRange);
     }

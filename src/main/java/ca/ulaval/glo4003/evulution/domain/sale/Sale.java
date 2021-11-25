@@ -16,6 +16,8 @@ import java.time.LocalDate;
 
 public class Sale {
     private final String email;
+    // TODO renommer transaction id pour sale id
+    // TODO devrait juste avoir les prix et les customerID et le invoice
     private final TransactionId transactionId;
     private final Delivery delivery;
     private Car car;
