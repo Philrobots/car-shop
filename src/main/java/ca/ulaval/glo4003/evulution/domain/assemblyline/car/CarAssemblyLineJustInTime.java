@@ -35,7 +35,7 @@ public class CarAssemblyLineJustInTime implements CarAssemblyLine {
 
     public void addProduction(CarProduction carProduction) throws EmailException {
         this.carProductionWaitList.add(carProduction);
-        if (!(isCarInProduction || this.isBatteryInFire)) {
+        if (!(this.isCarInProduction || this.isBatteryInFire)) {
             setupNextProduction();
         }
     }
@@ -45,7 +45,7 @@ public class CarAssemblyLineJustInTime implements CarAssemblyLine {
     }
 
     public void advance() throws EmailException {
-        if (!isCarInProduction) {
+        if (!this.isCarInProduction) {
             this.createCarInTime();
             return;
         }
@@ -54,10 +54,10 @@ public class CarAssemblyLineJustInTime implements CarAssemblyLine {
             return;
         }
 
-        boolean isCarAssembled = currentCarProduction.advance(carAssemblyAdapter);
+        boolean isCarAssembled = this.currentCarProduction.advance(carAssemblyAdapter);
 
         if (isCarAssembled) {
-            this.carProductionRepository.add(currentCarProduction);
+            this.carProductionRepository.add(this.currentCarProduction);
             this.assemblyLineMediator.notify(this.getClass());
 
             if (this.carProductionWaitList.isEmpty()) {
@@ -74,19 +74,19 @@ public class CarAssemblyLineJustInTime implements CarAssemblyLine {
 
     public void reactivate() throws EmailException {
         this.isBatteryInFire = false;
-        if (assemblyLineMediator.getState() == AssemblyState.CAR && !carProductionWaitList.isEmpty())
+        if (this.assemblyLineMediator.getState() == AssemblyState.CAR && !this.carProductionWaitList.isEmpty())
             setupNextProduction();
     }
 
     public void startNext() throws EmailException {
-        if (!carProductionWaitList.isEmpty())
+        if (!this.carProductionWaitList.isEmpty())
             setupNextProduction();
     }
 
     private void setupNextProduction() throws EmailException {
         this.isCarInProduction = true;
         this.currentCarProduction = this.carProductionWaitList.pop();
-        this.currentCarProduction.sendEmail(emailFactory);
-        this.currentCarProduction.newCarCommand(carAssemblyAdapter);
+        this.currentCarProduction.sendEmail(this.emailFactory);
+        this.currentCarProduction.newCarCommand(this.carAssemblyAdapter);
     }
 }
