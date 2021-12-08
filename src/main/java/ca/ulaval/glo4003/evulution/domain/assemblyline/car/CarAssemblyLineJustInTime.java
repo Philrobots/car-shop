@@ -10,7 +10,7 @@ import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailExceptio
 
 import java.util.LinkedList;
 
-public class CarAssemblyLineSequential implements CarAssemblyLine {
+public class CarAssemblyLineJustInTime implements CarAssemblyLine {
 
     private final LinkedList<CarProduction> carProductionWaitList = new LinkedList<>();
 
@@ -22,7 +22,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     private boolean isBatteryInFire = false;
     private boolean isCarInProduction = false;
 
-    public CarAssemblyLineSequential(CarAssemblyAdapter carAssemblyAdapter,
+    public CarAssemblyLineJustInTime(CarAssemblyAdapter carAssemblyAdapter,
             CarProductionRepository carProductionRepository, EmailFactory emailFactory) {
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.carProductionRepository = carProductionRepository;
@@ -40,8 +40,17 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
         }
     }
 
+    private void createCarInTime() {
+
+    }
+
     public void advance() throws EmailException {
-        if (!isCarInProduction || this.isBatteryInFire) {
+        if (!isCarInProduction) {
+            this.createCarInTime();
+            return;
+        }
+
+        if (this.isBatteryInFire) {
             return;
         }
 

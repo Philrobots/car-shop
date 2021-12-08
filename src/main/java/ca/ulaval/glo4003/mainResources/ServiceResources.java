@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.mainResources;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.switchProduction.ProductionSwitcher;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleValidator;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
@@ -20,8 +21,8 @@ public class ServiceResources {
     public ServiceResources(FactoryResources factoryResources, RepositoryResources repositoryResources,
             ProductionLineResources productionLineResources, AssemblerResources assemblerResources,
             SaleDomainServiceResources saleDomainServiceResources, SaleValidator saleValidator,
-            InvoicePayment invoicePayment) {
-        assemblyLineService = new AssemblyLineService(productionLineResources.getProductionLine());
+            InvoicePayment invoicePayment, ProductionSwitcher productionSwitcher) {
+        assemblyLineService = new AssemblyLineService(productionLineResources.getProductionLine(), productionSwitcher);
 
         deliveryService = new DeliveryService(factoryResources.getDeliveryIdFactory(),
                 factoryResources.getDeliveryDetailsFactory(), invoicePayment,

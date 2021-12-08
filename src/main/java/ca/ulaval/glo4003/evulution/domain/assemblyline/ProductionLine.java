@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSeq;
@@ -23,7 +24,7 @@ import java.util.*;
 
 public class ProductionLine {
 
-    private final CarAssemblyLineSequential carAssemblyLine;
+    private CarAssemblyLine carAssemblyLine;
     private final BatteryAssemblyLineSequential batteryAssemblyLine;
     private final CompleteAssemblyLineSeq completeAssemblyLine;
     private ManufactureRepository manufactureRepository;
@@ -36,12 +37,12 @@ public class ProductionLine {
     private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
     private ProductionType productionType = ProductionType.SEQUENTIAL;
 
-    public ProductionLine(CarAssemblyLineSequential carAssemblyLine, BatteryAssemblyLineSequential batteryAssemblyLine,
-                          CompleteAssemblyLineSeq completeAssemblyLine, ManufactureRepository manufactureRepository,
-                          SaleDomainService saleDomainService, EmailFactory emailFactory,
-                          BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
-                          CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
-        this.carAssemblyLine = carAssemblyLine;
+    public ProductionLine(CarAssemblyLineSequential carAssemblyLineSequential,
+            BatteryAssemblyLineSequential batteryAssemblyLine, CompleteAssemblyLineSeq completeAssemblyLine,
+            ManufactureRepository manufactureRepository, SaleDomainService saleDomainService, EmailFactory emailFactory,
+            BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
+            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+        this.carAssemblyLine = carAssemblyLineSequential;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
         this.manufactureRepository = manufactureRepository;
@@ -103,4 +104,7 @@ public class ProductionLine {
         this.isShutdown = false;
     }
 
+    public void setCarAssemblyLine(CarAssemblyLine carAssemblyLine) {
+        this.carAssemblyLine = carAssemblyLine;
+    }
 }

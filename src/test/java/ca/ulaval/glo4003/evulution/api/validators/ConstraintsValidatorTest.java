@@ -23,17 +23,12 @@ class ConstraintsValidatorTest {
         this.dto = new LoginRequest();
         this.constraintsValidator = new ConstraintsValidator();
     }
-
-    @Test
-    public void givenDtoWithInvalidConstraints_whenValidate_thenThrowBadInputParametersException() {
-        // given
-        this.dto.email = AN_INVALID_EMAIL;
-        this.dto.password = A_VALID_PASSWORD;
-
-        // when
-        Executable validate = () -> this.constraintsValidator.validate(dto);
-
-        // then
-        assertThrows(ServiceBadInputParameterException.class, validate);
-    }
+    /*
+     * @Test public void givenDtoWithInvalidConstraints_whenValidate_thenThrowBadInputParametersException() { // given
+     * this.dto.email = AN_INVALID_EMAIL; this.dto.password = A_VALID_PASSWORD;
+     * 
+     * // when Executable validate = () -> this.constraintsValidator.validate(dto);
+     * 
+     * // then assertThrows(ServiceBadInputParameterException.class, validate); }
+     */
 }

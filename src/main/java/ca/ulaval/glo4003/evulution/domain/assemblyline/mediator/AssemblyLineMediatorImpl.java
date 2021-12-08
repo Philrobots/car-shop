@@ -13,8 +13,8 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
     private CarAssemblyLineSequential carAssemblyLine;
     private AssemblyState state = AssemblyState.CAR;
 
-    public AssemblyLineMediatorImpl(BatteryAssemblyLineSequential batteryAssemblyLine, CompleteAssemblyLineSeq completeAssemblyLine,
-                                    CarAssemblyLineSequential carAssemblyLine) {
+    public AssemblyLineMediatorImpl(BatteryAssemblyLineSequential batteryAssemblyLine,
+            CompleteAssemblyLineSeq completeAssemblyLine, CarAssemblyLineSequential carAssemblyLine) {
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
         this.carAssemblyLine = carAssemblyLine;

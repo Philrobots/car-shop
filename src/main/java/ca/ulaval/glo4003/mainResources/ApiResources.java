@@ -91,7 +91,8 @@ public class ApiResources {
                 bind(saleResource).to(SaleResource.class);
                 bind(deliveryResource).to(DeliveryResource.class);
                 bind(new ProductionResource(exceptionMapperResources.getProductionExceptionAssembler(),
-                        serviceResources.getAssemblyLineService(), new SwitchProductionsDtoAssembler())).to(ProductionResource.class);
+                        serviceResources.getAssemblyLineService(), new SwitchProductionsDtoAssembler()))
+                                .to(ProductionResource.class);
             }
         };
 

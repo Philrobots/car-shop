@@ -28,7 +28,7 @@ public class CompleteAssemblyLineSeq {
     private boolean isBatteryInFire = false;
 
     public CompleteAssemblyLineSeq(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
-                                   BatteryProductionRepository batteryProductionRepository) {
+            BatteryProductionRepository batteryProductionRepository) {
         this.emailFactory = emailFactory;
         this.carProductionRepository = carProductionRepository;
         this.batteryProductionRepository = batteryProductionRepository;

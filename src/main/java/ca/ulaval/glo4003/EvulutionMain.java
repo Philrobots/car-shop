@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.evulution.Scheduler;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
 import ca.ulaval.glo4003.evulution.domain.account.AccountValidator;
 import ca.ulaval.glo4003.evulution.domain.account.manager.Manager;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.switchProduction.ProductionSwitcher;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryValidator;
 import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
@@ -90,7 +91,8 @@ public class EvulutionMain {
 
         // SERVICES --------------------------------------------------------------------------------------------------
         ServiceResources serviceResources = new ServiceResources(factoryResources, repositoryResources,
-                productionLineResources, assemblerResources, saleDomainServiceResources, saleValidator, invoicePayment);
+                productionLineResources, assemblerResources, saleDomainServiceResources, saleValidator, invoicePayment,
+                productionLineResources.getProductionSwitcher());
 
         // RESOURCES API ---------------------------------------------------------------------------------------------
         ApiResources apiResources = new ApiResources(factoryResources, repositoryResources, assemblerResources,
