@@ -15,6 +15,7 @@ import ca.ulaval.glo4003.evulution.api.login.assembler.LoginDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.login.assembler.TokenResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.mappers.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.productions.ProductionResource;
+import ca.ulaval.glo4003.evulution.api.productions.assembler.SwitchProductionsDtoAssembler;
 import ca.ulaval.glo4003.evulution.api.sale.SaleResource;
 import ca.ulaval.glo4003.evulution.api.sale.assemblers.*;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
@@ -90,7 +91,7 @@ public class ApiResources {
                 bind(saleResource).to(SaleResource.class);
                 bind(deliveryResource).to(DeliveryResource.class);
                 bind(new ProductionResource(exceptionMapperResources.getProductionExceptionAssembler(),
-                        serviceResources.getAssemblyLineService())).to(ProductionResource.class);
+                        serviceResources.getAssemblyLineService(), new SwitchProductionsDtoAssembler())).to(ProductionResource.class);
             }
         };
 

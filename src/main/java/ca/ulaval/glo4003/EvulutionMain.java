@@ -33,7 +33,7 @@ public class EvulutionMain {
 
     public static Manager manager = new Manager(MANAGER_EMAIL, MANAGER_PASSWORD);
 
-    public static int equivalenceOfOneWeekInSeconds = 30;
+    public static int equivalenceOfOneWeekInSeconds = 5;
 
     public static void main(String[] args) throws Exception {
         // Load env

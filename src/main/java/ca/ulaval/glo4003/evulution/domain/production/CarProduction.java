@@ -27,7 +27,7 @@ public class CarProduction {
     }
 
     public void sendEmail(EmailFactory emailFactory) throws EmailException {
-        emailFactory.createBatteryBatteryInProductionEmail(List.of(email), carProductionTimeInWeeks).send();
+        emailFactory.createVehicleInProductionEmail(List.of(email), carProductionTimeInWeeks).send();
     }
 
     public AssemblyStatus advance(CarAssemblyAdapter carAssemblyAdapter) {

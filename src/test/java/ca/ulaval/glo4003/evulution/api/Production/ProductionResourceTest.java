@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.api.Production;
 
 import ca.ulaval.glo4003.evulution.api.mappers.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.api.productions.ProductionResource;
+import ca.ulaval.glo4003.evulution.api.productions.assembler.SwitchProductionsDtoAssembler;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,12 @@ public class ProductionResourceTest {
     @Mock
     private AssemblyLineService assemblyLineService;
 
+    @Mock
+    private SwitchProductionsDtoAssembler switchProductionsDtoAssembler;
+
     @BeforeEach
     public void setUp() {
-        productionResource = new ProductionResource(httpExceptionResponseAssembler, assemblyLineService);
+        productionResource = new ProductionResource(httpExceptionResponseAssembler, assemblyLineService, switchProductionsDtoAssembler);
     }
 
     @Test

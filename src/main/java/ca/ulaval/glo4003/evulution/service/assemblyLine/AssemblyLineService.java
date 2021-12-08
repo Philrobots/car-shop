@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.service.assemblyLine.dto.SwitchProductionsDto;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.exceptions.ServiceErrorException;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadOrderOfOperationsException;
 
@@ -33,5 +34,9 @@ public class AssemblyLineService {
         } catch (EmailException e) {
             throw new ServiceErrorException();
         }
+    }
+
+    public void switchProductions(SwitchProductionsDto switchProductionsDto) {
+
     }
 }
