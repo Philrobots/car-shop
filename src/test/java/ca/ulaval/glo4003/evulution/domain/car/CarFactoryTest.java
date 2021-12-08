@@ -1,17 +1,11 @@
 package ca.ulaval.glo4003.evulution.domain.car;
 
-import ca.ulaval.glo4003.evulution.domain.car.exceptions.BadCarSpecsException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class CarFactoryTest {
@@ -33,26 +27,26 @@ class CarFactoryTest {
     public void setup() {
         carFactory = new CarFactory(Collections.singletonList(modelMapperDto));
     } /*
-       * 
-       * @Test public void givenGoodSpecs_whenCreate_thenReturnsCar() throws BadCarSpecsException { // given
-       * BDDMockito.given(modelMapperDto.name).willReturn(A_GOOD_NAME);
-       * BDDMockito.given(modelMapperDto.style).willReturn(A_STYLE);
-       * BDDMockito.given(modelMapperDto.effeciency_equivalence_rate).willReturn(AN_EFFICIENCY_EQUIVALENCE_RATE);
-       * BDDMockito.given(modelMapperDto.base_price).willReturn(A_PRICE);
-       * BDDMockito.given(modelMapperDto.time_to_produce).willReturn(A_TIME_TO_PRODUCE);
-       * 
-       * // when Car car = carFactory.create(A_GOOD_NAME, A_GOOD_COLOR);
-       * 
-       * // then assertNotNull(car); }
-       * 
-       * @Test public void givenBadName_whenCreate_thenThrowsBadCarSpecsException() { // given
-       * BDDMockito.given(modelMapperDto.name).willReturn(A_GOOD_NAME);
-       * 
-       * // then assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_BAD_NAME, A_GOOD_COLOR)); }
-       * 
-       * @Test public void givenBadColor_whenCreate_thenThrowsBadCarSpecsException() { // given
-       * BDDMockito.given(modelMapperDto.name).willReturn(A_GOOD_NAME);
-       * 
-       * // then assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_GOOD_NAME, A_BAD_COLOR)); }
-       */
+     *
+     * @Test public void givenGoodSpecs_whenCreate_thenReturnsCar() throws BadCarSpecsException { // given
+     * BDDMockito.given(modelMapperDto.name).willReturn(A_GOOD_NAME);
+     * BDDMockito.given(modelMapperDto.style).willReturn(A_STYLE);
+     * BDDMockito.given(modelMapperDto.effeciency_equivalence_rate).willReturn(AN_EFFICIENCY_EQUIVALENCE_RATE);
+     * BDDMockito.given(modelMapperDto.base_price).willReturn(A_PRICE);
+     * BDDMockito.given(modelMapperDto.time_to_produce).willReturn(A_TIME_TO_PRODUCE);
+     *
+     * // when Car car = carFactory.create(A_GOOD_NAME, A_GOOD_COLOR);
+     *
+     * // then assertNotNull(car); }
+     *
+     * @Test public void givenBadName_whenCreate_thenThrowsBadCarSpecsException() { // given
+     * BDDMockito.given(modelMapperDto.name).willReturn(A_GOOD_NAME);
+     *
+     * // then assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_BAD_NAME, A_GOOD_COLOR)); }
+     *
+     * @Test public void givenBadColor_whenCreate_thenThrowsBadCarSpecsException() { // given
+     * BDDMockito.given(modelMapperDto.name).willReturn(A_GOOD_NAME);
+     *
+     * // then assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_GOOD_NAME, A_BAD_COLOR)); }
+     */
 }

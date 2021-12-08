@@ -1,22 +1,22 @@
 [
-    {
-        "location": "Vachon",
-        "dropoff_time": "09:00",
-        "dropoff_day": "MONDAY"
-    },
-    {
-        "location": "PEPS",
-        "dropoff_time": "09:10",
-        "dropoff_day": "FRIDAY"
-    },
-    {
-        "location": "Desjardins",
-        "dropoff_time": "09:30",
-        "dropoff_day": "TUESDAY"
-    },
-    {
-        "location": "Frabrique",
-        "dropoff_time": "11:00",
-        "dropoff_day": "THURSDAY"
-    }
+  {
+    "location": "Vachon",
+    "dropoff_time": "09:00",
+    "dropoff_day": "MONDAY"
+  },
+  {
+    "location": "PEPS",
+    "dropoff_time": "09:10",
+    "dropoff_day": "FRIDAY"
+  },
+  {
+    "location": "Desjardins",
+    "dropoff_time": "09:30",
+    "dropoff_day": "TUESDAY"
+  },
+  {
+    "location": "Frabrique",
+    "dropoff_time": "11:00",
+    "dropoff_day": "THURSDAY"
+  }
 ]

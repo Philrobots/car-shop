@@ -18,9 +18,9 @@ public class ServiceResources {
     private final CustomerService customerService;
 
     public ServiceResources(FactoryResources factoryResources, RepositoryResources repositoryResources,
-            ProductionLineResources productionLineResources, AssemblerResources assemblerResources,
-            SaleDomainServiceResources saleDomainServiceResources, SaleValidator saleValidator,
-            InvoicePayment invoicePayment) {
+                            ProductionLineResources productionLineResources, AssemblerResources assemblerResources,
+                            SaleDomainServiceResources saleDomainServiceResources, SaleValidator saleValidator,
+                            InvoicePayment invoicePayment) {
         assemblyLineService = new AssemblyLineService(productionLineResources.getProductionLine());
 
         deliveryService = new DeliveryService(factoryResources.getDeliveryIdFactory(),

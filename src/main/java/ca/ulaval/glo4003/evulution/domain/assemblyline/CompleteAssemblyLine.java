@@ -28,7 +28,7 @@ public class CompleteAssemblyLine {
     private boolean isBatteryInFire = false;
 
     public CompleteAssemblyLine(EmailFactory emailFactory, VehicleRepository vehicleRepository,
-            BatteryRepository batteryRepository) {
+                                BatteryRepository batteryRepository) {
         this.emailFactory = emailFactory;
         this.vehicleRepository = vehicleRepository;
         this.batteryRepository = batteryRepository;

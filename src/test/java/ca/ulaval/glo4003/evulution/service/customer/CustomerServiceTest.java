@@ -41,24 +41,24 @@ public class CustomerServiceTest {
      * CustomerAlreadyExistsException, InvalidDateFormatException, BadInputParameterException, AccountNotFoundException
      * { // given setUpCustomerDto(); BDDMockito.given(customerFactory.create(A_NAME, A_BIRTHDATE, AN_EMAIL, A_PASSWORD,
      * A_GENDER)) .willReturn(customer);
-     * 
+     *
      * // when this.customerService.addCustomer(customerDto);
-     * 
+     *
      * // then Mockito.verify(accountRepository).addAccount(customer); }
-     * 
+     *
      * @Test public void givenCustomerDto_whenAddCustomer_thenCustomerFactoryCreates() throws
      * InvalidDateFormatException, BadInputParameterException, CustomerAlreadyExistsException, AccountNotFoundException
      * { // given setUpCustomerDto();
-     * 
+     *
      * // when this.customerService.addCustomer(customerDto);
-     * 
+     *
      * // then Mockito.verify(customerFactory).create(A_NAME, A_BIRTHDATE, AN_EMAIL, A_PASSWORD, A_GENDER); }
-     * 
+     *
      * private void setUpCustomerDto() { BDDMockito.given(customerDto.name).willReturn(A_NAME);
      * BDDMockito.given(customerDto.birthdate).willReturn(A_BIRTHDATE);
      * BDDMockito.given(customerDto.email).willReturn(AN_EMAIL);
      * BDDMockito.given(customerDto.password).willReturn(A_PASSWORD);
      * BDDMockito.given(customerDto.sex).willReturn(A_GENDER); }
-     * 
+     *
      */
 }

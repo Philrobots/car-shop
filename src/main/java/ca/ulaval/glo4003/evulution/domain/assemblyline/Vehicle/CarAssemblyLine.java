@@ -21,7 +21,7 @@ public class CarAssemblyLine {
     private boolean isCarInProduction = false;
 
     public CarAssemblyLine(CarAssemblyAdapter carAssemblyAdapter, VehicleRepository vehicleRepository,
-            EmailFactory emailFactory) {
+                           EmailFactory emailFactory) {
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.vehicleRepository = vehicleRepository;
         this.emailFactory = emailFactory;

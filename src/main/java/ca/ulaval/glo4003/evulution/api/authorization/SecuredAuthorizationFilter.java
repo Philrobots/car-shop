@@ -21,7 +21,7 @@ public class SecuredAuthorizationFilter implements ContainerRequestFilter {
     private final HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     public SecuredAuthorizationFilter(AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+                                      HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         this.authorizationService = authorizationService;
         this.tokenDtoAssembler = tokenDtoAssembler;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;

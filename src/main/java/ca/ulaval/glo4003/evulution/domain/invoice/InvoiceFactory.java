@@ -12,14 +12,14 @@ public class InvoiceFactory {
     public Invoice create(int bank_no, int account_no, String frequency, BigDecimal balance)
             throws InvalidInvoiceException {
         switch (frequency) {
-        case "monthly":
-            return new Invoice(bank_no, account_no, Frequency.MONTHLY, new Monthly(balance));
-        case "biweekly":
-            return new Invoice(bank_no, account_no, Frequency.BIWEEKLY, new Biweekly(balance));
-        case "weekly":
-            return new Invoice(bank_no, account_no, Frequency.WEEKLY, new Weekly(balance));
-        default:
-            throw new InvalidInvoiceException();
+            case "monthly":
+                return new Invoice(bank_no, account_no, Frequency.MONTHLY, new Monthly(balance));
+            case "biweekly":
+                return new Invoice(bank_no, account_no, Frequency.BIWEEKLY, new Biweekly(balance));
+            case "weekly":
+                return new Invoice(bank_no, account_no, Frequency.WEEKLY, new Weekly(balance));
+            default:
+                throw new InvalidInvoiceException();
         }
     }
 }

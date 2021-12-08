@@ -21,7 +21,7 @@ public class BatteryAssemblyLine {
     private boolean isBatteryInFire = false;
 
     public BatteryAssemblyLine(BatteryAssemblyAdapter batteryAssemblyAdapter, BatteryRepository batteryRepository,
-            EmailFactory emailFactory) {
+                               EmailFactory emailFactory) {
         this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
         this.batteryRepository = batteryRepository;
         this.emailFactory = emailFactory;

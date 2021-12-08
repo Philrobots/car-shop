@@ -46,9 +46,9 @@ public class ApiResources {
     private final SaleValidator saleValidator;
 
     public ApiResources(FactoryResources factoryResources, RepositoryResources repositoryResources,
-            AssemblerResources assemblerResources, ExceptionMapperResources exceptionMapperResources,
-            ServiceResources serviceResources, ConstraintsValidator constraintsValidator,
-            AccountValidator accountValidator, DeliveryValidator deliveryValidator, SaleValidator saleValidator) {
+                        AssemblerResources assemblerResources, ExceptionMapperResources exceptionMapperResources,
+                        ServiceResources serviceResources, ConstraintsValidator constraintsValidator,
+                        AccountValidator accountValidator, DeliveryValidator deliveryValidator, SaleValidator saleValidator) {
 
         this.exceptionMapperResources = exceptionMapperResources;
         this.serviceResources = serviceResources;
@@ -78,6 +78,60 @@ public class ApiResources {
                 exceptionMapperResources.getDeliveryExceptionAssembler(),
                 assemblerResources.getDeliveryCompletedResponseAssembler(),
                 assemblerResources.getDeliveryLocationDtoAssembler());
+    }
+
+    private static SecuredWithDeliveryIdAuthorizationFilter createSecuredWithDeliveryIdAuthorizationFilter(
+            AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+        return new SecuredWithDeliveryIdAuthorizationFilter(authorizationService, tokenDtoAssembler,
+                httpExceptionResponseAssembler);
+    }
+
+    private static SecuredWithSaleIdAuthorizationFilter createSecuredWithSaleIdAuthorizationFilter(
+            AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+        return new SecuredWithSaleIdAuthorizationFilter(authorizationService, tokenDtoAssembler,
+                httpExceptionResponseAssembler);
+    }
+
+    private static CustomerResource createAccountResource(CustomerService customerService,
+                                                          HTTPExceptionResponseAssembler httpExceptionResponseAssembler, CustomerDtoAssembler customerDtoAssembler,
+                                                          ConstraintsValidator constraintsValidator) {
+        return new CustomerResource(customerService, httpExceptionResponseAssembler, customerDtoAssembler,
+                constraintsValidator);
+
+    }
+
+    private static LoginResource createLoginResource(LoginService loginService,
+                                                     HTTPExceptionResponseAssembler httpExceptionResponseAssembler, LoginDtoAssembler loginDtoAssembler,
+                                                     TokenResponseAssembler tokenResponseAssembler, ConstraintsValidator constraintsValidator) {
+        return new LoginResource(loginService, httpExceptionResponseAssembler, loginDtoAssembler,
+                tokenResponseAssembler, constraintsValidator);
+    }
+
+    private static SaleResource createSaleResource(SaleService saleService, TokenDtoAssembler tokenDtoAssembler,
+                                                   HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ChooseCarDtoAssembler chooseCarDtoAssembler,
+                                                   ChooseBatteryDtoAssembler chooseBatteryDtoAssembler,
+                                                   EstimatedRangeResponseAssembler estimatedRangeResponseAssembler,
+                                                   SaleResponseAssembler saleResponseAssembler, InvoiceDtoAssembler invoiceDtoAssembler,
+                                                   ConstraintsValidator constraintsValidator, ManufactureService manufactureService) {
+        return new SaleResource(saleService, tokenDtoAssembler, httpExceptionResponseAssembler, chooseCarDtoAssembler,
+                chooseBatteryDtoAssembler, estimatedRangeResponseAssembler, saleResponseAssembler, invoiceDtoAssembler,
+                constraintsValidator, manufactureService);
+    }
+
+    private static DeliveryResource createDeliveryResource(DeliveryService deliveryService,
+                                                           ConstraintsValidator constraintsValidator, HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
+                                                           DeliveryCompletedResponseAssembler deliveryCompletedResponseAssembler,
+                                                           DeliveryLocationDtoAssembler deliveryLocationDtoAssembler) {
+        return new DeliveryResource(deliveryService, constraintsValidator, httpExceptionResponseAssembler,
+                deliveryCompletedResponseAssembler, deliveryLocationDtoAssembler);
+    }
+
+    private static SecuredAuthorizationFilter createSecuredAuthorizationFilter(
+            AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+        return new SecuredAuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 
     public ResourceConfig getConfigurations() {
@@ -114,59 +168,5 @@ public class ApiResources {
         config.register(new SecuredAdminAuthorizationFilter(authorizationService,
                 assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
         return config;
-    }
-
-    private static SecuredWithDeliveryIdAuthorizationFilter createSecuredWithDeliveryIdAuthorizationFilter(
-            AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
-        return new SecuredWithDeliveryIdAuthorizationFilter(authorizationService, tokenDtoAssembler,
-                httpExceptionResponseAssembler);
-    }
-
-    private static SecuredWithSaleIdAuthorizationFilter createSecuredWithSaleIdAuthorizationFilter(
-            AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
-        return new SecuredWithSaleIdAuthorizationFilter(authorizationService, tokenDtoAssembler,
-                httpExceptionResponseAssembler);
-    }
-
-    private static CustomerResource createAccountResource(CustomerService customerService,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, CustomerDtoAssembler customerDtoAssembler,
-            ConstraintsValidator constraintsValidator) {
-        return new CustomerResource(customerService, httpExceptionResponseAssembler, customerDtoAssembler,
-                constraintsValidator);
-
-    }
-
-    private static LoginResource createLoginResource(LoginService loginService,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, LoginDtoAssembler loginDtoAssembler,
-            TokenResponseAssembler tokenResponseAssembler, ConstraintsValidator constraintsValidator) {
-        return new LoginResource(loginService, httpExceptionResponseAssembler, loginDtoAssembler,
-                tokenResponseAssembler, constraintsValidator);
-    }
-
-    private static SaleResource createSaleResource(SaleService saleService, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ChooseCarDtoAssembler chooseCarDtoAssembler,
-            ChooseBatteryDtoAssembler chooseBatteryDtoAssembler,
-            EstimatedRangeResponseAssembler estimatedRangeResponseAssembler,
-            SaleResponseAssembler saleResponseAssembler, InvoiceDtoAssembler invoiceDtoAssembler,
-            ConstraintsValidator constraintsValidator, ManufactureService manufactureService) {
-        return new SaleResource(saleService, tokenDtoAssembler, httpExceptionResponseAssembler, chooseCarDtoAssembler,
-                chooseBatteryDtoAssembler, estimatedRangeResponseAssembler, saleResponseAssembler, invoiceDtoAssembler,
-                constraintsValidator, manufactureService);
-    }
-
-    private static DeliveryResource createDeliveryResource(DeliveryService deliveryService,
-            ConstraintsValidator constraintsValidator, HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
-            DeliveryCompletedResponseAssembler deliveryCompletedResponseAssembler,
-            DeliveryLocationDtoAssembler deliveryLocationDtoAssembler) {
-        return new DeliveryResource(deliveryService, constraintsValidator, httpExceptionResponseAssembler,
-                deliveryCompletedResponseAssembler, deliveryLocationDtoAssembler);
-    }
-
-    private static SecuredAuthorizationFilter createSecuredAuthorizationFilter(
-            AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
-        return new SecuredAuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 }

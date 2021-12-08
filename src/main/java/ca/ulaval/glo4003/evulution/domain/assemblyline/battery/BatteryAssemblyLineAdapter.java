@@ -18,7 +18,7 @@ public class BatteryAssemblyLineAdapter implements BatteryAssemblyAdapter {
     private final Map<ProductionId, CommandID> productionIdWithCommandId = new HashMap<>();
 
     public BatteryAssemblyLineAdapter(BasicBatteryAssemblyLine basicBatteryAssemblyLine,
-            List<BatteryInformationDto> batteries) {
+                                      List<BatteryInformationDto> batteries) {
         this.basicBatteryAssemblyLine = basicBatteryAssemblyLine;
         this.configureBatteryProductionTime(batteries);
     }

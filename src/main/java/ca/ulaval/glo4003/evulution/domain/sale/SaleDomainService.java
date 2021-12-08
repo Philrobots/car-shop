@@ -19,7 +19,7 @@ public class SaleDomainService {
     private InvoicePayment invoicePayment;
 
     public SaleDomainService(SaleRepository saleRepository, AccountRepository accountRepository,
-            InvoicePayment invoicePayment) {
+                             InvoicePayment invoicePayment) {
         this.saleRepository = saleRepository;
         this.accountRepository = accountRepository;
         this.invoicePayment = invoicePayment;

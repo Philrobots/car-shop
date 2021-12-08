@@ -29,9 +29,9 @@ public class DeliveryService {
     private SaleDomainService saleDomainService;
 
     public DeliveryService(DeliveryIdFactory deliveryIdFactory, DeliveryDetailsFactory deliveryDetailsFactory,
-            InvoicePayment invoicePayment, DeliveryCompleteAssembler deliveryCompleteAssembler,
-            DeliveryRepository deliveryRepository, SaleValidator saleValidator,
-            DeliveryDomainService deliveryDomainService, SaleDomainService saleDomainService) {
+                           InvoicePayment invoicePayment, DeliveryCompleteAssembler deliveryCompleteAssembler,
+                           DeliveryRepository deliveryRepository, SaleValidator saleValidator,
+                           DeliveryDomainService deliveryDomainService, SaleDomainService saleDomainService) {
         this.deliveryIdFactory = deliveryIdFactory;
         this.deliveryDetailsFactory = deliveryDetailsFactory;
         this.invoicePayment = invoicePayment;

@@ -19,7 +19,7 @@ public class LoginService {
     private TokenAssembler tokenAssembler;
 
     public LoginService(TokenFactory tokenFactory, TokenRepository tokenRepository, AccountRepository accountRepository,
-            TokenAssembler tokenAssembler) {
+                        TokenAssembler tokenAssembler) {
         this.tokenFactory = tokenFactory;
         this.tokenRepository = tokenRepository;
         this.accountRepository = accountRepository;

@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.evulution.api.mappers;
 
 import ca.ulaval.glo4003.evulution.api.mappers.mapping.HTTPExceptionMapping;
-import ca.ulaval.glo4003.evulution.domain.exceptions.BadInputParameterException;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
 import ca.ulaval.glo4003.evulution.service.login.exceptions.ServiceUnableToLoginException;
 

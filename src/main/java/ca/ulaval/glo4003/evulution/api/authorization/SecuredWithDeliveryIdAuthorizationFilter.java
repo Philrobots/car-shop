@@ -22,7 +22,7 @@ public class SecuredWithDeliveryIdAuthorizationFilter implements ContainerReques
     private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     public SecuredWithDeliveryIdAuthorizationFilter(AuthorizationService authorizationService,
-            TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+                                                    TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         this.authorizationService = authorizationService;
         this.tokenDtoAssembler = tokenDtoAssembler;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;

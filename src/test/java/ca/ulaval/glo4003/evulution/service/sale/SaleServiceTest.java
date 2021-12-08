@@ -130,14 +130,14 @@ public class SaleServiceTest {
 
     /*
      * @Test public void whenInitSale_thenTokenAssemblerAssembleToken() { // when saleService.initSale(tokenDto);
-     * 
+     *
      * // then Mockito.verify(tokenAssembler).assembleTokenFromDto(tokenDto); }
-     * 
+     *
      * @Test public void whenInitSale_thenSaleFactoryCreates() throws TokenNotFoundException {
      * BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
-     * 
+     *
      * // when saleService.initSale(tokenDto);
-     * 
+     *
      * // then Mockito.verify(saleFactory).create(token); }
      */
     @Test

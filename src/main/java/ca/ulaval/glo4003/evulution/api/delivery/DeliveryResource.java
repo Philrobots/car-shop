@@ -24,9 +24,9 @@ public class DeliveryResource {
     private final DeliveryLocationDtoAssembler deliveryLocationDtoAssembler;
 
     public DeliveryResource(DeliveryService deliveryService, ConstraintsValidator constraintsValidator,
-            HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
-            DeliveryCompletedResponseAssembler deliveryCompletedResponseAssembler,
-            DeliveryLocationDtoAssembler deliveryLocationDtoAssembler) {
+                            HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
+                            DeliveryCompletedResponseAssembler deliveryCompletedResponseAssembler,
+                            DeliveryLocationDtoAssembler deliveryLocationDtoAssembler) {
         this.deliveryService = deliveryService;
         this.constraintsValidator = constraintsValidator;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
@@ -39,7 +39,7 @@ public class DeliveryResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{delivery_id}/location")
     public Response chooseDeliveryLocation(@PathParam("delivery_id") int deliveryId,
-            DeliveryLocationRequest deliveryLocationRequest) {
+                                           DeliveryLocationRequest deliveryLocationRequest) {
         try {
             this.constraintsValidator.validate(deliveryLocationRequest);
             DeliveryLocationDto deliveryLocationDto = deliveryLocationDtoAssembler.fromRequest(deliveryLocationRequest);

@@ -1,17 +1,11 @@
 package ca.ulaval.glo4003.evulution.domain.car;
 
-import ca.ulaval.glo4003.evulution.domain.car.exceptions.BadCarSpecsException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class BatteryFactoryTest {
@@ -33,22 +27,22 @@ public class BatteryFactoryTest {
     }
 
     /*
-     * 
+     *
      * @Test public void givenGoodType_whenCreate_thenReturnsBattery() throws BadCarSpecsException { // given
      * BDDMockito.given(batteryMapperDto.name).willReturn(A_GOOD_NAME);
      * BDDMockito.given(batteryMapperDto.base_NRCAN_range).willReturn(A_NRCAN_RANGE);
      * BDDMockito.given(batteryMapperDto.capacity).willReturn(A_CAPACITY);
      * BDDMockito.given(batteryMapperDto.price).willReturn(A_PRICE);
      * BDDMockito.given(batteryMapperDto.time_to_produce).willReturn(A_TIME_TO_PRODUCE);
-     * 
+     *
      * // when Battery battery = batteryFactory.create(A_GOOD_NAME);
-     * 
+     *
      * // then assertNotNull(battery); }
-     * 
+     *
      * @Test public void givenBadType_whenCreate_thenThrowsBadCarSpecsException() { // given
      * BDDMockito.given(batteryMapperDto.name).willReturn(A_GOOD_NAME);
-     * 
+     *
      * // then assertThrows(BadCarSpecsException.class, () -> batteryFactory.create(A_BAD_NAME)); }
-     * 
+     *
      */
 }

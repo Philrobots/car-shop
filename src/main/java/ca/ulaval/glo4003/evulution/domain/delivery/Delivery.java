@@ -27,13 +27,13 @@ public class Delivery {
 
     public void setStatus(DeliveryStatus status) throws DeliveryIncompleteException {
         switch (status) {
-        case SHIPPED:
-            // TODO Ask client about potential exception if delivery not confirmed
-            break;
-        case COMPLETED:
-            if (!this.status.contains(DeliveryStatus.CONFIRMED) || !this.status.contains(DeliveryStatus.SHIPPED)) {
-                throw new DeliveryIncompleteException();
-            }
+            case SHIPPED:
+                // TODO Ask client about potential exception if delivery not confirmed
+                break;
+            case COMPLETED:
+                if (!this.status.contains(DeliveryStatus.CONFIRMED) || !this.status.contains(DeliveryStatus.SHIPPED)) {
+                    throw new DeliveryIncompleteException();
+                }
         }
         this.status.add(status);
     }
@@ -59,6 +59,7 @@ public class Delivery {
 
     public void setCarTimeToProduce(int timeToProduceAsInt) {
         this.carTimeToProduce = timeToProduceAsInt;
+        calculateDeliveryDate();
     }
 
     public void setBatteryTimeToProduce(int timeToProduceAsInt) {

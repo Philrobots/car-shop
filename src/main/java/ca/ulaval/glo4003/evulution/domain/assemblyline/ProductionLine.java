@@ -25,9 +25,9 @@ public class ProductionLine {
     private final CarAssemblyLine carAssemblyLine;
     private final BatteryAssemblyLine batteryAssemblyLine;
     private final CompleteAssemblyLine completeAssemblyLine;
+    private final EmailFactory emailFactory;
     private ManufactureRepository manufactureRepository;
     private SaleDomainService saleDomainService;
-    private final EmailFactory emailFactory;
     private Set<String> emails = new HashSet<String>();
     private boolean isShutdown = false;
     private BatteryProductionFactory batteryProductionFactory;
@@ -35,10 +35,10 @@ public class ProductionLine {
     private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
 
     public ProductionLine(CarAssemblyLine carAssemblyLine, BatteryAssemblyLine batteryAssemblyLine,
-            CompleteAssemblyLine completeAssemblyLine, ManufactureRepository manufactureRepository,
-            SaleDomainService saleDomainService, EmailFactory emailFactory,
-            BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
-            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+                          CompleteAssemblyLine completeAssemblyLine, ManufactureRepository manufactureRepository,
+                          SaleDomainService saleDomainService, EmailFactory emailFactory,
+                          BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
+                          CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
         this.carAssemblyLine = carAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;

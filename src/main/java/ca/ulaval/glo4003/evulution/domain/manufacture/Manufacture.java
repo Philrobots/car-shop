@@ -65,7 +65,7 @@ public class Manufacture {
     }
 
     public BatteryProduction generateBatteryProduction(String email,
-            BatteryProductionFactory batteryProductionFactory) {
+                                                       BatteryProductionFactory batteryProductionFactory) {
         return batteryProductionFactory.create(productionId, battery.getType(), email, battery.getTimeToProduceAsInt());
     }
 
@@ -74,7 +74,7 @@ public class Manufacture {
     }
 
     public CompleteAssemblyProduction generateCompleteAssemblyProduction(String email,
-            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+                                                                         CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
         return completeAssemblyProductionFactory.create(productionId, delivery, email);
     }
 

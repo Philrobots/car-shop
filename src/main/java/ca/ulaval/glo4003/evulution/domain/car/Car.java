@@ -12,7 +12,7 @@ public class Car {
     private boolean isAssembled = false;
 
     public Car(String name, String style, Integer efficiencyEquivalenceRate, BigDecimal basePrice, String timeToProduce,
-            String color) {
+               String color) {
         this.name = name;
         this.style = style;
         this.efficiencyEquivalenceRate = efficiencyEquivalenceRate;

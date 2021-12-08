@@ -11,7 +11,7 @@ public class SaleDomainServiceResources {
     private final DeliveryDomainService deliveryDomainService;
 
     public SaleDomainServiceResources(FactoryResources factoryResources, RepositoryResources repositoryResources,
-            InvoicePayment invoicePayment) {
+                                      InvoicePayment invoicePayment) {
         saleDomainService = new SaleDomainService(repositoryResources.getSaleRepository(),
                 repositoryResources.getAccountRepository(), invoicePayment);
 
