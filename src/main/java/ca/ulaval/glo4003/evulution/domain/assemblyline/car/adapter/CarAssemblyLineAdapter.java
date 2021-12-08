@@ -1,9 +1,9 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
 import ca.ulaval.glo4003.evulution.car_manufacture.CommandID;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 
@@ -24,10 +24,10 @@ public class CarAssemblyLineAdapter implements CarAssemblyAdapter {
     }
 
     @Override
-    public AssemblyStatus getStatus(ProductionId productionId) {
+    public boolean isAssembled(ProductionId productionId) {
         CommandID commandId = productionIdWithCommandId.get(productionId);
         BuildStatus status = vehicleAssemblyLine.getBuildStatus(commandId);
-        return AssemblyStatus.valueOf(status.toString());
+        return status.equals(BuildStatus.ASSEMBLED);
     }
 
     @Override

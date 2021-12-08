@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.evulution.domain.production;
+package ca.ulaval.glo4003.evulution.domain.production.complete;
 
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryStatus;

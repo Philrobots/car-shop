@@ -1,14 +1,12 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.CarAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;

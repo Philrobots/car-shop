@@ -1,7 +1,6 @@
-package ca.ulaval.glo4003.evulution.domain.production;
+package ca.ulaval.glo4003.evulution.domain.production.car;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.CarAssemblyAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
@@ -30,9 +29,9 @@ public class CarProduction {
         emailFactory.createVehicleInProductionEmail(List.of(email), carProductionTimeInWeeks).send();
     }
 
-    public AssemblyStatus advance(CarAssemblyAdapter carAssemblyAdapter) {
+    public boolean advance(CarAssemblyAdapter carAssemblyAdapter) {
         carAssemblyAdapter.advance();
-        return carAssemblyAdapter.getStatus(productionId);
+        return carAssemblyAdapter.isAssembled(productionId);
     }
 
     public ProductionId getProductionId() {

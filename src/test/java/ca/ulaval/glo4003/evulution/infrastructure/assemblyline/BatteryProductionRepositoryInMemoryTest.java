@@ -12,22 +12,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-public class VehicleRepositoryInMemoryTest {
+public class BatteryProductionRepositoryInMemoryTest {
 
-    private VehicleRepositoryInMemory vehicleRepositoryInMemory;
+    private BatteryProductionRepositoryInMemory batteryRepositoryInMemory;
 
     @Mock
     private ProductionId productionId;
 
     @BeforeEach
     public void setUp() {
-        this.vehicleRepositoryInMemory = new VehicleRepositoryInMemory();
+        this.batteryRepositoryInMemory = new BatteryProductionRepositoryInMemory();
     }
 
     @Test
-    public void givenEmptyVehicleRepositoryInMemory_whenRemove_thenThrowsInvalidMappingKeyException() {
+    public void givenEmptyBatteryRepositoryInMemory_whenRemove_thenThrowsInvalidMappingKeyException() {
         // when
-        Executable result = () -> vehicleRepositoryInMemory.remove(productionId);
+        Executable result = () -> batteryRepositoryInMemory.remove(productionId);
 
         // then
         assertThrows(InvalidMappingKeyException.class, result);

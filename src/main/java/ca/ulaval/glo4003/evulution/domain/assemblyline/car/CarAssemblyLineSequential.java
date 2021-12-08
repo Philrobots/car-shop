@@ -1,29 +1,30 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
-import ca.ulaval.glo4003.evulution.domain.production.CarProduction;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
 
 import java.util.LinkedList;
 
-public class CarAssemblyLine {
+public class CarAssemblyLineSequential implements CarAssemblyLine {
     private final LinkedList<CarProduction> carProductionWaitList = new LinkedList<>();
 
     private final CarAssemblyAdapter carAssemblyAdapter;
-    private final VehicleRepository vehicleRepository;
+    private final CarProductionRepository carProductionRepository;
     private final EmailFactory emailFactory;
     private AssemblyLineMediator assemblyLineMediator;
     private CarProduction currentCarProduction;
     private boolean isBatteryInFire = false;
     private boolean isCarInProduction = false;
 
-    public CarAssemblyLine(CarAssemblyAdapter carAssemblyAdapter, VehicleRepository vehicleRepository,
-            EmailFactory emailFactory) {
+    public CarAssemblyLineSequential(CarAssemblyAdapter carAssemblyAdapter, CarProductionRepository carProductionRepository,
+                                     EmailFactory emailFactory) {
         this.carAssemblyAdapter = carAssemblyAdapter;
-        this.vehicleRepository = vehicleRepository;
+        this.carProductionRepository = carProductionRepository;
         this.emailFactory = emailFactory;
     }
 
@@ -43,10 +44,10 @@ public class CarAssemblyLine {
             return;
         }
 
-        AssemblyStatus carStatus = currentCarProduction.advance(carAssemblyAdapter);
+        boolean isCarAssembled = currentCarProduction.advance(carAssemblyAdapter);
 
-        if (carStatus == AssemblyStatus.ASSEMBLED) {
-            this.vehicleRepository.add(currentCarProduction);
+        if (isCarAssembled) {
+            this.carProductionRepository.add(currentCarProduction);
             this.assemblyLineMediator.notify(this.getClass());
 
             if (this.carProductionWaitList.isEmpty()) {

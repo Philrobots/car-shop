@@ -1,11 +1,10 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 
 public interface CarAssemblyAdapter {
 
-    AssemblyStatus getStatus(ProductionId productionId);
+    boolean isAssembled(ProductionId productionId);
 
     void newVehicleCommand(ProductionId productionId, String command);
 

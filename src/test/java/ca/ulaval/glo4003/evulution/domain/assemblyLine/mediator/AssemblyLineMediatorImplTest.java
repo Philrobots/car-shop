@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine.mediator;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.CarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSeq;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,13 +13,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class AssemblyLineMediatorImplTest {
 
     @Mock
-    private CompleteAssemblyLine completeAssemblyLine;
+    private CompleteAssemblyLineSeq completeAssemblyLine;
 
     @Mock
-    private BatteryAssemblyLine batteryAssemblyLine;
+    private BatteryAssemblyLineSequential batteryAssemblyLine;
 
     @Mock
-    private CarAssemblyLine carAssemblyLine;
+    private CarAssemblyLineSequential carAssemblyLine;
 
     private AssemblyLineMediatorImpl assemblyLineMediator;
 

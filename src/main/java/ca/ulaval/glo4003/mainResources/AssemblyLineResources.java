@@ -2,20 +2,20 @@ package ca.ulaval.glo4003.mainResources;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.CarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.CarAssemblyLineAdapter;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSeq;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 
 public class AssemblyLineResources {
 
-    private final BatteryAssemblyLine batteryAssemblyLine;
-    private final CarAssemblyLine carAssemblyLine;
-    private final CompleteAssemblyLine completeAssemblyLine;
+    private final BatteryAssemblyLineSequential batteryAssemblyLine;
+    private final CarAssemblyLineSequential carAssemblyLine;
+    private final CompleteAssemblyLineSeq completeAssemblyLine;
     private final AssemblyLineMediator assemblyLineMediator;
 
     public AssemblyLineResources(FactoryResources factoryResources, RepositoryResources repositoryResources) {
@@ -26,13 +26,13 @@ public class AssemblyLineResources {
         CarAssemblyLineAdapter vehicleAssemblyLineAdapter = new CarAssemblyLineAdapter(new BasicVehicleAssemblyLine(),
                 JsonFileMapper.parseModels());
 
-        batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyLineAdapter,
+        batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyLineAdapter,
                 repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory());
 
-        carAssemblyLine = new CarAssemblyLine(vehicleAssemblyLineAdapter, repositoryResources.getVehicleRepository(),
+        carAssemblyLine = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter, repositoryResources.getVehicleRepository(),
                 factoryResources.getEmailFactory());
 
-        completeAssemblyLine = new CompleteAssemblyLine(factoryResources.getEmailFactory(),
+        completeAssemblyLine = new CompleteAssemblyLineSeq(factoryResources.getEmailFactory(),
                 repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository());
 
         assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine, carAssemblyLine);
@@ -42,15 +42,15 @@ public class AssemblyLineResources {
         completeAssemblyLine.setMediator(assemblyLineMediator);
     }
 
-    public BatteryAssemblyLine getBatteryAssemblyLine() {
+    public BatteryAssemblyLineSequential getBatteryAssemblyLine() {
         return batteryAssemblyLine;
     }
 
-    public CarAssemblyLine getCarAssemblyLine() {
+    public CarAssemblyLineSequential getCarAssemblyLine() {
         return carAssemblyLine;
     }
 
-    public CompleteAssemblyLine getCompleteAssemblyLine() {
+    public CompleteAssemblyLineSeq getCompleteAssemblyLine() {
         return completeAssemblyLine;
     }
 

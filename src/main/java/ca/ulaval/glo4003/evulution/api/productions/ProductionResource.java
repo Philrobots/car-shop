@@ -59,7 +59,6 @@ public class ProductionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response switchProductionLines(SwitchProductionsRequest switchProductionsRequest) {
         try {
-
             SwitchProductionsDto switchProductionsDto = this.switchProductionsDtoAssembler.fromRequest(switchProductionsRequest);
             this.assemblyLineService.switchProductions(switchProductionsDto);
             return Response.status(200, "Activated").build();

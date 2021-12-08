@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyAdapter;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
@@ -19,7 +19,7 @@ class BatteryAssemblyLineTest {
     private static final String AN_EMAIL = "email@email.com";
     private static final Integer A_PRODUCTION_TIME = 2;
 
-    private BatteryAssemblyLine batteryAssemblyLine;
+    private BatteryAssemblyLineSequential batteryAssemblyLine;
 
     @Mock
     private BatteryAssemblyAdapter batteryAssemblyAdapter;
@@ -28,7 +28,7 @@ class BatteryAssemblyLineTest {
     private AssemblyLineMediator assemblyLineMediator;
 
     @Mock
-    private BatteryRepository batteryRepository;
+    private BatteryProductionRepository batteryProductionRepository;
 
     @Mock
     private EmailFactory emailFactory;
@@ -38,7 +38,7 @@ class BatteryAssemblyLineTest {
 
     @BeforeEach
     public void setup() {
-        batteryAssemblyLine = new BatteryAssemblyLine(batteryAssemblyAdapter, batteryRepository, emailFactory);
+        batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyAdapter, batteryProductionRepository, emailFactory);
         batteryAssemblyLine.setMediator(assemblyLineMediator);
     }
 

@@ -1,25 +1,25 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.complete;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleRepository;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryRepository;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
+import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
-import ca.ulaval.glo4003.evulution.domain.production.CompleteAssemblyProduction;
+import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProduction;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
 
 import java.util.LinkedList;
 
-public class CompleteAssemblyLine {
+public class CompleteAssemblyLineSeq {
 
     private static final double FIFTY_PERCENT_CHANCE = 0.5;
     private static final Integer ASSEMBLY_DELAY_IN_WEEKS = 1;
 
     private final EmailFactory emailFactory;
-    private final VehicleRepository vehicleRepository;
-    private final BatteryRepository batteryRepository;
+    private final CarProductionRepository carProductionRepository;
+    private final BatteryProductionRepository batteryProductionRepository;
     private AssemblyLineMediator assemblyLineMediator;
     private LinkedList<CompleteAssemblyProduction> waitingList = new LinkedList<>();
     private CompleteAssemblyProduction currentProduction;
@@ -27,11 +27,11 @@ public class CompleteAssemblyLine {
     private boolean isCarCompleteInProduction = false;
     private boolean isBatteryInFire = false;
 
-    public CompleteAssemblyLine(EmailFactory emailFactory, VehicleRepository vehicleRepository,
-            BatteryRepository batteryRepository) {
+    public CompleteAssemblyLineSeq(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
+                                   BatteryProductionRepository batteryProductionRepository) {
         this.emailFactory = emailFactory;
-        this.vehicleRepository = vehicleRepository;
-        this.batteryRepository = batteryRepository;
+        this.carProductionRepository = carProductionRepository;
+        this.batteryProductionRepository = batteryProductionRepository;
     }
 
     public void addProduction(CompleteAssemblyProduction completeAssemblyProduction) {
@@ -52,8 +52,8 @@ public class CompleteAssemblyLine {
         } else if (weeksRemaining == 0) {
             this.currentProduction.ship();
             ProductionId productionId = currentProduction.getProductionId();
-            this.vehicleRepository.remove(productionId);
-            this.batteryRepository.remove(productionId);
+            this.carProductionRepository.remove(productionId);
+            this.batteryProductionRepository.remove(productionId);
             assemblyLineMediator.notify(this.getClass());
             this.isCarCompleteInProduction = false;
         }

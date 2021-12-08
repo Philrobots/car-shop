@@ -1,10 +1,10 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle;
+package ca.ulaval.glo4003.evulution.domain.production.car;
 
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
-import ca.ulaval.glo4003.evulution.domain.production.CarProduction;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 
-public interface VehicleRepository {
+public interface CarProductionRepository {
 
     void add(CarProduction carProduction);
 

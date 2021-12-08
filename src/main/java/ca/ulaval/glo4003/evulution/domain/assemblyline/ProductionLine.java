@@ -1,16 +1,17 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.CarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSeq;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.Manufacture;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ManufactureRepository;
-import ca.ulaval.glo4003.evulution.domain.production.BatteryProductionFactory;
-import ca.ulaval.glo4003.evulution.domain.production.CarProductionFactory;
-import ca.ulaval.glo4003.evulution.domain.production.CompleteAssemblyProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleId;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
@@ -22,9 +23,9 @@ import java.util.*;
 
 public class ProductionLine {
 
-    private final CarAssemblyLine carAssemblyLine;
-    private final BatteryAssemblyLine batteryAssemblyLine;
-    private final CompleteAssemblyLine completeAssemblyLine;
+    private final CarAssemblyLineSequential carAssemblyLine;
+    private final BatteryAssemblyLineSequential batteryAssemblyLine;
+    private final CompleteAssemblyLineSeq completeAssemblyLine;
     private ManufactureRepository manufactureRepository;
     private SaleDomainService saleDomainService;
     private final EmailFactory emailFactory;
@@ -33,12 +34,13 @@ public class ProductionLine {
     private BatteryProductionFactory batteryProductionFactory;
     private CarProductionFactory carProductionFactory;
     private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
+    private ProductionType productionType = ProductionType.SEQUENTIAL;
 
-    public ProductionLine(CarAssemblyLine carAssemblyLine, BatteryAssemblyLine batteryAssemblyLine,
-            CompleteAssemblyLine completeAssemblyLine, ManufactureRepository manufactureRepository,
-            SaleDomainService saleDomainService, EmailFactory emailFactory,
-            BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
-            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+    public ProductionLine(CarAssemblyLineSequential carAssemblyLine, BatteryAssemblyLineSequential batteryAssemblyLine,
+                          CompleteAssemblyLineSeq completeAssemblyLine, ManufactureRepository manufactureRepository,
+                          SaleDomainService saleDomainService, EmailFactory emailFactory,
+                          BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
+                          CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
         this.carAssemblyLine = carAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
@@ -100,4 +102,5 @@ public class ProductionLine {
         this.completeAssemblyLine.reactivate();
         this.isShutdown = false;
     }
+
 }

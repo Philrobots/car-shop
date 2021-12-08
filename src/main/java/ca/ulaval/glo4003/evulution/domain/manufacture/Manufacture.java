@@ -4,7 +4,12 @@ import ca.ulaval.glo4003.evulution.domain.car.Battery;
 import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
-import ca.ulaval.glo4003.evulution.domain.production.*;
+import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
+import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProduction;
+import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
 
@@ -65,7 +70,7 @@ public class Manufacture {
     }
 
     public BatteryProduction generateBatteryProduction(String email,
-            BatteryProductionFactory batteryProductionFactory) {
+                                                       BatteryProductionFactory batteryProductionFactory) {
         return batteryProductionFactory.create(productionId, battery.getType(), email, battery.getTimeToProduceAsInt());
     }
 
@@ -74,7 +79,7 @@ public class Manufacture {
     }
 
     public CompleteAssemblyProduction generateCompleteAssemblyProduction(String email,
-            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+                                                                         CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
         return completeAssemblyProductionFactory.create(productionId, delivery, email);
     }
 

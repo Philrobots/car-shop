@@ -1,9 +1,9 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
 import ca.ulaval.glo4003.evulution.car_manufacture.CommandID;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.BatteryInformationDto;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 
@@ -24,10 +24,10 @@ public class BatteryAssemblyLineAdapter implements BatteryAssemblyAdapter {
     }
 
     @Override
-    public AssemblyStatus getStatus(ProductionId productionId) {
+    public boolean isAssembled(ProductionId productionId) {
         CommandID commandId = productionIdWithCommandId.get(productionId);
         BuildStatus status = this.basicBatteryAssemblyLine.getBuildStatus(commandId);
-        return AssemblyStatus.valueOf(status.toString());
+        return status.equals(BuildStatus.ASSEMBLED);
     }
 
     @Override

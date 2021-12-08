@@ -1,20 +1,20 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.mediator;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.CarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSeq;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
 
 public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
 
-    private BatteryAssemblyLine batteryAssemblyLine;
-    private CompleteAssemblyLine completeAssemblyLine;
-    private CarAssemblyLine carAssemblyLine;
+    private BatteryAssemblyLineSequential batteryAssemblyLine;
+    private CompleteAssemblyLineSeq completeAssemblyLine;
+    private CarAssemblyLineSequential carAssemblyLine;
     private AssemblyState state = AssemblyState.CAR;
 
-    public AssemblyLineMediatorImpl(BatteryAssemblyLine batteryAssemblyLine, CompleteAssemblyLine completeAssemblyLine,
-            CarAssemblyLine carAssemblyLine) {
+    public AssemblyLineMediatorImpl(BatteryAssemblyLineSequential batteryAssemblyLine, CompleteAssemblyLineSeq completeAssemblyLine,
+                                    CarAssemblyLineSequential carAssemblyLine) {
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
         this.carAssemblyLine = carAssemblyLine;
@@ -22,13 +22,13 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
 
     @Override
     public void notify(Class assemblyLineClass) throws EmailException {
-        if (assemblyLineClass.equals(CarAssemblyLine.class)) {
+        if (assemblyLineClass.equals(CarAssemblyLineSequential.class)) {
             state = AssemblyState.BATTERY;
             this.batteryAssemblyLine.startNext();
-        } else if (assemblyLineClass.equals(BatteryAssemblyLine.class)) {
+        } else if (assemblyLineClass.equals(BatteryAssemblyLineSequential.class)) {
             state = AssemblyState.ASSEMBLY;
             this.completeAssemblyLine.startNext();
-        } else if (assemblyLineClass.equals(CompleteAssemblyLine.class)) {
+        } else if (assemblyLineClass.equals(CompleteAssemblyLineSeq.class)) {
             state = AssemblyState.CAR;
             this.carAssemblyLine.startNext();
         }

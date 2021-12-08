@@ -1,7 +1,6 @@
-package ca.ulaval.glo4003.evulution.domain.production;
+package ca.ulaval.glo4003.evulution.domain.production.battery;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
@@ -34,8 +33,8 @@ public class BatteryProduction {
         batteryAssemblyLineAdapter.newBatteryCommand(productionId, batteryType);
     }
 
-    public AssemblyStatus advance(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
+    public boolean advance(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
         batteryAssemblyLineAdapter.advance();
-        return batteryAssemblyLineAdapter.getStatus(productionId);
+        return batteryAssemblyLineAdapter.isAssembled(productionId);
     }
 }
