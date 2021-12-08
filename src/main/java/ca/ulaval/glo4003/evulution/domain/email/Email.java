@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.email;
 
+import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+
 import java.util.List;
 
 public class Email {
@@ -27,7 +29,7 @@ public class Email {
         return message;
     }
 
-    public void send() {
+    public void send() throws EmailException {
         emailSender.sendEmail(recipients, subject, message);
     }
 }

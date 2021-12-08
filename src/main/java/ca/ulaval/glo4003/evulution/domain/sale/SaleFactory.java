@@ -1,22 +1,25 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
-import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
+import ca.ulaval.glo4003.evulution.domain.account.AccountId;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
+import ca.ulaval.glo4003.evulution.domain.token.Token;
+import ca.ulaval.glo4003.evulution.domain.token.TokenRepository;
+import ca.ulaval.glo4003.evulution.infrastructure.token.exceptions.TokenNotFoundException;
 
 public class SaleFactory {
-    private final TransactionIdFactory transactionIdFactory;
-    private final DeliveryFactory deliveryFactory;
+    private final SaleIdFactory saleIdFactory;
+    private final InvoiceFactory invoiceFactory;
+    private final TokenRepository tokenRepository;
 
-    public SaleFactory(TransactionIdFactory transactionIdFactory, DeliveryFactory deliveryFactory) {
-        this.transactionIdFactory = transactionIdFactory;
-        this.deliveryFactory = deliveryFactory;
+    public SaleFactory(SaleIdFactory saleIdFactory, InvoiceFactory invoiceFactory, TokenRepository tokenRepository) {
+        this.saleIdFactory = saleIdFactory;
+        this.invoiceFactory = invoiceFactory;
+        this.tokenRepository = tokenRepository;
     }
 
-    public Sale create(String email) {
-        TransactionId transactionId = this.transactionIdFactory.create();
-        Delivery delivery = this.deliveryFactory.create();
-        return new Sale(email, transactionId, delivery);
+    public Sale create(Token token) throws TokenNotFoundException {
+        AccountId accountId = this.tokenRepository.getAccountId(token);
+        SaleId saleId = this.saleIdFactory.create();
+        return new Sale(accountId, saleId, invoiceFactory);
     }
 }

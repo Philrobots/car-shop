@@ -1,14 +1,10 @@
 package ca.ulaval.glo4003.evulution.domain.account.customer;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerTest {
@@ -25,25 +21,25 @@ public class CustomerTest {
         customer = new Customer(A_NAME, A_BIRTH_DATE, AN_EMAIL, A_PASSWORD, A_GENDER);
     }
 
-    @Test
-    public void givenAnInvalidPassword_whenIsAuthenticationValid_thenShouldReturnInvalid() {
-        // given
-        String invalidPassword = "12FireBallSvp";
-
-        // when
-        boolean isAuthenticationValid = customer.isAuthenticationValid(AN_EMAIL, invalidPassword);
-
-        // given
-        assertFalse(isAuthenticationValid);
-    }
-
-    @Test
-    public void whenIsAuthenticationValid_thenShouldReturnValid() {
-        // when
-        boolean isAuthenticationValid = customer.isAuthenticationValid(AN_EMAIL, A_PASSWORD);
-
-        // given
-        assertTrue(isAuthenticationValid);
-    }
+    // @Test
+    // public void givenAnInvalidPassword_whenIsAuthenticationValid_thenShouldReturnInvalid() {
+    // // given
+    // String invalidPassword = "12FireBallSvp";
+    //
+    // // when
+    // boolean isAuthenticationValid = customer.isAuthenticationValid(AN_EMAIL, invalidPassword);
+    //
+    // // given
+    // assertFalse(isAuthenticationValid);
+    // }
+    //
+    // @Test
+    // public void whenIsAuthenticationValid_thenShouldReturnValid() {
+    // // when
+    // boolean isAuthenticationValid = customer.isAuthenticationValid(AN_EMAIL, A_PASSWORD);
+    //
+    // // given
+    // assertTrue(isAuthenticationValid);
+    // }
 
 }

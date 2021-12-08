@@ -1,31 +1,39 @@
 package ca.ulaval.glo4003.evulution;
 
-import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
-import ca.ulaval.glo4003.evulution.service.invoice.InvoiceService;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
+import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
+import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
+import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
+import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Scheduler {
     private final int timeToWaitForOneWeek;
-    private final AssemblyLineService assemblyLineService;
-    private final InvoiceService invoiceService;
+    private final ProductionLine productionLine;
+    private final InvoicePayment invoicePayment;
     private final Timer timer = new Timer();
 
-    public Scheduler(int equivalenceOfOneWeekInSeconds, AssemblyLineService assemblyLineService,
-            InvoiceService invoiceService) {
+    public Scheduler(int equivalenceOfOneWeekInSeconds, ProductionLine productionLine, InvoicePayment invoicePayment) {
         this.timeToWaitForOneWeek = equivalenceOfOneWeekInSeconds * 1000;
-        this.assemblyLineService = assemblyLineService;
-        this.invoiceService = invoiceService;
+        this.productionLine = productionLine;
+        this.invoicePayment = invoicePayment;
     }
 
     public void start() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                assemblyLineService.advanceAssemblyLines();
-                invoiceService.makePayments();
-                System.out.println("-----------------------------------------------");
+                try {
+                    productionLine.advanceAssemblyLines();
+                    invoicePayment.makePayments();
+                } catch (DeliveryIncompleteException | InvalidMappingKeyException | EmailException
+                        | SaleNotFoundException | AccountNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }, 0, timeToWaitForOneWeek);
     }

@@ -17,7 +17,7 @@ class TokenFactoryTest {
     @Test
     public void whenGenerateNewToken_thenATokenIsCreated() {
         // when
-        Token token = tokenFactory.generateNewToken(true);
+        Token token = tokenFactory.generateNewToken();
 
         // then
         assertNotNull(token);

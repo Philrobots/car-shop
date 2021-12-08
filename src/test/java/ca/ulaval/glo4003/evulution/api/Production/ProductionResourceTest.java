@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.api.Production;
 
-import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
-import ca.ulaval.glo4003.evulution.api.productions.ProductionRessource;
+import ca.ulaval.glo4003.evulution.api.mappers.assemblers.HTTPExceptionResponseAssembler;
+import ca.ulaval.glo4003.evulution.api.productions.ProductionResource;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class ProductionResourceTest {
 
-    private ProductionRessource productionRessource;
+    private ProductionResource productionResource;
 
     @Mock
     private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
@@ -23,19 +23,19 @@ public class ProductionResourceTest {
 
     @BeforeEach
     public void setUp() {
-        productionRessource = new ProductionRessource(httpExceptionResponseAssembler, assemblyLineService);
+        productionResource = new ProductionResource(httpExceptionResponseAssembler, assemblyLineService);
     }
 
     @Test
     public void whenShutDownAssemblyLine_thenShouldCallTheServiceToShutDownAssemblyLine() {
-        productionRessource.shutdownProductionLines();
+        productionResource.shutdownProductionLines();
 
         Mockito.verify(assemblyLineService).shutdown();
     }
 
     @Test
     public void whenReactivateAssemblyLine_thenShouldCallTheServiceToReactivateAssemblyLine() {
-        productionRessource.reactivateProductionLines();
+        productionResource.reactivateProductionLines();
 
         Mockito.verify(assemblyLineService).reactivate();
     }

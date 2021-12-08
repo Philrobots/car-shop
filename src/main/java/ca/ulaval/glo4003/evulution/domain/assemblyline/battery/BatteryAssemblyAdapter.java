@@ -1,12 +1,12 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyStatus;
-import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
+import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 
 public interface BatteryAssemblyAdapter {
-    AssemblyStatus getStatus(TransactionId transactionId);
+    AssemblyStatus getStatus(ProductionId productionId);
 
-    void newBatteryCommand(TransactionId transactionId, String command);
+    void newBatteryCommand(ProductionId productionId, String command);
 
     void advance();
 }

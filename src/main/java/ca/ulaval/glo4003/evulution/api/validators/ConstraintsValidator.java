@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.api.validators;
 
-import ca.ulaval.glo4003.evulution.api.GenericDto;
-import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
+import ca.ulaval.glo4003.evulution.api.GenericRequest;
+import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -19,12 +19,12 @@ public class ConstraintsValidator {
         this.validator = validatorFactory.getValidator();
     }
 
-    public void validate(GenericDto dto) {
+    public void validate(GenericRequest dto) {
         if (dto == null)
-            throw new BadInputParameterException();
-        Set<ConstraintViolation<GenericDto>> violations = validator.validate(dto);
+            throw new ServiceBadInputParameterException();
+        Set<ConstraintViolation<GenericRequest>> violations = validator.validate(dto);
         if (!violations.isEmpty())
-            throw new BadInputParameterException();
+            throw new ServiceBadInputParameterException();
     }
 
 }

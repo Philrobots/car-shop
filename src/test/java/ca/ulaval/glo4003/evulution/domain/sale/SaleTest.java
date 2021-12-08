@@ -1,160 +1,66 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
-import ca.ulaval.glo4003.evulution.domain.car.Battery;
-import ca.ulaval.glo4003.evulution.domain.car.Car;
-import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetails;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleCompleteException;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleNotCompletedException;
+import ca.ulaval.glo4003.evulution.domain.account.AccountId;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
+import ca.ulaval.glo4003.evulution.domain.invoice.exceptions.InvalidInvoiceException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleAlreadyCompleteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleTest {
-    private static final String AN_EMAIL = "email@email.com";
-    private static final Integer EFFICIENCY_EQUIVALENCE_RATE = 100;
+    private static final Integer A_BANK_NUMBER = 200;
+    private static final Integer AN_ACCOUNT_NUMBER = 1234567;
+    private static final String A_FREQUENCY = "monthly";
     private static final SaleStatus SALE_STATUS_COMPLETED = SaleStatus.COMPLETED;
 
     @Mock
-    private TransactionId transactionId;
+    private SaleId saleId;
 
     @Mock
-    private DeliveryDetails deliveryDetails;
+    private AccountId accountId;
 
     @Mock
-    private Delivery delivery;
-
-    @Mock
-    private Car car;
-
-    @Mock
-    private Battery battery;
+    private InvoiceFactory invoiceFactory;
 
     private Sale sale;
 
     @BeforeEach
     public void setUp() {
-        this.sale = new Sale(AN_EMAIL, transactionId, delivery);
-    }
-
-    @Test
-    public void givenCompleteSale_whenChooseCar_thenThrowSaleCompleteException() {
-        // given
-        sale.setStatus(SALE_STATUS_COMPLETED);
-
-        // when
-        Executable chooseCar = () -> sale.chooseCar(car);
-
-        // then
-        assertThrows(SaleCompleteException.class, chooseCar);
-    }
-
-    @Test
-    public void givenCompleteSale_whenChooseBattery_thenThrowSaleCompleteException() {
-        // given
-        sale.chooseCar(car);
-        sale.setStatus(SALE_STATUS_COMPLETED);
-
-        // when
-        Executable chooseBattery = () -> sale.chooseBattery(battery);
-
-        // then
-        assertThrows(SaleCompleteException.class, chooseBattery);
-    }
-
-    @Test
-    public void givenSaleWithoutCar_whenChooseBattery_thenThrowCarNotChosenBeforeBatteryException() {
-        assertThrows(CarNotChosenBeforeBatteryException.class, () -> this.sale.chooseBattery(battery));
-    }
-
-    @Test
-    public void givenNoChosenCar_whenCompleteSale_thenThrowMissingElementsForSaleException() {
-        // when
-        Executable completeSale = () -> sale.completeSale();
-
-        // then
-        assertThrows(MissingElementsForSaleException.class, completeSale);
-    }
-
-    @Test
-    public void givenNoChosenBattery_whenCompleteSale_thenThrowMissingElementsForSaleException() {
-        // given
-        sale.chooseCar(car);
-
-        // when
-        Executable completeSale = () -> sale.completeSale();
-
-        // then
-        assertThrows(MissingElementsForSaleException.class, completeSale);
+        this.sale = new Sale(accountId, saleId, invoiceFactory);
     }
 
     @Test
     public void givenSaleAlreadyCompleted_whenCompleteSale_thenThrowSaleCompleteException() {
         // given
-        sale.chooseCar(car);
-        sale.chooseBattery(battery);
         sale.setStatus(SALE_STATUS_COMPLETED);
 
         // when
-        Executable completeSale = () -> sale.completeSale();
+        Executable completeSale = () -> this.sale.completeSale(A_BANK_NUMBER, AN_ACCOUNT_NUMBER, A_FREQUENCY);
 
         // then
-        assertThrows(SaleCompleteException.class, completeSale);
+        assertThrows(SaleAlreadyCompleteException.class, completeSale);
     }
 
     @Test
-    public void whenCompleteSale_thenCalculateDeliveryDate() {
+    public void whenCompleteSale_thenInvoiceFactoryIsCalled()
+            throws SaleAlreadyCompleteException, InvalidInvoiceException {
         // given
-        sale.chooseCar(car);
-        sale.chooseBattery(battery);
+        this.sale.addPrice(BigDecimal.TEN);
 
         // when
-        sale.completeSale();
+        this.sale.completeSale(A_BANK_NUMBER, AN_ACCOUNT_NUMBER, A_FREQUENCY);
 
         // then
-        Mockito.verify(delivery).calculateDeliveryDate(car.getTimeToProduceAsInt(), battery.getTimeToProduceAsInt());
-    }
-
-    @Test
-    public void givenEfficiencyEquivalenceRate_whenGetBatteryAutonomy_thenReturnEstimatedRange() {
-        // given
-        sale.chooseCar(car);
-        sale.chooseBattery(battery);
-        BDDMockito.given(car.getEfficiencyEquivalenceRate()).willReturn(EFFICIENCY_EQUIVALENCE_RATE);
-
-        // when
-        sale.getBatteryAutonomy();
-
-        // then
-        Mockito.verify(battery).calculateEstimatedRange(EFFICIENCY_EQUIVALENCE_RATE);
-    }
-
-    @Test
-    public void givenSaleNotComplete_whenSetDeliveryDetails_thenThrowSaleNotCompletedException() {
-        assertThrows(SaleNotCompletedException.class, () -> this.sale.setDeliveryDetails(deliveryDetails));
-    }
-
-    @Test
-    public void whenSetDeliveryDetails_thenDeliverySetDetails() {
-        // given
-        sale.chooseCar(car);
-        sale.chooseBattery(battery);
-        sale.setStatus(SALE_STATUS_COMPLETED);
-
-        // when
-        sale.setDeliveryDetails(deliveryDetails);
-
-        // then
-        Mockito.verify(delivery).setDeliveryDetails(deliveryDetails);
+        Mockito.verify(invoiceFactory).create(A_BANK_NUMBER, AN_ACCOUNT_NUMBER, A_FREQUENCY, BigDecimal.TEN);
     }
 }

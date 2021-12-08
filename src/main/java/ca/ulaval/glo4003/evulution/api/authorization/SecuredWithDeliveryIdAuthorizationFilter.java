@@ -1,11 +1,11 @@
 package ca.ulaval.glo4003.evulution.api.authorization;
 
-import ca.ulaval.glo4003.evulution.api.assemblers.HTTPExceptionResponseAssembler;
-import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
-import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDtoAssembler;
-import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
-import ca.ulaval.glo4003.evulution.domain.exceptions.GenericException;
+import ca.ulaval.glo4003.evulution.api.authorization.assemblers.TokenDtoAssembler;
+import ca.ulaval.glo4003.evulution.api.mappers.assemblers.HTTPExceptionResponseAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
+import ca.ulaval.glo4003.evulution.service.authorization.dto.TokenDto;
+import ca.ulaval.glo4003.evulution.service.exceptions.GenericException;
+import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -46,7 +46,7 @@ public class SecuredWithDeliveryIdAuthorizationFilter implements ContainerReques
         try {
             this.authorizationService.validateTokenWithDeliveryId(tokenDto, Integer.parseInt(deliveryId));
         } catch (NumberFormatException e) {
-            throw new BadInputParameterException();
+            throw new ServiceBadInputParameterException();
         }
     }
 }

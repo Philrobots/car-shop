@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 
 public class InvoiceFactory {
 
-    public Invoice create(int bank_no, int account_no, String frequency, BigDecimal balance) {
+    public Invoice create(int bank_no, int account_no, String frequency, BigDecimal balance)
+            throws InvalidInvoiceException {
         switch (frequency) {
         case "monthly":
             return new Invoice(bank_no, account_no, Frequency.MONTHLY, new Monthly(balance));

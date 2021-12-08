@@ -2,8 +2,8 @@ package ca.ulaval.glo4003.evulution.infrastructure.sale;
 
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
-import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
-import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundFromDeliveryIdException;
+import ca.ulaval.glo4003.evulution.domain.sale.SaleId;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,14 +12,15 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleRepositoryInMemoryTest {
     private SaleRepositoryInMemory saleRepositoryInMemory;
 
     @Mock
-    private TransactionId transactionId;
+    private SaleId saleId;
 
     @Mock
     private DeliveryId deliveryId;
@@ -33,43 +34,23 @@ public class SaleRepositoryInMemoryTest {
     }
 
     @Test
-    public void givenASale_whenRegisterSale_thenRepositoryInMemoryContainsSale() {
+    public void givenASale_whenRegisterSale_thenRepositoryInMemoryContainsSale() throws SaleNotFoundException {
         // given
-        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
+        BDDMockito.given(sale.getSaleId()).willReturn(saleId);
 
         // when
         this.saleRepositoryInMemory.registerSale(sale);
 
         // then
-        assertEquals(sale, this.saleRepositoryInMemory.getSale(transactionId));
+        assertEquals(sale, this.saleRepositoryInMemory.getSale(saleId));
     }
 
     @Test
-    public void givenNoSale_whenGetSale_thenRepositoryDoesNotContainSale() {
-        // then
-        assertNull(this.saleRepositoryInMemory.getSale(transactionId));
-    }
-
-    @Test
-    public void givenSale_whenGetSaleFromDeliveryId_thenSaleIsReturn() {
-        // given
-        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(sale.getDeliveryId()).willReturn(deliveryId);
-        this.saleRepositoryInMemory.registerSale(sale);
-
+    public void givenNoSale_whenGetSale_thenThrowsSaleNotFoundException() {
         // when
-        Sale inMemorySale = saleRepositoryInMemory.getSaleFromDeliveryId(deliveryId);
+        Executable getSale = () -> this.saleRepositoryInMemory.getSale(saleId);
 
         // then
-        assertEquals(sale, inMemorySale);
-    }
-
-    @Test
-    public void givenNoSale_whenGetSaleFromDeliveryId_thenThrowSaleNotFoundFromDeliveryIdException() {
-        // when
-        Executable getSaleFromDeliveryId = () -> saleRepositoryInMemory.getSaleFromDeliveryId(deliveryId);
-
-        // then
-        assertThrows(SaleNotFoundFromDeliveryIdException.class, getSaleFromDeliveryId);
+        assertThrows(SaleNotFoundException.class, getSale);
     }
 }

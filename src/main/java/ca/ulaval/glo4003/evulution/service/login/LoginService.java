@@ -1,38 +1,39 @@
 package ca.ulaval.glo4003.evulution.service.login;
 
-import ca.ulaval.glo4003.evulution.api.authorization.dto.TokenDto;
-import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
 import ca.ulaval.glo4003.evulution.domain.account.Account;
 import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
-import ca.ulaval.glo4003.evulution.domain.login.LoginValidator;
+import ca.ulaval.glo4003.evulution.domain.account.exceptions.FailedLoginException;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
+import ca.ulaval.glo4003.evulution.domain.token.TokenRepository;
+import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
-import ca.ulaval.glo4003.evulution.service.authorization.TokenRepository;
+import ca.ulaval.glo4003.evulution.service.authorization.dto.TokenDto;
+import ca.ulaval.glo4003.evulution.service.login.dto.LoginDto;
+import ca.ulaval.glo4003.evulution.service.login.exceptions.ServiceUnableToLoginException;
 
 public class LoginService {
     private TokenFactory tokenFactory;
     private TokenRepository tokenRepository;
-    private TokenAssembler tokenAssembler;
     private AccountRepository accountRepository;
-    private LoginValidator loginValidator;
+    private TokenAssembler tokenAssembler;
 
-    public LoginService(TokenFactory tokenFactory, TokenRepository tokenRepository, TokenAssembler tokenAssembler,
-            AccountRepository accountRepository, LoginValidator loginValidator) {
+    public LoginService(TokenFactory tokenFactory, TokenRepository tokenRepository, AccountRepository accountRepository,
+            TokenAssembler tokenAssembler) {
         this.tokenFactory = tokenFactory;
         this.tokenRepository = tokenRepository;
-        this.tokenAssembler = tokenAssembler;
         this.accountRepository = accountRepository;
-        this.loginValidator = loginValidator;
+        this.tokenAssembler = tokenAssembler;
     }
 
     public TokenDto loginCustomer(LoginDto loginDto) {
-        Account account = this.accountRepository.getAccountByEmail(loginDto.email);
-        this.loginValidator.validateLogin(account, loginDto);
+        try {
+            Account account = this.accountRepository.findAccountByEmail(loginDto.email);
+            Token token = account.login(loginDto.email, loginDto.password, tokenFactory, tokenRepository);
 
-        Token token = tokenFactory.generateNewToken(account.getIsAdmin());
-
-        this.tokenRepository.addTokenWithEmail(token, loginDto.email);
-        return this.tokenAssembler.tokenToDto(token);
+            return this.tokenAssembler.assembleDtoFromToken(token);
+        } catch (FailedLoginException | AccountNotFoundException e) {
+            throw new ServiceUnableToLoginException();
+        }
     }
 }

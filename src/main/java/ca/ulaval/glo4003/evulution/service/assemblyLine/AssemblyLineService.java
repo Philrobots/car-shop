@@ -1,39 +1,37 @@
 package ca.ulaval.glo4003.evulution.service.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.CompleteCarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.Vehicle.VehicleAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.production.BatteryProduction;
-import ca.ulaval.glo4003.evulution.domain.production.ProductionAssembler;
-import ca.ulaval.glo4003.evulution.domain.production.VehicleProduction;
-import ca.ulaval.glo4003.evulution.domain.sale.Sale;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
+import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.service.assemblyLine.exceptions.ServiceErrorException;
+import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadOrderOfOperationsException;
 
 public class AssemblyLineService {
 
-    private final ProductionAssembler productionAssembler;
     private final ProductionLine productionLine;
 
-    public AssemblyLineService(ProductionAssembler productionAssembler, ProductionLine productionLine) {
-        this.productionAssembler = productionAssembler;
+    public AssemblyLineService(ProductionLine productionLine) {
         this.productionLine = productionLine;
     }
 
-    public void addSaleToAssemblyLines(Sale sale) {
-        VehicleProduction vehicleProduction = productionAssembler.assembleVehicleProductionFromSale(sale);
-        BatteryProduction batteryProduction = productionAssembler.assembleBatteryProductionFromSale(sale);
-        this.productionLine.addSaleToAssemblyLines(vehicleProduction, batteryProduction, sale);
-    }
-
-    public void advanceAssemblyLines() {
-        this.productionLine.advanceAssemblyLines();
-    }
-
     public void shutdown() {
-        this.productionLine.shutdown();
+        try {
+            this.productionLine.shutdown();
+        } catch (AssemblyLineIsShutdownException e) {
+            throw new ServiceBadOrderOfOperationsException();
+        } catch (EmailException e) {
+            throw new ServiceErrorException();
+        }
     }
 
     public void reactivate() {
-        this.productionLine.reactivate();
+        try {
+            this.productionLine.reactivate();
+        } catch (AssemblyLineIsNotShutdownException e) {
+            throw new ServiceBadOrderOfOperationsException();
+        } catch (EmailException e) {
+            throw new ServiceErrorException();
+        }
     }
 }

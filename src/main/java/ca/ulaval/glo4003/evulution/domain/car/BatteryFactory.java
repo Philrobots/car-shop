@@ -14,7 +14,7 @@ public class BatteryFactory {
 
     }
 
-    public Battery create(String name) {
+    public Battery create(String name) throws BadCarSpecsException {
         for (BatteryInformationDto batteryMapperDto : batteryMapperDtos) {
             if (batteryMapperDto.name.equals(name)) {
                 return new Battery(batteryMapperDto.name, batteryMapperDto.base_NRCAN_range, batteryMapperDto.capacity,

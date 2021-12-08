@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.service.delivery;
 
-import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryCompleteDto;
+import ca.ulaval.glo4003.evulution.service.delivery.dto.DeliveryCompleteDto;
 
 import java.math.BigDecimal;
 

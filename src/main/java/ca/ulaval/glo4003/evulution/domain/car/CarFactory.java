@@ -13,7 +13,7 @@ public class CarFactory {
         this.modelMapperDtos = modelMapperDtos;
     }
 
-    public Car create(String name, String color) {
+    public Car create(String name, String color) throws BadCarSpecsException {
         for (ModelInformationDto modelMapperDto : modelMapperDtos) {
             if (modelMapperDto.name.equals(name) && color.equals("white")) {
                 return new Car(modelMapperDto.name, modelMapperDto.style, modelMapperDto.effeciency_equivalence_rate,

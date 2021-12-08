@@ -1,9 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.delivery;
 
-import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryLocationException;
-import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryModeException;
-
-import java.util.List;
+import ca.ulaval.glo4003.evulution.domain.account.AccountId;
+import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 
 public class DeliveryFactory {
     private Integer assemblyTimeInWeeks;
@@ -14,7 +12,7 @@ public class DeliveryFactory {
         this.deliveryIdFactory = deliveryIdFactory;
     }
 
-    public Delivery create() {
-        return new Delivery(deliveryIdFactory.create(), assemblyTimeInWeeks);
+    public Delivery create(AccountId accountId) throws DeliveryIncompleteException {
+        return new Delivery(accountId, deliveryIdFactory.create(), assemblyTimeInWeeks);
     }
 }

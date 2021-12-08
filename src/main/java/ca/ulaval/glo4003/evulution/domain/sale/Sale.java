@@ -1,125 +1,75 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
-import ca.ulaval.glo4003.evulution.domain.car.Battery;
-import ca.ulaval.glo4003.evulution.domain.car.Car;
-import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDetails;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryStatus;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatteryException;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleCompleteException;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleNotCompletedException;
+import ca.ulaval.glo4003.evulution.domain.account.AccountId;
+import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
+import ca.ulaval.glo4003.evulution.domain.invoice.exceptions.InvalidInvoiceException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.IncompleteSaleException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MismatchAccountIdWithSaleException;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleAlreadyCompleteException;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public class Sale {
-    private final String email;
-    // TODO renommer transaction id pour sale id
-    // TODO devrait juste avoir les prix et les customerID et le invoice
-    private final TransactionId transactionId;
-    private final Delivery delivery;
-    private Car car;
-    private Battery battery;
+    private final AccountId accountId;
+    private final SaleId saleId;
+    private final InvoiceFactory invoiceFactory;
+    private Invoice invoice;
+    private BigDecimal price = BigDecimal.ZERO;
     private SaleStatus status;
 
-    public Sale(String email, TransactionId transactionId, Delivery delivery) {
-        this.email = email;
-        this.transactionId = transactionId;
-        this.delivery = delivery;
+    public Sale(AccountId accountId, SaleId saleId, InvoiceFactory invoiceFactory) {
+        this.accountId = accountId;
+        this.saleId = saleId;
+        this.invoiceFactory = invoiceFactory;
         this.status = SaleStatus.CREATED;
     }
 
-    public String getEmail() {
-        return email;
+    public AccountId getAccountId() {
+        return this.accountId;
     }
 
-    public TransactionId getTransactionId() {
-        return transactionId;
+    public void verifyAccountId(AccountId accountId) throws MismatchAccountIdWithSaleException {
+        if (!this.accountId.equals(accountId))
+            throw new MismatchAccountIdWithSaleException();
     }
 
-    public DeliveryId getDeliveryId() {
-        return delivery.getDeliveryId();
-    }
-
-    public Delivery getDelivery() {
-        return delivery;
-    }
-
-    public Car getCar() {
-        return this.car;
-    }
-
-    public String getCarName() {
-        return car.getName();
-    }
-
-    public Integer getCarTimeProduction() {
-        return this.car.getTimeToProduceAsInt();
-    }
-
-    public String getBatteryType() {
-        return battery.getType();
-    }
-
-    public Battery getBattery() {
-        return this.battery;
-    }
-
-    public Integer getBatteryTimeProduction() {
-        return this.battery.getTimeToProduceAsInt();
-    }
-
-    public Integer getBatteryAutonomy() {
-        return battery.calculateEstimatedRange(car.getEfficiencyEquivalenceRate());
-    }
-
-    public BigDecimal getPrice() {
-        return this.car.getBasePrice().add(this.battery.getPrice());
+    public SaleId getSaleId() {
+        return saleId;
     }
 
     public void setStatus(SaleStatus saleStatus) {
         this.status = saleStatus;
     }
 
-    public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
-        if (this.status != SaleStatus.COMPLETED)
-            throw new SaleNotCompletedException();
-        this.delivery.setDeliveryDetails(deliveryDetails);
-        setDeliveryStatus(DeliveryStatus.CONFIRMED);
-    }
-
-    public void chooseCar(Car car) {
-        if (this.status == SaleStatus.COMPLETED)
-            throw new SaleCompleteException();
-        this.car = car;
-    }
-
-    public void chooseBattery(Battery battery) {
-        if (car == null)
-            throw new CarNotChosenBeforeBatteryException();
-        if (this.status == SaleStatus.COMPLETED)
-            throw new SaleCompleteException();
-        this.battery = battery;
-    }
-
-    public void completeSale() {
-        if (car == null || battery == null)
-            throw new MissingElementsForSaleException();
-        else if (this.status == SaleStatus.COMPLETED) {
-            throw new SaleCompleteException();
+    public void completeSale(int bankNumber, int accountNumber, String frequency)
+            throws SaleAlreadyCompleteException, InvalidInvoiceException {
+        if (this.status == SaleStatus.COMPLETED) {
+            throw new SaleAlreadyCompleteException();
         }
-
+        this.invoice = invoiceFactory.create(bankNumber, accountNumber, frequency, price);
         this.status = SaleStatus.COMPLETED;
-        this.delivery.calculateDeliveryDate(this.car.getTimeToProduceAsInt(), this.battery.getTimeToProduceAsInt());
     }
 
-    public LocalDate addDelayInWeeks(int weeks) {
-        return this.delivery.addDelayInWeeks(weeks);
+    public void verifyIsCompleted() throws IncompleteSaleException {
+        if (!status.equals(SaleStatus.COMPLETED))
+            throw new IncompleteSaleException();
     }
 
-    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
-        this.delivery.setStatus(deliveryStatus);
+    public void verifyNotCompleted() throws SaleAlreadyCompleteException {
+        if (status.equals(SaleStatus.COMPLETED))
+            throw new SaleAlreadyCompleteException();
+    }
+
+    public void addPrice(BigDecimal price) {
+        this.price = this.price.add(price);
+    }
+
+    public Invoice activateInvoice(InvoicePayment invoicePayment) throws IncompleteSaleException {
+        verifyIsCompleted();
+        invoicePayment.makeInvoiceActive(this.saleId, this.invoice);
+        this.invoice.pay();
+        return this.invoice;
     }
 }

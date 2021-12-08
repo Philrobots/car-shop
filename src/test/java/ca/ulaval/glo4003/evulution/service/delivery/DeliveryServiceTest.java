@@ -1,13 +1,18 @@
 package ca.ulaval.glo4003.evulution.service.delivery;
 
-import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryCompleteDto;
-import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryLocationDto;
+import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryLocationRequest;
 import ca.ulaval.glo4003.evulution.domain.delivery.*;
+import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryLocationException;
+import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryModeException;
+import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
-import ca.ulaval.glo4003.evulution.domain.sale.Sale;
-import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
-import ca.ulaval.glo4003.evulution.domain.sale.TransactionId;
-import ca.ulaval.glo4003.evulution.service.invoice.InvoiceService;
+import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
+import ca.ulaval.glo4003.evulution.domain.sale.*;
+import ca.ulaval.glo4003.evulution.domain.sale.exceptions.IncompleteSaleException;
+import ca.ulaval.glo4003.evulution.infrastructure.delivery.exceptions.DeliveryNotFoundException;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
+import ca.ulaval.glo4003.evulution.service.delivery.dto.DeliveryCompleteDto;
+import ca.ulaval.glo4003.evulution.service.delivery.dto.DeliveryLocationDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +28,8 @@ class DeliveryServiceTest {
     private static final Integer A_DELIVERY_ID = 4;
     private static final Integer PAYMENTS_LEFT = 150;
     private static final BigDecimal PAYMENTS_TAKEN = BigDecimal.valueOf(200);
+    private static final String A_DELIVERY_MODE = "At campus";
+    private static final String A_DELIVERY_LOCATION = "Pouliot";
 
     @Mock
     private DeliveryIdFactory deliveryIdFactory;
@@ -34,13 +41,13 @@ class DeliveryServiceTest {
     private SaleRepository saleRepository;
 
     @Mock
-    private InvoiceService invoiceService;
+    private InvoicePayment invoicePayment;
 
     @Mock
     private DeliveryId deliveryId;
 
     @Mock
-    private TransactionId transactionId;
+    private SaleId saleId;
 
     @Mock
     private Sale sale;
@@ -49,7 +56,7 @@ class DeliveryServiceTest {
     private Invoice invoice;
 
     @Mock
-    private DeliveryLocationDto deliveryLocationDto;
+    private DeliveryLocationRequest deliveryLocationRequest;
 
     @Mock
     private DeliveryCompleteDto deliveryCompleteDto;
@@ -60,76 +67,45 @@ class DeliveryServiceTest {
     @Mock
     private DeliveryCompleteAssembler deliveryCompleteAssembler;
 
+    @Mock
+    private DeliveryRepository deliveryRepository;
+
+    @Mock
+    private SaleValidator saleValidator;
+
+    @Mock
+    private DeliveryDomainService deliveryDomainService;
+
+    @Mock
+    private SaleDomainService saleDomainService;
+
+    @Mock
+    private DeliveryLocationDto deliveryLocationDto;
+
     private DeliveryService deliveryService;
 
     @BeforeEach
     public void setUp() {
-        deliveryService = new DeliveryService(deliveryIdFactory, deliveryDetailsFactory, saleRepository, invoiceService,
-                deliveryCompleteAssembler);
+        deliveryService = new DeliveryService(deliveryIdFactory, deliveryDetailsFactory, invoicePayment,
+                deliveryCompleteAssembler, deliveryRepository, saleValidator, deliveryDomainService, saleDomainService);
     }
 
     @Test
-    public void whenChooseDeliveryLocation_thenDeliveryIdFactoryCreatesFromInt() {
-        BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
-                .willReturn(deliveryDetails);
-
+    public void whenChooseDeliveryLocation_thenSaleValidatorIsCalled()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         // when
-        deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+        this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
 
         // then
-        Mockito.verify(deliveryIdFactory).createFromInt(A_DELIVERY_ID);
+        Mockito.verify(saleValidator).validateCompleteStatusFromDeliveryId(A_DELIVERY_ID);
     }
 
     @Test
-    public void whenChooseDeliveryLocation_thenSaleRepositoryGetsDelivery() {
+    public void whenCompleteDelivery_thenDeliveryFactoryCreatesFromInt()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
-                .willReturn(deliveryDetails);
-
-        // when
-        deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
-
-        // then
-        Mockito.verify(saleRepository).getSaleFromDeliveryId(deliveryId);
-    }
-
-    @Test
-    public void whenChooseDeliveryLocation_thenDeliveryDetailsIsCreated() {
-        BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
-                .willReturn(deliveryDetails);
-
-        // when
-        deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
-
-        // then
-        Mockito.verify(deliveryDetailsFactory).create(deliveryLocationDto.mode, deliveryLocationDto.location);
-    }
-
-    @Test
-    public void whenChooseDeliveryLocation_thenSaleSetDeliveryDetails() {
-        BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(deliveryDetailsFactory.create(deliveryLocationDto.mode, deliveryLocationDto.location))
-                .willReturn(deliveryDetails);
-
-        // when
-        deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
-
-        // then
-        Mockito.verify(sale).setDeliveryDetails(deliveryDetails);
-    }
-
-    @Test
-    public void whenCompleteDelivery_thenDeliveryFactoryCreatesFromInt() {
-        BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(invoiceService.makeInvoiceActive(transactionId)).willReturn(invoice);
+        BDDMockito.given(deliveryRepository.getSaleId(deliveryId)).willReturn(saleId);
+        BDDMockito.given(saleDomainService.activateInvoice(saleId)).willReturn(invoice);
 
         // when
         deliveryService.completeDelivery(A_DELIVERY_ID);
@@ -139,57 +115,55 @@ class DeliveryServiceTest {
     }
 
     @Test
-    public void whenCompleteDelivery_thenSaleRepositoryGetsSaleFromDeliveryID() {
+    public void whenCompleteDelivery_thenDeliveryRepositoryGetsSaleId()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(invoiceService.makeInvoiceActive(transactionId)).willReturn(invoice);
+        BDDMockito.given(deliveryRepository.getSaleId(deliveryId)).willReturn(saleId);
+        BDDMockito.given(saleDomainService.activateInvoice(saleId)).willReturn(invoice);
 
         // when
         deliveryService.completeDelivery(A_DELIVERY_ID);
 
         // then
-        Mockito.verify(saleRepository).getSaleFromDeliveryId(deliveryId);
+        Mockito.verify(deliveryRepository).getSaleId(deliveryId);
     }
 
     @Test
-    public void whenCompleteDelivery_thenSaleSetsDeliveryStatus() {
+    public void whenCompleteDelivery_thenSaleDomainServiceActivatesInvoice()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(invoiceService.makeInvoiceActive(transactionId)).willReturn(invoice);
+        BDDMockito.given(deliveryRepository.getSaleId(deliveryId)).willReturn(saleId);
+        BDDMockito.given(saleDomainService.activateInvoice(saleId)).willReturn(invoice);
 
         // when
         deliveryService.completeDelivery(A_DELIVERY_ID);
 
         // then
-        Mockito.verify(sale).setDeliveryStatus(DeliveryStatus.COMPLETED);
+        Mockito.verify(saleDomainService).activateInvoice(saleId);
     }
 
     @Test
-    public void whenCompleteDelivery_thenInvoiceServiceMakesInvoiceActive() {
+    public void whenCompleteDelivery_thenDeliveryDomainServiceCompleteDelivery() throws DeliveryNotFoundException,
+            IncompleteSaleException, SaleNotFoundException, DeliveryIncompleteException {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(invoiceService.makeInvoiceActive(transactionId)).willReturn(invoice);
+        BDDMockito.given(deliveryRepository.getSaleId(deliveryId)).willReturn(saleId);
+        BDDMockito.given(saleDomainService.activateInvoice(saleId)).willReturn(invoice);
 
         // when
         deliveryService.completeDelivery(A_DELIVERY_ID);
 
         // then
-        Mockito.verify(invoiceService).makeInvoiceActive(transactionId);
+        Mockito.verify(deliveryDomainService).completeDelivery(deliveryId);
     }
 
     @Test
-    public void whenCompleteDelivery_thenAssemblesDeliveryAssembles() {
+    public void whenCompleteDelivery_thenDeliveryCompleteAssemblerAssembles()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.given(saleRepository.getSaleFromDeliveryId(deliveryId)).willReturn(sale);
-        BDDMockito.given(sale.getTransactionId()).willReturn(transactionId);
-        BDDMockito.given(invoiceService.makeInvoiceActive(transactionId)).willReturn(invoice);
+        BDDMockito.given(deliveryRepository.getSaleId(deliveryId)).willReturn(saleId);
+        BDDMockito.given(saleDomainService.activateInvoice(saleId)).willReturn(invoice);
         BDDMockito.given(invoice.getPaymentsLeft()).willReturn(PAYMENTS_LEFT);
         BDDMockito.given(invoice.getPaymentsTaken()).willReturn(PAYMENTS_TAKEN);
-        BDDMockito.given(deliveryCompleteAssembler.assemble(PAYMENTS_TAKEN, PAYMENTS_LEFT))
-                .willReturn(deliveryCompleteDto);
 
         // when
         deliveryService.completeDelivery(A_DELIVERY_ID);
@@ -197,4 +171,5 @@ class DeliveryServiceTest {
         // then
         Mockito.verify(deliveryCompleteAssembler).assemble(PAYMENTS_TAKEN, PAYMENTS_LEFT);
     }
+
 }

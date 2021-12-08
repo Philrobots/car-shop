@@ -33,7 +33,7 @@ public class InvoiceFactoryTest {
     }
 
     @Test
-    public void whenCreate_thenInvoiceIsCreated() {
+    public void whenCreate_thenInvoiceIsCreated() throws InvalidInvoiceException {
         Invoice invoice = invoiceFactory.create(A_BANK_NO, A_ACCOUNT_NO, A_MONTHLY_FREQUENCY, A_BALANCE);
 
         assertNotNull(invoice);

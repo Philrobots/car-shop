@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.delivery;
 
+import ca.ulaval.glo4003.evulution.domain.account.AccountId;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,15 +26,19 @@ class DeliveryTest {
     @Mock
     private DeliveryId deliveryId;
 
+    @Mock
+    private AccountId accountId;
+
     @BeforeEach
-    void setUp() {
-        this.delivery = new Delivery(deliveryId, AN_ASSEMBLY_TIME_IN_WEEKS);
+    void setUp() throws DeliveryIncompleteException {
+        this.delivery = new Delivery(accountId, deliveryId, AN_ASSEMBLY_TIME_IN_WEEKS);
     }
 
     @Test
     public void givenDeliveryDate_whenAddDelayInWeeks_thenAddDelayToDeliveryDate() {
         // given
-        delivery.calculateDeliveryDate(A_CAR_ASSEMBLY_TIME_IN_WEEKS, A_BATTERY_ASSEMBLY_TIME_IN_WEEKS);
+        delivery.setCarTimeToProduce(A_CAR_ASSEMBLY_TIME_IN_WEEKS);
+        delivery.setBatteryTimeToProduce(A_BATTERY_ASSEMBLY_TIME_IN_WEEKS);
 
         // when
         LocalDate deliveryDate = delivery.addDelayInWeeks(1);
@@ -48,7 +53,8 @@ class DeliveryTest {
     }
 
     @Test
-    public void givenNonDeliveredStatus_whenSetStatusToConfirmed_thenThrowsDeliveryIncompleteException() {
+    public void givenNonDeliveredStatus_whenSetStatusToConfirmed_thenThrowsDeliveryIncompleteException()
+            throws DeliveryIncompleteException {
         // given
         delivery.setStatus(A_CONFIRMED_DELIVERY_STATUS);
 

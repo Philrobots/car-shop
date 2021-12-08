@@ -1,14 +1,15 @@
 package ca.ulaval.glo4003.evulution.domain.sale;
 
-import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
+import ca.ulaval.glo4003.evulution.domain.account.AccountId;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 
 public interface SaleRepository {
 
     void registerSale(Sale sale);
 
-    Sale getSale(TransactionId transactionId);
+    Sale getSale(SaleId saleId) throws SaleNotFoundException;
 
-    Sale getSaleFromDeliveryId(DeliveryId deliveryId);
+    AccountId getAccountIdFromSaleId(SaleId saleId) throws SaleNotFoundException;
 
-    void setStatus(TransactionId transactionId, SaleStatus status);
+    void setStatus(SaleId saleId, SaleStatus status) throws SaleNotFoundException;
 }

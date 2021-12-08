@@ -1,7 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.account.customer;
 
-import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
-import ca.ulaval.glo4003.evulution.api.exceptions.InvalidDateFormatException;
+import ca.ulaval.glo4003.evulution.domain.account.exceptions.InvalidDateFormatException;
+import ca.ulaval.glo4003.evulution.domain.exceptions.BadInputParameterException;
+import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +29,8 @@ public class CustomerFactoryTest {
     }
 
     @Test
-    public void whenCreateCustomer_thenCreatesCustomer() {
+    public void whenCreateCustomer_thenCreatesCustomer() throws InvalidDateFormatException, BadInputParameterException,
+            AccountNotFoundException {
         // when
         Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD, A_VALID_GENDER);
 

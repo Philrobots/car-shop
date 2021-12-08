@@ -1,7 +1,8 @@
 package ca.ulaval.glo4003.evulution.infrastructure.token;
 
+import ca.ulaval.glo4003.evulution.domain.account.AccountId;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
-import ca.ulaval.glo4003.evulution.domain.token.exceptions.UnauthorizedRequestException;
+import ca.ulaval.glo4003.evulution.infrastructure.token.exceptions.TokenNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +10,8 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class TokenRepositoryInMemoryTest {
@@ -19,6 +21,9 @@ public class TokenRepositoryInMemoryTest {
     @Mock
     private Token token;
 
+    @Mock
+    private AccountId accountId;
+
     private TokenRepositoryInMemory tokenRepositoryInMemory;
 
     @BeforeEach
@@ -27,29 +32,23 @@ public class TokenRepositoryInMemoryTest {
     }
 
     @Test
-    public void givenAnActiveEmail_whenGetEmail_thenShouldReturnCorrespondingEmail() {
+    public void givenAnActiveEmail_whenGetAccountId_thenShouldReturnCorrespondingEmail() throws TokenNotFoundException {
         // given
-        tokenRepositoryInMemory.addTokenWithEmail(token, AN_EMAIL);
+        tokenRepositoryInMemory.addToken(token, this.accountId);
 
         // when
-        String email = tokenRepositoryInMemory.getEmail(token);
+        AccountId accountId = tokenRepositoryInMemory.getAccountId(token);
 
         // then
-        assertEquals(email, AN_EMAIL);
+        assertEquals(accountId, this.accountId);
     }
 
     @Test
-    public void givenNoTokenForEmail_whenGetEmail_thenRepositoryDoesNotContainEmail() {
-        // then
-        assertNull(this.tokenRepositoryInMemory.getEmail(token));
-    }
-
-    @Test
-    public void givenNoToken_whenValidateToken_thenThrowUnauthorizedRequestException() {
+    public void givenNoTokenForEmail_whenGetAccountId_thenThrowsTokenNotFoundException() {
         // when
-        Executable valideToken = () -> tokenRepositoryInMemory.validateToken(token);
+        Executable getAccountId = () -> this.tokenRepositoryInMemory.getAccountId(token);
 
         // then
-        assertThrows(UnauthorizedRequestException.class, valideToken);
+        assertThrows(TokenNotFoundException.class, getAccountId);
     }
 }

@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.api.validators;
 
-import ca.ulaval.glo4003.evulution.api.exceptions.BadInputParameterException;
-import ca.ulaval.glo4003.evulution.api.login.dto.LoginDto;
+import ca.ulaval.glo4003.evulution.api.login.dto.LoginRequest;
+import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,11 +16,11 @@ class ConstraintsValidatorTest {
     private static final String A_VALID_PASSWORD = "valid_password";
 
     private ConstraintsValidator constraintsValidator;
-    private LoginDto dto;
+    private LoginRequest dto;
 
     @BeforeEach
     public void setup() {
-        this.dto = new LoginDto();
+        this.dto = new LoginRequest();
         this.constraintsValidator = new ConstraintsValidator();
     }
 
@@ -34,6 +34,6 @@ class ConstraintsValidatorTest {
         Executable validate = () -> this.constraintsValidator.validate(dto);
 
         // then
-        assertThrows(BadInputParameterException.class, validate);
+        assertThrows(ServiceBadInputParameterException.class, validate);
     }
 }

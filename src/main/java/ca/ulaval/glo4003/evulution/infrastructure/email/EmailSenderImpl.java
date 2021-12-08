@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.evulution.infrastructure.email;
 
-import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
 
@@ -29,7 +28,7 @@ public class EmailSenderImpl implements EmailSender {
         });
     }
 
-    public void sendEmail(List<String> recipients, String subject, String message) {
+    public void sendEmail(List<String> recipients, String subject, String message) throws EmailException {
         for (String recipientAddress : recipients) {
             try {
                 Message mimeMessage = new MimeMessage(session);

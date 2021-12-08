@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.service.delivery;
 
-import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryCompleteDto;
+import ca.ulaval.glo4003.evulution.service.delivery.dto.DeliveryCompleteDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

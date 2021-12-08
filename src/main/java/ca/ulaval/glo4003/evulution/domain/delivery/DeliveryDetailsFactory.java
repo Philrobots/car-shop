@@ -12,7 +12,8 @@ public class DeliveryDetailsFactory {
         this.possibleDeliveryLocation = possibleDeliveryLocation;
     }
 
-    public DeliveryDetails create(String mode, String location) {
+    public DeliveryDetails create(String mode, String location)
+            throws BadDeliveryModeException, BadDeliveryLocationException {
         if (!mode.equals("At campus"))
             throw new BadDeliveryModeException();
         if (!possibleDeliveryLocation.contains(location))
