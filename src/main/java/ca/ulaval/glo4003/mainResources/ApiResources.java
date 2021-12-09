@@ -46,9 +46,9 @@ public class ApiResources {
     private final SaleValidator saleValidator;
 
     public ApiResources(FactoryResources factoryResources, RepositoryResources repositoryResources,
-                        AssemblerResources assemblerResources, ExceptionMapperResources exceptionMapperResources,
-                        ServiceResources serviceResources, ConstraintsValidator constraintsValidator,
-                        AccountValidator accountValidator, DeliveryValidator deliveryValidator, SaleValidator saleValidator) {
+            AssemblerResources assemblerResources, ExceptionMapperResources exceptionMapperResources,
+            ServiceResources serviceResources, ConstraintsValidator constraintsValidator,
+            AccountValidator accountValidator, DeliveryValidator deliveryValidator, SaleValidator saleValidator) {
 
         this.exceptionMapperResources = exceptionMapperResources;
         this.serviceResources = serviceResources;
@@ -95,35 +95,35 @@ public class ApiResources {
     }
 
     private static CustomerResource createAccountResource(CustomerService customerService,
-                                                          HTTPExceptionResponseAssembler httpExceptionResponseAssembler, CustomerDtoAssembler customerDtoAssembler,
-                                                          ConstraintsValidator constraintsValidator) {
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, CustomerDtoAssembler customerDtoAssembler,
+            ConstraintsValidator constraintsValidator) {
         return new CustomerResource(customerService, httpExceptionResponseAssembler, customerDtoAssembler,
                 constraintsValidator);
 
     }
 
     private static LoginResource createLoginResource(LoginService loginService,
-                                                     HTTPExceptionResponseAssembler httpExceptionResponseAssembler, LoginDtoAssembler loginDtoAssembler,
-                                                     TokenResponseAssembler tokenResponseAssembler, ConstraintsValidator constraintsValidator) {
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, LoginDtoAssembler loginDtoAssembler,
+            TokenResponseAssembler tokenResponseAssembler, ConstraintsValidator constraintsValidator) {
         return new LoginResource(loginService, httpExceptionResponseAssembler, loginDtoAssembler,
                 tokenResponseAssembler, constraintsValidator);
     }
 
     private static SaleResource createSaleResource(SaleService saleService, TokenDtoAssembler tokenDtoAssembler,
-                                                   HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ChooseCarDtoAssembler chooseCarDtoAssembler,
-                                                   ChooseBatteryDtoAssembler chooseBatteryDtoAssembler,
-                                                   EstimatedRangeResponseAssembler estimatedRangeResponseAssembler,
-                                                   SaleResponseAssembler saleResponseAssembler, InvoiceDtoAssembler invoiceDtoAssembler,
-                                                   ConstraintsValidator constraintsValidator, ManufactureService manufactureService) {
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ChooseCarDtoAssembler chooseCarDtoAssembler,
+            ChooseBatteryDtoAssembler chooseBatteryDtoAssembler,
+            EstimatedRangeResponseAssembler estimatedRangeResponseAssembler,
+            SaleResponseAssembler saleResponseAssembler, InvoiceDtoAssembler invoiceDtoAssembler,
+            ConstraintsValidator constraintsValidator, ManufactureService manufactureService) {
         return new SaleResource(saleService, tokenDtoAssembler, httpExceptionResponseAssembler, chooseCarDtoAssembler,
                 chooseBatteryDtoAssembler, estimatedRangeResponseAssembler, saleResponseAssembler, invoiceDtoAssembler,
                 constraintsValidator, manufactureService);
     }
 
     private static DeliveryResource createDeliveryResource(DeliveryService deliveryService,
-                                                           ConstraintsValidator constraintsValidator, HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
-                                                           DeliveryCompletedResponseAssembler deliveryCompletedResponseAssembler,
-                                                           DeliveryLocationDtoAssembler deliveryLocationDtoAssembler) {
+            ConstraintsValidator constraintsValidator, HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
+            DeliveryCompletedResponseAssembler deliveryCompletedResponseAssembler,
+            DeliveryLocationDtoAssembler deliveryLocationDtoAssembler) {
         return new DeliveryResource(deliveryService, constraintsValidator, httpExceptionResponseAssembler,
                 deliveryCompletedResponseAssembler, deliveryLocationDtoAssembler);
     }

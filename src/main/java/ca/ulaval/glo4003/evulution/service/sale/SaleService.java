@@ -32,9 +32,9 @@ public class SaleService {
     private TokenAssembler tokenAssembler;
 
     public SaleService(SaleRepository saleRepository, SaleCreatedAssembler saleCreatedAssembler,
-                       SaleFactory saleFactory, InvoiceFactory invoiceFactory, AssemblyLineService assemblyLineService,
-                       ManufactureDomainService manufactureDomainService, SaleDomainService saleDomainService,
-                       SaleIdFactory saleIdFactory, TokenAssembler tokenAssembler) {
+            SaleFactory saleFactory, InvoiceFactory invoiceFactory, AssemblyLineService assemblyLineService,
+            ManufactureDomainService manufactureDomainService, SaleDomainService saleDomainService,
+            SaleIdFactory saleIdFactory, TokenAssembler tokenAssembler) {
         this.saleRepository = saleRepository;
         this.saleCreatedAssembler = saleCreatedAssembler;
         this.saleFactory = saleFactory;

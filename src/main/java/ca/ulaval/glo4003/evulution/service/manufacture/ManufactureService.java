@@ -20,7 +20,7 @@ public class ManufactureService {
     private EstimatedRangeAssembler estimatedRangeAssembler;
 
     public ManufactureService(SaleValidator saleValidator, ManufactureDomainService manufactureDomainService,
-                              EstimatedRangeAssembler estimatedRangeAssembler) {
+            EstimatedRangeAssembler estimatedRangeAssembler) {
         this.saleValidator = saleValidator;
         this.manufactureDomainService = manufactureDomainService;
         this.estimatedRangeAssembler = estimatedRangeAssembler;

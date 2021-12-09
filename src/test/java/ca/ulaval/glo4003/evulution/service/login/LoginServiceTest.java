@@ -44,29 +44,29 @@ public class LoginServiceTest {
     public void setUp() {
         loginService = new LoginService(tokenFactory, tokenRepository, accountRepository, tokenAssembler);
     } /*
-     *
-     * @Test public void givenAnEmail_whenLoginCustomer_thenCustomerRepositoryGetsAccountByEmail() throws
-     * AccountNotFoundException { // then BDDMockito.given(loginDto.email).willReturn(A_STRING_EMAIL);
-     *
-     * // when loginService.loginCustomer(loginDto);
-     *
-     * // then Mockito.verify(accountRepository).getAccountByEmail(A_STRING_EMAIL); }
-     *
-     * @Test public void givenAnEmail_whenLoginCustomer_thenAccountLogins() throws FailedLoginException { // then
-     * BDDMockito.given(loginDto.email).willReturn(A_STRING_EMAIL);
-     * BDDMockito.given(loginDto.password).willReturn(A_PASSWORD);
-     *
-     * // when loginService.loginCustomer(loginDto);
-     *
-     * // then Mockito.verify(account).login(A_STRING_EMAIL, A_PASSWORD, tokenFactory, tokenRepository); }
-     *
-     * @Test public void givenAnEmail_whenLoginCustomer_thenTokenAssembleAssembleDto() throws FailedLoginException {
-     * // then BDDMockito.given(loginDto.email).willReturn(A_STRING_EMAIL);
-     * BDDMockito.given(loginDto.password).willReturn(A_PASSWORD); BDDMockito.given(account.login(A_STRING_EMAIL,
-     * A_PASSWORD, tokenFactory, tokenRepository)).willReturn(token);
-     *
-     * // when loginService.loginCustomer(loginDto);
-     *
-     * // then Mockito.verify(tokenAssembler).assembleDtoFromToken(token); }
-     */
+       *
+       * @Test public void givenAnEmail_whenLoginCustomer_thenCustomerRepositoryGetsAccountByEmail() throws
+       * AccountNotFoundException { // then BDDMockito.given(loginDto.email).willReturn(A_STRING_EMAIL);
+       *
+       * // when loginService.loginCustomer(loginDto);
+       *
+       * // then Mockito.verify(accountRepository).getAccountByEmail(A_STRING_EMAIL); }
+       *
+       * @Test public void givenAnEmail_whenLoginCustomer_thenAccountLogins() throws FailedLoginException { // then
+       * BDDMockito.given(loginDto.email).willReturn(A_STRING_EMAIL);
+       * BDDMockito.given(loginDto.password).willReturn(A_PASSWORD);
+       *
+       * // when loginService.loginCustomer(loginDto);
+       *
+       * // then Mockito.verify(account).login(A_STRING_EMAIL, A_PASSWORD, tokenFactory, tokenRepository); }
+       *
+       * @Test public void givenAnEmail_whenLoginCustomer_thenTokenAssembleAssembleDto() throws FailedLoginException {
+       * // then BDDMockito.given(loginDto.email).willReturn(A_STRING_EMAIL);
+       * BDDMockito.given(loginDto.password).willReturn(A_PASSWORD); BDDMockito.given(account.login(A_STRING_EMAIL,
+       * A_PASSWORD, tokenFactory, tokenRepository)).willReturn(token);
+       *
+       * // when loginService.loginCustomer(loginDto);
+       *
+       * // then Mockito.verify(tokenAssembler).assembleDtoFromToken(token); }
+       */
 }

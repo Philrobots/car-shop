@@ -36,11 +36,11 @@ public class SaleResource {
     private final ManufactureService manufactureService;
 
     public SaleResource(SaleService saleService, TokenDtoAssembler tokenDtoAssembler,
-                        HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ChooseCarDtoAssembler chooseCarDtoAssembler,
-                        ChooseBatteryDtoAssembler chooseBatteryDtoAssembler,
-                        EstimatedRangeResponseAssembler estimatedRangeResponseAssembler,
-                        SaleResponseAssembler saleResponseAssembler, InvoiceDtoAssembler invoiceDtoAssembler,
-                        ConstraintsValidator constraintsValidator, ManufactureService manufactureService) {
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, ChooseCarDtoAssembler chooseCarDtoAssembler,
+            ChooseBatteryDtoAssembler chooseBatteryDtoAssembler,
+            EstimatedRangeResponseAssembler estimatedRangeResponseAssembler,
+            SaleResponseAssembler saleResponseAssembler, InvoiceDtoAssembler invoiceDtoAssembler,
+            ConstraintsValidator constraintsValidator, ManufactureService manufactureService) {
         this.saleService = saleService;
         this.tokenDtoAssembler = tokenDtoAssembler;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;

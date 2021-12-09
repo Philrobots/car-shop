@@ -27,16 +27,14 @@ class DeliveryRepositoryInMemoryTest {
     private static final DeliveryId A_VALID_DELIVERY_ID = new DeliveryId(564);
     private static final DeliveryId AN_INVALID_DELIVERY_ID = new DeliveryId(854);
     private static final SaleId A_SALE_ID = new SaleId(246);
-    private static final int ASSEMBLY_TIME_IN_WEEK = 2;
 
     private DeliveryRepositoryInMemory deliveryRepositoryInMemory;
 
+    @Mock
     private Manufacture manufacture;
 
-    private Delivery delivery;
-
     @Mock
-    AccountId accountId;
+    private Delivery delivery;
 
     @Mock
     ManufactureDao manufactureDao;
@@ -44,14 +42,14 @@ class DeliveryRepositoryInMemoryTest {
     @BeforeEach
     public void setUp() {
         this.deliveryRepositoryInMemory = new DeliveryRepositoryInMemory(manufactureDao);
-        this.delivery = new Delivery(accountId, A_VALID_DELIVERY_ID, ASSEMBLY_TIME_IN_WEEK);
-        this.manufacture = new Manufacture(delivery);
     }
 
     @Test
     public void givenAValidDeliveryId_whenGetDelivery_thenReturnsDelivery() throws DeliveryNotFoundException {
         // given
         BDDMockito.given(manufactureDao.getManufactures()).willReturn(List.of(manufacture));
+        BDDMockito.given(manufacture.getDeliveryId()).willReturn(A_VALID_DELIVERY_ID);
+        BDDMockito.given(manufacture.getDelivery()).willReturn(delivery);
 
         // when
         Delivery deliveryReturned = deliveryRepositoryInMemory.getDelivery(A_VALID_DELIVERY_ID);
@@ -64,6 +62,7 @@ class DeliveryRepositoryInMemoryTest {
     public void givenAnInvalidDeliveryId_whenGetDelivery_thenThrowsDeliveryNotFoundException() {
         // given
         BDDMockito.given(manufactureDao.getManufactures()).willReturn(List.of(manufacture));
+        BDDMockito.given(manufacture.getDeliveryId()).willReturn(A_VALID_DELIVERY_ID);
 
         // when
         Executable getManufactures = () -> deliveryRepositoryInMemory.getDelivery(AN_INVALID_DELIVERY_ID);
@@ -77,6 +76,7 @@ class DeliveryRepositoryInMemoryTest {
         // given
         BDDMockito.given(manufactureDao.getManufacturesMapEntries())
                 .willReturn(Map.of(A_SALE_ID, manufacture).entrySet());
+        BDDMockito.given(manufacture.getDeliveryId()).willReturn(A_VALID_DELIVERY_ID);
 
         // when
         SaleId saleId = deliveryRepositoryInMemory.getSaleId(A_VALID_DELIVERY_ID);
@@ -90,6 +90,7 @@ class DeliveryRepositoryInMemoryTest {
         // given
         BDDMockito.given(manufactureDao.getManufacturesMapEntries())
                 .willReturn(Map.of(A_SALE_ID, manufacture).entrySet());
+        BDDMockito.given(manufacture.getDeliveryId()).willReturn(A_VALID_DELIVERY_ID);
 
         // when
         Executable getManufacturesMapEntries = () -> deliveryRepositoryInMemory.getSaleId(AN_INVALID_DELIVERY_ID);
@@ -101,12 +102,13 @@ class DeliveryRepositoryInMemoryTest {
     @Test
     public void givenExistingDelivery_whenUpdateDelivery_thenNewDeliveryIsSaved() {
         // given
-        Delivery newDelivery = new Delivery(accountId, A_VALID_DELIVERY_ID, ASSEMBLY_TIME_IN_WEEK);
         BDDMockito.given(manufactureDao.getManufacturesMapEntries())
                 .willReturn(Map.of(A_SALE_ID, manufacture).entrySet());
+        BDDMockito.given(manufacture.getDeliveryId()).willReturn(AN_INVALID_DELIVERY_ID);
+        BDDMockito.given(delivery.getDeliveryId()).willReturn(AN_INVALID_DELIVERY_ID);
 
         // when
-        deliveryRepositoryInMemory.updateDelivery(newDelivery);
+        deliveryRepositoryInMemory.updateDelivery(delivery);
 
         // then
         BDDMockito.verify(manufactureDao).add(A_SALE_ID, manufacture);

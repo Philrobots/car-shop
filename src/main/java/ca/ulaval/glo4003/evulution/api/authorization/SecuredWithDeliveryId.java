@@ -10,6 +10,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @NameBinding
 @Retention(RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface SecuredWithDeliveryId {
 }

@@ -22,7 +22,7 @@ public class ManufactureDomainService {
     private SaleDomainService saleDomainService;
 
     public ManufactureDomainService(ManufactureFactory manufactureFactory, ManufactureRepository manufactureRepository,
-                                    CarFactory carFactory, BatteryFactory batteryFactory, SaleDomainService saleDomainService) {
+            CarFactory carFactory, BatteryFactory batteryFactory, SaleDomainService saleDomainService) {
         this.manufactureFactory = manufactureFactory;
         this.manufactureRepository = manufactureRepository;
         this.carFactory = carFactory;

@@ -17,7 +17,7 @@ public class ProductionResource {
     private final AssemblyLineService assemblyLineService;
 
     public ProductionResource(HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
-                              AssemblyLineService assemblyLineService) {
+            AssemblyLineService assemblyLineService) {
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
         this.assemblyLineService = assemblyLineService;
     }

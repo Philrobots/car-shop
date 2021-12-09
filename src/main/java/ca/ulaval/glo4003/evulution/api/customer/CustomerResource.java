@@ -21,8 +21,8 @@ public class CustomerResource {
     private final ConstraintsValidator constraintsValidator;
 
     public CustomerResource(CustomerService customerService,
-                            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, CustomerDtoAssembler customerDtoAssembler,
-                            ConstraintsValidator constraintsValidator) {
+            HTTPExceptionResponseAssembler httpExceptionResponseAssembler, CustomerDtoAssembler customerDtoAssembler,
+            ConstraintsValidator constraintsValidator) {
         this.customerService = customerService;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
         this.customerDtoAssembler = customerDtoAssembler;

@@ -15,7 +15,7 @@ public class BatteryProduction {
     private Integer productionTimeInWeeks;
 
     public BatteryProduction(ProductionId productionId, String batteryType, String email,
-                             Integer productionTimeInWeeks) {
+            Integer productionTimeInWeeks) {
         this.productionId = productionId;
         this.batteryType = batteryType;
         this.email = email;

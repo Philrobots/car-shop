@@ -26,8 +26,8 @@ public class LoginResource {
     private final ConstraintsValidator constraintsValidator;
 
     public LoginResource(LoginService loginService, HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
-                         LoginDtoAssembler loginDtoAssembler, TokenResponseAssembler tokenResponseAssembler,
-                         ConstraintsValidator constraintsValidator) {
+            LoginDtoAssembler loginDtoAssembler, TokenResponseAssembler tokenResponseAssembler,
+            ConstraintsValidator constraintsValidator) {
         this.loginService = loginService;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
         this.loginDtoAssembler = loginDtoAssembler;

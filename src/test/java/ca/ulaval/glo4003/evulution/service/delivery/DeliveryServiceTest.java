@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.evulution.service.delivery;
 
-import ca.ulaval.glo4003.evulution.api.delivery.dto.DeliveryLocationRequest;
 import ca.ulaval.glo4003.evulution.domain.delivery.*;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryLocationException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryModeException;
@@ -11,7 +10,6 @@ import ca.ulaval.glo4003.evulution.domain.sale.*;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.IncompleteSaleException;
 import ca.ulaval.glo4003.evulution.infrastructure.delivery.exceptions.DeliveryNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
-import ca.ulaval.glo4003.evulution.service.delivery.dto.DeliveryCompleteDto;
 import ca.ulaval.glo4003.evulution.service.delivery.dto.DeliveryLocationDto;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadOrderOfOperationsException;
@@ -163,82 +161,107 @@ class DeliveryServiceTest {
     }
 
     @Test
-    public void givenSaleNotFoundException_whenChooseDeliveryLocation_thenThrowsServiceBadRequestException() throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
+    public void givenSaleNotFoundException_whenChooseDeliveryLocation_thenThrowsServiceBadRequestException()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         // given
-        BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID)).willThrow(SaleNotFoundException.class);
+        BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID))
+                .willThrow(SaleNotFoundException.class);
 
         // when
-        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID,
+                deliveryLocationDto);
 
         // then
         assertThrows(ServiceBadRequestException.class, chooseDeliveryLocation);
     }
 
     @Test
-    public void givenDeliveryNotFoundException_whenChooseDeliveryLocation_thenThrowsServiceBadRequestException() throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
+    public void givenDeliveryNotFoundException_whenChooseDeliveryLocation_thenThrowsServiceBadRequestException()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         // given
-        BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID)).willThrow(DeliveryNotFoundException.class);
+        BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID))
+                .willThrow(DeliveryNotFoundException.class);
 
         // when
-        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID,
+                deliveryLocationDto);
 
         // then
         assertThrows(ServiceBadRequestException.class, chooseDeliveryLocation);
     }
 
     @Test
-    public void givenIncompleteSaleException_whenChooseDeliveryLocation_thenThrowsServiceBadOrderOfOperationsException() throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
+    public void givenIncompleteSaleException_whenChooseDeliveryLocation_thenThrowsServiceBadOrderOfOperationsException()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException {
         // given
-        BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID)).willThrow(IncompleteSaleException.class);
+        BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID))
+                .willThrow(IncompleteSaleException.class);
 
         // when
-        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID,
+                deliveryLocationDto);
 
         // then
         assertThrows(ServiceBadOrderOfOperationsException.class, chooseDeliveryLocation);
     }
 
     @Test
-    public void givenDeliveryIncompleteException_whenChooseDeliveryLocation_thenThrowsServiceBadOrderOfOperationsException() throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException, DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
+    public void givenDeliveryIncompleteException_whenChooseDeliveryLocation_thenThrowsServiceBadOrderOfOperationsException()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException,
+            DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
         // given
         BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.doThrow(DeliveryIncompleteException.class).when(deliveryDomainService).setDeliveryModeLocationAndConfirmDelivery(deliveryId, deliveryLocationDto.mode, deliveryLocationDto.location);
+        BDDMockito.doThrow(DeliveryIncompleteException.class).when(deliveryDomainService)
+                .setDeliveryModeLocationAndConfirmDelivery(deliveryId, deliveryLocationDto.mode,
+                        deliveryLocationDto.location);
 
         // when
-        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID,
+                deliveryLocationDto);
 
         // then
         assertThrows(ServiceBadOrderOfOperationsException.class, chooseDeliveryLocation);
     }
 
     @Test
-    public void givenBadDeliveryModeException_whenChooseDeliveryLocation_thenThrowsServiceBadInputParameterException() throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException, DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
+    public void givenBadDeliveryModeException_whenChooseDeliveryLocation_thenThrowsServiceBadInputParameterException()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException,
+            DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
         // given
         BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.doThrow(BadDeliveryModeException.class).when(deliveryDomainService).setDeliveryModeLocationAndConfirmDelivery(deliveryId, deliveryLocationDto.mode, deliveryLocationDto.location);
+        BDDMockito.doThrow(BadDeliveryModeException.class).when(deliveryDomainService)
+                .setDeliveryModeLocationAndConfirmDelivery(deliveryId, deliveryLocationDto.mode,
+                        deliveryLocationDto.location);
 
         // when
-        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID,
+                deliveryLocationDto);
 
         // then
         assertThrows(ServiceBadInputParameterException.class, chooseDeliveryLocation);
     }
 
     @Test
-    public void givenBadDeliveryLocationException_whenChooseDeliveryLocation_thenThrowsServiceBadInputParameterException() throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException, DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
+    public void givenBadDeliveryLocationException_whenChooseDeliveryLocation_thenThrowsServiceBadInputParameterException()
+            throws DeliveryNotFoundException, IncompleteSaleException, SaleNotFoundException,
+            DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
         // given
         BDDMockito.given(saleValidator.validateCompleteStatusFromDeliveryId(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.doThrow(BadDeliveryLocationException.class).when(deliveryDomainService).setDeliveryModeLocationAndConfirmDelivery(deliveryId, deliveryLocationDto.mode, deliveryLocationDto.location);
+        BDDMockito.doThrow(BadDeliveryLocationException.class).when(deliveryDomainService)
+                .setDeliveryModeLocationAndConfirmDelivery(deliveryId, deliveryLocationDto.mode,
+                        deliveryLocationDto.location);
 
         // when
-        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID, deliveryLocationDto);
+        Executable chooseDeliveryLocation = () -> this.deliveryService.chooseDeliveryLocation(A_DELIVERY_ID,
+                deliveryLocationDto);
 
         // then
         assertThrows(ServiceBadInputParameterException.class, chooseDeliveryLocation);
     }
 
     @Test
-    public void givenSaleNotFoundException_whenCompleteDelivery_thenThrowsServiceBadRequestException() throws IncompleteSaleException, SaleNotFoundException {
+    public void givenSaleNotFoundException_whenCompleteDelivery_thenThrowsServiceBadRequestException()
+            throws IncompleteSaleException, SaleNotFoundException {
         // given
         BDDMockito.given(saleDomainService.activateInvoice(any())).willThrow(SaleNotFoundException.class);
 
@@ -250,7 +273,8 @@ class DeliveryServiceTest {
     }
 
     @Test
-    public void givenDeliveryNotFoundException_whenCompleteDelivery_thenThrowsServiceBadRequestException() throws DeliveryNotFoundException {
+    public void givenDeliveryNotFoundException_whenCompleteDelivery_thenThrowsServiceBadRequestException()
+            throws DeliveryNotFoundException {
         // given
         BDDMockito.given(deliveryRepository.getSaleId(any())).willThrow(DeliveryNotFoundException.class);
 
@@ -262,7 +286,8 @@ class DeliveryServiceTest {
     }
 
     @Test
-    public void givenIncompleteSaleException_whenCompleteDelivery_thenThrowsServiceBadOrderOfOperationsException() throws IncompleteSaleException, SaleNotFoundException {
+    public void givenIncompleteSaleException_whenCompleteDelivery_thenThrowsServiceBadOrderOfOperationsException()
+            throws IncompleteSaleException, SaleNotFoundException {
         // given
         BDDMockito.given(saleDomainService.activateInvoice(any())).willThrow(IncompleteSaleException.class);
 
@@ -274,7 +299,8 @@ class DeliveryServiceTest {
     }
 
     @Test
-    public void givenDeliveryIncompleteException_whenCompleteDelivery_thenThrowsServiceBadOrderOfOperationsException() throws DeliveryNotFoundException, DeliveryIncompleteException {
+    public void givenDeliveryIncompleteException_whenCompleteDelivery_thenThrowsServiceBadOrderOfOperationsException()
+            throws DeliveryNotFoundException, DeliveryIncompleteException {
         // given
         BDDMockito.doThrow(DeliveryIncompleteException.class).when(deliveryDomainService).completeDelivery(any());
 

@@ -6,7 +6,7 @@ public class ProductionLineResources {
     private final ProductionLine productionLine;
 
     public ProductionLineResources(FactoryResources factoryResources, RepositoryResources repositoryResources,
-                                   SaleDomainServiceResources saleDomainServiceResources, AssemblyLineResources assemblyLineResources) {
+            SaleDomainServiceResources saleDomainServiceResources, AssemblyLineResources assemblyLineResources) {
 
         productionLine = new ProductionLine(assemblyLineResources.getCarAssemblyLine(),
                 assemblyLineResources.getBatteryAssemblyLine(), assemblyLineResources.getCompleteAssemblyLine(),

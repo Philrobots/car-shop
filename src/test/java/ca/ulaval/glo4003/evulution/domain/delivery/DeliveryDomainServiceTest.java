@@ -37,52 +37,59 @@ class DeliveryDomainServiceTest {
     }
 
     @Test
-    public void whenSetDeliveryModeLocationAndConfirmDelivery_thenSetDeliveryDetails() throws DeliveryNotFoundException, DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
-        //given
-        BDDMockito.given(deliveryDetailsFactory.create(A_DELIVERY_MODE, A_DELIVERY_LOCATION)).willReturn(deliveryDetails);
+    public void whenSetDeliveryModeLocationAndConfirmDelivery_thenSetDeliveryDetails() throws DeliveryNotFoundException,
+            DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
+        // given
+        BDDMockito.given(deliveryDetailsFactory.create(A_DELIVERY_MODE, A_DELIVERY_LOCATION))
+                .willReturn(deliveryDetails);
         BDDMockito.given(deliveryRepository.getDelivery(A_DELIVERY_ID)).willReturn(delivery);
 
-        //when
-        deliveryDomainService.setDeliveryModeLocationAndConfirmDelivery(A_DELIVERY_ID, A_DELIVERY_MODE, A_DELIVERY_LOCATION);
+        // when
+        deliveryDomainService.setDeliveryModeLocationAndConfirmDelivery(A_DELIVERY_ID, A_DELIVERY_MODE,
+                A_DELIVERY_LOCATION);
 
-        //then
+        // then
         BDDMockito.verify(delivery).setDeliveryDetails(deliveryDetails);
     }
 
     @Test
-    public void whenSetDeliveryModeLocationAndConfirmDelivery_thenUpdatesRepo() throws DeliveryNotFoundException, DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
-        //given
-        BDDMockito.given(deliveryDetailsFactory.create(A_DELIVERY_MODE, A_DELIVERY_LOCATION)).willReturn(deliveryDetails);
+    public void whenSetDeliveryModeLocationAndConfirmDelivery_thenUpdatesRepo() throws DeliveryNotFoundException,
+            DeliveryIncompleteException, BadDeliveryModeException, BadDeliveryLocationException {
+        // given
+        BDDMockito.given(deliveryDetailsFactory.create(A_DELIVERY_MODE, A_DELIVERY_LOCATION))
+                .willReturn(deliveryDetails);
         BDDMockito.given(deliveryRepository.getDelivery(A_DELIVERY_ID)).willReturn(delivery);
 
-        //when
-        deliveryDomainService.setDeliveryModeLocationAndConfirmDelivery(A_DELIVERY_ID, A_DELIVERY_MODE, A_DELIVERY_LOCATION);
+        // when
+        deliveryDomainService.setDeliveryModeLocationAndConfirmDelivery(A_DELIVERY_ID, A_DELIVERY_MODE,
+                A_DELIVERY_LOCATION);
 
-        //then
+        // then
         BDDMockito.verify(deliveryRepository).updateDelivery(delivery);
     }
 
     @Test
-    public void whenCompleteDelivery_thenCompletesDelivery() throws DeliveryNotFoundException, DeliveryIncompleteException {
-        //given
+    public void whenCompleteDelivery_thenCompletesDelivery()
+            throws DeliveryNotFoundException, DeliveryIncompleteException {
+        // given
         BDDMockito.given(deliveryRepository.getDelivery(A_DELIVERY_ID)).willReturn(delivery);
 
-        //when
+        // when
         deliveryDomainService.completeDelivery(A_DELIVERY_ID);
 
-        //then
+        // then
         BDDMockito.verify(delivery).completeDelivery();
     }
 
     @Test
     public void whenCompleteDelivery_thenUpdatesRepo() throws DeliveryNotFoundException, DeliveryIncompleteException {
-        //given
+        // given
         BDDMockito.given(deliveryRepository.getDelivery(A_DELIVERY_ID)).willReturn(delivery);
 
-        //when
+        // when
         deliveryDomainService.completeDelivery(A_DELIVERY_ID);
 
-        //then
+        // then
         BDDMockito.verify(deliveryRepository).updateDelivery(delivery);
     }
 }

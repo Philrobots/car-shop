@@ -17,7 +17,7 @@ public class SaleValidator {
     private DeliveryIdFactory deliveryIdFactory;
 
     public SaleValidator(SaleRepository saleRepository, DeliveryRepository deliveryRepository,
-                         SaleIdFactory saleIdFactory, DeliveryIdFactory deliveryIdFactory) {
+            SaleIdFactory saleIdFactory, DeliveryIdFactory deliveryIdFactory) {
         this.saleRepository = saleRepository;
         this.deliveryRepository = deliveryRepository;
         this.saleIdFactory = saleIdFactory;

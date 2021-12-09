@@ -22,7 +22,7 @@ public class SecuredWithSaleIdAuthorizationFilter implements ContainerRequestFil
     private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     public SecuredWithSaleIdAuthorizationFilter(AuthorizationService authorizationService,
-                                                TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
+            TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         this.authorizationService = authorizationService;
         this.tokenDtoAssembler = tokenDtoAssembler;
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;

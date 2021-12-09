@@ -35,10 +35,10 @@ public class ProductionLine {
     private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
 
     public ProductionLine(CarAssemblyLine carAssemblyLine, BatteryAssemblyLine batteryAssemblyLine,
-                          CompleteAssemblyLine completeAssemblyLine, ManufactureRepository manufactureRepository,
-                          SaleDomainService saleDomainService, EmailFactory emailFactory,
-                          BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
-                          CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+            CompleteAssemblyLine completeAssemblyLine, ManufactureRepository manufactureRepository,
+            SaleDomainService saleDomainService, EmailFactory emailFactory,
+            BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
+            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
         this.carAssemblyLine = carAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;

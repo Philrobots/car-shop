@@ -28,8 +28,8 @@ public class AuthorizationService {
     private final SaleValidator saleValidator;
 
     public AuthorizationService(TokenAssembler tokenAssembler, TokenRepository tokenRepository,
-                                SaleIdFactory saleIdFactory, DeliveryIdFactory deliveryIdFactory, AccountValidator accountValidator,
-                                DeliveryValidator deliveryValidator, SaleValidator saleValidator) {
+            SaleIdFactory saleIdFactory, DeliveryIdFactory deliveryIdFactory, AccountValidator accountValidator,
+            DeliveryValidator deliveryValidator, SaleValidator saleValidator) {
         this.tokenAssembler = tokenAssembler;
         this.tokenRepository = tokenRepository;
         this.saleIdFactory = saleIdFactory;

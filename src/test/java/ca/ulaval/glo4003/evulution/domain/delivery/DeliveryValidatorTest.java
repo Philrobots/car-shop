@@ -29,14 +29,15 @@ class DeliveryValidatorTest {
     }
 
     @Test
-    public void whenValidateDeliveryOwner_thenVerifyAccountId() throws MismatchAccountIdWithDeliveryException, DeliveryNotFoundException {
-        //given
+    public void whenValidateDeliveryOwner_thenVerifyAccountId()
+            throws MismatchAccountIdWithDeliveryException, DeliveryNotFoundException {
+        // given
         BDDMockito.given(deliveryRepository.getDelivery(A_DELIVERY_ID)).willReturn(delivery);
 
-        //when
+        // when
         deliveryValidator.validateDeliveryOwner(A_DELIVERY_ID, AN_ACCOUNT_ID);
 
-        //then
+        // then
         BDDMockito.verify(delivery).verifyAccountId(AN_ACCOUNT_ID);
     }
 
