@@ -24,7 +24,6 @@ public class ServiceResources {
         assemblyLineService = new AssemblyLineService(productionLineResources.getProductionLine());
 
         deliveryService = new DeliveryService(factoryResources.getDeliveryIdFactory(),
-                factoryResources.getDeliveryDetailsFactory(), invoicePayment,
                 assemblerResources.getDeliveryCompleteAssembler(), repositoryResources.getDeliveryRepository(),
                 saleValidator, saleDomainServiceResources.getDeliveryDomainService(),
                 saleDomainServiceResources.getSaleDomainService()); // TODO: fix
@@ -34,7 +33,6 @@ public class ServiceResources {
 
         saleService = new SaleService(repositoryResources.getSaleRepository(),
                 assemblerResources.getSaleCreatedAssembler(), factoryResources.getSaleFactory(),
-                factoryResources.getInvoiceFactory(), assemblyLineService,
                 saleDomainServiceResources.getManufactureDomainService(),
                 saleDomainServiceResources.getSaleDomainService(), factoryResources.getSaleIdFactory(),
                 assemblerResources.getTokenAssembler());

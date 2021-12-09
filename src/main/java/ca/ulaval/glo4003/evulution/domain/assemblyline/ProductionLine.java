@@ -25,9 +25,9 @@ public class ProductionLine {
     private final CarAssemblyLine carAssemblyLine;
     private final BatteryAssemblyLine batteryAssemblyLine;
     private final CompleteAssemblyLine completeAssemblyLine;
+    private final EmailFactory emailFactory;
     private ManufactureRepository manufactureRepository;
     private SaleDomainService saleDomainService;
-    private final EmailFactory emailFactory;
     private Set<String> emails = new HashSet<String>();
     private boolean isShutdown = false;
     private BatteryProductionFactory batteryProductionFactory;

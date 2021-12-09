@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.delivery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DeliveryIdFactoryTest {
     private DeliveryIdFactory deliveryIdFactory;

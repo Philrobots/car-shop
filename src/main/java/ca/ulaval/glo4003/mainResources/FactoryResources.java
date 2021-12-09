@@ -37,8 +37,7 @@ public class FactoryResources {
     private final CarProductionFactory carProductionFactory = new CarProductionFactory();
     private final CompleteAssemblyProductionFactory completeAssemblyProductionFactory = new CompleteAssemblyProductionFactory();
 
-    public FactoryResources(Integer assembleTimeInWeeks, EmailSender emailSender,
-            TokenRepository tokenRepository) {
+    public FactoryResources(Integer assembleTimeInWeeks, EmailSender emailSender, TokenRepository tokenRepository) {
         deliveryFactory = new DeliveryFactory(assembleTimeInWeeks, deliveryIdFactory);
         saleFactory = new SaleFactory(saleIdFactory, invoiceFactory, tokenRepository);
         emailFactory = new EmailFactory(emailSender);

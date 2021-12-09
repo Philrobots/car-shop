@@ -1,11 +1,13 @@
 package ca.ulaval.glo4003.evulution.service.delivery;
 
-import ca.ulaval.glo4003.evulution.domain.delivery.*;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryDomainService;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryIdFactory;
+import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryRepository;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryLocationException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.BadDeliveryModeException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
-import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleId;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleValidator;
@@ -20,21 +22,16 @@ import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadRequestException
 
 public class DeliveryService {
     private final DeliveryIdFactory deliveryIdFactory;
-    private final DeliveryDetailsFactory deliveryDetailsFactory; // TODO: no usage
-    private final InvoicePayment invoicePayment; // TODO: no usage
     private final DeliveryCompleteAssembler deliveryCompleteAssembler;
     private final DeliveryRepository deliveryRepository;
     private final SaleValidator saleValidator;
-    private DeliveryDomainService deliveryDomainService;
-    private SaleDomainService saleDomainService;
+    private final DeliveryDomainService deliveryDomainService;
+    private final SaleDomainService saleDomainService;
 
-    public DeliveryService(DeliveryIdFactory deliveryIdFactory, DeliveryDetailsFactory deliveryDetailsFactory,
-            InvoicePayment invoicePayment, DeliveryCompleteAssembler deliveryCompleteAssembler,
+    public DeliveryService(DeliveryIdFactory deliveryIdFactory, DeliveryCompleteAssembler deliveryCompleteAssembler,
             DeliveryRepository deliveryRepository, SaleValidator saleValidator,
             DeliveryDomainService deliveryDomainService, SaleDomainService saleDomainService) {
         this.deliveryIdFactory = deliveryIdFactory;
-        this.deliveryDetailsFactory = deliveryDetailsFactory;
-        this.invoicePayment = invoicePayment;
         this.deliveryCompleteAssembler = deliveryCompleteAssembler;
         this.deliveryRepository = deliveryRepository;
         this.saleValidator = saleValidator;
@@ -42,9 +39,11 @@ public class DeliveryService {
         this.saleDomainService = saleDomainService;
     }
 
-    public void chooseDeliveryLocation(int deliveryIdInt, DeliveryLocationDto deliveryLocationDto) {
+    public void chooseDeliveryLocation(int deliveryIdRequest, DeliveryLocationDto deliveryLocationDto) {
         try {
-            DeliveryId deliveryId = saleValidator.validateCompleteStatusFromDeliveryId(deliveryIdInt);
+            DeliveryId deliveryId = this.deliveryIdFactory.createFromInt(deliveryIdRequest);
+            saleValidator.validateCompleteStatus(deliveryId);
+
             deliveryDomainService.setDeliveryModeLocationAndConfirmDelivery(deliveryId, deliveryLocationDto.mode,
                     deliveryLocationDto.location);
         } catch (SaleNotFoundException | DeliveryNotFoundException e) {
@@ -56,12 +55,13 @@ public class DeliveryService {
         }
     }
 
-    public DeliveryCompleteDto completeDelivery(int deliveryIdInt) {
+    public DeliveryCompleteDto completeDelivery(int deliveryIdRequest) {
         try {
-            DeliveryId deliveryId = this.deliveryIdFactory.createFromInt(deliveryIdInt);
-            SaleId saleId = this.deliveryRepository.getSaleId(deliveryId);
+            DeliveryId deliveryId = this.deliveryIdFactory.createFromInt(deliveryIdRequest);
+            saleValidator.validateCompleteStatus(deliveryId);
 
-            Invoice invoice = saleDomainService.activateInvoice(saleId);
+            SaleId saleId = this.deliveryRepository.getSaleId(deliveryId);
+            Invoice invoice = saleDomainService.startPayments(saleId);
             deliveryDomainService.completeDelivery(deliveryId);
 
             return deliveryCompleteAssembler.assemble(invoice.getPaymentsTaken(), invoice.getPaymentsLeft());

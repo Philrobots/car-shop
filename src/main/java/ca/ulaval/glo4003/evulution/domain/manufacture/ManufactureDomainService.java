@@ -34,6 +34,7 @@ public class ManufactureDomainService {
             throws DeliveryIncompleteException {
         Manufacture manufacture = manufactureFactory.create(accountId);
         manufactureRepository.addManufacture(saleId, manufacture);
+
         return manufacture.getDeliveryId();
     }
 
@@ -41,16 +42,20 @@ public class ManufactureDomainService {
         Manufacture manufacture = manufactureRepository.getBySaleId(saleId);
         Car car = this.carFactory.create(name, color);
         manufacture.setCar(car);
+
         manufactureRepository.updateManufacture(saleId, manufacture);
-        saleDomainService.addPrice(saleId, car.getBasePrice());
+        saleDomainService.setVehiclePrice(saleId, car.getBasePrice());
     }
 
     public int addBattery(SaleId saleId, String type)
             throws BadCarSpecsException, SaleNotFoundException, CarNotChosenBeforeBatteryException {
         Manufacture manufacture = manufactureRepository.getBySaleId(saleId);
         Battery battery = this.batteryFactory.create(type);
-        saleDomainService.addPrice(saleId, battery.getPrice());
-        return manufacture.addBattery(battery);
+        int range = manufacture.addBattery(battery);
+
+        manufactureRepository.updateManufacture(saleId, manufacture);
+        saleDomainService.setBatteryPrice(saleId, battery.getPrice());
+        return range;
     }
 
     public void setManufactureReadyToProduce(SaleId saleId) throws MissingElementsForSaleException {

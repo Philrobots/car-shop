@@ -36,7 +36,7 @@ public class AccountRepositoryInMemoryTest {
 
     @Test
     public void givenCustomerAccount_whenAddAccount_thenAccountRepositoryInMemoryContainsAccount()
-        throws AccountAlreadyExistsException, AccountNotFoundException {
+            throws AccountAlreadyExistsException, AccountNotFoundException {
         // given
         BDDMockito.given(account.getId()).willReturn(accountId);
         BDDMockito.given(account.getEmail()).willReturn(AN_EMAIL);
