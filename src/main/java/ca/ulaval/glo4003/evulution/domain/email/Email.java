@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.email;
 
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import java.util.List;
 

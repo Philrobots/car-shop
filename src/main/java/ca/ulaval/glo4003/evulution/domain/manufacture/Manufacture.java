@@ -14,6 +14,7 @@ import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatt
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
 
 public class Manufacture {
+    // TODO pt mettre manufacture command
     private ProductionId productionId;
     private Car car;
     private Battery battery;
@@ -75,7 +76,7 @@ public class Manufacture {
     }
 
     public CarProduction generateCarProduction(String email, CarProductionFactory carProductionFactory) {
-        return carProductionFactory.create(productionId, car.getName(), email, car.getTimeToProduceAsInt());
+        return carProductionFactory.create(productionId, car.getStyle(), email, car.getTimeToProduceAsInt());
     }
 
     public CompleteAssemblyProduction generateCompleteAssemblyProduction(String email,

@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.infrastructure.email;
 
 import ca.ulaval.glo4003.evulution.domain.email.EmailSender;
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

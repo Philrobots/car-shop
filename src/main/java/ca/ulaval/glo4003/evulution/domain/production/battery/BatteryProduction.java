@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.production.battery;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import java.util.List;
 

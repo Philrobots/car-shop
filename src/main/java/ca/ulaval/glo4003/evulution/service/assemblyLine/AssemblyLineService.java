@@ -9,7 +9,7 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.InvalidAssembl
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.InvalidAssemblyLineOrderException;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionSwitcher;
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.dto.SwitchProductionsDto;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.exceptions.ServiceErrorException;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;

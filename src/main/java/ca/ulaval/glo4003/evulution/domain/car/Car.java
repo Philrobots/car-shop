@@ -9,7 +9,6 @@ public class Car {
     private BigDecimal basePrice;
     private String timeToProduce;
     private String color;
-    private boolean isAssembled = false;
 
     public Car(String name, String style, Integer efficiencyEquivalenceRate, BigDecimal basePrice, String timeToProduce,
             String color) {
@@ -25,12 +24,8 @@ public class Car {
         return efficiencyEquivalenceRate;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setCarAsAssembled() {
-        isAssembled = true;
+    public String getStyle(){
+        return style;
     }
 
     public int getTimeToProduceAsInt() {

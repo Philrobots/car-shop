@@ -1,12 +1,11 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLineType;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import java.util.LinkedList;
 
@@ -60,8 +59,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
             this.batteryProductionsWaitingList.addFirst(batteryProduction);
         }
 
-        if (!batteryProductionsWaitingList.isEmpty() && (assemblyLineMediator.getState() == AssemblyLineType.BATTERY
-                || assemblyLineMediator.getState() == AssemblyLineType.COMPLETE))
+        if (!batteryProductionsWaitingList.isEmpty() && this.assemblyLineMediator.shouldBatteryReactivateProduction())
             setUpNextBatteryForProduction();
     }
 

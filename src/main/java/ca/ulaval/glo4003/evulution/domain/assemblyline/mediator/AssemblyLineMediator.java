@@ -1,10 +1,11 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.mediator;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLineType;
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 public interface AssemblyLineMediator {
-    void notify(Class assemblyLineClass) throws EmailException;
+    void notify(Object assemblyLineClass) throws EmailException;
 
-    AssemblyLineType getState();
+    boolean shouldCarReactivateProduction();
+
+    boolean shouldBatteryReactivateProduction();
 }

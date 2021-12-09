@@ -17,7 +17,7 @@ import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleId;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 
 import java.util.*;
@@ -35,7 +35,6 @@ public class ProductionLine {
     private BatteryProductionFactory batteryProductionFactory;
     private CarProductionFactory carProductionFactory;
     private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
-    private ProductionType productionType = ProductionType.SEQUENTIAL;
 
     public ProductionLine(CarAssemblyLineSequential carAssemblyLine, BatteryAssemblyLineSequential batteryAssemblyLine,
                           CompleteAssemblyLineSequential completeAssemblyLine, ManufactureRepository manufactureRepository,
@@ -105,6 +104,7 @@ public class ProductionLine {
     }
 
     public void setCarAssemblyLine(CarAssemblyLine carAssemblyLine) {
+        carAssemblyLine.transferWaitingList(this.carAssemblyLine);
         this.carAssemblyLine = carAssemblyLine;
     }
 }

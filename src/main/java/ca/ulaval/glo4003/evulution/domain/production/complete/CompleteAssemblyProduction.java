@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryStatus;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
-import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import java.time.LocalDate;
 import java.util.List;
