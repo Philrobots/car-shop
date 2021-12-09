@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CarAssemblyLineJIT implements CarAssemblyLine {
-    private LinkedList<CarProductionAssociatedWithManufacture> carWaitingList = new LinkedList<>();
+    private LinkedList<CarProduction> carWaitingList = new LinkedList<>();
     private boolean isCarInProduction = false;
     private CarProduction currentCarInProduction;
     private AssemblyLineMediator assemblyLineMediator;
@@ -22,7 +22,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     private CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
 
     @Override
-    public void addProduction(CarProductionAssociatedWithManufacture carProduction) throws EmailException {
+    public void addProduction(CarProduction carProduction) throws EmailException {
         boolean hasCarBeenReplaced = carProductionRepository.replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
         if (hasCarBeenReplaced) {
             assemblyLineMediator.notify(CarAssemblyLine.class);
@@ -70,9 +70,9 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     }
 
     @Override
-    public List<CarProductionAssociatedWithManufacture> getWaitingList() {
+    public List<CarProduction> getWaitingList() {
 //        if (isCarInProduction) this.carProductionWaitList.add(currentCarProduction);
-        LinkedList<CarProductionAssociatedWithManufacture> returnList = new LinkedList<>(this.carWaitingList);
+        LinkedList<CarProduction> returnList = new LinkedList<>(this.carWaitingList);
         carWaitingList.clear();
 
         return returnList;

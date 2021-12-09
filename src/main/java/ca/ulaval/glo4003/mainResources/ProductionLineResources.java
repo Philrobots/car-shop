@@ -15,7 +15,7 @@ public class ProductionLineResources {
                 repositoryResources.getManufactureRepository(), saleDomainServiceResources.getSaleDomainService(),
                 factoryResources.getEmailFactory(), factoryResources.getBatteryProductionFactory(),
                 factoryResources.getCarProductionFactory(), factoryResources.getCompleteAssemblyProductionFactory()); // TODO:
-                                                                                                                      // fix
+        // fix
     }
 
     public ProductionLine getProductionLine() {

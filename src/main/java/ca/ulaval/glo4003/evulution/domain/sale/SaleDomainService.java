@@ -5,7 +5,6 @@ import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
 import ca.ulaval.glo4003.evulution.domain.invoice.Invoice;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
 import ca.ulaval.glo4003.evulution.domain.invoice.exceptions.InvalidInvoiceException;
-import ca.ulaval.glo4003.evulution.domain.sale.exceptions.IncompleteSaleException;
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleAlreadyCompleteException;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
@@ -13,10 +12,9 @@ import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundEx
 import java.math.BigDecimal;
 
 public class SaleDomainService {
-
-    private SaleRepository saleRepository;
-    private AccountRepository accountRepository;
-    private InvoicePayment invoicePayment;
+    private final SaleRepository saleRepository;
+    private final AccountRepository accountRepository;
+    private final InvoicePayment invoicePayment;
 
     public SaleDomainService(SaleRepository saleRepository, AccountRepository accountRepository,
             InvoicePayment invoicePayment) {
@@ -25,9 +23,17 @@ public class SaleDomainService {
         this.invoicePayment = invoicePayment;
     }
 
-    public void addPrice(SaleId saleId, BigDecimal price) throws SaleNotFoundException {
+    public void setVehiclePrice(SaleId saleId, BigDecimal price) throws SaleNotFoundException {
         Sale sale = saleRepository.getSale(saleId);
-        sale.addPrice(price);
+        sale.setVehiclePrice(price);
+
+        saleRepository.registerSale(sale);
+    }
+
+    public void setBatteryPrice(SaleId saleId, BigDecimal price) throws SaleNotFoundException {
+        Sale sale = saleRepository.getSale(saleId);
+        sale.setBatteryPrice(price);
+
         saleRepository.registerSale(sale);
     }
 
@@ -35,12 +41,14 @@ public class SaleDomainService {
             throws SaleNotFoundException, SaleAlreadyCompleteException, InvalidInvoiceException {
         Sale sale = this.saleRepository.getSale(saleId);
         sale.completeSale(bankNumber, accountNumber, frequency);
+
         saleRepository.registerSale(sale);
     }
 
-    public Invoice activateInvoice(SaleId saleId) throws SaleNotFoundException, IncompleteSaleException {
+    public Invoice startPayments(SaleId saleId) throws SaleNotFoundException {
         Sale sale = this.saleRepository.getSale(saleId);
-        Invoice invoice = sale.activateInvoice(invoicePayment);
+        Invoice invoice = sale.startPayments(invoicePayment);
+
         saleRepository.registerSale(sale);
         return invoice;
     }

@@ -17,12 +17,11 @@ public class Delivery {
     private DeliveryDetails deliveryDetails;
     private LocalDate deliveryDate;
 
-    public Delivery(AccountId accountId, DeliveryId deliveryId, Integer assemblyTimeInWeeks)
-            throws DeliveryIncompleteException {
+    public Delivery(AccountId accountId, DeliveryId deliveryId, Integer assemblyTimeInWeeks) {
         this.accountId = accountId;
         this.deliveryId = deliveryId;
         this.assemblyTimeInWeeks = assemblyTimeInWeeks;
-        setStatus(DeliveryStatus.CREATED);
+        this.status.add(DeliveryStatus.CREATED);
     }
 
     public void setStatus(DeliveryStatus status) throws DeliveryIncompleteException {
@@ -59,6 +58,7 @@ public class Delivery {
 
     public void setCarTimeToProduce(int timeToProduceAsInt) {
         this.carTimeToProduce = timeToProduceAsInt;
+        calculateDeliveryDate();
     }
 
     public void setBatteryTimeToProduce(int timeToProduceAsInt) {

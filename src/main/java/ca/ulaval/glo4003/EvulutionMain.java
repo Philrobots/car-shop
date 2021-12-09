@@ -57,6 +57,9 @@ public class EvulutionMain {
         // ACCOUNT VALIDATOR -----------------------------------------------------------------------------------------
         AccountValidator accountValidator = new AccountValidator(repositoryResources.getAccountRepository());
 
+        // INVOICE ---------------------------------------------------------------------------------------------------
+        InvoicePayment invoicePayment = new InvoicePayment(repositoryResources.getSaleRepository());
+
         // FACTORIES -------------------------------------------------------------------------------------------------
         FactoryResources factoryResources = new FactoryResources(ASSEMBLY_TIME_IN_WEEKS, emailSender,
                 repositoryResources.getTokenRepository());
@@ -64,17 +67,13 @@ public class EvulutionMain {
         // VALIDATORS ------------------------------------------------------------------------------------------------
         DeliveryValidator deliveryValidator = new DeliveryValidator(repositoryResources.getDeliveryRepository());
         SaleValidator saleValidator = new SaleValidator(repositoryResources.getSaleRepository(),
-                repositoryResources.getDeliveryRepository(), factoryResources.getSaleIdFactory(),
-                factoryResources.getDeliveryIdFactory());
+                repositoryResources.getDeliveryRepository(), factoryResources.getSaleIdFactory());
 
         // ASSEMBLERS ------------------------------------------------------------------------------------------------
         AssemblerResources assemblerResources = new AssemblerResources();
 
         // ASSEMBLY LINES --------------------------------------------------------------------------------------------
         AssemblyLineResources assemblyLineResources = new AssemblyLineResources(factoryResources, repositoryResources);
-
-        // INVOICE ---------------------------------------------------------------------------------------------------
-        InvoicePayment invoicePayment = new InvoicePayment(repositoryResources.getSaleRepository());
 
         // SALE DOMAIN SERVICE ---------------------------------------------------------------------------------------
         SaleDomainServiceResources saleDomainServiceResources = new SaleDomainServiceResources(factoryResources,

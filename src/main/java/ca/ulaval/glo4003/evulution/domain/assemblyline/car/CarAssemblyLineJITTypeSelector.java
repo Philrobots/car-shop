@@ -19,7 +19,7 @@ public class CarAssemblyLineJITTypeSelector {
             currentType = CarType.LUXURY;
         }
         else if (currentType.equals(CarType.LUXURY)) {
-            carProduction = carProductionFactory.createSubCompact()
+            carProduction = carProductionFactory.createSubCompact();
             currentType = CarType.SUBCOMPACT;
         }
         return carProduction;

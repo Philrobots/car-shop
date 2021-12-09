@@ -40,7 +40,7 @@ public class CarProductionRepositoryInMemory implements CarProductionRepository 
     }
 
     @Override
-    public boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProductionAssociatedWithManufacture carProductionAssociatedWithManufacture) {
+    public boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionAssociatedWithManufacture) {
         ProductionId removedCarProductionId = null;
         for (CarProduction carProduction : vehicles.values()){
             if (!carProduction.isAssociatedWithManufacture() && carProduction.getCarStyle().equals(carProductionAssociatedWithManufacture.getCarStyle())){

@@ -6,6 +6,7 @@ import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionAssociatedWithManufacture;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProduction;
@@ -75,7 +76,7 @@ public class Manufacture {
         return batteryProductionFactory.create(productionId, battery.getType(), email, battery.getTimeToProduceAsInt());
     }
 
-    public CarProductionAssociatedWithManufacture generateCarProduction(String email, CarProductionFactory carProductionFactory) {
+    public CarProduction generateCarProduction(String email, CarProductionFactory carProductionFactory) {
         return carProductionFactory.create(productionId, car.getStyle(), email, car.getTimeToProduceAsInt());
     }
 

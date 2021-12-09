@@ -33,7 +33,7 @@ public class CarAssemblyLineAdapterTest {
     }
     /*
      * @Test public void whenAdvance_thenVehicleAssemblyLineAdvances() { // when vehicleAssemblyLineAdapter.advance();
-     * 
+     *
      * // then Mockito.verify(basicVehicleAssemblyLine).advance(); }
      */
 
