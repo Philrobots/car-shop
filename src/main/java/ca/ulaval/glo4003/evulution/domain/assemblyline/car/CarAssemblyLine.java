@@ -5,8 +5,12 @@ import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailExceptio
 
 public interface CarAssemblyLine {
     void addProduction(CarProduction carProduction) throws EmailException;
+
     void advance() throws EmailException;
+
     void shutdown();
+
     void reactivate() throws EmailException;
+
     void startNext() throws EmailException;
 }

@@ -27,7 +27,8 @@ public class ProductionResourceTest {
 
     @BeforeEach
     public void setUp() {
-        productionResource = new ProductionResource(httpExceptionResponseAssembler, assemblyLineService, switchProductionsDtoAssembler);
+        productionResource = new ProductionResource(httpExceptionResponseAssembler, assemblyLineService,
+                switchProductionsDtoAssembler);
     }
 
     @Test

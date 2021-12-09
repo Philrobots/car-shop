@@ -5,8 +5,12 @@ import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailExceptio
 
 public interface BatteryAssemblyLine {
     void addProduction(BatteryProduction batteryProduction);
+
     void advance() throws EmailException;
+
     void shutdown();
+
     void reactivate() throws EmailException;
+
     void startNext() throws EmailException;
 }

@@ -90,7 +90,8 @@ public class EvulutionMain {
 
         // SERVICES --------------------------------------------------------------------------------------------------
         ServiceResources serviceResources = new ServiceResources(factoryResources, repositoryResources,
-                productionLineResources, assemblerResources, saleDomainServiceResources, saleValidator, invoicePayment);
+                productionLineResources, assemblerResources, saleDomainServiceResources, saleValidator, invoicePayment,
+                productionLineResources.getProductionSwitcher());
 
         // RESOURCES API ---------------------------------------------------------------------------------------------
         ApiResources apiResources = new ApiResources(factoryResources, repositoryResources, assemblerResources,

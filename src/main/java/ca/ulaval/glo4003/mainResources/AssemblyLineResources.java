@@ -29,8 +29,8 @@ public class AssemblyLineResources {
         batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyLineAdapter,
                 repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory());
 
-        carAssemblyLine = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter, repositoryResources.getVehicleRepository(),
-                factoryResources.getEmailFactory());
+        carAssemblyLine = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter,
+                repositoryResources.getVehicleRepository(), factoryResources.getEmailFactory());
 
         completeAssemblyLine = new CompleteAssemblyLineSequential(factoryResources.getEmailFactory(),
                 repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository());

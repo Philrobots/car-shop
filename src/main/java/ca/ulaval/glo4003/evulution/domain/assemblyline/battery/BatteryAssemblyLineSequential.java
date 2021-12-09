@@ -21,8 +21,8 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
     private boolean isBatteryInProduction = false;
     private boolean isBatteryInFire = false;
 
-    public BatteryAssemblyLineSequential(BatteryAssemblyAdapter batteryAssemblyAdapter, BatteryProductionRepository batteryProductionRepository,
-                                         EmailFactory emailFactory) {
+    public BatteryAssemblyLineSequential(BatteryAssemblyAdapter batteryAssemblyAdapter,
+            BatteryProductionRepository batteryProductionRepository, EmailFactory emailFactory) {
         this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
         this.batteryProductionRepository = batteryProductionRepository;
         this.emailFactory = emailFactory;

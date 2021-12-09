@@ -33,7 +33,8 @@ public class CompleteAssemblyProduction {
         return productionId;
     }
 
-    public void addDelayInWeeksAndSendEmail(Integer assemblyDelayInWeeks, EmailFactory emailFactory) throws EmailException {
+    public void addDelayInWeeksAndSendEmail(Integer assemblyDelayInWeeks, EmailFactory emailFactory)
+            throws EmailException {
         LocalDate localDate = delivery.addDelayInWeeks(assemblyDelayInWeeks);
         emailFactory.createAssemblyDelayEmail(List.of(email), localDate).send();
     }

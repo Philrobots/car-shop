@@ -10,7 +10,7 @@ import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailExceptio
 
 import java.util.LinkedList;
 
-public class CarAssemblyLineSequential implements CarAssemblyLine {
+public class CarAssemblyLineJustInTime implements CarAssemblyLine {
 
     private final LinkedList<CarProduction> carProductionWaitList = new LinkedList<>();
 
@@ -22,7 +22,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     private boolean isBatteryInFire = false;
     private boolean isCarInProduction = false;
 
-    public CarAssemblyLineSequential(CarAssemblyAdapter carAssemblyAdapter,
+    public CarAssemblyLineJustInTime(CarAssemblyAdapter carAssemblyAdapter,
             CarProductionRepository carProductionRepository, EmailFactory emailFactory) {
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.carProductionRepository = carProductionRepository;
@@ -35,20 +35,29 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
 
     public void addProduction(CarProduction carProduction) throws EmailException {
         this.carProductionWaitList.add(carProduction);
-        if (!(isCarInProduction || this.isBatteryInFire)) {
+        if (!(this.isCarInProduction || this.isBatteryInFire)) {
             setupNextProduction();
         }
     }
 
+    private void createCarInTime() {
+
+    }
+
     public void advance() throws EmailException {
-        if (!isCarInProduction || this.isBatteryInFire) {
+        if (!this.isCarInProduction) {
+            this.createCarInTime();
             return;
         }
 
-        boolean isCarAssembled = currentCarProduction.advance(carAssemblyAdapter);
+        if (this.isBatteryInFire) {
+            return;
+        }
+
+        boolean isCarAssembled = this.currentCarProduction.advance(carAssemblyAdapter);
 
         if (isCarAssembled) {
-            this.carProductionRepository.add(currentCarProduction);
+            this.carProductionRepository.add(this.currentCarProduction);
             this.assemblyLineMediator.notify(this.getClass());
 
             if (this.carProductionWaitList.isEmpty()) {
@@ -65,19 +74,19 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
 
     public void reactivate() throws EmailException {
         this.isBatteryInFire = false;
-        if (assemblyLineMediator.getState() == AssemblyLineType.CAR && !carProductionWaitList.isEmpty())
+        if (this.assemblyLineMediator.getState() == AssemblyLineType.CAR && !this.carProductionWaitList.isEmpty())
             setupNextProduction();
     }
 
     public void startNext() throws EmailException {
-        if (!carProductionWaitList.isEmpty())
+        if (!this.carProductionWaitList.isEmpty())
             setupNextProduction();
     }
 
     private void setupNextProduction() throws EmailException {
         this.isCarInProduction = true;
         this.currentCarProduction = this.carProductionWaitList.pop();
-        this.currentCarProduction.sendEmail(emailFactory);
-        this.currentCarProduction.newCarCommand(carAssemblyAdapter);
+        this.currentCarProduction.sendEmail(this.emailFactory);
+        this.currentCarProduction.newCarCommand(this.carAssemblyAdapter);
     }
 }

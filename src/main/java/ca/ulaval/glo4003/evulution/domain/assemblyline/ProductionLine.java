@@ -65,21 +65,21 @@ public class ProductionLine {
             throws EmailException, SaleNotFoundException, AccountNotFoundException {
         Map<SaleId, Manufacture> manufactures = this.manufactureRepository.getManufacturesReadyForProduction();
         for (Map.Entry<SaleId, Manufacture> manufactureEntry : manufactures.entrySet()) {
-            String email = saleDomainService.getEmailFromSaleId(manufactureEntry.getKey());
-            emails.add(email);
+            String email = this.saleDomainService.getEmailFromSaleId(manufactureEntry.getKey());
+            this.emails.add(email);
             Manufacture manufacture = manufactureEntry.getValue();
             manufacture.setInProduction();
-            this.carAssemblyLine.addProduction(manufacture.generateCarProduction(email, carProductionFactory));
+            this.carAssemblyLine.addProduction(manufacture.generateCarProduction(email, this.carProductionFactory));
             this.batteryAssemblyLine
-                    .addProduction(manufacture.generateBatteryProduction(email, batteryProductionFactory));
+                    .addProduction(manufacture.generateBatteryProduction(email, this.batteryProductionFactory));
             this.completeAssemblyLine.addProduction(
-                    manufacture.generateCompleteAssemblyProduction(email, completeAssemblyProductionFactory));
-            manufactureRepository.updateManufacture(manufactureEntry.getKey(), manufacture);
+                    manufacture.generateCompleteAssemblyProduction(email, this.completeAssemblyProductionFactory));
+            this.manufactureRepository.updateManufacture(manufactureEntry.getKey(), manufacture);
         }
     }
 
     public void shutdown() throws AssemblyLineIsShutdownException, EmailException {
-        if (isShutdown)
+        if (this.isShutdown)
             throw new AssemblyLineIsShutdownException();
         this.carAssemblyLine.shutdown();
         this.batteryAssemblyLine.shutdown();
@@ -96,7 +96,7 @@ public class ProductionLine {
     }
 
     public void reactivate() throws AssemblyLineIsNotShutdownException, EmailException {
-        if (!isShutdown)
+        if (!this.isShutdown)
             throw new AssemblyLineIsNotShutdownException();
         this.carAssemblyLine.reactivate();
         this.batteryAssemblyLine.reactivate();
@@ -104,8 +104,7 @@ public class ProductionLine {
         this.isShutdown = false;
     }
 
-    public void setCarAssemblyLine(CarAssemblyLine carAssemblyLine){
+    public void setCarAssemblyLine(CarAssemblyLine carAssemblyLine) {
         this.carAssemblyLine = carAssemblyLine;
     }
-
 }

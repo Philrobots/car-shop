@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.service.assemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionSwitcher;
 import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +17,14 @@ public class AssemblyLineServiceTest {
     @Mock
     private ProductionLine productionLine;
 
+    @Mock
+    private ProductionSwitcher switcher;
+
     private AssemblyLineService assemblyLineService;
 
     @BeforeEach
     public void setUp() {
-        assemblyLineService = new AssemblyLineService(productionLine);
+        assemblyLineService = new AssemblyLineService(productionLine, switcher);
     }
 
     @Test

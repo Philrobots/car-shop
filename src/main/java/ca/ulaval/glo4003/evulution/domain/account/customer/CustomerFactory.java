@@ -13,8 +13,7 @@ public class CustomerFactory {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public Customer create(String name, String birthdate, String email, String password, String sex)
-            throws InvalidDateFormatException, BadInputParameterException,
-            AccountNotFoundException {
+            throws InvalidDateFormatException, BadInputParameterException, AccountNotFoundException {
         LocalDate date = validateDate(birthdate);
         for (Gender gender : Gender.values()) {
             if (gender.getSex().equals(sex)) {

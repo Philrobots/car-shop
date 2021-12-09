@@ -21,7 +21,7 @@ public class ProductionResource {
     private final SwitchProductionsDtoAssembler switchProductionsDtoAssembler;
 
     public ProductionResource(HTTPExceptionResponseAssembler httpExceptionResponseAssembler,
-                              AssemblyLineService assemblyLineService, SwitchProductionsDtoAssembler switchProductionsDtoAssembler) {
+            AssemblyLineService assemblyLineService, SwitchProductionsDtoAssembler switchProductionsDtoAssembler) {
         this.httpExceptionResponseAssembler = httpExceptionResponseAssembler;
         this.assemblyLineService = assemblyLineService;
         this.switchProductionsDtoAssembler = switchProductionsDtoAssembler;
@@ -59,7 +59,8 @@ public class ProductionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response switchProductionLines(SwitchProductionsRequest switchProductionsRequest) {
         try {
-            SwitchProductionsDto switchProductionsDto = this.switchProductionsDtoAssembler.fromRequest(switchProductionsRequest);
+            SwitchProductionsDto switchProductionsDto = this.switchProductionsDtoAssembler
+                    .fromRequest(switchProductionsRequest);
             this.assemblyLineService.switchProductions(switchProductionsDto);
             return Response.status(200, "Activated").build();
         } catch (GenericException e) {
