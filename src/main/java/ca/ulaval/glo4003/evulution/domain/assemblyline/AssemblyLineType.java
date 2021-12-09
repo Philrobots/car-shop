@@ -1,5 +1,5 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-public enum AssemblyState {
-    CAR, BATTERY, ASSEMBLY
+public enum AssemblyLineType {
+    CAR, BATTERY, COMPLETE
 }

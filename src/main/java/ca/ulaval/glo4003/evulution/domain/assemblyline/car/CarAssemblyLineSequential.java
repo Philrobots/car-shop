@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyState;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLineType;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
@@ -64,7 +64,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
 
     public void reactivate() throws EmailException {
         this.isBatteryInFire = false;
-        if (assemblyLineMediator.getState() == AssemblyState.CAR && !carProductionWaitList.isEmpty())
+        if (assemblyLineMediator.getState() == AssemblyLineType.CAR && !carProductionWaitList.isEmpty())
             setupNextProduction();
     }
 

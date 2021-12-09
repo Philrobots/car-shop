@@ -12,7 +12,7 @@ import ca.ulaval.glo4003.evulution.infrastructure.email.exceptions.EmailExceptio
 
 import java.util.LinkedList;
 
-public class CompleteAssemblyLineSeq {
+public class CompleteAssemblyLineSequential {
 
     private static final double FIFTY_PERCENT_CHANCE = 0.5;
     private static final Integer ASSEMBLY_DELAY_IN_WEEKS = 1;
@@ -27,8 +27,8 @@ public class CompleteAssemblyLineSeq {
     private boolean isCarCompleteInProduction = false;
     private boolean isBatteryInFire = false;
 
-    public CompleteAssemblyLineSeq(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
-                                   BatteryProductionRepository batteryProductionRepository) {
+    public CompleteAssemblyLineSequential(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
+                                          BatteryProductionRepository batteryProductionRepository) {
         this.emailFactory = emailFactory;
         this.carProductionRepository = carProductionRepository;
         this.batteryProductionRepository = batteryProductionRepository;

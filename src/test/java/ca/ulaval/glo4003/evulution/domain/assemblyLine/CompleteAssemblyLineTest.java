@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSeq;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
@@ -24,7 +24,7 @@ class CompleteAssemblyLineTest {
     @Mock
     private EmailFactory emailFactory;
 
-    private CompleteAssemblyLineSeq completeAssemblyLine;
+    private CompleteAssemblyLineSequential completeAssemblyLine;
 
     @Mock
     private Sale sale;
@@ -40,7 +40,7 @@ class CompleteAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-        completeAssemblyLine = new CompleteAssemblyLineSeq(emailFactory, carProductionRepository, batteryProductionRepository);
+        completeAssemblyLine = new CompleteAssemblyLineSequential(emailFactory, carProductionRepository, batteryProductionRepository);
     }
     //
     // @Test

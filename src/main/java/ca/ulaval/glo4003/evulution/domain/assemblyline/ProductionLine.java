@@ -1,8 +1,9 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSeq;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
@@ -23,9 +24,9 @@ import java.util.*;
 
 public class ProductionLine {
 
-    private final CarAssemblyLineSequential carAssemblyLine;
+    private CarAssemblyLine carAssemblyLine;
     private final BatteryAssemblyLineSequential batteryAssemblyLine;
-    private final CompleteAssemblyLineSeq completeAssemblyLine;
+    private final CompleteAssemblyLineSequential completeAssemblyLine;
     private ManufactureRepository manufactureRepository;
     private SaleDomainService saleDomainService;
     private final EmailFactory emailFactory;
@@ -37,7 +38,7 @@ public class ProductionLine {
     private ProductionType productionType = ProductionType.SEQUENTIAL;
 
     public ProductionLine(CarAssemblyLineSequential carAssemblyLine, BatteryAssemblyLineSequential batteryAssemblyLine,
-                          CompleteAssemblyLineSeq completeAssemblyLine, ManufactureRepository manufactureRepository,
+                          CompleteAssemblyLineSequential completeAssemblyLine, ManufactureRepository manufactureRepository,
                           SaleDomainService saleDomainService, EmailFactory emailFactory,
                           BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
                           CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
@@ -101,6 +102,10 @@ public class ProductionLine {
         this.batteryAssemblyLine.reactivate();
         this.completeAssemblyLine.reactivate();
         this.isShutdown = false;
+    }
+
+    public void setCarAssemblyLine(CarAssemblyLine carAssemblyLine){
+        this.carAssemblyLine = carAssemblyLine;
     }
 
 }
