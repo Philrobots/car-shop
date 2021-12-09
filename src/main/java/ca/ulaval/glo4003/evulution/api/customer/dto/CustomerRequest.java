@@ -14,7 +14,7 @@ public class CustomerRequest extends GenericRequest {
     @NotNull
     public String birthdate;
 
-    @Email
+    @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$" )
     @NotBlank
     public String email;
 
