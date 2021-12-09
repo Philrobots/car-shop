@@ -20,7 +20,7 @@ public class DeliveryRepositoryInMemory implements DeliveryRepository {
     @Override
     public Delivery getDelivery(DeliveryId deliveryId) throws DeliveryNotFoundException {
         for (Manufacture manufacture : manufactureDao.getManufactures()) {
-            if (manufacture.getDeliveryId() == deliveryId)
+            if (manufacture.getDeliveryId().equals(deliveryId))
                 return manufacture.getDelivery();
         }
         throw new DeliveryNotFoundException();
@@ -29,7 +29,7 @@ public class DeliveryRepositoryInMemory implements DeliveryRepository {
     @Override
     public SaleId getSaleId(DeliveryId deliveryId) throws DeliveryNotFoundException {
         for (Map.Entry<SaleId, Manufacture> entry : manufactureDao.getManufacturesMapEntries()) {
-            if (entry.getValue().getDeliveryId() == deliveryId)
+            if (entry.getValue().getDeliveryId().equals(deliveryId))
                 return entry.getKey();
         }
         throw new DeliveryNotFoundException();
@@ -38,7 +38,7 @@ public class DeliveryRepositoryInMemory implements DeliveryRepository {
     @Override
     public void updateDelivery(Delivery delivery) {
         for (Map.Entry<SaleId, Manufacture> entry : manufactureDao.getManufacturesMapEntries()) {
-            if (entry.getValue().getDeliveryId() == delivery.getDeliveryId()) {
+            if (entry.getValue().getDeliveryId().equals(delivery.getDeliveryId())) {
                 Manufacture manufacture = entry.getValue();
                 manufacture.setDelivery(delivery);
                 manufactureDao.add(entry.getKey(), manufacture);
