@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.evulution.service.sale;
 
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
-import ca.ulaval.glo4003.evulution.domain.invoice.InvoiceFactory;
 import ca.ulaval.glo4003.evulution.domain.invoice.exceptions.InvalidInvoiceException;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ManufactureDomainService;
 import ca.ulaval.glo4003.evulution.domain.sale.*;
@@ -11,7 +10,6 @@ import ca.ulaval.glo4003.evulution.domain.sale.exceptions.SaleAlreadyCompleteExc
 import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.token.exceptions.TokenNotFoundException;
-import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
 import ca.ulaval.glo4003.evulution.service.authorization.TokenAssembler;
 import ca.ulaval.glo4003.evulution.service.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
@@ -21,25 +19,20 @@ import ca.ulaval.glo4003.evulution.service.sale.dto.InvoiceDto;
 import ca.ulaval.glo4003.evulution.service.sale.dto.SaleCreatedDto;
 
 public class SaleService {
-    private SaleRepository saleRepository;
-    private SaleCreatedAssembler saleCreatedAssembler;
-    private SaleFactory saleFactory;
-    private InvoiceFactory invoiceFactory; // TODO: no usage
-    private AssemblyLineService assemblyLineService; // TODO: no usage
-    private ManufactureDomainService manufactureDomainService;
-    private SaleDomainService saleDomainService;
-    private SaleIdFactory saleIdFactory;
-    private TokenAssembler tokenAssembler;
+    private final SaleRepository saleRepository;
+    private final SaleCreatedAssembler saleCreatedAssembler;
+    private final SaleFactory saleFactory;
+    private final ManufactureDomainService manufactureDomainService;
+    private final SaleDomainService saleDomainService;
+    private final SaleIdFactory saleIdFactory;
+    private final TokenAssembler tokenAssembler;
 
     public SaleService(SaleRepository saleRepository, SaleCreatedAssembler saleCreatedAssembler,
-            SaleFactory saleFactory, InvoiceFactory invoiceFactory, AssemblyLineService assemblyLineService,
-            ManufactureDomainService manufactureDomainService, SaleDomainService saleDomainService,
-            SaleIdFactory saleIdFactory, TokenAssembler tokenAssembler) {
+            SaleFactory saleFactory, ManufactureDomainService manufactureDomainService,
+            SaleDomainService saleDomainService, SaleIdFactory saleIdFactory, TokenAssembler tokenAssembler) {
         this.saleRepository = saleRepository;
         this.saleCreatedAssembler = saleCreatedAssembler;
         this.saleFactory = saleFactory;
-        this.invoiceFactory = invoiceFactory;
-        this.assemblyLineService = assemblyLineService;
         this.manufactureDomainService = manufactureDomainService;
         this.saleDomainService = saleDomainService;
         this.saleIdFactory = saleIdFactory;
