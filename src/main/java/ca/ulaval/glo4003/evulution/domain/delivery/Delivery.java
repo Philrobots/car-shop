@@ -17,23 +17,22 @@ public class Delivery {
     private DeliveryDetails deliveryDetails;
     private LocalDate deliveryDate;
 
-    public Delivery(AccountId accountId, DeliveryId deliveryId, Integer assemblyTimeInWeeks)
-            throws DeliveryIncompleteException {
+    public Delivery(AccountId accountId, DeliveryId deliveryId, Integer assemblyTimeInWeeks) {
         this.accountId = accountId;
         this.deliveryId = deliveryId;
         this.assemblyTimeInWeeks = assemblyTimeInWeeks;
-        setStatus(DeliveryStatus.CREATED);
+        this.status.add(DeliveryStatus.CREATED);
     }
 
     public void setStatus(DeliveryStatus status) throws DeliveryIncompleteException {
         switch (status) {
-            case SHIPPED:
-                // TODO Ask client about potential exception if delivery not confirmed
-                break;
-            case COMPLETED:
-                if (!this.status.contains(DeliveryStatus.CONFIRMED) || !this.status.contains(DeliveryStatus.SHIPPED)) {
-                    throw new DeliveryIncompleteException();
-                }
+        case SHIPPED:
+            // TODO Ask client about potential exception if delivery not confirmed
+            break;
+        case COMPLETED:
+            if (!this.status.contains(DeliveryStatus.CONFIRMED) || !this.status.contains(DeliveryStatus.SHIPPED)) {
+                throw new DeliveryIncompleteException();
+            }
         }
         this.status.add(status);
     }

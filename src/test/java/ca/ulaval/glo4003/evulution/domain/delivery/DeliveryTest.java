@@ -29,7 +29,7 @@ class DeliveryTest {
     private DeliveryId deliveryId;
 
     @BeforeEach
-    void setUp() throws DeliveryIncompleteException {
+    void setUp() {
         this.delivery = new Delivery(A_CORRECT_ACCOUNT_ID, deliveryId, AN_ASSEMBLY_TIME_IN_WEEKS);
     }
 
@@ -67,6 +67,7 @@ class DeliveryTest {
 
     @Test
     public void givenWrongAccountId_whenVerifyAccountId_thenThrowsMismatchAccountIdWithDeliveryException() {
-        assertThrows(MismatchAccountIdWithDeliveryException.class, () -> delivery.verifyAccountId(AN_INCORRECT_ACCOUNT_ID));
+        assertThrows(MismatchAccountIdWithDeliveryException.class,
+                () -> delivery.verifyAccountId(AN_INCORRECT_ACCOUNT_ID));
     }
 }
