@@ -80,42 +80,6 @@ public class ApiResources {
                 assemblerResources.getDeliveryLocationDtoAssembler());
     }
 
-    public ResourceConfig getConfigurations() {
-
-        final AbstractBinder binder = new AbstractBinder() {
-            @Override
-            protected void configure() {
-                bind(customerResource).to(CustomerResource.class);
-                bind(loginResource).to(LoginResource.class);
-                bind(saleResource).to(SaleResource.class);
-                bind(deliveryResource).to(DeliveryResource.class);
-                bind(new ProductionResource(exceptionMapperResources.getProductionExceptionAssembler(),
-                        serviceResources.getAssemblyLineService())).to(ProductionResource.class);
-            }
-        };
-
-        final ResourceConfig config = new ResourceConfig();
-        AuthorizationService authorizationService = new AuthorizationService(assemblerResources.getTokenAssembler(),
-                repositoryResources.getTokenRepository(), factoryResources.getSaleIdFactory(),
-                factoryResources.getDeliveryIdFactory(), accountValidator, deliveryValidator, saleValidator);
-
-        config.register(binder);
-        config.register(new CORSResponseFilter());
-
-        HTTPExceptionResponseAssembler authorizationExceptionAssembler = exceptionMapperResources
-                .getAuthorizationExceptionAssembler();
-
-        config.register(createSecuredAuthorizationFilter(authorizationService,
-                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
-        config.register(createSecuredWithSaleIdAuthorizationFilter(authorizationService,
-                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
-        config.register(createSecuredWithDeliveryIdAuthorizationFilter(authorizationService,
-                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
-        config.register(new SecuredAdminAuthorizationFilter(authorizationService,
-                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
-        return config;
-    }
-
     private static SecuredWithDeliveryIdAuthorizationFilter createSecuredWithDeliveryIdAuthorizationFilter(
             AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
@@ -168,5 +132,41 @@ public class ApiResources {
             AuthorizationService authorizationService, TokenDtoAssembler tokenDtoAssembler,
             HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {
         return new SecuredAuthorizationFilter(authorizationService, tokenDtoAssembler, httpExceptionResponseAssembler);
+    }
+
+    public ResourceConfig getConfigurations() {
+
+        final AbstractBinder binder = new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(customerResource).to(CustomerResource.class);
+                bind(loginResource).to(LoginResource.class);
+                bind(saleResource).to(SaleResource.class);
+                bind(deliveryResource).to(DeliveryResource.class);
+                bind(new ProductionResource(exceptionMapperResources.getProductionExceptionAssembler(),
+                        serviceResources.getAssemblyLineService())).to(ProductionResource.class);
+            }
+        };
+
+        final ResourceConfig config = new ResourceConfig();
+        AuthorizationService authorizationService = new AuthorizationService(assemblerResources.getTokenAssembler(),
+                repositoryResources.getTokenRepository(), factoryResources.getSaleIdFactory(),
+                factoryResources.getDeliveryIdFactory(), accountValidator, deliveryValidator, saleValidator);
+
+        config.register(binder);
+        config.register(new CORSResponseFilter());
+
+        HTTPExceptionResponseAssembler authorizationExceptionAssembler = exceptionMapperResources
+                .getAuthorizationExceptionAssembler();
+
+        config.register(createSecuredAuthorizationFilter(authorizationService,
+                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
+        config.register(createSecuredWithSaleIdAuthorizationFilter(authorizationService,
+                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
+        config.register(createSecuredWithDeliveryIdAuthorizationFilter(authorizationService,
+                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
+        config.register(new SecuredAdminAuthorizationFilter(authorizationService,
+                assemblerResources.getTokenDtoAssembler(), authorizationExceptionAssembler));
+        return config;
     }
 }

@@ -3,11 +3,12 @@
 ULaval's electric car sales and production system.
 
 ## Usage
+
 Launch the application
 
 ```java
 mvn clean package
-java -jar target/jersey-jetty.jar
+        java-jar target/jersey-jetty.jar
 ```
 
 Run the tests

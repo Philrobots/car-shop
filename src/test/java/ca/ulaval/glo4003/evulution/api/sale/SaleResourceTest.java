@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseBatteryRequest;
 import ca.ulaval.glo4003.evulution.api.sale.dto.ChooseCarRequest;
 import ca.ulaval.glo4003.evulution.api.sale.dto.InvoiceRequest;
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
-import ca.ulaval.glo4003.evulution.domain.exceptions.BadInputParameterException;
 import ca.ulaval.glo4003.evulution.service.authorization.dto.TokenDto;
 import ca.ulaval.glo4003.evulution.service.manufacture.ManufactureService;
 import ca.ulaval.glo4003.evulution.service.manufacture.dto.ChooseBatteryDto;
@@ -15,7 +14,6 @@ import ca.ulaval.glo4003.evulution.service.manufacture.dto.ChooseCarDto;
 import ca.ulaval.glo4003.evulution.service.sale.SaleService;
 import ca.ulaval.glo4003.evulution.service.sale.dto.InvoiceDto;
 import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,8 +21,6 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class SaleResourceTest {
@@ -98,17 +94,17 @@ public class SaleResourceTest {
     /*
      * @Test public void givenInvalidConstraints_whenChooseVehicle_thenReturnsAccordingErrorResponse() { // given
      * Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(chooseCarRequest);
-     * 
+     *
      * // when Response response = saleResource.chooseVehicle(A_SALE_ID, chooseCarRequest);
-     * 
+     *
      * // then assertEquals(response.getStatus(), BAD_INPUT_PARAMETERS_ERROR_CODE); assertEquals(response.getEntity(),
      * BAD_INPUT_PARAMETERS_ERROR_MESSAGE); }
-     * 
+     *
      * @Test public void givenInvalidConstraints_whenChooseBattery_thenReturnsAccordingErrorResponse() { // given
      * Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(chooseBatteryRequest);
-     * 
+     *
      * // when Response response = saleResource.chooseBattery(A_SALE_ID, chooseBatteryRequest);
-     * 
+     *
      * // then assertEquals(response.getStatus(), BAD_INPUT_PARAMETERS_ERROR_CODE); assertEquals(response.getEntity(),
      * BAD_INPUT_PARAMETERS_ERROR_MESSAGE); }
      */
@@ -128,25 +124,25 @@ public class SaleResourceTest {
     /*
      * @Test public void whenChooseVehicle_thenManufactureServiceChooseVehicle() { // when
      * saleResource.chooseVehicle(A_SALE_ID, chooseCarRequest);
-     * 
+     *
      * // then Mockito.verify(manufactureService).chooseCar(A_SALE_ID, chooseCarDto); }
-     * 
+     *
      * @Test public void whenChooseBattery_thenManufactureServiceChooseBattery() { // when
      * saleResource.chooseBattery(A_SALE_ID, chooseBatteryRequest);
-     * 
+     *
      * // then Mockito.verify(manufactureService).chooseBattery(A_SALE_ID, chooseBatteryDto); }
-     * 
+     *
      * @Test public void givenInvalidConstraints_whenCompleteSale_thenReturnsAccordingErrorResponse() { // given
      * Mockito.doThrow(BadInputParameterException.class).when(constraintsValidator).validate(invoiceRequest);
-     * 
+     *
      * // when Response response = saleResource.completeSale(A_SALE_ID, invoiceRequest);
-     * 
+     *
      * // then assertEquals(response.getStatus(), BAD_INPUT_PARAMETERS_ERROR_CODE); assertEquals(response.getEntity(),
      * BAD_INPUT_PARAMETERS_ERROR_MESSAGE); }
-     * 
+     *
      * @Test public void whenCompleteSale_thenSaleServiceCompleteSale() { // when saleResource.completeSale(A_SALE_ID,
      * invoiceRequest);
-     * 
+     *
      * // then Mockito.verify(saleService).completeSale(A_SALE_ID, invoiceDto); }
      */
 }
