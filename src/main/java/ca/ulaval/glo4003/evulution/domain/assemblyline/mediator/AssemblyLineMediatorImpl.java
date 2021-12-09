@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.mediator;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLineType;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
@@ -22,10 +24,10 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
 
     @Override
     public void notify(Object assemblyLineClass) throws EmailException {
-        if (assemblyLineClass.equals(CarAssemblyLineSequential.class)) {
+        if (assemblyLineClass.equals(CarAssemblyLine.class)) {
             this.state = AssemblyLineType.BATTERY;
             this.batteryAssemblyLine.startNext();
-        } else if (assemblyLineClass.equals(BatteryAssemblyLineSequential.class)) {
+        } else if (assemblyLineClass.equals(BatteryAssemblyLine.class)) {
             this.state = AssemblyLineType.COMPLETE;
             this.completeAssemblyLine.startNext();
         } else if (assemblyLineClass.equals(CompleteAssemblyLineSequential.class)) {

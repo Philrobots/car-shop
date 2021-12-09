@@ -34,7 +34,7 @@ public class FactoryResources {
     private final CustomerFactory customerFactory;
     private final TokenFactory tokenFactory = new TokenFactory();
     private final BatteryProductionFactory batteryProductionFactory = new BatteryProductionFactory();
-    private final CarProductionFactory carProductionFactory = new CarProductionFactory();
+    private final CarProductionFactory carProductionFactory = new CarProductionFactory(JsonFileMapper.parseModels());
     private final CompleteAssemblyProductionFactory completeAssemblyProductionFactory = new CompleteAssemblyProductionFactory();
 
     public FactoryResources(Integer assembleTimeInWeeks, EmailSender emailSender, TokenRepository tokenRepository) {

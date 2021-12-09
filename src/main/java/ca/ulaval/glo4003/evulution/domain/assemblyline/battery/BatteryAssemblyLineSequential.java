@@ -40,7 +40,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
 
         if (isBatteryAssembled) {
             this.batteryProductionRepository.add(currentBatteryProduction);
-            this.assemblyLineMediator.notify(this.getClass());
+            this.assemblyLineMediator.notify(BatteryAssemblyLine.class);
             this.isBatteryInProduction = false;
         }
     }

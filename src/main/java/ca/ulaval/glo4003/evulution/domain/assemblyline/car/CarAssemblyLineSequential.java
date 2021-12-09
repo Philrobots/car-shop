@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
-import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionAssociatedWithManufacture;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
@@ -12,13 +12,13 @@ import java.util.List;
 
 public class CarAssemblyLineSequential implements CarAssemblyLine {
 
-    private LinkedList<CarProduction> carProductionWaitList = new LinkedList<>();
+    private LinkedList<CarProductionAssociatedWithManufacture> carProductionWaitList = new LinkedList<>();
 
     private final CarAssemblyAdapter carAssemblyAdapter;
     private final CarProductionRepository carProductionRepository;
     private final EmailFactory emailFactory;
     private AssemblyLineMediator assemblyLineMediator;
-    private CarProduction currentCarProduction;
+    private CarProductionAssociatedWithManufacture currentCarProduction;
     private boolean isBatteryInFire = false;
     private boolean isCarInProduction = false;
 
@@ -33,7 +33,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
         this.assemblyLineMediator = assemblyLineMediator;
     }
 
-    public void addProduction(CarProduction carProduction) throws EmailException {
+    public void addProduction(CarProductionAssociatedWithManufacture carProduction) throws EmailException {
         this.carProductionWaitList.add(carProduction);
         if (!(isCarInProduction || this.isBatteryInFire)) {
             setupNextProduction();
@@ -49,7 +49,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
 
         if (isCarAssembled) {
             this.carProductionRepository.add(currentCarProduction);
-            this.assemblyLineMediator.notify(this.getClass());
+            this.assemblyLineMediator.notify(CarAssemblyLine.class);
 
             if (this.carProductionWaitList.isEmpty()) {
                 this.isCarInProduction = false;
@@ -80,9 +80,9 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     }
 
     @Override
-    public List<CarProduction> getWaitingList() {
+    public List<CarProductionAssociatedWithManufacture> getWaitingList() {
         if (isCarInProduction) this.carProductionWaitList.add(currentCarProduction);
-        LinkedList<CarProduction> returnList = new LinkedList<>(this.carProductionWaitList);
+        LinkedList<CarProductionAssociatedWithManufacture> returnList = new LinkedList<>(this.carProductionWaitList);
         carProductionWaitList.clear();
 
         return returnList;
