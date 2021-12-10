@@ -69,7 +69,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
     }
 
     public void startNext() {
-        if (this.isBatteryInFire)
+        if (this.isBatteryInFire && !this.batteryProductionsWaitingList.isEmpty())
             return;
 
         this.setUpNextBatteryForProduction();

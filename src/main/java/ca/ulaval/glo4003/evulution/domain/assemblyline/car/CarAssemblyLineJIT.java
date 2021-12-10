@@ -108,6 +108,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
         if (!this.carWaitingList.isEmpty()) {
             this.currentCarInProduction = this.carWaitingList.pop();
             this.currentCarInProduction.newCarCommand(this.carAssemblyAdapter);
+            this.isCarInProduction = true;
         }
     }
 
