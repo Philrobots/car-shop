@@ -27,7 +27,7 @@ public class EmailFactory {
         return new Email(recipients, DELAY_SUBJECT, FIRE_BATTERIES_EMAIL, emailSender);
     }
 
-    public Email createBatteryBatteryInProductionEmail(List<String> recipients, Integer productionTimeInWeeks) {
+    public Email createBatteryInProductionEmail(List<String> recipients, Integer productionTimeInWeeks) {
         String message = BATTERY_BUILDING_EMAIL + productionTimeInWeeks;
         return new Email(recipients, STATUS_UPDATE_SUBJECT, message, emailSender);
     }

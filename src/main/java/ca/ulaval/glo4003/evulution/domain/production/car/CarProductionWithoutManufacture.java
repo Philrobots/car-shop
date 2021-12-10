@@ -23,32 +23,28 @@ public class CarProductionWithoutManufacture implements CarProduction{
     }
 
     @Override
-    public void associateWithManufacture(ProductionId productionId, Email email) {
-
-    }
-
-    @Override
     public void newCarCommand(CarAssemblyAdapter carAssemblyAdapter) {
-
-    }
-
-    @Override
-    public void sendEmail(EmailFactory emailFactory) throws EmailException {
-        throw new EmailException();
+        carAssemblyAdapter.newVehicleCommand(productionId, carStyle);
     }
 
     @Override
     public boolean advance(CarAssemblyAdapter carAssemblyAdapter) {
-        return false;
+        carAssemblyAdapter.advance();
+        return carAssemblyAdapter.isAssembled(productionId);
     }
 
     @Override
     public ProductionId getProductionId() {
-        return null;
+        return productionId;
     }
 
     @Override
     public String getCarStyle() {
         return carStyle;
+    }
+
+    @Override
+    public Integer getTimeToProduce() {
+        return carProductionTimeInWeeks;
     }
 }

@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionAssociatedWithManufacture;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
@@ -16,6 +17,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     private LinkedList<CarProduction> carProductionWaitList = new LinkedList<>();
 
     private final CarAssemblyAdapter carAssemblyAdapter;
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
     private final CarProductionRepository carProductionRepository;
     private final EmailFactory emailFactory;
     private AssemblyLineMediator assemblyLineMediator;
@@ -34,14 +36,14 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
         this.assemblyLineMediator = assemblyLineMediator;
     }
 
-    public void addProduction(CarProduction carProduction) throws EmailException {
+    public void addProduction(CarProduction carProduction) {
         this.carProductionWaitList.add(carProduction);
         if (!(isCarInProduction || this.isBatteryInFire)) {
             setupNextProduction();
         }
     }
 
-    public void advance() throws EmailException {
+    public void advance() {
         if (!isCarInProduction || this.isBatteryInFire) {
             return;
         }
@@ -64,13 +66,13 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
         this.isBatteryInFire = true;
     }
 
-    public void reactivate() throws EmailException {
+    public void reactivate() {
         this.isBatteryInFire = false;
         if (this.assemblyLineMediator.shouldCarReactivateProduction() && !carProductionWaitList.isEmpty())
             setupNextProduction();
     }
 
-    public void startNext() throws EmailException {
+    public void startNext() {
         if (!carProductionWaitList.isEmpty())
             setupNextProduction();
     }
@@ -89,10 +91,10 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
         return returnList;
     }
 
-    private void setupNextProduction() throws EmailException {
+    private void setupNextProduction() {
         this.isCarInProduction = true;
         this.currentCarProduction = this.carProductionWaitList.pop();
-        this.currentCarProduction.sendEmail(emailFactory);
+        productionLineEmailNotifier.sendCarStartedEmail(currentCarProduction.getProductionId(), currentCarProduction.getTimeToProduce());
         this.currentCarProduction.newCarCommand(carAssemblyAdapter);
     }
 }

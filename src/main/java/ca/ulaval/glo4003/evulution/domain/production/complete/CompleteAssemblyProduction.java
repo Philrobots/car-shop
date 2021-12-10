@@ -12,17 +12,11 @@ import java.util.List;
 
 public class CompleteAssemblyProduction {
     private Delivery delivery;
-    private String email;
     private ProductionId productionId;
 
-    public CompleteAssemblyProduction(ProductionId productionId, Delivery delivery, String email) {
+    public CompleteAssemblyProduction(ProductionId productionId, Delivery delivery) {
         this.productionId = productionId;
         this.delivery = delivery;
-        this.email = email;
-    }
-
-    public void sendProductionStartEmail(EmailFactory emailFactory, int weeksRemaining) throws EmailException {
-        emailFactory.createAssemblyInProductionEmail(List.of(email), weeksRemaining).send();
     }
 
     public void ship() throws DeliveryIncompleteException {
@@ -33,9 +27,8 @@ public class CompleteAssemblyProduction {
         return productionId;
     }
 
-    public void addDelayInWeeksAndSendEmail(Integer assemblyDelayInWeeks, EmailFactory emailFactory)
+    public LocalDate addDelayInWeeksAndSendEmail(Integer assemblyDelayInWeeks)
             throws EmailException {
-        LocalDate localDate = delivery.addDelayInWeeks(assemblyDelayInWeeks);
-        emailFactory.createAssemblyDelayEmail(List.of(email), localDate).send();
+        return delivery.addDelayInWeeks(assemblyDelayInWeeks);
     }
 }

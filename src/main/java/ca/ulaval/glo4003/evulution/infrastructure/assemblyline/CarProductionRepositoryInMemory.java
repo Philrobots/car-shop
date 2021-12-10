@@ -6,6 +6,7 @@ import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionAssociatedWithManufacture;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionWithoutManufacture;
+import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 
 import java.util.ArrayList;
@@ -40,10 +41,12 @@ public class CarProductionRepositoryInMemory implements CarProductionRepository 
     }
 
     @Override
-    public boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionAssociatedWithManufacture) {
+    public boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionLinked) throws CarNotAssociatedWithManufactureException {
+        if(!carProductionLinked.isAssociatedWithManufacture()) throw new CarNotAssociatedWithManufactureException();
+
         ProductionId removedCarProductionId = null;
         for (CarProduction carProduction : vehicles.values()){
-            if (!carProduction.isAssociatedWithManufacture() && carProduction.getCarStyle().equals(carProductionAssociatedWithManufacture.getCarStyle())){
+            if (!carProduction.isAssociatedWithManufacture() && carProduction.getCarStyle().equals(carProduction.getCarStyle())){
                 removedCarProductionId = carProduction.getProductionId();
                 break;
             }
@@ -51,7 +54,7 @@ public class CarProductionRepositoryInMemory implements CarProductionRepository 
 
         if (removedCarProductionId != null) {
             vehicles.remove(removedCarProductionId);
-            vehicles.put(carProductionAssociatedWithManufacture.getProductionId(), carProductionAssociatedWithManufacture);
+            vehicles.put(carProductionLinked.getProductionId(), carProductionLinked);
             return true;
         }
 

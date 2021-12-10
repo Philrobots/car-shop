@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.complete;
 
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
@@ -10,6 +11,7 @@ import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyPr
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 public class CompleteAssemblyLineSequential {
@@ -21,6 +23,7 @@ public class CompleteAssemblyLineSequential {
     private final CarProductionRepository carProductionRepository;
     private final BatteryProductionRepository batteryProductionRepository;
     private AssemblyLineMediator assemblyLineMediator;
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
     private LinkedList<CompleteAssemblyProduction> waitingList = new LinkedList<>();
     private CompleteAssemblyProduction currentProduction;
     private int weeksRemaining;
@@ -44,8 +47,10 @@ public class CompleteAssemblyLineSequential {
             return;
         }
 
+        //TODO
         if (weeksRemaining == 2) {
-            this.currentProduction.addDelayInWeeksAndSendEmail(ASSEMBLY_DELAY_IN_WEEKS, emailFactory);
+            LocalDate expectedDate = this.currentProduction.addDelayInWeeksAndSendEmail(ASSEMBLY_DELAY_IN_WEEKS);
+            productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
             this.weeksRemaining--;
         } else if (weeksRemaining == 1) {
             this.weeksRemaining--;
@@ -70,7 +75,7 @@ public class CompleteAssemblyLineSequential {
         this.isBatteryInFire = false;
     }
 
-    public void startNext() throws EmailException {
+    public void startNext() {
 
         if (this.isBatteryInFire)
             return;
@@ -78,12 +83,13 @@ public class CompleteAssemblyLineSequential {
         setUpForProduction();
     }
 
-    private void setUpForProduction() throws EmailException {
+    private void setUpForProduction() {
         this.currentProduction = this.waitingList.pop();
         this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
                 : ASSEMBLY_DELAY_IN_WEEKS;
 
-        currentProduction.sendProductionStartEmail(emailFactory, weeksRemaining);
+
+        productionLineEmailNotifier.sendAssemblyStartedEmail(currentProduction.getProductionId(), weeksRemaining);
 
         this.isCarCompleteInProduction = true;
     }

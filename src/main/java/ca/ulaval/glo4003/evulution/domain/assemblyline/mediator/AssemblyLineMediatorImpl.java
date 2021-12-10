@@ -23,7 +23,7 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
     }
 
     @Override
-    public void notify(Object assemblyLineClass) throws EmailException {
+    public void notify(Object assemblyLineClass) {
         if (assemblyLineClass.equals(CarAssemblyLine.class)) {
             this.state = AssemblyLineType.BATTERY;
             this.batteryAssemblyLine.startNext();

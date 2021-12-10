@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
@@ -14,6 +15,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
     private final BatteryAssemblyAdapter batteryAssemblyLineAdapter;
     private final BatteryProductionRepository batteryProductionRepository;
     private final EmailFactory emailFactory;
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
     private LinkedList<BatteryProduction> batteryProductionsWaitingList = new LinkedList<>();
     private AssemblyLineMediator assemblyLineMediator;
     private BatteryProduction currentBatteryProduction;
@@ -31,7 +33,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
         this.batteryProductionsWaitingList.add(batteryProduction);
     }
 
-    public void advance() throws EmailException {
+    public void advance() {
         if (!this.isBatteryInProduction || this.isBatteryInFire) {
             return;
         }
@@ -52,7 +54,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
         this.isBatteryInProduction = false;
     }
 
-    public void reactivate() throws EmailException {
+    public void reactivate() {
         this.isBatteryInFire = false;
 
         for (BatteryProduction batteryProduction : batteryProductionRepository.getAndSendToProduction()) {
@@ -63,7 +65,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
             setUpNextBatteryForProduction();
     }
 
-    public void startNext() throws EmailException {
+    public void startNext() {
         if (this.isBatteryInFire)
             return;
 
@@ -74,9 +76,9 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
         this.assemblyLineMediator = assemblyLineMediator;
     }
 
-    private void setUpNextBatteryForProduction() throws EmailException {
+    private void setUpNextBatteryForProduction() {
         this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();
-        currentBatteryProduction.sendEmail(emailFactory);
+        productionLineEmailNotifier.sendAssemblyStartedEmail(currentBatteryProduction.getProductionId(), currentBatteryProduction.getProductionTimeInWeeks());
         currentBatteryProduction.newBatteryCommand(batteryAssemblyLineAdapter);
 
         this.isBatteryInProduction = true;

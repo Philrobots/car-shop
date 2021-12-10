@@ -67,22 +67,22 @@ public class Manufacture {
         status = ManufactureStatus.READY;
     }
 
-    public void setInProduction() {
+    public ProductionId setInProduction() {
         status = ManufactureStatus.IN_PRODUCTION;
+        return productionId;
     }
 
-    public BatteryProduction generateBatteryProduction(String email,
-            BatteryProductionFactory batteryProductionFactory) {
-        return batteryProductionFactory.create(productionId, battery.getType(), email, battery.getTimeToProduceAsInt());
+    public BatteryProduction generateBatteryProduction(BatteryProductionFactory batteryProductionFactory) {
+        return batteryProductionFactory.create(productionId, battery.getType(), battery.getTimeToProduceAsInt());
     }
 
-    public CarProduction generateCarProduction(String email, CarProductionFactory carProductionFactory) {
-        return carProductionFactory.create(productionId, car.getStyle(), email, car.getTimeToProduceAsInt());
+    public CarProduction generateCarProduction(CarProductionFactory carProductionFactory) {
+        return carProductionFactory.create(productionId, car.getStyle(), car.getTimeToProduceAsInt());
     }
 
     public CompleteAssemblyProduction generateCompleteAssemblyProduction(String email,
             CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
-        return completeAssemblyProductionFactory.create(productionId, delivery, email);
+        return completeAssemblyProductionFactory.create(productionId, delivery);
     }
 
 }

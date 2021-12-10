@@ -11,31 +11,21 @@ import java.util.List;
 public class CarProductionAssociatedWithManufacture implements CarProduction{
 
     private ProductionId productionId;
-    private String email;
     private int carProductionTimeInWeeks;
     private String carStyle;
 
-    public CarProductionAssociatedWithManufacture(ProductionId productionId, String carStyle, String email, int carProductionTime) {
+    public CarProductionAssociatedWithManufacture(ProductionId productionId, String carStyle, int carProductionTime) {
         this.productionId = productionId;
         this.carStyle = carStyle;
-        this.email = email;
         this.carProductionTimeInWeeks = carProductionTime;
     }
 
-    @Override
     public boolean isAssociatedWithManufacture() {
         return true;
     }
 
-    public void associateWithManufacture(ProductionId productionId, Email email){
-
-    }
     public void newCarCommand(CarAssemblyAdapter carAssemblyAdapter) {
         carAssemblyAdapter.newVehicleCommand(productionId, carStyle);
-    }
-
-    public void sendEmail(EmailFactory emailFactory) throws EmailException {
-        emailFactory.createVehicleInProductionEmail(List.of(email), carProductionTimeInWeeks).send();
     }
 
     public boolean advance(CarAssemblyAdapter carAssemblyAdapter) {
@@ -47,8 +37,11 @@ public class CarProductionAssociatedWithManufacture implements CarProduction{
         return productionId;
     }
 
-    @Override
     public String getCarStyle() {
         return carStyle;
+    }
+
+    public Integer getTimeToProduce() {
+        return carProductionTimeInWeeks;
     }
 }

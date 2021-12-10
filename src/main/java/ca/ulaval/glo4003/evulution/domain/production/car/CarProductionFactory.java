@@ -21,8 +21,8 @@ public class CarProductionFactory {
         }
     }
 
-    public CarProduction create(ProductionId productionId, String carStyle, String email, int carProductionTime) {
-        return new CarProductionAssociatedWithManufacture(productionId, carStyle, email, carProductionTime);
+    public CarProduction create(ProductionId productionId, String carStyle, int carProductionTime) {
+        return new CarProductionAssociatedWithManufacture(productionId, carStyle, carProductionTime);
     }
     public CarProduction createCompact() {
         return new CarProductionWithoutManufacture(new ProductionId(), COMPACT_CAR_TYPE, COMPACT_TIME_TO_PRODUCE);

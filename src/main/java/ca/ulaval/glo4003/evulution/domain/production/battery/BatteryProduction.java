@@ -10,14 +10,12 @@ import java.util.List;
 public class BatteryProduction {
     private ProductionId productionId;
     private String batteryType;
-    private String email;
     private Integer productionTimeInWeeks;
 
-    public BatteryProduction(ProductionId productionId, String batteryType, String email,
+    public BatteryProduction(ProductionId productionId, String batteryType,
             Integer productionTimeInWeeks) {
         this.productionId = productionId;
         this.batteryType = batteryType;
-        this.email = email;
         this.productionTimeInWeeks = productionTimeInWeeks;
     }
 
@@ -25,9 +23,9 @@ public class BatteryProduction {
         return productionId;
     }
 
-    public void sendEmail(EmailFactory emailFactory) throws EmailException {
-        emailFactory.createBatteryBatteryInProductionEmail(List.of(email), productionTimeInWeeks).send();
-    }
+//    public void sendEmail(EmailFactory emailFactory) throws EmailException {
+//        emailFactory.createBatteryInProductionEmail(List.of(email), productionTimeInWeeks).send();
+//    }
 
     public void newBatteryCommand(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
         batteryAssemblyLineAdapter.newBatteryCommand(productionId, batteryType);
@@ -36,5 +34,9 @@ public class BatteryProduction {
     public boolean advance(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
         batteryAssemblyLineAdapter.advance();
         return batteryAssemblyLineAdapter.isAssembled(productionId);
+    }
+
+    public Integer getProductionTimeInWeeks() {
+        return productionTimeInWeeks;
     }
 }

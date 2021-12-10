@@ -8,8 +8,10 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIs
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.Manufacture;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ManufactureRepository;
+import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProductionFactory;
@@ -30,11 +32,11 @@ public class ProductionLine {
     private final EmailFactory emailFactory;
     private ManufactureRepository manufactureRepository;
     private SaleDomainService saleDomainService;
-    private Set<String> emails = new HashSet<String>();
     private boolean isShutdown = false;
     private BatteryProductionFactory batteryProductionFactory;
     private CarProductionFactory carProductionFactory;
     private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
 
     public ProductionLine(CarAssemblyLineSequential carAssemblyLine, BatteryAssemblyLineSequential batteryAssemblyLine,
                           CompleteAssemblyLineSequential completeAssemblyLine, ManufactureRepository manufactureRepository,
@@ -61,16 +63,16 @@ public class ProductionLine {
     }
 
     private void addNewManufactureToProduction()
-            throws EmailException, SaleNotFoundException, AccountNotFoundException {
+            throws SaleNotFoundException, AccountNotFoundException {
         Map<SaleId, Manufacture> manufactures = this.manufactureRepository.getManufacturesReadyForProduction();
         for (Map.Entry<SaleId, Manufacture> manufactureEntry : manufactures.entrySet()) {
             String email = this.saleDomainService.getEmailFromSaleId(manufactureEntry.getKey());
-            this.emails.add(email);
             Manufacture manufacture = manufactureEntry.getValue();
-            manufacture.setInProduction();
-            this.carAssemblyLine.addProduction(manufacture.generateCarProduction(email, this.carProductionFactory));
+            ProductionId productionId = manufacture.setInProduction();
+            productionLineEmailNotifier.addEmailWithProduction(productionId, email);
+            this.carAssemblyLine.addProduction(manufacture.generateCarProduction(this.carProductionFactory));
             this.batteryAssemblyLine
-                    .addProduction(manufacture.generateBatteryProduction(email, this.batteryProductionFactory));
+                    .addProduction(manufacture.generateBatteryProduction(this.batteryProductionFactory));
             this.completeAssemblyLine.addProduction(
                     manufacture.generateCompleteAssemblyProduction(email, this.completeAssemblyProductionFactory));
             this.manufactureRepository.updateManufacture(manufactureEntry.getKey(), manufacture);
@@ -84,14 +86,7 @@ public class ProductionLine {
         this.batteryAssemblyLine.shutdown();
         this.completeAssemblyLine.shutdown();
         this.isShutdown = true;
-        this.sendEmailToConsumers();
-    }
-
-    private void sendEmailToConsumers() throws EmailException {
-        List<String> recipients = new ArrayList<String>();
-        // TODO la liste de emails est jamais vidée
-        recipients.addAll(this.emails);
-        this.emailFactory.createAssemblyFireBatteriesEmail(recipients).send();
+        productionLineEmailNotifier.sendFireBatteriesEmail();
     }
 
     public void reactivate() throws AssemblyLineIsNotShutdownException, EmailException {

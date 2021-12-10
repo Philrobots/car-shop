@@ -6,11 +6,11 @@ import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 public interface BatteryAssemblyLine {
     void addProduction(BatteryProduction batteryProduction);
 
-    void advance() throws EmailException;
+    void advance();
 
     void shutdown();
 
-    void reactivate() throws EmailException;
+    void reactivate();
 
-    void startNext() throws EmailException;
+    void startNext();
 }
