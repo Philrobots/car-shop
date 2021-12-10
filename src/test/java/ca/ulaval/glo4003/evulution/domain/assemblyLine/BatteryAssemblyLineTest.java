@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
@@ -36,10 +37,13 @@ class BatteryAssemblyLineTest {
     @Mock
     private Email email;
 
+    @Mock
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
+
     @BeforeEach
     public void setup() {
         batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyAdapter, batteryProductionRepository,
-                emailFactory);
+                emailFactory, productionLineEmailNotifier);
         batteryAssemblyLine.setMediator(assemblyLineMediator);
     }
 

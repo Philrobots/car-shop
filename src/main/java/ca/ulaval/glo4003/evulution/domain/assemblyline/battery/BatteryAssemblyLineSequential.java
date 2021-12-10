@@ -23,10 +23,11 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
     private boolean isBatteryInFire = false;
 
     public BatteryAssemblyLineSequential(BatteryAssemblyAdapter batteryAssemblyAdapter,
-            BatteryProductionRepository batteryProductionRepository, EmailFactory emailFactory) {
+            BatteryProductionRepository batteryProductionRepository, EmailFactory emailFactory, ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
         this.batteryProductionRepository = batteryProductionRepository;
         this.emailFactory = emailFactory;
+        this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 
     public void addProduction(BatteryProduction batteryProduction) {
@@ -35,12 +36,15 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
 
     public void advance() {
         if (!this.isBatteryInProduction || this.isBatteryInFire) {
+            System.out.println("Skipping Battery");
             return;
         }
 
+        System.out.println("Building Battery");
         boolean isBatteryAssembled = currentBatteryProduction.advance(batteryAssemblyLineAdapter);
 
         if (isBatteryAssembled) {
+            System.out.println("Battery is assembled");
             this.batteryProductionRepository.add(currentBatteryProduction);
             this.assemblyLineMediator.notify(BatteryAssemblyLine.class);
             this.isBatteryInProduction = false;
@@ -78,9 +82,9 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
 
     private void setUpNextBatteryForProduction() {
         this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();
-        productionLineEmailNotifier.sendAssemblyStartedEmail(currentBatteryProduction.getProductionId(),
-                currentBatteryProduction.getProductionTimeInWeeks());
-        currentBatteryProduction.newBatteryCommand(batteryAssemblyLineAdapter);
+        this.productionLineEmailNotifier.sendBatteryStartedEmail(this.currentBatteryProduction.getProductionId(),
+                this.currentBatteryProduction.getProductionTimeInWeeks());
+        this.currentBatteryProduction.newBatteryCommand(batteryAssemblyLineAdapter);
 
         this.isBatteryInProduction = true;
     }

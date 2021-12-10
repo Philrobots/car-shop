@@ -48,7 +48,7 @@ public class CarAssemblyLineAdapter implements CarAssemblyAdapter {
 
         for (ModelInformationDto modelInformationDto : modelInformationDtos) {
             Integer timeToProduce = Integer.parseInt(modelInformationDto.time_to_produce);
-            carTimesProduce.put(modelInformationDto.name, timeToProduce);
+            carTimesProduce.put(modelInformationDto.style, timeToProduce);
         }
         vehicleAssemblyLine.configureAssemblyLine(carTimesProduce);
     }

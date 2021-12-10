@@ -13,6 +13,7 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAs
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorSwitcher;
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 
 public class AssemblyLineResources {
@@ -23,8 +24,11 @@ public class AssemblyLineResources {
     private final AssemblyLineMediatorImpl assemblyLineMediator;
     private final CarAssemblyLineJIT carAssemblyLineJIT;
     private final CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
+    private final ProductionLineEmailNotifier productionLineEmailNotifier;
 
     public AssemblyLineResources(FactoryResources factoryResources, RepositoryResources repositoryResources) {
+
+         productionLineEmailNotifier = new ProductionLineEmailNotifier(factoryResources.getEmailFactory());
 
         BatteryAssemblyLineAdapter batteryAssemblyLineAdapter = new BatteryAssemblyLineAdapter(
                 new BasicBatteryAssemblyLine(), JsonFileMapper.parseBatteries());
@@ -33,10 +37,10 @@ public class AssemblyLineResources {
                 JsonFileMapper.parseModels());
 
         batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyLineAdapter,
-                repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory());
+                repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory(), productionLineEmailNotifier);
 
         carAssemblyLineSequential = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter,
-                repositoryResources.getVehicleRepository(), factoryResources.getEmailFactory());
+                repositoryResources.getVehicleRepository(), factoryResources.getEmailFactory(), productionLineEmailNotifier);
 
         this.carAssemblyLineJITTypeSelector = new CarAssemblyLineJITTypeSelector(
                 factoryResources.getCarProductionFactory());
@@ -45,7 +49,7 @@ public class AssemblyLineResources {
                 repositoryResources.getVehicleRepository(), this.carAssemblyLineJITTypeSelector);
 
         completeAssemblyLine = new CompleteAssemblyLineSequential(factoryResources.getEmailFactory(),
-                repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository());
+                repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository(), productionLineEmailNotifier);
 
         assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine,
                 carAssemblyLineSequential);
@@ -78,6 +82,10 @@ public class AssemblyLineResources {
 
     public AssemblyLineMediator getAssemblyLineMediator() {
         return assemblyLineMediator;
+    }
+
+    public ProductionLineEmailNotifier getProductionLineEmailNotifier() {
+        return this.productionLineEmailNotifier;
     }
 
 }

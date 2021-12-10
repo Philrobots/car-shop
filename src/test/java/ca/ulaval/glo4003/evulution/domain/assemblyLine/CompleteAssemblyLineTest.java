@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
@@ -38,10 +39,13 @@ class CompleteAssemblyLineTest {
     @Mock
     private BatteryProductionRepository batteryProductionRepository;
 
+    @Mock
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
+
     @BeforeEach
     public void setUp() {
         completeAssemblyLine = new CompleteAssemblyLineSequential(emailFactory, carProductionRepository,
-                batteryProductionRepository);
+                batteryProductionRepository, productionLineEmailNotifier);
     }
     //
     // @Test

@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyLine;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
@@ -35,9 +36,12 @@ class CarAssemblyLineTest {
     @Mock
     private Email email;
 
+    @Mock
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
+
     @BeforeEach
     public void setup() {
-        carAssemblyLine = new CarAssemblyLineSequential(carAssemblyAdapter, carProductionRepository, emailFactory);
+        carAssemblyLine = new CarAssemblyLineSequential(carAssemblyAdapter, carProductionRepository, emailFactory, productionLineEmailNotifier);
         carAssemblyLine.setMediator(assemblyLineMediator);
     }
 

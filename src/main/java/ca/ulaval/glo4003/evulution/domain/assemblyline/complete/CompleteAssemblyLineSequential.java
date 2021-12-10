@@ -31,10 +31,11 @@ public class CompleteAssemblyLineSequential {
     private boolean isBatteryInFire = false;
 
     public CompleteAssemblyLineSequential(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
-            BatteryProductionRepository batteryProductionRepository) {
+            BatteryProductionRepository batteryProductionRepository, ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.emailFactory = emailFactory;
         this.carProductionRepository = carProductionRepository;
         this.batteryProductionRepository = batteryProductionRepository;
+        this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 
     public void addProduction(CompleteAssemblyProduction completeAssemblyProduction) {
@@ -44,17 +45,22 @@ public class CompleteAssemblyLineSequential {
     public void advance() throws DeliveryIncompleteException, InvalidMappingKeyException, EmailException {
 
         if (!isCarCompleteInProduction || isBatteryInFire) {
+            System.out.println("Skipping complete car assembly line ");
             return;
         }
 
+
         // TODO
         if (weeksRemaining == 2) {
+            System.out.println("2 weeks remaining");
             LocalDate expectedDate = this.currentProduction.addDelayInWeeksAndSendEmail(ASSEMBLY_DELAY_IN_WEEKS);
             productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
             this.weeksRemaining--;
         } else if (weeksRemaining == 1) {
+            System.out.println("1 weeks remaining");
             this.weeksRemaining--;
         } else if (weeksRemaining == 0) {
+            System.out.println("Car is done");
             this.currentProduction.ship();
             ProductionId productionId = currentProduction.getProductionId();
             this.carProductionRepository.remove(productionId);
