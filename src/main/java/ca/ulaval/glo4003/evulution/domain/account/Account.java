@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.account.exceptions.FailedLoginExceptio
 import ca.ulaval.glo4003.evulution.domain.account.exceptions.UserIsNotAdminException;
 import ca.ulaval.glo4003.evulution.domain.token.Token;
 import ca.ulaval.glo4003.evulution.domain.token.TokenFactory;
-import ca.ulaval.glo4003.evulution.domain.token.TokenRepository;
 
 public abstract class Account {
     public AccountId id;
@@ -19,13 +18,12 @@ public abstract class Account {
         this.password = password;
     }
 
-    public Token login(String email, String password, TokenFactory tokenFactory, TokenRepository tokenRepository)
+    public Token login(String email, String password, TokenFactory tokenFactory)
             throws FailedLoginException {
         if (!(this.email.equals(email) && this.password.equals(password)))
             throw new FailedLoginException();
-        Token token = tokenFactory.generateNewToken();
-        tokenRepository.addToken(token, id);
-        return token;
+
+        return tokenFactory.generateNewToken();
     }
 
     public AccountId getId() {

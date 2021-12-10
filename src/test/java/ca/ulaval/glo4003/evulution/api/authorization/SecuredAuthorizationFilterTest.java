@@ -5,29 +5,33 @@ import ca.ulaval.glo4003.evulution.api.mappers.assemblers.HTTPExceptionResponseA
 import ca.ulaval.glo4003.evulution.service.authorization.AuthorizationService;
 import ca.ulaval.glo4003.evulution.service.authorization.dto.TokenDto;
 import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class SecuredAuthorizationFilterTest {
-    private final String A_HEADER_STRING = "ASDF";
+    private final static String AN_AUTHORIZATION_TOKEN = "auth";
 
     @Mock
-    ContainerRequestContext containerRequestContext;
+    private AuthorizationService authorizationService;
 
     @Mock
-    HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
+    private TokenDtoAssembler tokenDtoAssembler;
 
     @Mock
-    AuthorizationService authorizationService;
+    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     @Mock
-    TokenDtoAssembler tokenDtoAssembler;
+    private ContainerRequestContext containerRequestContext;
 
     @Mock
-    TokenDto tokenDto;
+    private TokenDto tokenDto;
 
     private SecuredAuthorizationFilter securedAuthorizationFilter;
 
@@ -37,31 +41,39 @@ public class SecuredAuthorizationFilterTest {
                 httpExceptionResponseAssembler);
     }
 
-    // @Test
-    // public void whenFilter_thenContainerRequestContextGetsHeaderString() {
-    // BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-    // .willReturn(A_HEADER_STRING);
-    // BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
-    //
-    // // when
-    // securedAuthorizationFilter.filter(containerRequestContext);
-    //
-    // // then
-    // BDDMockito.verify(authorizationService).getAccountId(tokenDto);
-    // }
-    //
-    // @Test
-    // public void givenInvalidToken_whenFilter_thenContainerRequestContextGetsHeaderString() {
-    // BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-    // .willReturn(A_HEADER_STRING);
-    // BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
-    // doThrow(UnauthorizedRequestException.class).when(authorizationService).getAccountId(tokenDto);
-    //
-    // // when
-    // securedAuthorizationFilter.filter(containerRequestContext);
-    //
-    // // then
-    // BDDMockito.verify(httpExceptionResponseAssembler)
-    // .assembleResponseFromExceptionClass(UnauthorizedRequestException.class);
-    // }
+    @Test
+    public void whenFilter_thenContainerRequestContextGetsHeaderString(){
+        // when
+        securedAuthorizationFilter.filter(containerRequestContext);
+
+        // then
+        Mockito.verify(containerRequestContext).getHeaderString(HttpHeaders.AUTHORIZATION);
+    }
+
+    @Test
+    public void whenFilter_thenTokenDtoAssemblerAssemblesFromString(){
+        // given
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(AN_AUTHORIZATION_TOKEN);
+
+        // when
+        securedAuthorizationFilter.filter(containerRequestContext);
+
+        // then
+        Mockito.verify(tokenDtoAssembler).assembleFromString(AN_AUTHORIZATION_TOKEN);
+    }
+
+    @Test
+    public void whenFilter_thenAuthorizationServiceValidates(){
+        // given
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(AN_AUTHORIZATION_TOKEN);
+        BDDMockito.given(tokenDtoAssembler.assembleFromString(AN_AUTHORIZATION_TOKEN)).willReturn(tokenDto);
+
+        // when
+        securedAuthorizationFilter.filter(containerRequestContext);
+
+        // then
+        Mockito.verify(authorizationService).validateToken(tokenDto);
+    }
+
+
 }

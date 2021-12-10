@@ -6,6 +6,8 @@ import ca.ulaval.glo4003.evulution.api.mappers.assemblers.HTTPExceptionResponseA
 import ca.ulaval.glo4003.evulution.api.validators.ConstraintsValidator;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;
 import ca.ulaval.glo4003.evulution.service.customer.dto.CustomerDto;
+import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerResourceTest {
-    private static final String AN_EMAIL = "kevin@expat.com";
-    private static final String A_PASSWORD = "Fireball";
-    private static final String A_NAME = "JaggerBom";
-    private static final String A_BIRTH_DATE = "1992-01-01";
-    private static final Integer BAD_INPUT_PARAMETERS_ERROR_CODE = 400;
-    private static final String BAD_INPUT_PARAMETERS_ERROR_MESSAGE = "bad input parameter";
+    private final int VALID_STATUS = 201;
 
     @Mock
     private CustomerService customerService;
@@ -77,5 +74,17 @@ public class CustomerResourceTest {
 
         // then
         Mockito.verify(customerService).addCustomer(customerDto);
+    }
+
+    @Test
+    public void whenAddCustomer_thenReturns201(){
+        // given
+        BDDMockito.given(customerDtoAssembler.fromRequest(customerRequest)).willReturn(customerDto);
+
+        // when
+        Response response = this.accountResource.addCustomer(customerRequest);
+
+        // then
+        Assertions.assertEquals(VALID_STATUS, response.getStatus());
     }
 }

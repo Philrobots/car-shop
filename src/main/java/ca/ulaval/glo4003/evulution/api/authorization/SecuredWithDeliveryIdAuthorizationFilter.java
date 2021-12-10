@@ -19,7 +19,7 @@ import jakarta.ws.rs.ext.Provider;
 public class SecuredWithDeliveryIdAuthorizationFilter implements ContainerRequestFilter {
     private final AuthorizationService authorizationService;
     private final TokenDtoAssembler tokenDtoAssembler;
-    private HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
+    private final HTTPExceptionResponseAssembler httpExceptionResponseAssembler;
 
     public SecuredWithDeliveryIdAuthorizationFilter(AuthorizationService authorizationService,
             TokenDtoAssembler tokenDtoAssembler, HTTPExceptionResponseAssembler httpExceptionResponseAssembler) {

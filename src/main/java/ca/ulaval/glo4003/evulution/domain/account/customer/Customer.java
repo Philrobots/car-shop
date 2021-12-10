@@ -16,10 +16,6 @@ public class Customer extends Account {
         this.gender = gender;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
     public String getName() {
         return name;
     }
