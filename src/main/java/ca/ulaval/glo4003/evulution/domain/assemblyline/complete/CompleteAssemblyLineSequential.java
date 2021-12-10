@@ -21,7 +21,6 @@ public class CompleteAssemblyLineSequential {
     private static final Integer RANDOM_CASE_OF_NORMAL_ONE_WEEK_DELIVERY = 1;
     private static final Integer ASSEMBLY_FINISHED = 0;
 
-    private final EmailFactory emailFactory;
     private final CarProductionRepository carProductionRepository;
     private final BatteryProductionRepository batteryProductionRepository;
     private AssemblyLineMediator assemblyLineMediator;
@@ -32,10 +31,9 @@ public class CompleteAssemblyLineSequential {
     private boolean isCarCompleteInProduction = false;
     private boolean isBatteryInFire = false;
 
-    public CompleteAssemblyLineSequential(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
+    public CompleteAssemblyLineSequential(CarProductionRepository carProductionRepository,
             BatteryProductionRepository batteryProductionRepository,
             ProductionLineEmailNotifier productionLineEmailNotifier) {
-        this.emailFactory = emailFactory;
         this.carProductionRepository = carProductionRepository;
         this.batteryProductionRepository = batteryProductionRepository;
         this.productionLineEmailNotifier = productionLineEmailNotifier;

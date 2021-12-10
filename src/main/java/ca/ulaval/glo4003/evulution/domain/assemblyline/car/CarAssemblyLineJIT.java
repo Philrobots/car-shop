@@ -102,17 +102,23 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     }
 
     @Override
-    public void transferWaitingList(CarAssemblyLine carAssemblyLine) {
+    public void transferAssemblyLine(CarAssemblyLine carAssemblyLine) {
         this.carWaitingList = new LinkedList<>(carAssemblyLine.getWaitingList());
+        this.isBatteryInFire = carAssemblyLine.getIsBatteryInFire();
     }
 
     @Override
     public List<CarProduction> getWaitingList() {
-        if (this.isCarInProduction)
-            this.carWaitingList.add(this.currentCarInProduction);
+        if (this.isCarInProduction && this.currentCarInProduction.isAssociatedWithManufacture())
+            this.carWaitingList.addFirst(this.currentCarInProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carWaitingList);
         this.carWaitingList.clear();
 
         return returnList;
+    }
+
+    @Override
+    public boolean getIsBatteryInFire() {
+        return isBatteryInFire;
     }
 }

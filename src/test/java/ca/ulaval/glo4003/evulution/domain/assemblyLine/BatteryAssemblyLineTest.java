@@ -42,8 +42,7 @@ class BatteryAssemblyLineTest {
 
     @BeforeEach
     public void setup() {
-        batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyAdapter, batteryProductionRepository,
-                emailFactory, productionLineEmailNotifier);
+        batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyAdapter, batteryProductionRepository, productionLineEmailNotifier);
         batteryAssemblyLine.setMediator(assemblyLineMediator);
     }
 

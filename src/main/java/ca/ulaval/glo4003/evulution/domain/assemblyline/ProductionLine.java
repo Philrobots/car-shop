@@ -72,7 +72,7 @@ public class ProductionLine {
             this.batteryAssemblyLine
                     .addProduction(manufacture.generateBatteryProduction(this.batteryProductionFactory));
             this.completeAssemblyLine.addProduction(
-                    manufacture.generateCompleteAssemblyProduction(email, this.completeAssemblyProductionFactory));
+                    manufacture.generateCompleteAssemblyProduction(this.completeAssemblyProductionFactory));
             this.manufactureRepository.updateManufacture(manufactureEntry.getKey(), manufacture);
         }
     }
@@ -97,7 +97,7 @@ public class ProductionLine {
     }
 
     public void setCarAssemblyLine(CarAssemblyLine carAssemblyLine) {
-        carAssemblyLine.transferWaitingList(this.carAssemblyLine);
+        carAssemblyLine.transferAssemblyLine(this.carAssemblyLine);
         this.carAssemblyLine = carAssemblyLine;
     }
 }

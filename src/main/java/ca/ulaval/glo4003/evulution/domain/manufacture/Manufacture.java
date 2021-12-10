@@ -78,8 +78,7 @@ public class Manufacture {
         return carProductionFactory.create(productionId, car.getStyle(), car.getTimeToProduce());
     }
 
-    public CompleteAssemblyProduction generateCompleteAssemblyProduction(String email,
-            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+    public CompleteAssemblyProduction generateCompleteAssemblyProduction(CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
         return completeAssemblyProductionFactory.create(productionId, delivery);
     }
 

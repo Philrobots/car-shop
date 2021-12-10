@@ -12,7 +12,7 @@ public class DeliveryFactory {
         this.deliveryIdFactory = deliveryIdFactory;
     }
 
-    public Delivery create(AccountId accountId) throws DeliveryIncompleteException {
+    public Delivery create(AccountId accountId) {
         return new Delivery(accountId, deliveryIdFactory.create(), assemblyTimeInWeeks);
     }
 }

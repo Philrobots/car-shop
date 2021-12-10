@@ -53,20 +53,12 @@ public class FactoryResources {
         return deliveryIdFactory;
     }
 
-    public DeliveryFactory getDeliveryFactory() {
-        return deliveryFactory;
-    }
-
     public DeliveryDetailsFactory getDeliveryDetailsFactory() {
         return deliveryDetailsFactory;
     }
 
     public ManufactureFactory getManufactureFactory() {
         return manufactureFactory;
-    }
-
-    public InvoiceFactory getInvoiceFactory() {
-        return invoiceFactory;
     }
 
     public SaleFactory getSaleFactory() {

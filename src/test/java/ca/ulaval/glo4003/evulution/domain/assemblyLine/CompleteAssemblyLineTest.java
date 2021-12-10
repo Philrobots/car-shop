@@ -22,9 +22,6 @@ class CompleteAssemblyLineTest {
     private final String AN_EMAIl = "expat.@tiray.com";
     private final LocalDate A_LOCAL_DATE = LocalDate.now();
 
-    @Mock
-    private EmailFactory emailFactory;
-
     private CompleteAssemblyLineSequential completeAssemblyLine;
 
     @Mock
@@ -44,7 +41,7 @@ class CompleteAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-        completeAssemblyLine = new CompleteAssemblyLineSequential(emailFactory, carProductionRepository,
+        completeAssemblyLine = new CompleteAssemblyLineSequential(carProductionRepository,
                 batteryProductionRepository, productionLineEmailNotifier);
     }
     //

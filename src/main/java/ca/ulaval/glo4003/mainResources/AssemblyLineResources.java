@@ -37,8 +37,7 @@ public class AssemblyLineResources {
                 JsonFileMapper.parseModels());
 
         batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyLineAdapter,
-                repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory(),
-                productionLineEmailNotifier);
+                repositoryResources.getBatteryRepository(), productionLineEmailNotifier);
 
         carAssemblyLineSequential = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter,
                 repositoryResources.getVehicleRepository(), productionLineEmailNotifier);
@@ -49,8 +48,7 @@ public class AssemblyLineResources {
         carAssemblyLineJIT = new CarAssemblyLineJIT(this.getAssemblyLineMediator(), vehicleAssemblyLineAdapter,
                 repositoryResources.getVehicleRepository(), this.carAssemblyLineJITTypeSelector);
 
-        completeAssemblyLine = new CompleteAssemblyLineSequential(factoryResources.getEmailFactory(),
-                repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository(),
+        completeAssemblyLine = new CompleteAssemblyLineSequential(repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository(),
                 productionLineEmailNotifier);
 
         assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine,

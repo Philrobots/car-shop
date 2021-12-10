@@ -30,8 +30,6 @@ public class CustomerService {
             throw new ServiceCustomerAlreadyExistsException();
         } catch (InvalidDateFormatException | BadInputParameterException e) {
             throw new ServiceBadInputParameterException();
-        } catch (AccountNotFoundException e) {
-            throw new ServiceBadRequestException();
         }
     }
 }

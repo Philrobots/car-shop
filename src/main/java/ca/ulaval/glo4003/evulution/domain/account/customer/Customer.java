@@ -16,8 +16,4 @@ public class Customer extends Account {
         this.gender = gender;
     }
 
-    public String getName() {
-        return name;
-    }
-
 }

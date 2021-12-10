@@ -33,10 +33,6 @@ public abstract class Account {
         return this.email;
     }
 
-    public String getPassword() {
-        return this.password;
-    }
-
     public void verifyIfAdmin() throws UserIsNotAdminException {
         if (!isAdmin)
             throw new UserIsNotAdminException();

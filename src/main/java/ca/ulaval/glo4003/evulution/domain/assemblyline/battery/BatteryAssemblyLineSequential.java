@@ -13,7 +13,6 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
 
     private final BatteryAssemblyAdapter batteryAssemblyLineAdapter;
     private final BatteryProductionRepository batteryProductionRepository;
-    private final EmailFactory emailFactory;
     private ProductionLineEmailNotifier productionLineEmailNotifier;
     private LinkedList<BatteryProduction> batteryProductionsWaitingList = new LinkedList<>();
     private AssemblyLineMediator assemblyLineMediator;
@@ -22,11 +21,10 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
     private boolean isBatteryInFire = false;
 
     public BatteryAssemblyLineSequential(BatteryAssemblyAdapter batteryAssemblyAdapter,
-            BatteryProductionRepository batteryProductionRepository, EmailFactory emailFactory,
+            BatteryProductionRepository batteryProductionRepository,
             ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
         this.batteryProductionRepository = batteryProductionRepository;
-        this.emailFactory = emailFactory;
         this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 

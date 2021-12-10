@@ -16,7 +16,9 @@ public interface CarAssemblyLine {
 
     void startNext();
 
-    void transferWaitingList(CarAssemblyLine carAssemblyLine);
+    void transferAssemblyLine(CarAssemblyLine carAssemblyLine);
 
     List<CarProduction> getWaitingList();
+
+    boolean getIsBatteryInFire();
 }

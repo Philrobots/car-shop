@@ -74,18 +74,24 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     }
 
     @Override
-    public void transferWaitingList(CarAssemblyLine carAssemblyLine) {
+    public void transferAssemblyLine(CarAssemblyLine carAssemblyLine) {
         this.carProductionWaitList = new LinkedList<>(carAssemblyLine.getWaitingList());
+        this.isBatteryInFire = carAssemblyLine.getIsBatteryInFire();
     }
 
     @Override
     public List<CarProduction> getWaitingList() {
         if (isCarInProduction)
-            this.carProductionWaitList.add(currentCarProduction);
+            this.carProductionWaitList.addFirst(currentCarProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carProductionWaitList);
         carProductionWaitList.clear();
 
         return returnList;
+    }
+
+    @Override
+    public boolean getIsBatteryInFire() {
+        return isBatteryInFire;
     }
 
     private void setupNextProduction() {
