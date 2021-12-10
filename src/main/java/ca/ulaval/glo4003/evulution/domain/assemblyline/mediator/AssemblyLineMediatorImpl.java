@@ -21,30 +21,26 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator, AssemblyL
     }
 
     @Override
-    public boolean notify(Object assemblyLineClass) {
+    public void notify(Object assemblyLineClass) {
         if (assemblyLineClass.equals(CarAssemblyLine.class) && this.state == AssemblyLineType.CAR) {
             this.state = AssemblyLineType.BATTERY;
             this.batteryAssemblyLine.startNext();
-            return true;
         } else if (assemblyLineClass.equals(BatteryAssemblyLine.class)) {
             this.state = AssemblyLineType.COMPLETE;
             this.completeAssemblyLine.startNext();
-            return true;
         } else if (assemblyLineClass.equals(CompleteAssemblyLineSequential.class)) {
             this.state = AssemblyLineType.CAR;
             this.carAssemblyLine.startNext();
-            return true;
         }
-        return false;
     }
 
     @Override
-    public boolean shouldCarReactivateProduction() {
+    public boolean isCarState() {
         return this.state.equals(AssemblyLineType.CAR);
     }
 
     @Override
-    public boolean shouldBatteryReactivateProduction() {
+    public boolean isCompleteOrBatteryState() {
         return this.state.equals(AssemblyLineType.BATTERY) || this.state.equals(AssemblyLineType.COMPLETE);
     }
 

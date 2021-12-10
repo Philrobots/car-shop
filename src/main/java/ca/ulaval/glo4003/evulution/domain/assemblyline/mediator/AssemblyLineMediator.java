@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.mediator;
 
 public interface AssemblyLineMediator {
-    boolean notify(Object assemblyLineClass);
+    void notify(Object assemblyLineClass);
 
-    boolean shouldCarReactivateProduction();
+    boolean isCarState();
 
-    boolean shouldBatteryReactivateProduction();
+    boolean isCompleteOrBatteryState();
 }
