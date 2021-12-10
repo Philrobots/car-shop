@@ -28,7 +28,7 @@ class DeliveryFactoryTest {
     }
 
     @Test
-    public void whenCreate_thenReturnsDelivery() throws DeliveryIncompleteException {
+    public void whenCreate_thenReturnsDelivery() {
         // when
         Delivery delivery = this.deliveryFactory.create(accountId);
 
@@ -37,7 +37,7 @@ class DeliveryFactoryTest {
     }
 
     @Test
-    public void whenCreate_thenDeliveryIdFactoryCreates() throws DeliveryIncompleteException {
+    public void whenCreate_thenDeliveryIdFactoryCreates() {
         // when
         this.deliveryFactory.create(accountId);
 

@@ -31,9 +31,8 @@ public class Scheduler {
                     productionLine.advanceAssemblyLines();
                     invoicePayment.makePayments();
                     System.out.println(" ------------- ");
-                } catch (DeliveryIncompleteException | InvalidMappingKeyException
-                        | SaleNotFoundException | AccountNotFoundException
-                        | CarNotAssociatedWithManufactureException e) {
+                } catch (DeliveryIncompleteException | InvalidMappingKeyException | SaleNotFoundException
+                        | AccountNotFoundException | CarNotAssociatedWithManufactureException e) {
                     e.printStackTrace();
                 }
             }

@@ -15,11 +15,11 @@ import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSale
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 
 public class ManufactureDomainService {
-    private ManufactureFactory manufactureFactory;
-    private ManufactureRepository manufactureRepository;
-    private CarFactory carFactory;
-    private BatteryFactory batteryFactory;
-    private SaleDomainService saleDomainService;
+    private final ManufactureFactory manufactureFactory;
+    private final ManufactureRepository manufactureRepository;
+    private final CarFactory carFactory;
+    private final BatteryFactory batteryFactory;
+    private final SaleDomainService saleDomainService;
 
     public ManufactureDomainService(ManufactureFactory manufactureFactory, ManufactureRepository manufactureRepository,
             CarFactory carFactory, BatteryFactory batteryFactory, SaleDomainService saleDomainService) {
@@ -51,7 +51,7 @@ public class ManufactureDomainService {
             throws BadCarSpecsException, SaleNotFoundException, CarNotChosenBeforeBatteryException {
         Manufacture manufacture = manufactureRepository.getBySaleId(saleId);
         Battery battery = this.batteryFactory.create(type);
-        int range = manufacture.addBattery(battery);
+        int range = manufacture.setBattery(battery);
 
         manufactureRepository.updateManufacture(saleId, manufacture);
         saleDomainService.setBatteryPrice(saleId, battery.getPrice());

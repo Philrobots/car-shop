@@ -39,13 +39,7 @@ public class SaleTest {
     private SaleId saleId;
 
     @Mock
-    private Invoice invoice;
-
-    @Mock
     private InvoiceFactory invoiceFactory;
-
-    @Mock
-    private InvoicePayment invoicePayment;
 
     private Sale sale;
 

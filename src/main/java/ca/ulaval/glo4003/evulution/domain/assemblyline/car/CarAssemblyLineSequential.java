@@ -22,8 +22,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     private boolean isCarInProduction = false;
 
     public CarAssemblyLineSequential(CarAssemblyAdapter carAssemblyAdapter,
-            CarProductionRepository carProductionRepository,
-            ProductionLineEmailNotifier productionLineEmailNotifier) {
+            CarProductionRepository carProductionRepository, ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.carProductionRepository = carProductionRepository;
         this.productionLineEmailNotifier = productionLineEmailNotifier;

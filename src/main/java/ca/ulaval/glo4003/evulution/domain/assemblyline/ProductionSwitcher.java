@@ -10,8 +10,8 @@ public class ProductionSwitcher {
     private final CarAssemblyLine carAssemblyLineJustInTime;
     private final CarAssemblyLine carAssemblyLineSequential;
     private final ProductionLine productionLine;
+    private final AssemblyLineMediatorSwitcher assemblyLineMediatorSwitcher;
     private ProductionType currentProductionType = ProductionType.SEQUENTIAL;
-    private AssemblyLineMediatorSwitcher assemblyLineMediatorSwitcher;
 
     public ProductionSwitcher(CarAssemblyLine carAssemblyLineJustInTime, CarAssemblyLine carAssemblyLineSequential,
             ProductionLine productionLine, AssemblyLineMediatorSwitcher assemblyLineMediatorSwitcher) {

@@ -15,9 +15,9 @@ import ca.ulaval.glo4003.evulution.service.manufacture.dto.ChooseCarDto;
 import ca.ulaval.glo4003.evulution.service.manufacture.dto.EstimatedRangeDto;
 
 public class ManufactureService {
-    private SaleValidator saleValidator;
-    private ManufactureDomainService manufactureDomainService;
-    private EstimatedRangeAssembler estimatedRangeAssembler;
+    private final SaleValidator saleValidator;
+    private final ManufactureDomainService manufactureDomainService;
+    private final EstimatedRangeAssembler estimatedRangeAssembler;
 
     public ManufactureService(SaleValidator saleValidator, ManufactureDomainService manufactureDomainService,
             EstimatedRangeAssembler estimatedRangeAssembler) {

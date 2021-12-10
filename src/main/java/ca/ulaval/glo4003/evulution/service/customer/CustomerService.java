@@ -6,11 +6,9 @@ import ca.ulaval.glo4003.evulution.domain.account.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.account.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.domain.exceptions.BadInputParameterException;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountAlreadyExistsException;
-import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.service.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.service.customer.exceptions.ServiceCustomerAlreadyExistsException;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
-import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadRequestException;
 
 public class CustomerService {
     private AccountRepository accountRepository;

@@ -5,7 +5,6 @@ import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
-import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,8 +40,8 @@ class CompleteAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-        completeAssemblyLine = new CompleteAssemblyLineSequential(carProductionRepository,
-                batteryProductionRepository, productionLineEmailNotifier);
+        completeAssemblyLine = new CompleteAssemblyLineSequential(carProductionRepository, batteryProductionRepository,
+                productionLineEmailNotifier);
     }
     //
     // @Test

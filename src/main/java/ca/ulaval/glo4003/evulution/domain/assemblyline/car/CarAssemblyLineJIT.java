@@ -53,7 +53,8 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
         }
 
         if (this.notifyBatteryCounter > 0) {
-            if(this.assemblyLineMediator.notify(CarAssemblyLine.class)) this.notifyBatteryCounter--;
+            if (this.assemblyLineMediator.notify(CarAssemblyLine.class))
+                this.notifyBatteryCounter--;
         }
 
         if (!this.isCarInProduction) {

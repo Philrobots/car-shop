@@ -6,15 +6,15 @@ import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryFactory;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 
 public class ManufactureFactory {
-
-    private DeliveryFactory deliveryFactory;
+    private final DeliveryFactory deliveryFactory;
 
     public ManufactureFactory(DeliveryFactory deliveryFactory) {
         this.deliveryFactory = deliveryFactory;
     }
 
-    public Manufacture create(AccountId accountId) throws DeliveryIncompleteException {
+    public Manufacture create(AccountId accountId) {
         Delivery delivery = deliveryFactory.create(accountId);
-        return new Manufacture(delivery);
+        ProductionId productionId = new ProductionId();
+        return new Manufacture(productionId, delivery);
     }
 }
