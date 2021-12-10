@@ -18,7 +18,7 @@ public class BatteryFactory {
         for (BatteryInformationDto batteryMapperDto : batteryMapperDtos) {
             if (batteryMapperDto.name.equals(name)) {
                 return new Battery(batteryMapperDto.name, batteryMapperDto.base_NRCAN_range, batteryMapperDto.capacity,
-                        BigDecimal.valueOf(batteryMapperDto.price), batteryMapperDto.time_to_produce);
+                        BigDecimal.valueOf(batteryMapperDto.price), Integer.parseInt(batteryMapperDto.time_to_produce));
             }
         }
         throw new BadCarSpecsException();

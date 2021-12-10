@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
-import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionAssociatedWithManufacture;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProduction;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProductionFactory;
@@ -49,7 +48,7 @@ public class Manufacture {
         if (this.car == null)
             throw new CarNotChosenBeforeBatteryException();
         this.battery = battery;
-        this.delivery.setBatteryTimeToProduce(battery.getTimeToProduceAsInt());
+        this.delivery.setBatteryTimeToProduce(battery.getTimeToProduce());
         return getEstimatedRange();
     }
 
@@ -73,7 +72,7 @@ public class Manufacture {
     }
 
     public BatteryProduction generateBatteryProduction(BatteryProductionFactory batteryProductionFactory) {
-        return batteryProductionFactory.create(productionId, battery.getType(), battery.getTimeToProduceAsInt());
+        return batteryProductionFactory.create(productionId, battery.getType(), battery.getTimeToProduce());
     }
 
     public CarProduction generateCarProduction(CarProductionFactory carProductionFactory) {
