@@ -51,7 +51,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
             return;
         }
 
-        System.out.println("Building car assembly line");
+        System.out.println("Building car assembly line in sequential");
 
         boolean isCarAssembled = currentCarProduction.advance(carAssemblyAdapter);
 

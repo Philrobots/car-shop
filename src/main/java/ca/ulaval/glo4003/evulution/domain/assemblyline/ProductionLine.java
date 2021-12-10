@@ -70,10 +70,9 @@ public class ProductionLine {
             String email = this.saleDomainService.getEmailFromSaleId(manufactureEntry.getKey());
             Manufacture manufacture = manufactureEntry.getValue();
             ProductionId productionId = manufacture.setInProduction();
-            productionLineEmailNotifier.addEmailWithProduction(productionId, email);
+            this.productionLineEmailNotifier.addEmailWithProduction(productionId, email);
             this.carAssemblyLine.addProduction(manufacture.generateCarProduction(this.carProductionFactory));
-            this.batteryAssemblyLine
-                    .addProduction(manufacture.generateBatteryProduction(this.batteryProductionFactory));
+            this.batteryAssemblyLine.addProduction(manufacture.generateBatteryProduction(this.batteryProductionFactory));
             this.completeAssemblyLine.addProduction(
                     manufacture.generateCompleteAssemblyProduction(email, this.completeAssemblyProductionFactory));
             this.manufactureRepository.updateManufacture(manufactureEntry.getKey(), manufacture);

@@ -2,12 +2,8 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
-import ca.ulaval.glo4003.evulution.domain.car.Car;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
-import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionAssociatedWithManufacture;
-import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
-import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionWithoutManufacture;
 import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 
 import java.util.LinkedList;
@@ -22,6 +18,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     private CarAssemblyAdapter carAssemblyAdapter;
     private CarProductionRepository carProductionRepository;
     private CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
+    private boolean notifyBattery = false;
 
     public CarAssemblyLineJIT(AssemblyLineMediator assemblyLineMediator, CarAssemblyAdapter carAssemblyAdapter,
             CarProductionRepository carProductionRepository,
@@ -38,45 +35,66 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
     @Override
     public void addProduction(CarProduction carProduction) throws CarNotAssociatedWithManufactureException {
-        boolean hasCarBeenReplaced = carProductionRepository
+        boolean hasCarBeenReplaced = this.carProductionRepository
                 .replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
         if (hasCarBeenReplaced) {
-            assemblyLineMediator.notify(CarAssemblyLine.class);
+            this.notifyBattery = true;
         } else {
-            carWaitingList.add(carProduction);
+            this.carWaitingList.add(carProduction);
         }
     }
 
     @Override
     public void advance() {
-        if (isBatteryInFire)
+
+        if (this.isBatteryInFire) {
+            System.out.println("Skipping Car assembly");
             return;
-        if (!isCarInProduction)
-            currentCarInProduction = carAssemblyLineJITTypeSelector.getNextCarProduction();
+        }
+
+        if (this.notifyBattery) {
+            this.assemblyLineMediator.notify(CarAssemblyLine.class);
+            this.notifyBattery = false;
+        }
+
+        if (!this.isCarInProduction) {
+            System.out.println("No car in production, picking a new Car");
+            this.currentCarInProduction = this.carAssemblyLineJITTypeSelector.getNextCarProduction();
+            this.currentCarInProduction.newCarCommand(this.carAssemblyAdapter);
+            this.isCarInProduction = true;
+        }
 
         boolean carFinished = currentCarInProduction.advance(carAssemblyAdapter);
 
-        if (carFinished) {
-            carProductionRepository.add(currentCarInProduction);
-            if (currentCarInProduction.isAssociatedWithManufacture())
-                assemblyLineMediator.notify(CarAssemblyLine.class);
+        System.out.println("Building car Just in time");
 
-            if (!carWaitingList.isEmpty()) {
-                currentCarInProduction = carWaitingList.pop();
+        if (carFinished) {
+            System.out.println("Car is finished just in time");
+
+            this.carProductionRepository.add(this.currentCarInProduction);
+
+            if (this.currentCarInProduction.isAssociatedWithManufacture()) {
+                this.assemblyLineMediator.notify(CarAssemblyLine.class);
+            }
+
+            if (!this.carWaitingList.isEmpty()) {
+                this.currentCarInProduction = this.carWaitingList.pop();
+                System.out.println("Picking new car in waiting list just in time");
+                this.currentCarInProduction.newCarCommand(this.carAssemblyAdapter);
             } else {
-                isCarInProduction = false;
+                this.isCarInProduction = false;
             }
         }
     }
 
     @Override
     public void shutdown() {
-        isBatteryInFire = true;
+        this.isBatteryInFire = true;
     }
 
     @Override
     public void reactivate() {
-        isBatteryInFire = false;
+        this.isBatteryInFire = false;
     }
 
     @Override
@@ -86,15 +104,15 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
     @Override
     public void transferWaitingList(CarAssemblyLine carAssemblyLine) {
-        carWaitingList = new LinkedList<>(carAssemblyLine.getWaitingList());
+        this.carWaitingList = new LinkedList<>(carAssemblyLine.getWaitingList());
     }
 
     @Override
     public List<CarProduction> getWaitingList() {
-        if (isCarInProduction)
-            carWaitingList.add(currentCarInProduction);
+        if (this.isCarInProduction)
+            this.carWaitingList.add(this.currentCarInProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carWaitingList);
-        carWaitingList.clear();
+        this.carWaitingList.clear();
 
         return returnList;
     }
