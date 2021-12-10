@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
+import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
@@ -31,7 +32,8 @@ public class Scheduler {
                     productionLine.advanceAssemblyLines();
                     invoicePayment.makePayments();
                 } catch (DeliveryIncompleteException | InvalidMappingKeyException | EmailException
-                        | SaleNotFoundException | AccountNotFoundException e) {
+                        | SaleNotFoundException | AccountNotFoundException
+                        | CarNotAssociatedWithManufactureException e) {
                     e.printStackTrace();
                 }
             }

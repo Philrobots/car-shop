@@ -2,6 +2,9 @@ package ca.ulaval.glo4003.mainResources;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineJIT;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineJITTypeSelector;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyLineAdapter;
@@ -9,14 +12,17 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLi
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorSwitcher;
 import ca.ulaval.glo4003.evulution.infrastructure.mappers.JsonFileMapper;
 
 public class AssemblyLineResources {
 
     private final BatteryAssemblyLineSequential batteryAssemblyLine;
-    private final CarAssemblyLineSequential carAssemblyLine;
+    private final CarAssemblyLineSequential carAssemblyLineSequential;
     private final CompleteAssemblyLineSequential completeAssemblyLine;
-    private final AssemblyLineMediator assemblyLineMediator;
+    private final AssemblyLineMediatorImpl assemblyLineMediator;
+    private final CarAssemblyLineJIT carAssemblyLineJIT;
+    private final CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
 
     public AssemblyLineResources(FactoryResources factoryResources, RepositoryResources repositoryResources) {
 
@@ -29,25 +35,41 @@ public class AssemblyLineResources {
         batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyLineAdapter,
                 repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory());
 
-        carAssemblyLine = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter,
+        carAssemblyLineSequential = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter,
                 repositoryResources.getVehicleRepository(), factoryResources.getEmailFactory());
+
+        this.carAssemblyLineJITTypeSelector = new CarAssemblyLineJITTypeSelector(
+                factoryResources.getCarProductionFactory());
+
+        carAssemblyLineJIT = new CarAssemblyLineJIT(this.getAssemblyLineMediator(), vehicleAssemblyLineAdapter,
+                repositoryResources.getVehicleRepository(), this.carAssemblyLineJITTypeSelector);
 
         completeAssemblyLine = new CompleteAssemblyLineSequential(factoryResources.getEmailFactory(),
                 repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository());
 
-        assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine, carAssemblyLine);
+        assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine,
+                carAssemblyLineSequential);
 
-        carAssemblyLine.setMediator(assemblyLineMediator);
+        carAssemblyLineSequential.setMediator(assemblyLineMediator);
         batteryAssemblyLine.setMediator(assemblyLineMediator);
         completeAssemblyLine.setMediator(assemblyLineMediator);
+        carAssemblyLineJIT.setMediator(assemblyLineMediator);
+    }
+
+    public AssemblyLineMediatorSwitcher getMediatorSwitcher() {
+        return this.assemblyLineMediator;
+    }
+
+    public CarAssemblyLine getCarAssemblyLineJIT() {
+        return this.carAssemblyLineJIT;
     }
 
     public BatteryAssemblyLineSequential getBatteryAssemblyLine() {
         return batteryAssemblyLine;
     }
 
-    public CarAssemblyLineSequential getCarAssemblyLine() {
-        return carAssemblyLine;
+    public CarAssemblyLine getCarAssemblyLineSequential() {
+        return this.carAssemblyLineSequential;
     }
 
     public CompleteAssemblyLineSequential getCompleteAssemblyLine() {

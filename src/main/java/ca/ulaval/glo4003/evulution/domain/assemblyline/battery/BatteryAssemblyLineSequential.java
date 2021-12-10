@@ -78,7 +78,8 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
 
     private void setUpNextBatteryForProduction() {
         this.currentBatteryProduction = this.batteryProductionsWaitingList.pop();
-        productionLineEmailNotifier.sendAssemblyStartedEmail(currentBatteryProduction.getProductionId(), currentBatteryProduction.getProductionTimeInWeeks());
+        productionLineEmailNotifier.sendAssemblyStartedEmail(currentBatteryProduction.getProductionId(),
+                currentBatteryProduction.getProductionTimeInWeeks());
         currentBatteryProduction.newBatteryCommand(batteryAssemblyLineAdapter);
 
         this.isBatteryInProduction = true;

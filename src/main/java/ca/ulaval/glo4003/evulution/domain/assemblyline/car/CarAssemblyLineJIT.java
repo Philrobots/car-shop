@@ -23,16 +23,23 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     private CarProductionRepository carProductionRepository;
     private CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
 
-    public CarAssemblyLineJIT(AssemblyLineMediator assemblyLineMediator, CarAssemblyAdapter carAssemblyAdapter, CarProductionRepository carProductionRepository, CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector) {
+    public CarAssemblyLineJIT(AssemblyLineMediator assemblyLineMediator, CarAssemblyAdapter carAssemblyAdapter,
+            CarProductionRepository carProductionRepository,
+            CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector) {
         this.assemblyLineMediator = assemblyLineMediator;
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.carProductionRepository = carProductionRepository;
         this.carAssemblyLineJITTypeSelector = carAssemblyLineJITTypeSelector;
     }
 
+    public void setMediator(AssemblyLineMediator assemblyLineMediator) {
+        this.assemblyLineMediator = assemblyLineMediator;
+    }
+
     @Override
     public void addProduction(CarProduction carProduction) throws CarNotAssociatedWithManufactureException {
-        boolean hasCarBeenReplaced = carProductionRepository.replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
+        boolean hasCarBeenReplaced = carProductionRepository
+                .replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
         if (hasCarBeenReplaced) {
             assemblyLineMediator.notify(CarAssemblyLine.class);
         } else {
@@ -42,18 +49,21 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
     @Override
     public void advance() {
-        if (isBatteryInFire) return;
-        if (!isCarInProduction) currentCarInProduction = carAssemblyLineJITTypeSelector.getNextCarProduction();
+        if (isBatteryInFire)
+            return;
+        if (!isCarInProduction)
+            currentCarInProduction = carAssemblyLineJITTypeSelector.getNextCarProduction();
 
         boolean carFinished = currentCarInProduction.advance(carAssemblyAdapter);
 
-        if (carFinished){
+        if (carFinished) {
             carProductionRepository.add(currentCarInProduction);
-            if (currentCarInProduction.isAssociatedWithManufacture()) assemblyLineMediator.notify(CarAssemblyLine.class);
+            if (currentCarInProduction.isAssociatedWithManufacture())
+                assemblyLineMediator.notify(CarAssemblyLine.class);
 
-            if (!carWaitingList.isEmpty()){
-               currentCarInProduction = carWaitingList.pop();
-            } else{
+            if (!carWaitingList.isEmpty()) {
+                currentCarInProduction = carWaitingList.pop();
+            } else {
                 isCarInProduction = false;
             }
         }
@@ -81,7 +91,8 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
     @Override
     public List<CarProduction> getWaitingList() {
-        if (isCarInProduction) carWaitingList.add(currentCarInProduction);
+        if (isCarInProduction)
+            carWaitingList.add(currentCarInProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carWaitingList);
         carWaitingList.clear();
 

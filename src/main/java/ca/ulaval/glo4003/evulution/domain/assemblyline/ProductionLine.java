@@ -15,6 +15,7 @@ import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleId;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
@@ -29,7 +30,6 @@ public class ProductionLine {
     private CarAssemblyLine carAssemblyLine;
     private final BatteryAssemblyLineSequential batteryAssemblyLine;
     private final CompleteAssemblyLineSequential completeAssemblyLine;
-    private final EmailFactory emailFactory;
     private ManufactureRepository manufactureRepository;
     private SaleDomainService saleDomainService;
     private boolean isShutdown = false;
@@ -38,17 +38,17 @@ public class ProductionLine {
     private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
     private ProductionLineEmailNotifier productionLineEmailNotifier;
 
-    public ProductionLine(CarAssemblyLineSequential carAssemblyLine, BatteryAssemblyLineSequential batteryAssemblyLine,
-                          CompleteAssemblyLineSequential completeAssemblyLine, ManufactureRepository manufactureRepository,
-                          SaleDomainService saleDomainService, EmailFactory emailFactory,
-                          BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
-                          CompleteAssemblyProductionFactory completeAssemblyProductionFactory, ProductionLineEmailNotifier productionLineEmailNotifier) {
+    public ProductionLine(CarAssemblyLine carAssemblyLine, BatteryAssemblyLineSequential batteryAssemblyLine,
+            CompleteAssemblyLineSequential completeAssemblyLine, ManufactureRepository manufactureRepository,
+            SaleDomainService saleDomainService, BatteryProductionFactory batteryProductionFactory,
+            CarProductionFactory carProductionFactory,
+            CompleteAssemblyProductionFactory completeAssemblyProductionFactory,
+            ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.carAssemblyLine = carAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
         this.manufactureRepository = manufactureRepository;
         this.saleDomainService = saleDomainService;
-        this.emailFactory = emailFactory;
         this.batteryProductionFactory = batteryProductionFactory;
         this.carProductionFactory = carProductionFactory;
         this.completeAssemblyProductionFactory = completeAssemblyProductionFactory;
@@ -56,7 +56,7 @@ public class ProductionLine {
     }
 
     public void advanceAssemblyLines() throws DeliveryIncompleteException, InvalidMappingKeyException, EmailException,
-            SaleNotFoundException, AccountNotFoundException {
+            SaleNotFoundException, AccountNotFoundException, CarNotAssociatedWithManufactureException {
         this.addNewManufactureToProduction();
         this.carAssemblyLine.advance();
         this.batteryAssemblyLine.advance();
@@ -64,7 +64,7 @@ public class ProductionLine {
     }
 
     private void addNewManufactureToProduction()
-            throws SaleNotFoundException, AccountNotFoundException {
+            throws SaleNotFoundException, AccountNotFoundException, CarNotAssociatedWithManufactureException {
         Map<SaleId, Manufacture> manufactures = this.manufactureRepository.getManufacturesReadyForProduction();
         for (Map.Entry<SaleId, Manufacture> manufactureEntry : manufactures.entrySet()) {
             String email = this.saleDomainService.getEmailFromSaleId(manufactureEntry.getKey());

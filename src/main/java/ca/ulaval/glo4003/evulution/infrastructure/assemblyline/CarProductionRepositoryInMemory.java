@@ -34,19 +34,23 @@ public class CarProductionRepositoryInMemory implements CarProductionRepository 
     public List<CarProductionWithoutManufacture> getProducedCarProductionsWithoutManufacture(CarType carType) {
         List<CarProductionWithoutManufacture> returnList = new ArrayList<>();
 
-        for(CarProduction carProduction : vehicles.values()){
-            if (!carProduction.isAssociatedWithManufacture()) returnList.add((CarProductionWithoutManufacture) carProduction);
+        for (CarProduction carProduction : vehicles.values()) {
+            if (!carProduction.isAssociatedWithManufacture())
+                returnList.add((CarProductionWithoutManufacture) carProduction);
         }
         return returnList;
     }
 
     @Override
-    public boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionLinked) throws CarNotAssociatedWithManufactureException {
-        if(!carProductionLinked.isAssociatedWithManufacture()) throw new CarNotAssociatedWithManufactureException();
+    public boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionLinked)
+            throws CarNotAssociatedWithManufactureException {
+        if (!carProductionLinked.isAssociatedWithManufacture())
+            throw new CarNotAssociatedWithManufactureException();
 
         ProductionId removedCarProductionId = null;
-        for (CarProduction carProduction : vehicles.values()){
-            if (!carProduction.isAssociatedWithManufacture() && carProduction.getCarStyle().equals(carProduction.getCarStyle())){
+        for (CarProduction carProduction : vehicles.values()) {
+            if (!carProduction.isAssociatedWithManufacture()
+                    && carProduction.getCarStyle().equals(carProduction.getCarStyle())) {
                 removedCarProductionId = carProduction.getProductionId();
                 break;
             }

@@ -41,7 +41,7 @@ public class ManufactureDomainServiceTest {
 
     @Test
     void whenCreateManufactureWithDelivery_thenRepositoryIsCalledAndReturnsDeliveryId() {
-//        when(manufactureRepository.updateManufacture());
+        // when(manufactureRepository.updateManufacture());
     }
 
 }

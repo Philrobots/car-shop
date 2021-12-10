@@ -6,7 +6,7 @@ import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 
-public class CarProductionWithoutManufacture implements CarProduction{
+public class CarProductionWithoutManufacture implements CarProduction {
     private final ProductionId productionId;
     private final String carStyle;
     private final int carProductionTimeInWeeks;

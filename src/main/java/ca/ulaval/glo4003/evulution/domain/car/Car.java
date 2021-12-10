@@ -24,7 +24,7 @@ public class Car {
         return efficiencyEquivalenceRate;
     }
 
-    public String getStyle(){
+    public String getStyle() {
         return style;
     }
 

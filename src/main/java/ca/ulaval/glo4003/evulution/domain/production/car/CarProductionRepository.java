@@ -14,6 +14,8 @@ public interface CarProductionRepository {
     void remove(ProductionId productionId) throws InvalidMappingKeyException;
 
     List<CarProductionWithoutManufacture> getProducedCarProductionsWithoutManufacture(CarType carType);
-    boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionAssociatedWithManufacture) throws CarNotAssociatedWithManufactureException;
+
+    boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionAssociatedWithManufacture)
+            throws CarNotAssociatedWithManufactureException;
 
 }

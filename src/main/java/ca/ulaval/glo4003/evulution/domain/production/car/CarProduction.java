@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAd
 import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 
-
 public interface CarProduction {
     boolean isAssociatedWithManufacture();
 

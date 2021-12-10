@@ -9,20 +9,18 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequen
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
-public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
+public class AssemblyLineMediatorImpl implements AssemblyLineMediator, AssemblyLineMediatorSwitcher {
 
     private BatteryAssemblyLineSequential batteryAssemblyLine;
     private CompleteAssemblyLineSequential completeAssemblyLine;
-    private CarAssemblyLineSequential carAssemblyLine;
-    private CarAssemblyLineJIT carAssemblyLineJIT;
+    private CarAssemblyLine carAssemblyLine;
     private AssemblyLineType state = AssemblyLineType.CAR;
 
-    public AssemblyLineMediatorImpl(BatteryAssemblyLineSequential batteryAssemblyLine, CompleteAssemblyLineSequential completeAssemblyLine,
-                                    CarAssemblyLineSequential carAssemblyLine, CarAssemblyLineJIT carAssemblyLineJIT) {
+    public AssemblyLineMediatorImpl(BatteryAssemblyLineSequential batteryAssemblyLine,
+            CompleteAssemblyLineSequential completeAssemblyLine, CarAssemblyLine carAssemblyLine) {
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
         this.carAssemblyLine = carAssemblyLine;
-        this.carAssemblyLineJIT = carAssemblyLineJIT;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
         return this.state.equals(AssemblyLineType.BATTERY) || this.state.equals(AssemblyLineType.COMPLETE);
     }
 
-    public void switchCarAssemblyLine(){
-        if
+    public void setCarAssemblyLine(CarAssemblyLine carAssemblyLine) {
+        this.carAssemblyLine = carAssemblyLine;
     }
 }

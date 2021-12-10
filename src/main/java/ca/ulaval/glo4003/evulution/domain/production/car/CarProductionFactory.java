@@ -14,22 +14,28 @@ public class CarProductionFactory {
     private Integer LUXURY_TIME_TO_PRODUCE;
 
     public CarProductionFactory(List<ModelInformationDto> modelMapperDtos) {
-        for (ModelInformationDto modelInformationDto : modelMapperDtos){
-            if (modelInformationDto.style.equals(COMPACT_CAR_TYPE)) COMPACT_TIME_TO_PRODUCE = Integer.parseInt(modelInformationDto.time_to_produce);
-            if (modelInformationDto.style.equals(SUBCOMPACT_CAR_TYPE)) SUBCOMPACT_TIME_TO_PRODUCE = Integer.parseInt(modelInformationDto.time_to_produce);
-            if (modelInformationDto.style.equals(LUXURY_CAR_TYPE)) LUXURY_TIME_TO_PRODUCE = Integer.parseInt(modelInformationDto.time_to_produce);
+        for (ModelInformationDto modelInformationDto : modelMapperDtos) {
+            if (modelInformationDto.style.equals(COMPACT_CAR_TYPE))
+                COMPACT_TIME_TO_PRODUCE = Integer.parseInt(modelInformationDto.time_to_produce);
+            if (modelInformationDto.style.equals(SUBCOMPACT_CAR_TYPE))
+                SUBCOMPACT_TIME_TO_PRODUCE = Integer.parseInt(modelInformationDto.time_to_produce);
+            if (modelInformationDto.style.equals(LUXURY_CAR_TYPE))
+                LUXURY_TIME_TO_PRODUCE = Integer.parseInt(modelInformationDto.time_to_produce);
         }
     }
 
     public CarProduction create(ProductionId productionId, String carStyle, int carProductionTime) {
         return new CarProductionAssociatedWithManufacture(productionId, carStyle, carProductionTime);
     }
+
     public CarProduction createCompact() {
         return new CarProductionWithoutManufacture(new ProductionId(), COMPACT_CAR_TYPE, COMPACT_TIME_TO_PRODUCE);
     }
+
     public CarProduction createSubCompact() {
         return new CarProductionWithoutManufacture(new ProductionId(), SUBCOMPACT_CAR_TYPE, SUBCOMPACT_TIME_TO_PRODUCE);
     }
+
     public CarProduction createLuxury() {
         return new CarProductionWithoutManufacture(new ProductionId(), LUXURY_CAR_TYPE, LUXURY_TIME_TO_PRODUCE);
     }

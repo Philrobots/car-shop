@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import java.util.List;
 
-public class CarProductionAssociatedWithManufacture implements CarProduction{
+public class CarProductionAssociatedWithManufacture implements CarProduction {
 
     private ProductionId productionId;
     private int carProductionTimeInWeeks;

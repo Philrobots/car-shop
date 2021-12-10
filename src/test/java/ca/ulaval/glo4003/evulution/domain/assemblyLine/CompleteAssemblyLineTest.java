@@ -40,7 +40,8 @@ class CompleteAssemblyLineTest {
 
     @BeforeEach
     public void setUp() {
-        completeAssemblyLine = new CompleteAssemblyLineSequential(emailFactory, carProductionRepository, batteryProductionRepository);
+        completeAssemblyLine = new CompleteAssemblyLineSequential(emailFactory, carProductionRepository,
+                batteryProductionRepository);
     }
     //
     // @Test

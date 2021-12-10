@@ -28,7 +28,6 @@ public class ManufactureTest {
     Car A_CAR = new Car("binou", "binou2", 1, BigDecimal.ONE, "1", "red");
     Battery A_BATTERY = new Battery("type", "123", 1, BigDecimal.ONE, 1);
 
-
     Delivery A_DELIVERY = new Delivery(AN_ACCOUNT_ID, A_DELIVERY_ID, AN_ASSEMBLY_TIME_IN_WEEKS);
 
     @BeforeEach
@@ -60,7 +59,8 @@ public class ManufactureTest {
     }
 
     @Test
-    void givenCarAndBattery_whenSetReadyToProduce_thenSetStatusToReady() throws CarNotChosenBeforeBatteryException, MissingElementsForSaleException {
+    void givenCarAndBattery_whenSetReadyToProduce_thenSetStatusToReady()
+            throws CarNotChosenBeforeBatteryException, MissingElementsForSaleException {
         this.manufacture.setCar(A_CAR);
         this.manufacture.addBattery(A_BATTERY);
         this.manufacture.setReadyToProduce();

@@ -5,8 +5,7 @@ import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
 
 public class BatteryProductionFactory {
 
-    public BatteryProduction create(ProductionId productionId, String batteryType,
-            int batteryProductionTime) {
+    public BatteryProduction create(ProductionId productionId, String batteryType, int batteryProductionTime) {
         return new BatteryProduction(productionId, batteryType, batteryProductionTime);
     }
 }

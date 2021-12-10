@@ -50,9 +50,9 @@ public class AssemblyLineService {
             ProductionType productionType = ProductionType.valueOf(switchProductionsDto.productionMode);
             AssemblyLineType assemblyLineType = AssemblyLineType.valueOf(switchProductionsDto.lineType);
             this.productionSwitcher.switchProduction(assemblyLineType, productionType);
-        } catch (IllegalArgumentException | InvalidAssemblyLineException e){
+        } catch (IllegalArgumentException | InvalidAssemblyLineException e) {
             throw new ServiceBadInputParameterException();
-        } catch(InvalidAssemblyLineOrderException e){
+        } catch (InvalidAssemblyLineOrderException e) {
             throw new ServiceBadOrderOfOperationsException();
         }
     }

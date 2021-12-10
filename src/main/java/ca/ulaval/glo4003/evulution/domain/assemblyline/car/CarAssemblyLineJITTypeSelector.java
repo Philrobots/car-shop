@@ -8,17 +8,19 @@ public class CarAssemblyLineJITTypeSelector {
     private CarType currentType = CarType.SUBCOMPACT;
     private CarProductionFactory carProductionFactory;
 
-    public CarProduction getNextCarProduction(){
+    public CarAssemblyLineJITTypeSelector(CarProductionFactory carProductionFactory) {
+        this.carProductionFactory = carProductionFactory;
+    }
+
+    public CarProduction getNextCarProduction() {
         CarProduction carProduction = null;
-        if (currentType.equals(CarType.SUBCOMPACT)){
+        if (currentType.equals(CarType.SUBCOMPACT)) {
             carProduction = carProductionFactory.createCompact();
             currentType = CarType.COMPACT;
-        }
-        else if (currentType.equals(CarType.COMPACT)){
+        } else if (currentType.equals(CarType.COMPACT)) {
             carProduction = carProductionFactory.createLuxury();
             currentType = CarType.LUXURY;
-        }
-        else if (currentType.equals(CarType.LUXURY)) {
+        } else if (currentType.equals(CarType.LUXURY)) {
             carProduction = carProductionFactory.createSubCompact();
             currentType = CarType.SUBCOMPACT;
         }

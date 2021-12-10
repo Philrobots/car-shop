@@ -12,8 +12,7 @@ public class BatteryProduction {
     private String batteryType;
     private Integer productionTimeInWeeks;
 
-    public BatteryProduction(ProductionId productionId, String batteryType,
-            Integer productionTimeInWeeks) {
+    public BatteryProduction(ProductionId productionId, String batteryType, Integer productionTimeInWeeks) {
         this.productionId = productionId;
         this.batteryType = batteryType;
         this.productionTimeInWeeks = productionTimeInWeeks;
@@ -23,9 +22,9 @@ public class BatteryProduction {
         return productionId;
     }
 
-//    public void sendEmail(EmailFactory emailFactory) throws EmailException {
-//        emailFactory.createBatteryInProductionEmail(List.of(email), productionTimeInWeeks).send();
-//    }
+    // public void sendEmail(EmailFactory emailFactory) throws EmailException {
+    // emailFactory.createBatteryInProductionEmail(List.of(email), productionTimeInWeeks).send();
+    // }
 
     public void newBatteryCommand(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
         batteryAssemblyLineAdapter.newBatteryCommand(productionId, batteryType);

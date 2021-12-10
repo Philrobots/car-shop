@@ -20,9 +20,9 @@ public class ServiceResources {
 
     public ServiceResources(FactoryResources factoryResources, RepositoryResources repositoryResources,
             ProductionLineResources productionLineResources, AssemblerResources assemblerResources,
-            SaleDomainServiceResources saleDomainServiceResources, SaleValidator saleValidator,
-            InvoicePayment invoicePayment, ProductionSwitcher productionSwitcher) {
-        assemblyLineService = new AssemblyLineService(productionLineResources.getProductionLine(), productionSwitcher);
+            SaleDomainServiceResources saleDomainServiceResources, SaleValidator saleValidator) {
+        assemblyLineService = new AssemblyLineService(productionLineResources.getProductionLine(),
+                productionLineResources.getProductionSwitcher());
 
         deliveryService = new DeliveryService(factoryResources.getDeliveryIdFactory(),
                 assemblerResources.getDeliveryCompleteAssembler(), repositoryResources.getDeliveryRepository(),

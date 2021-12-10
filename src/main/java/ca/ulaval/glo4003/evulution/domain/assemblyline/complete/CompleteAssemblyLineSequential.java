@@ -31,7 +31,7 @@ public class CompleteAssemblyLineSequential {
     private boolean isBatteryInFire = false;
 
     public CompleteAssemblyLineSequential(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
-                                          BatteryProductionRepository batteryProductionRepository) {
+            BatteryProductionRepository batteryProductionRepository) {
         this.emailFactory = emailFactory;
         this.carProductionRepository = carProductionRepository;
         this.batteryProductionRepository = batteryProductionRepository;
@@ -47,7 +47,7 @@ public class CompleteAssemblyLineSequential {
             return;
         }
 
-        //TODO
+        // TODO
         if (weeksRemaining == 2) {
             LocalDate expectedDate = this.currentProduction.addDelayInWeeksAndSendEmail(ASSEMBLY_DELAY_IN_WEEKS);
             productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
@@ -87,7 +87,6 @@ public class CompleteAssemblyLineSequential {
         this.currentProduction = this.waitingList.pop();
         this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
                 : ASSEMBLY_DELAY_IN_WEEKS;
-
 
         productionLineEmailNotifier.sendAssemblyStartedEmail(currentProduction.getProductionId(), weeksRemaining);
 

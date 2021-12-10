@@ -84,7 +84,8 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
 
     @Override
     public List<CarProduction> getWaitingList() {
-        if (isCarInProduction) this.carProductionWaitList.add(currentCarProduction);
+        if (isCarInProduction)
+            this.carProductionWaitList.add(currentCarProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carProductionWaitList);
         carProductionWaitList.clear();
 
@@ -94,7 +95,8 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     private void setupNextProduction() {
         this.isCarInProduction = true;
         this.currentCarProduction = this.carProductionWaitList.pop();
-        productionLineEmailNotifier.sendCarStartedEmail(currentCarProduction.getProductionId(), currentCarProduction.getTimeToProduce());
+        productionLineEmailNotifier.sendCarStartedEmail(currentCarProduction.getProductionId(),
+                currentCarProduction.getTimeToProduce());
         this.currentCarProduction.newCarCommand(carAssemblyAdapter);
     }
 }
