@@ -49,14 +49,14 @@ class SecuredWithSaleIdAuthorizationFilterTest {
     @BeforeEach
     void setUp() {
         securedWithSaleIdAuthorizationFilter = new SecuredWithSaleIdAuthorizationFilter(authorizationService,
-            tokenDtoAssembler, httpExceptionResponseAssembler);
+                tokenDtoAssembler, httpExceptionResponseAssembler);
     }
 
     @Test
     public void whenFilter_thenContainerRequestContextGetsAuthorizationHeader() {
         // given
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-            .willReturn(A_HEADER_STRING);
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(containerRequestContext.getUriInfo()).willReturn(uriInfo);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
         BDDMockito.given(uriInfo.getPathParameters()).willReturn(new MultivaluedHashMap<String, String>() {
@@ -64,7 +64,6 @@ class SecuredWithSaleIdAuthorizationFilterTest {
                 put("", Arrays.asList(A_VALID_PATH_PARAM));
             }
         });
-
 
         // when
         this.securedWithSaleIdAuthorizationFilter.filter(containerRequestContext);
@@ -77,7 +76,7 @@ class SecuredWithSaleIdAuthorizationFilterTest {
     public void whenFilter_thenTokenDtoAssemblesAssembleFromString() {
         // given
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-            .willReturn(A_HEADER_STRING);
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(containerRequestContext.getUriInfo()).willReturn(uriInfo);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
         BDDMockito.given(uriInfo.getPathParameters()).willReturn(new MultivaluedHashMap<String, String>() {
@@ -96,7 +95,7 @@ class SecuredWithSaleIdAuthorizationFilterTest {
     @Test
     public void whenFilter_thenAuthorizationServiceIsCalled() {
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-            .willReturn(A_HEADER_STRING);
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(containerRequestContext.getUriInfo()).willReturn(uriInfo);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
         BDDMockito.given(uriInfo.getPathParameters()).willReturn(new MultivaluedHashMap<String, String>() {
@@ -115,7 +114,7 @@ class SecuredWithSaleIdAuthorizationFilterTest {
     @Test
     public void givenInvalidPathParam_whenFilter_thenAssembleException() {
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-            .willReturn(A_HEADER_STRING);
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(containerRequestContext.getUriInfo()).willReturn(uriInfo);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
         BDDMockito.given(uriInfo.getPathParameters()).willReturn(new MultivaluedHashMap<String, String>() {
@@ -129,7 +128,7 @@ class SecuredWithSaleIdAuthorizationFilterTest {
 
         // then
         BDDMockito.verify(httpExceptionResponseAssembler)
-            .assembleResponseFromExceptionClass(ServiceBadInputParameterException.class);
+                .assembleResponseFromExceptionClass(ServiceBadInputParameterException.class);
     }
 
 }

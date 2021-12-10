@@ -77,7 +77,7 @@ public class CustomerResourceTest {
     }
 
     @Test
-    public void whenAddCustomer_thenReturns201(){
+    public void whenAddCustomer_thenReturns201() {
         // given
         BDDMockito.given(customerDtoAssembler.fromRequest(customerRequest)).willReturn(customerDto);
 

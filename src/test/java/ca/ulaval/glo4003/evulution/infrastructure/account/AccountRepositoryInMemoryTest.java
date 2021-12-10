@@ -35,7 +35,7 @@ public class AccountRepositoryInMemoryTest {
 
     @Test
     public void givenExistingAccount_whenAddAccount_thenThrowAccountAlreadyExistsException()
-        throws AccountAlreadyExistsException {
+            throws AccountAlreadyExistsException {
         // given
         BDDMockito.given(account.getEmail()).willReturn(ANOTHER_EMAIL);
         this.accountRepositoryInMemory.addAccount(account);
@@ -49,7 +49,7 @@ public class AccountRepositoryInMemoryTest {
 
     @Test
     public void givenExistingAccount_whenFindAccountByEmail_thenReturnAccount()
-        throws AccountAlreadyExistsException, AccountNotFoundException {
+            throws AccountAlreadyExistsException, AccountNotFoundException {
         // given
         BDDMockito.given(account.getEmail()).willReturn(AN_EMAIL);
         this.accountRepositoryInMemory.addAccount(account);
@@ -63,7 +63,7 @@ public class AccountRepositoryInMemoryTest {
 
     @Test
     public void givenNoExistingAccount_whenFindAccountByEmail_thenThrowAccountNotFoundException()
-        throws AccountAlreadyExistsException {
+            throws AccountAlreadyExistsException {
         // given
         BDDMockito.given(account.getEmail()).willReturn(ANOTHER_EMAIL);
         this.accountRepositoryInMemory.addAccount(account);
@@ -89,7 +89,6 @@ public class AccountRepositoryInMemoryTest {
         assertEquals(customer, account);
     }
 
-
     @Test
     public void givenNoExistingAccount_whenGetAccount_thenThrowAccountNotFoundException() {
         // when
@@ -98,6 +97,5 @@ public class AccountRepositoryInMemoryTest {
         // then
         Assertions.assertThrows(AccountNotFoundException.class, getAccount);
     }
-
 
 }

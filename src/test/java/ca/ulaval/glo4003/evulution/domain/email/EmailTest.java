@@ -22,7 +22,8 @@ class EmailTest {
 
     private Email email;
 
-    @BeforeEach void setUp() {
+    @BeforeEach
+    void setUp() {
         this.email = new Email(RECIPIENTS, A_SUBJECT, A_MESSAGE, emailSender);
     }
 

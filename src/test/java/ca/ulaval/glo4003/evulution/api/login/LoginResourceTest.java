@@ -59,7 +59,7 @@ public class LoginResourceTest {
     }
 
     @Test
-    public void whenLoginCustomer_thenConstraintValidatorValidates(){
+    public void whenLoginCustomer_thenConstraintValidatorValidates() {
         // when
         loginResource.loginCustomer(loginRequest);
 
@@ -76,9 +76,8 @@ public class LoginResourceTest {
         Mockito.verify(loginDtoAssembler).fromRequest(loginRequest);
     }
 
-
     @Test
-    public void whenLoginCustomer_thenLoginServiceLogsInCustomer(){
+    public void whenLoginCustomer_thenLoginServiceLogsInCustomer() {
         // given
         BDDMockito.given(loginDtoAssembler.fromRequest(loginRequest)).willReturn(loginDto);
         BDDMockito.given((loginService.loginCustomer(loginDto))).willReturn(tokenDto);
@@ -91,7 +90,7 @@ public class LoginResourceTest {
     }
 
     @Test
-    public void whenLoginCustomer_thenTokenResponseAssemblerAssemblesToResponse(){
+    public void whenLoginCustomer_thenTokenResponseAssemblerAssemblesToResponse() {
         // given
         BDDMockito.given(loginDtoAssembler.fromRequest(loginRequest)).willReturn(loginDto);
         BDDMockito.given(loginService.loginCustomer(loginDto)).willReturn(tokenDto);
@@ -104,7 +103,7 @@ public class LoginResourceTest {
     }
 
     @Test
-    public void whenLoginCustomer_thenReturns200(){
+    public void whenLoginCustomer_thenReturns200() {
         // given
         BDDMockito.given(loginDtoAssembler.fromRequest(loginRequest)).willReturn(loginDto);
         BDDMockito.given(loginService.loginCustomer(loginDto)).willReturn(tokenDto);
@@ -117,4 +116,3 @@ public class LoginResourceTest {
         Assertions.assertEquals(RESPONSE_STATUS_200, response.getStatus());
     }
 }
-

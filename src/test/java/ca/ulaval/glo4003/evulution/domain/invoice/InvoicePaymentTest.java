@@ -35,8 +35,7 @@ class InvoicePaymentTest {
     }
 
     @Test
-    public void givenInvoice_whenMakePayments_thenSaleRepositorySetsStatus()
-        throws SaleNotFoundException {
+    public void givenInvoice_whenMakePayments_thenSaleRepositorySetsStatus() throws SaleNotFoundException {
         // given
         BDDMockito.given(invoice.getPaymentsLeft()).willReturn(ZERO_PAYMENT_LEFT);
         this.invoicePayment.makeInvoiceActive(saleId, invoice);
@@ -49,8 +48,7 @@ class InvoicePaymentTest {
     }
 
     @Test
-    public void givenInvoice_whenMakePayments_thenMakeAPayment()
-        throws SaleNotFoundException {
+    public void givenInvoice_whenMakePayments_thenMakeAPayment() throws SaleNotFoundException {
         // given
         BDDMockito.given(invoice.getPaymentsLeft()).willReturn(ONE_PAYMENT_LEFT);
         this.invoicePayment.makeInvoiceActive(saleId, invoice);

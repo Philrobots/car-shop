@@ -42,7 +42,7 @@ public class SecuredAuthorizationFilterTest {
     }
 
     @Test
-    public void whenFilter_thenContainerRequestContextGetsHeaderString(){
+    public void whenFilter_thenContainerRequestContextGetsHeaderString() {
         // when
         securedAuthorizationFilter.filter(containerRequestContext);
 
@@ -51,9 +51,10 @@ public class SecuredAuthorizationFilterTest {
     }
 
     @Test
-    public void whenFilter_thenTokenDtoAssemblerAssemblesFromString(){
+    public void whenFilter_thenTokenDtoAssemblerAssemblesFromString() {
         // given
-        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(AN_AUTHORIZATION_TOKEN);
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
+                .willReturn(AN_AUTHORIZATION_TOKEN);
 
         // when
         securedAuthorizationFilter.filter(containerRequestContext);
@@ -63,9 +64,10 @@ public class SecuredAuthorizationFilterTest {
     }
 
     @Test
-    public void whenFilter_thenAuthorizationServiceValidates(){
+    public void whenFilter_thenAuthorizationServiceValidates() {
         // given
-        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(AN_AUTHORIZATION_TOKEN);
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
+                .willReturn(AN_AUTHORIZATION_TOKEN);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(AN_AUTHORIZATION_TOKEN)).willReturn(tokenDto);
 
         // when
@@ -74,6 +76,5 @@ public class SecuredAuthorizationFilterTest {
         // then
         Mockito.verify(authorizationService).validateToken(tokenDto);
     }
-
 
 }

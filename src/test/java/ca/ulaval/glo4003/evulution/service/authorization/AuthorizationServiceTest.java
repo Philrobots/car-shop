@@ -71,34 +71,26 @@ class AuthorizationServiceTest {
 
     private AuthorizationService authorizationService;
 
-
     @BeforeEach
     void setUp() {
-        authorizationService = new AuthorizationService(tokenAssembler,
-            tokenRepository,
-            saleIdFactory,
-            deliveryIdFactory,
-            accountValidator,
-            deliveryValidator,
-            saleValidator);
+        authorizationService = new AuthorizationService(tokenAssembler, tokenRepository, saleIdFactory,
+                deliveryIdFactory, accountValidator, deliveryValidator, saleValidator);
     }
 
     @Test
-    public void givenTokenNotFoundException_whenValidateToken_thenThrowsServiceUnauthorizedException() throws
-        TokenNotFoundException {
+    public void givenTokenNotFoundException_whenValidateToken_thenThrowsServiceUnauthorizedException()
+            throws TokenNotFoundException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.doThrow(TokenNotFoundException.class).when(tokenRepository).getAccountId(token);
-
-
 
         // when & then
         Assertions.assertThrows(ServiceUnauthorizedException.class, () -> authorizationService.validateToken(tokenDto));
     }
 
     @Test
-    public void whenValidateAdminToken_thenAccountValidatorValidatesAdminAccount() throws  TokenNotFoundException,
-        AccountNotFoundException, UserIsNotAdminException {
+    public void whenValidateAdminToken_thenAccountValidatorValidatesAdminAccount()
+            throws TokenNotFoundException, AccountNotFoundException, UserIsNotAdminException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
@@ -112,32 +104,32 @@ class AuthorizationServiceTest {
 
     @Test
     public void givenUserIsNotAdminException_whenValidateAdminToken_thenServiceUnauthorizedException()
-        throws TokenNotFoundException, UserIsNotAdminException, AccountNotFoundException {
+            throws TokenNotFoundException, UserIsNotAdminException, AccountNotFoundException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
         BDDMockito.doThrow(UserIsNotAdminException.class).when(accountValidator).validateAdminAccount(accountId);
 
         // when & then
-        Assertions.assertThrows(ServiceUnauthorizedException.class, () -> authorizationService.validateAdminToken(tokenDto));
+        Assertions.assertThrows(ServiceUnauthorizedException.class,
+                () -> authorizationService.validateAdminToken(tokenDto));
     }
 
     @Test
     public void givenAccountNotFoundException_whenValidateAdminToken_thenServiceUnauthorizedException()
-        throws TokenNotFoundException, UserIsNotAdminException, AccountNotFoundException {
+            throws TokenNotFoundException, UserIsNotAdminException, AccountNotFoundException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
         BDDMockito.doThrow(AccountNotFoundException.class).when(accountValidator).validateAdminAccount(accountId);
 
         // when & then
-        Assertions.assertThrows(ServiceUnauthorizedException.class, () -> authorizationService.validateAdminToken(tokenDto));
+        Assertions.assertThrows(ServiceUnauthorizedException.class,
+                () -> authorizationService.validateAdminToken(tokenDto));
     }
 
-
     @Test
-    public void whenValidateTokenWithDeliveryId_thenSaleIdFactoryCreatesFromInt() throws
-        TokenNotFoundException {
+    public void whenValidateTokenWithDeliveryId_thenSaleIdFactoryCreatesFromInt() throws TokenNotFoundException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
@@ -150,8 +142,8 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    public void whenValidateTokenWithSaleId_thenSaleValidatorValidatesSaleOwner() throws
-        TokenNotFoundException, SaleNotFoundException, MismatchAccountIdWithSaleException {
+    public void whenValidateTokenWithSaleId_thenSaleValidatorValidatesSaleOwner()
+            throws TokenNotFoundException, SaleNotFoundException, MismatchAccountIdWithSaleException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
@@ -166,20 +158,22 @@ class AuthorizationServiceTest {
 
     @Test
     public void givenMismatchAccountIdWithSaleException_whenValidateTokenWithSaleId_thenServiceUnauthorizedException()
-        throws TokenNotFoundException, SaleNotFoundException, MismatchAccountIdWithSaleException {
+            throws TokenNotFoundException, SaleNotFoundException, MismatchAccountIdWithSaleException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
         BDDMockito.given(saleIdFactory.createFromInt(A_SALE_ID)).willReturn(saleId);
-        BDDMockito.doThrow(MismatchAccountIdWithSaleException.class).when(saleValidator).validateSaleOwner(saleId, accountId);
+        BDDMockito.doThrow(MismatchAccountIdWithSaleException.class).when(saleValidator).validateSaleOwner(saleId,
+                accountId);
 
         // when & then
-        Assertions.assertThrows(ServiceUnauthorizedException.class, () -> authorizationService.validateTokenWithSaleId(tokenDto, A_SALE_ID));
+        Assertions.assertThrows(ServiceUnauthorizedException.class,
+                () -> authorizationService.validateTokenWithSaleId(tokenDto, A_SALE_ID));
     }
 
     @Test
-    public void givenSaleNotFoundException_whenValidateTokenWithSaleId_thenServiceUnauthorizedException() throws TokenNotFoundException,
-        SaleNotFoundException, MismatchAccountIdWithSaleException {
+    public void givenSaleNotFoundException_whenValidateTokenWithSaleId_thenServiceUnauthorizedException()
+            throws TokenNotFoundException, SaleNotFoundException, MismatchAccountIdWithSaleException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
@@ -187,11 +181,12 @@ class AuthorizationServiceTest {
         BDDMockito.doThrow(SaleNotFoundException.class).when(saleValidator).validateSaleOwner(saleId, accountId);
 
         // when & then
-        Assertions.assertThrows(ServiceUnauthorizedException.class, () -> authorizationService.validateTokenWithSaleId(tokenDto, A_SALE_ID));
+        Assertions.assertThrows(ServiceUnauthorizedException.class,
+                () -> authorizationService.validateTokenWithSaleId(tokenDto, A_SALE_ID));
     }
 
     @Test
-    public void whenValidateTokenWithDeliveryId_thenDeliveryIdFactoryCreatesFromInt() throws TokenNotFoundException{
+    public void whenValidateTokenWithDeliveryId_thenDeliveryIdFactoryCreatesFromInt() throws TokenNotFoundException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
@@ -204,10 +199,9 @@ class AuthorizationServiceTest {
         Mockito.verify(deliveryIdFactory).createFromInt(A_DELIVERY_ID);
     }
 
-
     @Test
-    public void whenValidateTokenWithDeliveryId_thenDeliveryValidatorValidatesDeliveryOwner() throws TokenNotFoundException,
-        DeliveryNotFoundException, MismatchAccountIdWithDeliveryException {
+    public void whenValidateTokenWithDeliveryId_thenDeliveryValidatorValidatesDeliveryOwner()
+            throws TokenNotFoundException, DeliveryNotFoundException, MismatchAccountIdWithDeliveryException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
@@ -222,27 +216,31 @@ class AuthorizationServiceTest {
 
     @Test
     public void givenMismatchAccountIdWithDeliveryException_whenValidateTokenWithDeliveryId_thenServiceUnauthorizedException()
-        throws TokenNotFoundException, DeliveryNotFoundException, MismatchAccountIdWithDeliveryException{
+            throws TokenNotFoundException, DeliveryNotFoundException, MismatchAccountIdWithDeliveryException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.doThrow(MismatchAccountIdWithDeliveryException.class).when(deliveryValidator).validateDeliveryOwner(deliveryId, accountId);
+        BDDMockito.doThrow(MismatchAccountIdWithDeliveryException.class).when(deliveryValidator)
+                .validateDeliveryOwner(deliveryId, accountId);
 
         // when & then
-        Assertions.assertThrows(ServiceUnauthorizedException.class, () -> authorizationService.validateTokenWithDeliveryId(tokenDto, A_DELIVERY_ID));
+        Assertions.assertThrows(ServiceUnauthorizedException.class,
+                () -> authorizationService.validateTokenWithDeliveryId(tokenDto, A_DELIVERY_ID));
     }
 
     @Test
     public void givenDeliveryNotFoundException_whenValidateTokenWithDeliveryId_thenServiceUnauthorizedException()
-        throws TokenNotFoundException, DeliveryNotFoundException, MismatchAccountIdWithDeliveryException{
+            throws TokenNotFoundException, DeliveryNotFoundException, MismatchAccountIdWithDeliveryException {
         // given
         BDDMockito.given(tokenAssembler.assembleTokenFromDto(tokenDto)).willReturn(token);
         BDDMockito.given(tokenRepository.getAccountId(token)).willReturn(accountId);
         BDDMockito.given(deliveryIdFactory.createFromInt(A_DELIVERY_ID)).willReturn(deliveryId);
-        BDDMockito.doThrow(DeliveryNotFoundException.class).when(deliveryValidator).validateDeliveryOwner(deliveryId, accountId);
+        BDDMockito.doThrow(DeliveryNotFoundException.class).when(deliveryValidator).validateDeliveryOwner(deliveryId,
+                accountId);
 
         // when & then
-        Assertions.assertThrows(ServiceUnauthorizedException.class, () -> authorizationService.validateTokenWithDeliveryId(tokenDto, A_DELIVERY_ID));
+        Assertions.assertThrows(ServiceUnauthorizedException.class,
+                () -> authorizationService.validateTokenWithDeliveryId(tokenDto, A_DELIVERY_ID));
     }
 }

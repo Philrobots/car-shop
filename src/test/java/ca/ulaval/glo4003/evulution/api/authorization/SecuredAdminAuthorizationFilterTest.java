@@ -53,8 +53,8 @@ class SecuredAdminAuthorizationFilterTest {
     @Test
     public void whenFilter_thenTokenDtoAssemblesAssembleFromString() {
         // given
-        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(
-            AN_AUTHORIZATION_HEADER);
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
+                .willReturn(AN_AUTHORIZATION_HEADER);
 
         // when
         this.securedAdminAuthorizationFilter.filter(containerRequestContext);
@@ -66,8 +66,8 @@ class SecuredAdminAuthorizationFilterTest {
     @Test
     public void whenFilter_thenAuthorizationServiceValidatesAdminToken() {
         // given
-        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION)).willReturn(
-            AN_AUTHORIZATION_HEADER);
+        BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
+                .willReturn(AN_AUTHORIZATION_HEADER);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(AN_AUTHORIZATION_HEADER)).willReturn(tokenDto);
 
         // when

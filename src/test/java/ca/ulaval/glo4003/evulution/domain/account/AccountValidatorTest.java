@@ -24,13 +24,14 @@ class AccountValidatorTest {
 
     private AccountValidator accountValidator;
 
-    @BeforeEach void setUp() {
+    @BeforeEach
+    void setUp() {
         this.accountValidator = new AccountValidator(accountRepository);
     }
 
     @Test
-    public void whenValidateAdminAccount_thenAccountRepositoryGetAccount() throws
-        AccountNotFoundException, UserIsNotAdminException {
+    public void whenValidateAdminAccount_thenAccountRepositoryGetAccount()
+            throws AccountNotFoundException, UserIsNotAdminException {
         // given
         BDDMockito.given(accountRepository.getAccount(accountId)).willReturn(account);
 
@@ -42,8 +43,8 @@ class AccountValidatorTest {
     }
 
     @Test
-    public void whenValidateAdminAccount_thenAccountVerifiesIfAdmin() throws
-        AccountNotFoundException, UserIsNotAdminException {
+    public void whenValidateAdminAccount_thenAccountVerifiesIfAdmin()
+            throws AccountNotFoundException, UserIsNotAdminException {
         // given
         BDDMockito.given(accountRepository.getAccount(accountId)).willReturn(account);
 

@@ -18,8 +18,7 @@ public abstract class Account {
         this.password = password;
     }
 
-    public Token login(String email, String password, TokenFactory tokenFactory)
-            throws FailedLoginException {
+    public Token login(String email, String password, TokenFactory tokenFactory) throws FailedLoginException {
         if (!(this.email.equals(email) && this.password.equals(password)))
             throw new FailedLoginException();
 

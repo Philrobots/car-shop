@@ -32,7 +32,7 @@ class EmailFactoryTest {
         // then
         assertNotNull(email);
     }
-    
+
     @Test
     public void whenCreateAssemblyFireBatteriesEmail_thenCreatesEmail() {
         // when
@@ -41,32 +41,30 @@ class EmailFactoryTest {
         // then
         assertNotNull(email);
     }
-    
+
     @Test
     public void whenCreateBatteryBatteryInProductionEmail_thenCreatesEmail() {
         // when
         Email email = this.emailFactory.createBatteryBatteryInProductionEmail(List.of(AN_EMAIL),
-            PRODUCTION_TIME_IN_WEEKS);
+                PRODUCTION_TIME_IN_WEEKS);
 
         // then
         assertNotNull(email);
     }
-    
+
     @Test
-    public void whenCreateVehicleInProductionEmail_thenCreatesEmail(){
+    public void whenCreateVehicleInProductionEmail_thenCreatesEmail() {
         // when
-        Email email = this.emailFactory.createVehicleInProductionEmail(List.of(AN_EMAIL),
-            PRODUCTION_TIME_IN_WEEKS);
+        Email email = this.emailFactory.createVehicleInProductionEmail(List.of(AN_EMAIL), PRODUCTION_TIME_IN_WEEKS);
 
         // then
         assertNotNull(email);
     }
-    
+
     @Test
     public void whenCreateAssemblyInProductionEmail_thenCreatesEmail() {
         // when
-        Email email = this.emailFactory.createAssemblyInProductionEmail(List.of(AN_EMAIL),
-            PRODUCTION_TIME_IN_WEEKS);
+        Email email = this.emailFactory.createAssemblyInProductionEmail(List.of(AN_EMAIL), PRODUCTION_TIME_IN_WEEKS);
 
         // then
         assertNotNull(email);

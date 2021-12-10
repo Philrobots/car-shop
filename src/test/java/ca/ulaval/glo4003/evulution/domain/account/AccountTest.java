@@ -37,22 +37,23 @@ class AccountTest {
 
     private Account account;
 
-
-    @BeforeEach void setUp() {
+    @BeforeEach
+    void setUp() {
         account = new Customer(A_NAME, A_BIRTHDATE, AN_EMAIL, A_PASSWORD, gender);
     }
 
     @Test
     public void givenInvalidEmail_whenLogin_thenFailedLoginException() {
         // when & then
-        Assertions.assertThrows(FailedLoginException.class, () -> account.login(ANOTHER_EMAIL, A_PASSWORD, tokenFactory));
+        Assertions.assertThrows(FailedLoginException.class,
+                () -> account.login(ANOTHER_EMAIL, A_PASSWORD, tokenFactory));
     }
 
     @Test
     public void givenInvalidPassword_whenLogin_thenFailedLoginException() {
         // when & then
-        Assertions.assertThrows(FailedLoginException.class, () -> account.login(AN_EMAIL,
-            ANOTHER_PASSWORD, tokenFactory));
+        Assertions.assertThrows(FailedLoginException.class,
+                () -> account.login(AN_EMAIL, ANOTHER_PASSWORD, tokenFactory));
     }
 
     @Test
@@ -66,7 +67,5 @@ class AccountTest {
         // then
         Mockito.verify(tokenFactory).generateNewToken();
     }
-
-
 
 }

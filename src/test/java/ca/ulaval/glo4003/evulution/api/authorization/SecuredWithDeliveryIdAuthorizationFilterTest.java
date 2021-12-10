@@ -56,7 +56,7 @@ class SecuredWithDeliveryIdAuthorizationFilterTest {
     public void whenFilter_thenContainerRequestContextGetsAuthorizationHeader() {
         // given
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-            .willReturn(A_HEADER_STRING);
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(containerRequestContext.getUriInfo()).willReturn(uriInfo);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
         BDDMockito.given(uriInfo.getPathParameters()).willReturn(new MultivaluedHashMap<String, String>() {
@@ -76,7 +76,7 @@ class SecuredWithDeliveryIdAuthorizationFilterTest {
     public void whenFilter_thenTokenDtoAssemblesAssembleFromString() {
         // given
         BDDMockito.given(containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
-            .willReturn(A_HEADER_STRING);
+                .willReturn(A_HEADER_STRING);
         BDDMockito.given(containerRequestContext.getUriInfo()).willReturn(uriInfo);
         BDDMockito.given(tokenDtoAssembler.assembleFromString(A_HEADER_STRING)).willReturn(tokenDto);
         BDDMockito.given(uriInfo.getPathParameters()).willReturn(new MultivaluedHashMap<String, String>() {

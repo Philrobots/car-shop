@@ -29,31 +29,29 @@ public class BatteryFactoryTest {
         batteryFactory = new BatteryFactory(Collections.singletonList(batteryMapperDto));
     }
 
-
-     @Test
-     public void givenValidBattery_whenCreate_thenReturnsBattery() throws BadCarSpecsException {
-         // given
-         batteryMapperDto.name = A_VALID_NAME;
-         batteryMapperDto.base_NRCAN_range = A_NRCAN_RANGE;
-         batteryMapperDto.capacity = A_CAPACITY;
-         batteryMapperDto.price = A_PRICE;
-         batteryMapperDto.time_to_produce = A_TIME_TO_PRODUCE;
-
-         // when
-         Battery battery = batteryFactory.create(A_VALID_NAME);
-
-         // then
-         Assertions.assertNotNull(battery);
-         }
-
-     @Test
-     public void givenInvalidBattery_whenCreate_thenThrowsBadCarSpecsException() {
+    @Test
+    public void givenValidBattery_whenCreate_thenReturnsBattery() throws BadCarSpecsException {
         // given
-         batteryMapperDto.name = A_VALID_NAME;
+        batteryMapperDto.name = A_VALID_NAME;
+        batteryMapperDto.base_NRCAN_range = A_NRCAN_RANGE;
+        batteryMapperDto.capacity = A_CAPACITY;
+        batteryMapperDto.price = A_PRICE;
+        batteryMapperDto.time_to_produce = A_TIME_TO_PRODUCE;
+
+        // when
+        Battery battery = batteryFactory.create(A_VALID_NAME);
+
+        // then
+        Assertions.assertNotNull(battery);
+    }
+
+    @Test
+    public void givenInvalidBattery_whenCreate_thenThrowsBadCarSpecsException() {
+        // given
+        batteryMapperDto.name = A_VALID_NAME;
 
         // when & then
-        Assertions.assertThrows(BadCarSpecsException.class, () -> batteryFactory.create(
-            A_INVALID_NAME));
+        Assertions.assertThrows(BadCarSpecsException.class, () -> batteryFactory.create(A_INVALID_NAME));
     }
 
 }

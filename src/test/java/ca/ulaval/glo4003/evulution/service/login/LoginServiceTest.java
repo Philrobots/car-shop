@@ -59,8 +59,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void whenLoginCustomer_thenAccountRepositoryFindsAccountByEmail()
-        throws AccountNotFoundException {
+    public void whenLoginCustomer_thenAccountRepositoryFindsAccountByEmail() throws AccountNotFoundException {
         // given
         BDDMockito.given(accountRepository.findAccountByEmail(A_STRING_EMAIL)).willReturn(account);
 
@@ -72,8 +71,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void whenLoginCustomer_thenAccountLogins()
-        throws AccountNotFoundException, FailedLoginException {
+    public void whenLoginCustomer_thenAccountLogins() throws AccountNotFoundException, FailedLoginException {
         // given
         BDDMockito.given(accountRepository.findAccountByEmail(A_STRING_EMAIL)).willReturn(account);
 
@@ -85,8 +83,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void whenLoginCustomer_thenTokenRepositoryAddsToken()
-        throws AccountNotFoundException, FailedLoginException {
+    public void whenLoginCustomer_thenTokenRepositoryAddsToken() throws AccountNotFoundException, FailedLoginException {
         // given
         BDDMockito.given(accountRepository.findAccountByEmail(A_STRING_EMAIL)).willReturn(account);
         BDDMockito.given(account.login(A_STRING_EMAIL, A_PASSWORD, tokenFactory)).willReturn(token);
@@ -101,7 +98,7 @@ public class LoginServiceTest {
 
     @Test
     public void whenLoginCustomer_thenTokenAssemblerAssemblesDtoFromToken()
-        throws AccountNotFoundException, FailedLoginException {
+            throws AccountNotFoundException, FailedLoginException {
         // given
         BDDMockito.given(accountRepository.findAccountByEmail(A_STRING_EMAIL)).willReturn(account);
         BDDMockito.given(account.login(A_STRING_EMAIL, A_PASSWORD, tokenFactory)).willReturn(token);
@@ -115,7 +112,7 @@ public class LoginServiceTest {
 
     @Test
     public void givenInvalidAccount_whenLoginCustomer_thenThrowServiceUnableToLoginException()
-        throws AccountNotFoundException {
+            throws AccountNotFoundException {
         // given
         BDDMockito.doThrow(AccountNotFoundException.class).when(accountRepository).findAccountByEmail(A_STRING_EMAIL);
 
@@ -125,7 +122,7 @@ public class LoginServiceTest {
 
     @Test
     public void givenInvalidPassword_whenLoginCustomer_thenThrowServiceUnableToLoginException()
-        throws AccountNotFoundException, FailedLoginException {
+            throws AccountNotFoundException, FailedLoginException {
         // given
         BDDMockito.given(accountRepository.findAccountByEmail(A_STRING_EMAIL)).willReturn(account);
         BDDMockito.doThrow(FailedLoginException.class).when(account).login(A_STRING_EMAIL, A_PASSWORD, tokenFactory);

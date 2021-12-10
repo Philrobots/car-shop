@@ -53,18 +53,15 @@ class CarFactoryTest {
         modelInformationDto.name = A_VALID_NAME;
 
         // then
-        Assertions.assertThrows(BadCarSpecsException.class, () -> carFactory.create(AN_INVALID_NAME,
-            A_VALID_COLOR));
+        Assertions.assertThrows(BadCarSpecsException.class, () -> carFactory.create(AN_INVALID_NAME, A_VALID_COLOR));
     }
 
-   @Test
-   public void givenInvalidColor_whenCreate_thenThrowsBadCarSpecsException() {
+    @Test
+    public void givenInvalidColor_whenCreate_thenThrowsBadCarSpecsException() {
         // given
-       modelInformationDto.name = A_VALID_NAME;
-
+        modelInformationDto.name = A_VALID_NAME;
 
         // then
-       Assertions.assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_VALID_NAME,
-           AN_INVALID_COLOR));
+        Assertions.assertThrows(BadCarSpecsException.class, () -> carFactory.create(A_VALID_NAME, AN_INVALID_COLOR));
     }
 }
