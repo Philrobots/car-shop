@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Biweekly implements PaymentStrategy {
+    private static final Integer BIWEEKLY_PAYMENT = 2;
     private final BigDecimal amountPerPayment;
     private Integer frequency = 2;
     private Integer paymentsLeft = (52 * 6) / frequency;
@@ -24,7 +25,7 @@ public class Biweekly implements PaymentStrategy {
 
     @Override
     public void pay() {
-        if (frequency == 2) {
+        if (frequency.equals(BIWEEKLY_PAYMENT)) {
             balance = balance.subtract(amountPerPayment);
             paymentsLeft--;
             frequency = 1;

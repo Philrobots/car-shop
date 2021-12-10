@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class EmailFactoryTest {
     private static final String AN_EMAIL = "email@email.com";
     private static final LocalDate A_DELIVERY_DATE = LocalDate.now();
+    private static final int PRODUCTION_TIME_IN_WEEKS = 2;
 
     @Mock
     private EmailSender emailSender;
@@ -24,9 +25,48 @@ class EmailFactoryTest {
     }
 
     @Test
-    void whenCreateAssemblyDelayEmail_thenCreateEmail() {
+    public void whenCreateAssemblyDelayEmail_thenCreatesEmail() {
         // when
         Email email = this.emailFactory.createAssemblyDelayEmail(List.of(AN_EMAIL), A_DELIVERY_DATE);
+
+        // then
+        assertNotNull(email);
+    }
+    
+    @Test
+    public void whenCreateAssemblyFireBatteriesEmail_thenCreatesEmail() {
+        // when
+        Email email = this.emailFactory.createAssemblyFireBatteriesEmail(List.of(AN_EMAIL));
+
+        // then
+        assertNotNull(email);
+    }
+    
+    @Test
+    public void whenCreateBatteryBatteryInProductionEmail_thenCreatesEmail() {
+        // when
+        Email email = this.emailFactory.createBatteryBatteryInProductionEmail(List.of(AN_EMAIL),
+            PRODUCTION_TIME_IN_WEEKS);
+
+        // then
+        assertNotNull(email);
+    }
+    
+    @Test
+    public void whenCreateVehicleInProductionEmail_thenCreatesEmail(){
+        // when
+        Email email = this.emailFactory.createVehicleInProductionEmail(List.of(AN_EMAIL),
+            PRODUCTION_TIME_IN_WEEKS);
+
+        // then
+        assertNotNull(email);
+    }
+    
+    @Test
+    public void whenCreateAssemblyInProductionEmail_thenCreatesEmail() {
+        // when
+        Email email = this.emailFactory.createAssemblyInProductionEmail(List.of(AN_EMAIL),
+            PRODUCTION_TIME_IN_WEEKS);
 
         // then
         assertNotNull(email);

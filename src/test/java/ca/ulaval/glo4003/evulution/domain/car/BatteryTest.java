@@ -8,11 +8,13 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BatteryTest {
-    private final String A_TYPE = "STANDARD";
-    private final String A_BASE_NRCAN_RANGE = "400";
-    private final Integer A_CAPACITY = 60;
-    private final BigDecimal A_PRICE = new BigDecimal(15000);
-    private final String TIME_TO_PRODUCE = "3";
+    private static final String A_TYPE = "STANDARD";
+    private static final String A_BASE_NRCAN_RANGE = "400";
+    private static final Integer A_CAPACITY = 60;
+    private static final BigDecimal A_PRICE = new BigDecimal(15000);
+    private static final String TIME_TO_PRODUCE = "3";
+    private static final Integer EXPECTED_RANGE = 400;
+    private static final Integer EXPECTED_TIME_TO_PRODUCE = 3;
 
     private Battery battery;
 
@@ -30,15 +32,15 @@ class BatteryTest {
         Integer range = this.battery.calculateEstimatedRange(efficiency);
 
         // then
-        assertEquals(400, range);
+        assertEquals(EXPECTED_RANGE, range);
     }
 
     @Test
-    public void whenGetToProduceAsInt_shouldReturnProductionTimeAsInteger() {
+    public void whenTimeGetToProduceAsInt_shouldReturnProductionTimeAsInteger() {
         // when
         Integer productionTime = battery.getTimeToProduceAsInt();
 
         // then
-        assertEquals(3, productionTime);
+        assertEquals(EXPECTED_TIME_TO_PRODUCE, productionTime);
     }
 }

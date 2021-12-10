@@ -91,8 +91,6 @@ public class SaleRepositoryInMemoryTest {
         // given
         BDDMockito.given(sale.getSaleId()).willReturn(saleId);
         this.saleRepositoryInMemory.registerSale(sale);
-        // Sale currentSale = saleRepositoryInMemory.getSale(saleId);
-        // BDDMockito.given(sale.setStatus(saleStatus)).
 
         // when
         this.saleRepositoryInMemory.setStatus(saleId, PAID_STATUS);

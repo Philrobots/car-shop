@@ -14,6 +14,7 @@ class CarTest {
     private final BigDecimal A_BASE_PRICE = BigDecimal.valueOf(27000);
     private final String A_TIME_TO_PRODUCE = "3";
     private final String A_COLOR = "white";
+    private final Integer EXPECTED_TIME_TO_PRODUCE = 3;
 
     private Car car;
 
@@ -28,6 +29,6 @@ class CarTest {
         Integer productionTime = car.getTimeToProduceAsInt();
 
         // then
-        assertEquals(3, productionTime);
+        assertEquals(EXPECTED_TIME_TO_PRODUCE, productionTime);
     }
 }
