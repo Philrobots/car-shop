@@ -7,10 +7,10 @@ public class Battery {
     private String baseNRCANRange;
     private Integer capacity;
     private BigDecimal price;
-    private String timeToProduce;
+    private Integer timeToProduce;
     private boolean isAssembled = false;
 
-    public Battery(String type, String baseNRCANRange, Integer capacity, BigDecimal price, String timeToProduce) {
+    public Battery(String type, String baseNRCANRange, Integer capacity, BigDecimal price, Integer timeToProduce) {
         this.type = type;
         this.baseNRCANRange = baseNRCANRange;
         this.capacity = capacity;
@@ -30,8 +30,8 @@ public class Battery {
         isAssembled = true;
     }
 
-    public int getTimeToProduceAsInt() {
-        return Integer.parseInt(timeToProduce);
+    public int getTimeToProduce() {
+        return timeToProduce;
     }
 
     public BigDecimal getPrice() {

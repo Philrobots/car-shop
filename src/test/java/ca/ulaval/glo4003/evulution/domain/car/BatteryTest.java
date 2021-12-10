@@ -12,7 +12,7 @@ class BatteryTest {
     private final String A_BASE_NRCAN_RANGE = "400";
     private final Integer A_CAPACITY = 60;
     private final BigDecimal A_PRICE = new BigDecimal(15000);
-    private final String TIME_TO_PRODUCE = "3";
+    private final Integer TIME_TO_PRODUCE = 3;
 
     private Battery battery;
 
@@ -36,7 +36,7 @@ class BatteryTest {
     @Test
     public void whenGetToProduceAsInt_shouldReturnProductionTimeAsInteger() {
         // when
-        Integer productionTime = battery.getTimeToProduceAsInt();
+        Integer productionTime = battery.getTimeToProduce();
 
         // then
         assertEquals(3, productionTime);
