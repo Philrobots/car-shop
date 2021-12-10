@@ -22,8 +22,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     private boolean isCarInProduction = false;
 
     public CarAssemblyLineSequential(CarAssemblyAdapter carAssemblyAdapter,
-            CarProductionRepository carProductionRepository,
-            ProductionLineEmailNotifier productionLineEmailNotifier) {
+            CarProductionRepository carProductionRepository, ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.carProductionRepository = carProductionRepository;
         this.productionLineEmailNotifier = productionLineEmailNotifier;
@@ -77,14 +76,15 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     public void transferAssemblyLine(CarAssemblyLine carAssemblyLine) {
         this.carProductionWaitList = new LinkedList<>(carAssemblyLine.getWaitingList());
         this.isBatteryInFire = carAssemblyLine.getIsBatteryInFire();
+        if (!carProductionWaitList.isEmpty()) setupNextProduction();
     }
 
     @Override
     public List<CarProduction> getWaitingList() {
-        if (isCarInProduction)
-            this.carProductionWaitList.addFirst(currentCarProduction);
+        if (isCarInProduction) this.carProductionWaitList.addFirst(currentCarProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carProductionWaitList);
         carProductionWaitList.clear();
+        this.isCarInProduction = false;
 
         return returnList;
     }

@@ -30,7 +30,7 @@ public class CustomerFactoryTest {
 
     @Test
     public void whenCreateCustomer_thenCreatesCustomer()
-            throws InvalidDateFormatException, BadInputParameterException, AccountNotFoundException {
+            throws InvalidDateFormatException, BadInputParameterException {
         // when
         Customer customer = customerFactory.create(A_NAME, A_BIRTH_DATE, AN_EMAIl, A_PASSWORD, A_VALID_GENDER);
 

@@ -48,8 +48,8 @@ public class AssemblyLineResources {
         carAssemblyLineJIT = new CarAssemblyLineJIT(this.getAssemblyLineMediator(), vehicleAssemblyLineAdapter,
                 repositoryResources.getVehicleRepository(), this.carAssemblyLineJITTypeSelector);
 
-        completeAssemblyLine = new CompleteAssemblyLineSequential(repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository(),
-                productionLineEmailNotifier);
+        completeAssemblyLine = new CompleteAssemblyLineSequential(repositoryResources.getVehicleRepository(),
+                repositoryResources.getBatteryRepository(), productionLineEmailNotifier);
 
         assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine,
                 carAssemblyLineSequential);

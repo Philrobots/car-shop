@@ -14,14 +14,14 @@ import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatt
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
 
 public class Manufacture {
-    private ProductionId productionId;
+    private final ProductionId productionId;
     private Car car;
     private Battery battery;
     private Delivery delivery;
     private ManufactureStatus status;
 
-    public Manufacture(Delivery delivery) {
-        this.productionId = new ProductionId();
+    public Manufacture(ProductionId productionId, Delivery delivery) {
+        this.productionId = productionId;
         this.delivery = delivery;
         status = ManufactureStatus.PENDING;
     }
@@ -43,9 +43,10 @@ public class Manufacture {
         this.delivery.setCarTimeToProduce(car.getTimeToProduce());
     }
 
-    public int addBattery(Battery battery) throws CarNotChosenBeforeBatteryException {
+    public int setBattery(Battery battery) throws CarNotChosenBeforeBatteryException {
         if (this.car == null)
             throw new CarNotChosenBeforeBatteryException();
+
         this.battery = battery;
         this.delivery.setBatteryTimeToProduce(battery.getTimeToProduce());
         return getEstimatedRange();
@@ -78,7 +79,8 @@ public class Manufacture {
         return carProductionFactory.create(productionId, car.getStyle(), car.getTimeToProduce());
     }
 
-    public CompleteAssemblyProduction generateCompleteAssemblyProduction(CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+    public CompleteAssemblyProduction generateCompleteAssemblyProduction(
+            CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
         return completeAssemblyProductionFactory.create(productionId, delivery);
     }
 

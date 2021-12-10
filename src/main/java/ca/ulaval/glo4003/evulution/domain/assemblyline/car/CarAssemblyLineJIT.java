@@ -53,7 +53,8 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
         }
 
         if (this.notifyBatteryCounter > 0) {
-            if(this.assemblyLineMediator.notify(CarAssemblyLine.class)) this.notifyBatteryCounter--;
+            if (this.assemblyLineMediator.notify(CarAssemblyLine.class))
+                this.notifyBatteryCounter--;
         }
 
         if (!this.isCarInProduction) {
@@ -105,6 +106,11 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     public void transferAssemblyLine(CarAssemblyLine carAssemblyLine) {
         this.carWaitingList = new LinkedList<>(carAssemblyLine.getWaitingList());
         this.isBatteryInFire = carAssemblyLine.getIsBatteryInFire();
+        if (!this.carWaitingList.isEmpty()) {
+            this.currentCarInProduction = this.carWaitingList.pop();
+            this.currentCarInProduction.newCarCommand(this.carAssemblyAdapter);
+            this.isCarInProduction = true;
+        }
     }
 
     @Override
@@ -113,6 +119,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
             this.carWaitingList.addFirst(this.currentCarInProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carWaitingList);
         this.carWaitingList.clear();
+        this.isCarInProduction = false;
 
         return returnList;
     }

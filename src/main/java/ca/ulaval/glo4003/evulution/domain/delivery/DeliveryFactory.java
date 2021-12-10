@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.evulution.domain.delivery;
 
 import ca.ulaval.glo4003.evulution.domain.account.AccountId;
-import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 
 public class DeliveryFactory {
     private Integer assemblyTimeInWeeks;

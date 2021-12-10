@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
-import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
@@ -69,7 +68,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
     }
 
     public void startNext() {
-        if (this.isBatteryInFire)
+        if (this.isBatteryInFire && !this.batteryProductionsWaitingList.isEmpty())
             return;
 
         this.setUpNextBatteryForProduction();

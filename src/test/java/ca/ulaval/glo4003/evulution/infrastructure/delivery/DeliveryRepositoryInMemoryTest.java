@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.evulution.infrastructure.delivery;
 
-import ca.ulaval.glo4003.evulution.domain.account.AccountId;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryId;
 import ca.ulaval.glo4003.evulution.domain.manufacture.Manufacture;
@@ -17,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

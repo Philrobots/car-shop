@@ -6,11 +6,9 @@ import ca.ulaval.glo4003.evulution.domain.account.customer.CustomerFactory;
 import ca.ulaval.glo4003.evulution.domain.account.exceptions.InvalidDateFormatException;
 import ca.ulaval.glo4003.evulution.domain.exceptions.BadInputParameterException;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountAlreadyExistsException;
-import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.service.customer.dto.CustomerDto;
 import ca.ulaval.glo4003.evulution.service.customer.exceptions.ServiceCustomerAlreadyExistsException;
 import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadInputParameterException;
-import ca.ulaval.glo4003.evulution.service.exceptions.ServiceBadRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +52,7 @@ public class CustomerServiceTest {
 
     @Test
     public void whenAddCustomer_thenCustomerFactoryCreates()
-            throws InvalidDateFormatException, BadInputParameterException, AccountNotFoundException {
+            throws InvalidDateFormatException, BadInputParameterException {
         // when
         customerService.addCustomer(customerDto);
 
@@ -66,7 +64,7 @@ public class CustomerServiceTest {
 
     @Test
     public void whenAddCustomer_thenAccountRepositoryAddsAccount() throws InvalidDateFormatException,
-            BadInputParameterException, AccountNotFoundException, AccountAlreadyExistsException {
+            BadInputParameterException, AccountAlreadyExistsException {
         // given
         BDDMockito.given(customerFactory.create(customerDto.name, customerDto.birthdate, customerDto.email,
                 customerDto.password, customerDto.sex)).willReturn(customer);
@@ -80,7 +78,7 @@ public class CustomerServiceTest {
 
     @Test
     public void givenInvalidDateFormatException_whenAddCustomer_thenServiceBadInputParameterException()
-            throws InvalidDateFormatException, BadInputParameterException, AccountNotFoundException {
+            throws InvalidDateFormatException, BadInputParameterException {
         // given
         BDDMockito.doThrow(InvalidDateFormatException.class).when(customerFactory).create(customerDto.name,
                 customerDto.birthdate, customerDto.email, customerDto.password, customerDto.sex);
@@ -92,7 +90,7 @@ public class CustomerServiceTest {
 
     @Test
     public void givenBadInputParameterException_whenAddCustomer_thenServiceBadInputParameterException()
-            throws InvalidDateFormatException, BadInputParameterException, AccountNotFoundException {
+            throws InvalidDateFormatException, BadInputParameterException {
         // given
         BDDMockito.doThrow(BadInputParameterException.class).when(customerFactory).create(customerDto.name,
                 customerDto.birthdate, customerDto.email, customerDto.password, customerDto.sex);
@@ -103,19 +101,8 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void givenAccountNotFoundException_whenAddCustomer_thenServiceBadRequestException()
-            throws InvalidDateFormatException, BadInputParameterException, AccountNotFoundException {
-        // given
-        BDDMockito.doThrow(AccountNotFoundException.class).when(customerFactory).create(customerDto.name,
-                customerDto.birthdate, customerDto.email, customerDto.password, customerDto.sex);
-
-        // when & then
-        Assertions.assertThrows(ServiceBadRequestException.class, () -> customerService.addCustomer(customerDto));
-    }
-
-    @Test
     public void givenAccountAlreadyExistsException_whenAddCustomer_thenServiceCustomerAlreadyExistsException()
-            throws InvalidDateFormatException, BadInputParameterException, AccountNotFoundException,
+            throws InvalidDateFormatException, BadInputParameterException,
             AccountAlreadyExistsException {
         // given
         BDDMockito.given(customerFactory.create(customerDto.name, customerDto.birthdate, customerDto.email,

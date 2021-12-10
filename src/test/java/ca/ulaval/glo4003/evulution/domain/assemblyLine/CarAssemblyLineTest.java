@@ -6,7 +6,6 @@ import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.email.Email;
-import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -29,7 +28,6 @@ class CarAssemblyLineTest {
 
     @Mock
     private AssemblyLineMediator assemblyLineMediator;
-
 
     @Mock
     private Email email;

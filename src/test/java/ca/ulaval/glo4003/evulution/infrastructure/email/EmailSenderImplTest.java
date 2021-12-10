@@ -23,8 +23,6 @@ class EmailSenderImplTest {
 
     private EmailSenderImpl emailSenderImpl;
 
-    private Email email;
-
     @BeforeEach
     void setUp() {
         this.emailSenderImpl = new EmailSenderImpl(A_SENDER_EMAIL, A_PASSWORD);
