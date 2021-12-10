@@ -18,6 +18,9 @@ public class CompleteAssemblyLineSequential {
 
     private static final double FIFTY_PERCENT_CHANCE = 0.5;
     private static final Integer ASSEMBLY_DELAY_IN_WEEKS = 1;
+    private static final Integer RANDOM_CASE_OF_TWO_WEEKS_DELIVERY = 2;
+    private static final Integer RANDOM_CASE_OF_NORMAL_ONE_WEEK_DELIVERY = 1;
+    private static final Integer ASSEMBLY_FINISHED = 0;
 
     private final EmailFactory emailFactory;
     private final CarProductionRepository carProductionRepository;
@@ -50,16 +53,15 @@ public class CompleteAssemblyLineSequential {
             return;
         }
 
-        // TODO
-        if (weeksRemaining == 2) {
+        if (weeksRemaining == RANDOM_CASE_OF_TWO_WEEKS_DELIVERY) {
             System.out.println("2 weeks remaining");
             LocalDate expectedDate = this.currentProduction.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);
             productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
             this.weeksRemaining--;
-        } else if (weeksRemaining == 1) {
+        } else if (weeksRemaining == RANDOM_CASE_OF_NORMAL_ONE_WEEK_DELIVERY) {
             System.out.println("1 weeks remaining");
             this.weeksRemaining--;
-        } else if (weeksRemaining == 0) {
+        } else if (weeksRemaining == ASSEMBLY_FINISHED) {
             System.out.println("Car is done");
             this.currentProduction.ship();
             ProductionId productionId = currentProduction.getProductionId();

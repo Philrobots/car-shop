@@ -27,7 +27,7 @@ public class ServiceResources {
         deliveryService = new DeliveryService(factoryResources.getDeliveryIdFactory(),
                 assemblerResources.getDeliveryCompleteAssembler(), repositoryResources.getDeliveryRepository(),
                 saleValidator, saleDomainServiceResources.getDeliveryDomainService(),
-                saleDomainServiceResources.getSaleDomainService()); // TODO: fix
+                saleDomainServiceResources.getSaleDomainService());
 
         loginService = new LoginService(factoryResources.getTokenFactory(), repositoryResources.getTokenRepository(),
                 repositoryResources.getAccountRepository(), assemblerResources.getTokenAssembler());

@@ -14,7 +14,6 @@ import ca.ulaval.glo4003.evulution.domain.sale.exceptions.CarNotChosenBeforeBatt
 import ca.ulaval.glo4003.evulution.domain.sale.exceptions.MissingElementsForSaleException;
 
 public class Manufacture {
-    // TODO pt mettre manufacture command
     private ProductionId productionId;
     private Car car;
     private Battery battery;
