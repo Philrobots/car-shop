@@ -2,12 +2,9 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
-import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
-import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionAssociatedWithManufacture;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
-import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import java.util.LinkedList;
 import java.util.List;

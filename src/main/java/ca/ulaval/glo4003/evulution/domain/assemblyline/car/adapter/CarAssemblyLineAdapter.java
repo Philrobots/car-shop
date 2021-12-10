@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter;
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BuildStatus;
 import ca.ulaval.glo4003.evulution.car_manufacture.CommandID;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.car.ModelInformationDto;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 

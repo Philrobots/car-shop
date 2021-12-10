@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.evulution.api.customer.dto;
 
 import ca.ulaval.glo4003.evulution.api.GenericRequest;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

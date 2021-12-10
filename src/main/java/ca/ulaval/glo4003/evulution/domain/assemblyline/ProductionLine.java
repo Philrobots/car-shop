@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
@@ -18,10 +18,9 @@ import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleId;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
-import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 
-import java.util.*;
+import java.util.Map;
 
 public class ProductionLine {
 

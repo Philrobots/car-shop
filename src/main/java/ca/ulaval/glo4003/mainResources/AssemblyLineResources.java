@@ -2,14 +2,14 @@ package ca.ulaval.glo4003.mainResources;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicVehicleAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyLineAdapter;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineJIT;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineJITTypeSelector;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyLineAdapter;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyLineAdapter;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorSwitcher;

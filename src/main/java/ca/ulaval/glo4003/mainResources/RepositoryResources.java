@@ -1,10 +1,10 @@
 package ca.ulaval.glo4003.mainResources;
 
 import ca.ulaval.glo4003.evulution.domain.account.AccountRepository;
-import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
-import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryRepository;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ManufactureRepository;
+import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleRepository;
 import ca.ulaval.glo4003.evulution.domain.token.TokenRepository;
 import ca.ulaval.glo4003.evulution.infrastructure.account.AccountRepositoryInMemory;

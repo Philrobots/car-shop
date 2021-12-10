@@ -1,12 +1,7 @@
 package ca.ulaval.glo4003.evulution.domain.production.car;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
-import ca.ulaval.glo4003.evulution.domain.email.Email;
-import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
-import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
-
-import java.util.List;
 
 public class CarProductionAssociatedWithManufacture implements CarProduction {
 

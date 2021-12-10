@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

@@ -2,12 +2,9 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.mediator;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLineType;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineJIT;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
-import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 
 public class AssemblyLineMediatorImpl implements AssemblyLineMediator, AssemblyLineMediatorSwitcher {
 

@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.mainResources;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionSwitcher;
-import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleValidator;
 import ca.ulaval.glo4003.evulution.service.assemblyLine.AssemblyLineService;
 import ca.ulaval.glo4003.evulution.service.customer.CustomerService;

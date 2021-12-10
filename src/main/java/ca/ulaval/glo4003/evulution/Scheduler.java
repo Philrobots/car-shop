@@ -6,7 +6,6 @@ import ca.ulaval.glo4003.evulution.domain.invoice.InvoicePayment;
 import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
-import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 
 import java.util.Timer;
