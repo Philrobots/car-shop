@@ -20,45 +20,43 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 
 @ExtendWith(MockitoExtension.class)
 public class ProductionLineTest {
 
     @Mock
-    CarAssemblyLine carAssemblyLine;
+    private CarAssemblyLine carAssemblyLine;
 
     @Mock
-    BatteryAssemblyLineSequential batteryAssemblyLineSequential;
+    private BatteryAssemblyLineSequential batteryAssemblyLineSequential;
 
     @Mock
-    CompleteAssemblyLineSequential completeAssemblyLineSequential;
+    private CompleteAssemblyLineSequential completeAssemblyLineSequential;
 
     @Mock
-    ManufactureRepository manufactureRepository;
+    private ManufactureRepository manufactureRepository;
 
     @Mock
-    SaleDomainService saleDomainService;
+    private SaleDomainService saleDomainService;
 
     @Mock
-    BatteryProductionFactory batteryProductionFactory;
+    private BatteryProductionFactory batteryProductionFactory;
 
     @Mock
-    CarProductionFactory carProductionFactory;
+    private CarProductionFactory carProductionFactory;
 
     @Mock
-    CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
+    private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
 
     @Mock
-    ProductionLineEmailNotifier productionLineEmailNotifier;
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
 
-    ProductionLine productionLine;
+    private ProductionLine productionLine;
 
 
     @BeforeEach
     void setup() {
-        productionLine = new ProductionLine(carAssemblyLine, batteryAssemblyLineSequential, completeAssemblyLineSequential, manufactureRepository,
+        this.productionLine = new ProductionLine(carAssemblyLine, batteryAssemblyLineSequential, completeAssemblyLineSequential, manufactureRepository,
                 saleDomainService, batteryProductionFactory, carProductionFactory,
                 completeAssemblyProductionFactory, productionLineEmailNotifier);
     }
