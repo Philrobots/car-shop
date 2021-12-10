@@ -24,7 +24,7 @@ public class CompleteAssemblyProduction {
         return productionId;
     }
 
-    public LocalDate addDelayInWeeksAndSendEmail(Integer assemblyDelayInWeeks) {
+    public LocalDate addDelayInWeeks(Integer assemblyDelayInWeeks) {
         return delivery.addDelayInWeeks(assemblyDelayInWeeks);
     }
 }

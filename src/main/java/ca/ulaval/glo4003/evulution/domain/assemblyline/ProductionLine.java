@@ -1,13 +1,11 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
-import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.Manufacture;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ManufactureRepository;
@@ -55,7 +53,7 @@ public class ProductionLine {
         this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 
-    public void advanceAssemblyLines() throws DeliveryIncompleteException, InvalidMappingKeyException, EmailException,
+    public void advanceAssemblyLines() throws DeliveryIncompleteException, InvalidMappingKeyException,
             SaleNotFoundException, AccountNotFoundException, CarNotAssociatedWithManufactureException {
         this.addNewManufactureToProduction();
         this.carAssemblyLine.advance();
@@ -80,7 +78,7 @@ public class ProductionLine {
         }
     }
 
-    public void shutdown() throws AssemblyLineIsShutdownException, EmailException {
+    public void shutdown() throws AssemblyLineIsShutdownException {
         if (this.isShutdown)
             throw new AssemblyLineIsShutdownException();
         this.carAssemblyLine.shutdown();
@@ -90,7 +88,7 @@ public class ProductionLine {
         productionLineEmailNotifier.sendFireBatteriesEmail();
     }
 
-    public void reactivate() throws AssemblyLineIsNotShutdownException, EmailException {
+    public void reactivate() throws AssemblyLineIsNotShutdownException {
         if (!this.isShutdown)
             throw new AssemblyLineIsNotShutdownException();
         this.carAssemblyLine.reactivate();

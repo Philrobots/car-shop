@@ -30,8 +30,6 @@ public class AssemblyLineService {
             this.productionLine.shutdown();
         } catch (AssemblyLineIsShutdownException e) {
             throw new ServiceBadOrderOfOperationsException();
-        } catch (EmailException e) {
-            throw new ServiceErrorException();
         }
     }
 
@@ -40,8 +38,6 @@ public class AssemblyLineService {
             this.productionLine.reactivate();
         } catch (AssemblyLineIsNotShutdownException e) {
             throw new ServiceBadOrderOfOperationsException();
-        } catch (EmailException e) {
-            throw new ServiceErrorException();
         }
     }
 

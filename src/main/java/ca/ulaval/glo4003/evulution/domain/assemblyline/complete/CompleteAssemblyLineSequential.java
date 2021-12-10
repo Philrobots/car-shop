@@ -43,7 +43,7 @@ public class CompleteAssemblyLineSequential {
         waitingList.add(completeAssemblyProduction);
     }
 
-    public void advance() throws DeliveryIncompleteException, InvalidMappingKeyException, EmailException {
+    public void advance() throws DeliveryIncompleteException, InvalidMappingKeyException {
 
         if (!isCarCompleteInProduction || isBatteryInFire) {
             System.out.println("Skipping complete car assembly line ");
@@ -53,7 +53,7 @@ public class CompleteAssemblyLineSequential {
         // TODO
         if (weeksRemaining == 2) {
             System.out.println("2 weeks remaining");
-            LocalDate expectedDate = this.currentProduction.addDelayInWeeksAndSendEmail(ASSEMBLY_DELAY_IN_WEEKS);
+            LocalDate expectedDate = this.currentProduction.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);
             productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
             this.weeksRemaining--;
         } else if (weeksRemaining == 1) {
