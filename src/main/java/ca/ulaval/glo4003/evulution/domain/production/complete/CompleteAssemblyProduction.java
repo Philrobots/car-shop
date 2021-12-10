@@ -3,12 +3,9 @@ package ca.ulaval.glo4003.evulution.domain.production.complete;
 import ca.ulaval.glo4003.evulution.domain.delivery.Delivery;
 import ca.ulaval.glo4003.evulution.domain.delivery.DeliveryStatus;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
-import ca.ulaval.glo4003.evulution.domain.email.EmailFactory;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
-import ca.ulaval.glo4003.evulution.domain.email.exceptions.EmailException;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class CompleteAssemblyProduction {
     private Delivery delivery;
@@ -27,8 +24,7 @@ public class CompleteAssemblyProduction {
         return productionId;
     }
 
-    public LocalDate addDelayInWeeksAndSendEmail(Integer assemblyDelayInWeeks)
-            throws EmailException {
+    public LocalDate addDelayInWeeksAndSendEmail(Integer assemblyDelayInWeeks) {
         return delivery.addDelayInWeeks(assemblyDelayInWeeks);
     }
 }

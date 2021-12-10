@@ -23,6 +23,13 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     private CarProductionRepository carProductionRepository;
     private CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
 
+    public CarAssemblyLineJIT(AssemblyLineMediator assemblyLineMediator, CarAssemblyAdapter carAssemblyAdapter, CarProductionRepository carProductionRepository, CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector) {
+        this.assemblyLineMediator = assemblyLineMediator;
+        this.carAssemblyAdapter = carAssemblyAdapter;
+        this.carProductionRepository = carProductionRepository;
+        this.carAssemblyLineJITTypeSelector = carAssemblyLineJITTypeSelector;
+    }
+
     @Override
     public void addProduction(CarProduction carProduction) throws CarNotAssociatedWithManufactureException {
         boolean hasCarBeenReplaced = carProductionRepository.replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
@@ -69,11 +76,12 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
     @Override
     public void transferWaitingList(CarAssemblyLine carAssemblyLine) {
-
+        carWaitingList = new LinkedList<>(carAssemblyLine.getWaitingList());
     }
 
     @Override
     public List<CarProduction> getWaitingList() {
+        if (isCarInProduction) carWaitingList.add(currentCarInProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carWaitingList);
         carWaitingList.clear();
 

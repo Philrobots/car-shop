@@ -42,7 +42,7 @@ public class ProductionLine {
                           CompleteAssemblyLineSequential completeAssemblyLine, ManufactureRepository manufactureRepository,
                           SaleDomainService saleDomainService, EmailFactory emailFactory,
                           BatteryProductionFactory batteryProductionFactory, CarProductionFactory carProductionFactory,
-                          CompleteAssemblyProductionFactory completeAssemblyProductionFactory) {
+                          CompleteAssemblyProductionFactory completeAssemblyProductionFactory, ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.carAssemblyLine = carAssemblyLine;
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
@@ -52,6 +52,7 @@ public class ProductionLine {
         this.batteryProductionFactory = batteryProductionFactory;
         this.carProductionFactory = carProductionFactory;
         this.completeAssemblyProductionFactory = completeAssemblyProductionFactory;
+        this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 
     public void advanceAssemblyLines() throws DeliveryIncompleteException, InvalidMappingKeyException, EmailException,

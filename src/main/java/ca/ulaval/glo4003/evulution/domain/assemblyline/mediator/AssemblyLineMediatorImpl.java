@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.evulution.domain.assemblyline.mediator;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLineType;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
+import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineJIT;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
@@ -13,13 +14,15 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
     private BatteryAssemblyLineSequential batteryAssemblyLine;
     private CompleteAssemblyLineSequential completeAssemblyLine;
     private CarAssemblyLineSequential carAssemblyLine;
+    private CarAssemblyLineJIT carAssemblyLineJIT;
     private AssemblyLineType state = AssemblyLineType.CAR;
 
     public AssemblyLineMediatorImpl(BatteryAssemblyLineSequential batteryAssemblyLine, CompleteAssemblyLineSequential completeAssemblyLine,
-                                    CarAssemblyLineSequential carAssemblyLine) {
+                                    CarAssemblyLineSequential carAssemblyLine, CarAssemblyLineJIT carAssemblyLineJIT) {
         this.batteryAssemblyLine = batteryAssemblyLine;
         this.completeAssemblyLine = completeAssemblyLine;
         this.carAssemblyLine = carAssemblyLine;
+        this.carAssemblyLineJIT = carAssemblyLineJIT;
     }
 
     @Override
@@ -44,5 +47,9 @@ public class AssemblyLineMediatorImpl implements AssemblyLineMediator {
     @Override
     public boolean shouldBatteryReactivateProduction() {
         return this.state.equals(AssemblyLineType.BATTERY) || this.state.equals(AssemblyLineType.COMPLETE);
+    }
+
+    public void switchCarAssemblyLine(){
+        if
     }
 }
