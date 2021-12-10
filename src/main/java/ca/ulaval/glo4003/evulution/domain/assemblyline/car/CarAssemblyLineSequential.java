@@ -19,18 +19,16 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
     private final CarAssemblyAdapter carAssemblyAdapter;
     private ProductionLineEmailNotifier productionLineEmailNotifier;
     private final CarProductionRepository carProductionRepository;
-    private final EmailFactory emailFactory;
     private AssemblyLineMediator assemblyLineMediator;
     private CarProduction currentCarProduction;
     private boolean isBatteryInFire = false;
     private boolean isCarInProduction = false;
 
     public CarAssemblyLineSequential(CarAssemblyAdapter carAssemblyAdapter,
-            CarProductionRepository carProductionRepository, EmailFactory emailFactory,
+            CarProductionRepository carProductionRepository,
             ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.carProductionRepository = carProductionRepository;
-        this.emailFactory = emailFactory;
         this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 
@@ -56,16 +54,10 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
         boolean isCarAssembled = currentCarProduction.advance(carAssemblyAdapter);
 
         if (isCarAssembled) {
-
             System.out.println("Car is assembled in Sequential");
             this.carProductionRepository.add(currentCarProduction);
             this.assemblyLineMediator.notify(CarAssemblyLine.class);
-
-            if (this.carProductionWaitList.isEmpty()) {
-                this.isCarInProduction = false;
-            } else {
-                setupNextProduction();
-            }
+            this.isCarInProduction = false;
         }
     }
 

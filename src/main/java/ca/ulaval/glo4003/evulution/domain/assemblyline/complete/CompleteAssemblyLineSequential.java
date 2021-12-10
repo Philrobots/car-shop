@@ -73,7 +73,7 @@ public class CompleteAssemblyLineSequential {
     public void shutdown() {
         this.isBatteryInFire = true;
         if (isCarCompleteInProduction)
-            this.waitingList.add(currentProduction);
+            this.waitingList.addFirst(currentProduction);
         this.isCarCompleteInProduction = false;
     }
 

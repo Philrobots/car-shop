@@ -13,12 +13,12 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     private LinkedList<CarProduction> carWaitingList = new LinkedList<>();
     private boolean isCarInProduction = false;
     private boolean isBatteryInFire = false;
+    private int notifyBatteryCounter = 0;
     private CarProduction currentCarInProduction;
     private AssemblyLineMediator assemblyLineMediator;
     private CarAssemblyAdapter carAssemblyAdapter;
     private CarProductionRepository carProductionRepository;
     private CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
-    private boolean notifyBattery = false;
 
     public CarAssemblyLineJIT(AssemblyLineMediator assemblyLineMediator, CarAssemblyAdapter carAssemblyAdapter,
             CarProductionRepository carProductionRepository,
@@ -38,7 +38,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
         boolean hasCarBeenReplaced = this.carProductionRepository
                 .replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
         if (hasCarBeenReplaced) {
-            this.notifyBattery = true;
+            this.notifyBatteryCounter++;
         } else {
             this.carWaitingList.add(carProduction);
         }
@@ -52,9 +52,8 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
             return;
         }
 
-        if (this.notifyBattery) {
-            this.assemblyLineMediator.notify(CarAssemblyLine.class);
-            this.notifyBattery = false;
+        if (this.notifyBatteryCounter > 0) {
+            if(this.assemblyLineMediator.notify(CarAssemblyLine.class)) this.notifyBatteryCounter--;
         }
 
         if (!this.isCarInProduction) {
@@ -74,7 +73,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
             this.carProductionRepository.add(this.currentCarInProduction);
 
             if (this.currentCarInProduction.isAssociatedWithManufacture()) {
-                this.assemblyLineMediator.notify(CarAssemblyLine.class);
+                this.notifyBatteryCounter++;
             }
 
             if (!this.carWaitingList.isEmpty()) {

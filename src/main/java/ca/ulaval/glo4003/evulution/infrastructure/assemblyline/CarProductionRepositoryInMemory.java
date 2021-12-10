@@ -31,17 +31,6 @@ public class CarProductionRepositoryInMemory implements CarProductionRepository 
     }
 
     @Override
-    public List<CarProductionWithoutManufacture> getProducedCarProductionsWithoutManufacture(CarType carType) {
-        List<CarProductionWithoutManufacture> returnList = new ArrayList<>();
-
-        for (CarProduction carProduction : vehicles.values()) {
-            if (!carProduction.isAssociatedWithManufacture())
-                returnList.add((CarProductionWithoutManufacture) carProduction);
-        }
-        return returnList;
-    }
-
-    @Override
     public boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionLinked)
             throws CarNotAssociatedWithManufactureException {
         if (!carProductionLinked.isAssociatedWithManufacture())

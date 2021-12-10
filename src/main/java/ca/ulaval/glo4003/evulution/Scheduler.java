@@ -32,7 +32,7 @@ public class Scheduler {
                     productionLine.advanceAssemblyLines();
                     invoicePayment.makePayments();
                     System.out.println(" ------------- ");
-                } catch (DeliveryIncompleteException | InvalidMappingKeyException | EmailException
+                } catch (DeliveryIncompleteException | InvalidMappingKeyException
                         | SaleNotFoundException | AccountNotFoundException
                         | CarNotAssociatedWithManufactureException e) {
                     e.printStackTrace();

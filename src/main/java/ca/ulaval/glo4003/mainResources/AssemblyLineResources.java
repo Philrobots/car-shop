@@ -41,8 +41,7 @@ public class AssemblyLineResources {
                 productionLineEmailNotifier);
 
         carAssemblyLineSequential = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter,
-                repositoryResources.getVehicleRepository(), factoryResources.getEmailFactory(),
-                productionLineEmailNotifier);
+                repositoryResources.getVehicleRepository(), productionLineEmailNotifier);
 
         this.carAssemblyLineJITTypeSelector = new CarAssemblyLineJITTypeSelector(
                 factoryResources.getCarProductionFactory());

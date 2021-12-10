@@ -30,8 +30,6 @@ class CarAssemblyLineTest {
     @Mock
     private AssemblyLineMediator assemblyLineMediator;
 
-    @Mock
-    private EmailFactory emailFactory;
 
     @Mock
     private Email email;
@@ -41,7 +39,7 @@ class CarAssemblyLineTest {
 
     @BeforeEach
     public void setup() {
-        carAssemblyLine = new CarAssemblyLineSequential(carAssemblyAdapter, carProductionRepository, emailFactory,
+        carAssemblyLine = new CarAssemblyLineSequential(carAssemblyAdapter, carProductionRepository,
                 productionLineEmailNotifier);
         carAssemblyLine.setMediator(assemblyLineMediator);
     }
