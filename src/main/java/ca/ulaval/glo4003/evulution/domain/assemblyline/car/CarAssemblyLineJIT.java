@@ -105,6 +105,10 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     public void transferAssemblyLine(CarAssemblyLine carAssemblyLine) {
         this.carWaitingList = new LinkedList<>(carAssemblyLine.getWaitingList());
         this.isBatteryInFire = carAssemblyLine.getIsBatteryInFire();
+        if (!this.carWaitingList.isEmpty()) {
+            this.currentCarInProduction = this.carWaitingList.pop();
+            this.currentCarInProduction.newCarCommand(this.carAssemblyAdapter);
+        }
     }
 
     @Override
@@ -113,6 +117,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
             this.carWaitingList.addFirst(this.currentCarInProduction);
         LinkedList<CarProduction> returnList = new LinkedList<>(this.carWaitingList);
         this.carWaitingList.clear();
+        this.isCarInProduction = false;
 
         return returnList;
     }
