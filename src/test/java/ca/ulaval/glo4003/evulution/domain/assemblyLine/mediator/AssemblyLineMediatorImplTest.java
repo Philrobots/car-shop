@@ -32,48 +32,49 @@ public class AssemblyLineMediatorImplTest {
 
     @BeforeEach
     public void setUp() {
-        assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine, carAssemblyLine);
+        this.assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine,
+                carAssemblyLine);
     }
 
-     @Test
-     public void givenAnVehicleAssemblyLineClass_whenNotify_thenShouldCallTheBatteryAssemblyLineToStartNext() {
-         // when
-         assemblyLineMediator.notify(CarAssemblyLine.class);
+    @Test
+    public void givenAnVehicleAssemblyLineClass_whenNotify_thenShouldCallTheBatteryAssemblyLineToStartNext() {
+        // when
+        this.assemblyLineMediator.notify(CarAssemblyLine.class);
 
-         // then
-         Mockito.verify(batteryAssemblyLine).startNext();
-     }
+        // then
+        Mockito.verify(this.batteryAssemblyLine).startNext();
+    }
 
-     @Test
-     public void givenAnBatteryAssemblyLineClass_whenNotify_thenShouldCallTheCompleteCarAssemblyLineToStartNext() {
-         // when
-         assemblyLineMediator.notify(BatteryAssemblyLine.class);
+    @Test
+    public void givenAnBatteryAssemblyLineClass_whenNotify_thenShouldCallTheCompleteCarAssemblyLineToStartNext() {
+        // when
+        this.assemblyLineMediator.notify(BatteryAssemblyLine.class);
 
-         // then
-         Mockito.verify(completeAssemblyLine).startNext();
-     }
+        // then
+        Mockito.verify(this.completeAssemblyLine).startNext();
+    }
 
     @Test
     public void givenAnCompleteAssemblyLineClass_whenNotify_thenShouldCallTheCompleteCarAssemblyLineToStartNext() {
         // when
-        assemblyLineMediator.notify(CompleteAssemblyLineSequential.class);
+        this.assemblyLineMediator.notify(CompleteAssemblyLineSequential.class);
 
         // then
-        Mockito.verify(carAssemblyLine).startNext();
+        Mockito.verify(this.carAssemblyLine).startNext();
     }
 
     @Test
-    public void givenCompleteCar_whenIsCarState_thenShouldBeFalse(){
-        assemblyLineMediator.notify(CarAssemblyLine.class);
+    public void givenCompleteCar_whenIsCarState_thenShouldBeFalse() {
+        this.assemblyLineMediator.notify(CarAssemblyLine.class);
 
-        assertFalse(assemblyLineMediator.isCarState());
+        assertFalse(this.assemblyLineMediator.isCarState());
     }
 
     @Test
-    public void givenCompleteCar_whenIsBatteryOrCompleteState_thenShouldBeTrue(){
-        assemblyLineMediator.notify(CarAssemblyLine.class);
+    public void givenCompleteCar_whenIsBatteryOrCompleteState_thenShouldBeTrue() {
+        this.assemblyLineMediator.notify(CarAssemblyLine.class);
 
-        assertTrue(assemblyLineMediator.isCompleteOrBatteryState());
+        assertTrue(this.assemblyLineMediator.isCompleteOrBatteryState());
     }
 
 }

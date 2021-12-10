@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine;
+package ca.ulaval.glo4003.evulution.domain.assemblyLine.Battery;
 
 import ca.ulaval.glo4003.evulution.car_manufacture.BasicBatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyLineAdapter;

@@ -62,8 +62,7 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
             this.batteryProductionsWaitingList.addFirst(batteryProduction);
         }
 
-        if (!this.batteryProductionsWaitingList.isEmpty()
-                && this.assemblyLineMediator.isCompleteOrBatteryState())
+        if (!this.batteryProductionsWaitingList.isEmpty() && this.assemblyLineMediator.isCompleteOrBatteryState())
             this.setUpNextBatteryForProduction();
     }
 

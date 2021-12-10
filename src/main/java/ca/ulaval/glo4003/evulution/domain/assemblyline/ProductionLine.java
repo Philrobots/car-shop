@@ -78,18 +78,20 @@ public class ProductionLine {
     }
 
     public void shutdown() throws AssemblyLineIsShutdownException {
-        if (this.isShutdown)
+        if (this.isShutdown) {
             throw new AssemblyLineIsShutdownException();
+        }
         this.carAssemblyLine.shutdown();
         this.batteryAssemblyLine.shutdown();
         this.completeAssemblyLine.shutdown();
         this.isShutdown = true;
-        productionLineEmailNotifier.sendFireBatteriesEmail();
+        this.productionLineEmailNotifier.sendFireBatteriesEmail();
     }
 
     public void reactivate() throws AssemblyLineIsNotShutdownException {
-        if (!this.isShutdown)
+        if (!this.isShutdown) {
             throw new AssemblyLineIsNotShutdownException();
+        }
         this.carAssemblyLine.reactivate();
         this.batteryAssemblyLine.reactivate();
         this.completeAssemblyLine.reactivate();
