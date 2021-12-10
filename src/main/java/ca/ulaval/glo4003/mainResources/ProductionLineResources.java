@@ -14,7 +14,8 @@ public class ProductionLineResources {
                 assemblyLineResources.getBatteryAssemblyLine(), assemblyLineResources.getCompleteAssemblyLine(),
                 repositoryResources.getManufactureRepository(), saleDomainServiceResources.getSaleDomainService(),
                 factoryResources.getBatteryProductionFactory(), factoryResources.getCarProductionFactory(),
-                factoryResources.getCompleteAssemblyProductionFactory(), assemblyLineResources.getProductionLineEmailNotifier()); // TODO:
+                factoryResources.getCompleteAssemblyProductionFactory(),
+                assemblyLineResources.getProductionLineEmailNotifier()); // TODO:
 
         productionSwitcher = new ProductionSwitcher(assemblyLineResources.getCarAssemblyLineJIT(),
                 assemblyLineResources.getCarAssemblyLineSequential(), productionLine,

@@ -13,10 +13,10 @@ import ca.ulaval.glo4003.evulution.service.login.dto.LoginDto;
 import ca.ulaval.glo4003.evulution.service.login.exceptions.ServiceUnableToLoginException;
 
 public class LoginService {
-    private TokenFactory tokenFactory;
-    private TokenRepository tokenRepository;
-    private AccountRepository accountRepository;
-    private TokenAssembler tokenAssembler;
+    private final TokenFactory tokenFactory;
+    private final TokenRepository tokenRepository;
+    private final AccountRepository accountRepository;
+    private final TokenAssembler tokenAssembler;
 
     public LoginService(TokenFactory tokenFactory, TokenRepository tokenRepository, AccountRepository accountRepository,
             TokenAssembler tokenAssembler) {
@@ -29,7 +29,8 @@ public class LoginService {
     public TokenDto loginCustomer(LoginDto loginDto) {
         try {
             Account account = this.accountRepository.findAccountByEmail(loginDto.email);
-            Token token = account.login(loginDto.email, loginDto.password, tokenFactory, tokenRepository);
+            Token token = account.login(loginDto.email, loginDto.password, tokenFactory);
+            this.tokenRepository.addToken(token, account.getId());
 
             return this.tokenAssembler.assembleDtoFromToken(token);
         } catch (FailedLoginException | AccountNotFoundException e) {

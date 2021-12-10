@@ -41,7 +41,7 @@ public class Manufacture {
 
     public void setCar(Car car) {
         this.car = car;
-        this.delivery.setCarTimeToProduce(car.getTimeToProduceAsInt());
+        this.delivery.setCarTimeToProduce(car.getTimeToProduce());
     }
 
     public int addBattery(Battery battery) throws CarNotChosenBeforeBatteryException {
@@ -76,7 +76,7 @@ public class Manufacture {
     }
 
     public CarProduction generateCarProduction(CarProductionFactory carProductionFactory) {
-        return carProductionFactory.create(productionId, car.getStyle(), car.getTimeToProduceAsInt());
+        return carProductionFactory.create(productionId, car.getStyle(), car.getTimeToProduce());
     }
 
     public CompleteAssemblyProduction generateCompleteAssemblyProduction(String email,

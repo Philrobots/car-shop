@@ -28,7 +28,7 @@ public class AssemblyLineResources {
 
     public AssemblyLineResources(FactoryResources factoryResources, RepositoryResources repositoryResources) {
 
-         productionLineEmailNotifier = new ProductionLineEmailNotifier(factoryResources.getEmailFactory());
+        productionLineEmailNotifier = new ProductionLineEmailNotifier(factoryResources.getEmailFactory());
 
         BatteryAssemblyLineAdapter batteryAssemblyLineAdapter = new BatteryAssemblyLineAdapter(
                 new BasicBatteryAssemblyLine(), JsonFileMapper.parseBatteries());
@@ -37,10 +37,12 @@ public class AssemblyLineResources {
                 JsonFileMapper.parseModels());
 
         batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyLineAdapter,
-                repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory(), productionLineEmailNotifier);
+                repositoryResources.getBatteryRepository(), factoryResources.getEmailFactory(),
+                productionLineEmailNotifier);
 
         carAssemblyLineSequential = new CarAssemblyLineSequential(vehicleAssemblyLineAdapter,
-                repositoryResources.getVehicleRepository(), factoryResources.getEmailFactory(), productionLineEmailNotifier);
+                repositoryResources.getVehicleRepository(), factoryResources.getEmailFactory(),
+                productionLineEmailNotifier);
 
         this.carAssemblyLineJITTypeSelector = new CarAssemblyLineJITTypeSelector(
                 factoryResources.getCarProductionFactory());
@@ -49,7 +51,8 @@ public class AssemblyLineResources {
                 repositoryResources.getVehicleRepository(), this.carAssemblyLineJITTypeSelector);
 
         completeAssemblyLine = new CompleteAssemblyLineSequential(factoryResources.getEmailFactory(),
-                repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository(), productionLineEmailNotifier);
+                repositoryResources.getVehicleRepository(), repositoryResources.getBatteryRepository(),
+                productionLineEmailNotifier);
 
         assemblyLineMediator = new AssemblyLineMediatorImpl(batteryAssemblyLine, completeAssemblyLine,
                 carAssemblyLineSequential);

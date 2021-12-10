@@ -17,18 +17,6 @@ public class Email {
         this.emailSender = emailSender;
     }
 
-    public List<String> getRecipients() {
-        return recipients;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
     public void send() throws EmailException {
         emailSender.sendEmail(recipients, subject, message);
     }

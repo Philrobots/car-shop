@@ -3,12 +3,11 @@ package ca.ulaval.glo4003.evulution.domain.car;
 import java.math.BigDecimal;
 
 public class Battery {
-    private String type;
-    private String baseNRCANRange;
-    private Integer capacity;
-    private BigDecimal price;
-    private Integer timeToProduce;
-    private boolean isAssembled = false;
+    private final String type;
+    private final String baseNRCANRange;
+    private final Integer capacity;
+    private final BigDecimal price;
+    private final Integer timeToProduce;
 
     public Battery(String type, String baseNRCANRange, Integer capacity, BigDecimal price, Integer timeToProduce) {
         this.type = type;
@@ -24,10 +23,6 @@ public class Battery {
 
     public String getType() {
         return type;
-    }
-
-    public void setBatteryAsAssembled() {
-        isAssembled = true;
     }
 
     public int getTimeToProduce() {

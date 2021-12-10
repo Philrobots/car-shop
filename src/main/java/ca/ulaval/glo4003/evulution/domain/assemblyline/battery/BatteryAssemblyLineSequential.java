@@ -22,7 +22,8 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
     private boolean isBatteryInFire = false;
 
     public BatteryAssemblyLineSequential(BatteryAssemblyAdapter batteryAssemblyAdapter,
-            BatteryProductionRepository batteryProductionRepository, EmailFactory emailFactory, ProductionLineEmailNotifier productionLineEmailNotifier) {
+            BatteryProductionRepository batteryProductionRepository, EmailFactory emailFactory,
+            ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.batteryAssemblyLineAdapter = batteryAssemblyAdapter;
         this.batteryProductionRepository = batteryProductionRepository;
         this.emailFactory = emailFactory;
@@ -64,7 +65,8 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
             this.batteryProductionsWaitingList.addFirst(batteryProduction);
         }
 
-        if (!this.batteryProductionsWaitingList.isEmpty() && this.assemblyLineMediator.shouldBatteryReactivateProduction())
+        if (!this.batteryProductionsWaitingList.isEmpty()
+                && this.assemblyLineMediator.shouldBatteryReactivateProduction())
             this.setUpNextBatteryForProduction();
     }
 

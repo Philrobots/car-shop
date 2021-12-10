@@ -15,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class TokenRepositoryInMemoryTest {
-
-    private static final String AN_EMAIL = "tiray@expat.com";
-
     @Mock
     private Token token;
 

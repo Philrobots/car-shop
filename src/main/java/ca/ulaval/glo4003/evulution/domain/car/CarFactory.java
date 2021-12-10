@@ -17,7 +17,8 @@ public class CarFactory {
         for (ModelInformationDto modelMapperDto : modelMapperDtos) {
             if (modelMapperDto.name.equals(name) && color.equals("white")) {
                 return new Car(modelMapperDto.name, modelMapperDto.style, modelMapperDto.effeciency_equivalence_rate,
-                        BigDecimal.valueOf(modelMapperDto.base_price), modelMapperDto.time_to_produce, color);
+                        BigDecimal.valueOf(modelMapperDto.base_price), Integer.parseInt(modelMapperDto.time_to_produce),
+                        color);
             }
         }
 

@@ -72,7 +72,8 @@ public class ProductionLine {
             ProductionId productionId = manufacture.setInProduction();
             this.productionLineEmailNotifier.addEmailWithProduction(productionId, email);
             this.carAssemblyLine.addProduction(manufacture.generateCarProduction(this.carProductionFactory));
-            this.batteryAssemblyLine.addProduction(manufacture.generateBatteryProduction(this.batteryProductionFactory));
+            this.batteryAssemblyLine
+                    .addProduction(manufacture.generateBatteryProduction(this.batteryProductionFactory));
             this.completeAssemblyLine.addProduction(
                     manufacture.generateCompleteAssemblyProduction(email, this.completeAssemblyProductionFactory));
             this.manufactureRepository.updateManufacture(manufactureEntry.getKey(), manufacture);

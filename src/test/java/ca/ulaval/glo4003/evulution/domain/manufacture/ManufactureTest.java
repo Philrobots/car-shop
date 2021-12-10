@@ -15,8 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class ManufactureTest {
 
@@ -25,7 +23,7 @@ public class ManufactureTest {
     AccountId AN_ACCOUNT_ID = new AccountId();
     DeliveryId A_DELIVERY_ID = new DeliveryId(123);
     int AN_ASSEMBLY_TIME_IN_WEEKS = 1;
-    Car A_CAR = new Car("binou", "binou2", 1, BigDecimal.ONE, "1", "red");
+    Car A_CAR = new Car("binou", "binou2", 1, BigDecimal.ONE, 1, "red");
     Battery A_BATTERY = new Battery("type", "123", 1, BigDecimal.ONE, 1);
 
     Delivery A_DELIVERY = new Delivery(AN_ACCOUNT_ID, A_DELIVERY_ID, AN_ASSEMBLY_TIME_IN_WEEKS);
@@ -33,11 +31,6 @@ public class ManufactureTest {
     @BeforeEach
     void setup() {
         this.manufacture = new Manufacture(A_DELIVERY);
-    }
-
-    @Test
-    void givenNoCar_whenAddBattery_thenThrowCarNotChosenBatteryException() throws CarNotChosenBeforeBatteryException {
-        when(this.manufacture.addBattery(A_BATTERY)).thenThrow(CarNotChosenBeforeBatteryException.class);
     }
 
     @Test

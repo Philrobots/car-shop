@@ -31,7 +31,8 @@ public class CompleteAssemblyLineSequential {
     private boolean isBatteryInFire = false;
 
     public CompleteAssemblyLineSequential(EmailFactory emailFactory, CarProductionRepository carProductionRepository,
-            BatteryProductionRepository batteryProductionRepository, ProductionLineEmailNotifier productionLineEmailNotifier) {
+            BatteryProductionRepository batteryProductionRepository,
+            ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.emailFactory = emailFactory;
         this.carProductionRepository = carProductionRepository;
         this.batteryProductionRepository = batteryProductionRepository;
@@ -48,7 +49,6 @@ public class CompleteAssemblyLineSequential {
             System.out.println("Skipping complete car assembly line ");
             return;
         }
-
 
         // TODO
         if (weeksRemaining == 2) {

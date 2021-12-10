@@ -27,7 +27,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
 
     public CarAssemblyLineSequential(CarAssemblyAdapter carAssemblyAdapter,
             CarProductionRepository carProductionRepository, EmailFactory emailFactory,
-                                     ProductionLineEmailNotifier productionLineEmailNotifier) {
+            ProductionLineEmailNotifier productionLineEmailNotifier) {
         this.carAssemblyAdapter = carAssemblyAdapter;
         this.carProductionRepository = carProductionRepository;
         this.emailFactory = emailFactory;

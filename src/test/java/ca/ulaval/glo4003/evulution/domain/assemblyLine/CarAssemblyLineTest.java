@@ -41,7 +41,8 @@ class CarAssemblyLineTest {
 
     @BeforeEach
     public void setup() {
-        carAssemblyLine = new CarAssemblyLineSequential(carAssemblyAdapter, carProductionRepository, emailFactory, productionLineEmailNotifier);
+        carAssemblyLine = new CarAssemblyLineSequential(carAssemblyAdapter, carProductionRepository, emailFactory,
+                productionLineEmailNotifier);
         carAssemblyLine.setMediator(assemblyLineMediator);
     }
 
