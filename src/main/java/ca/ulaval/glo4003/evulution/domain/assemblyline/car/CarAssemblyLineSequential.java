@@ -63,7 +63,7 @@ public class CarAssemblyLineSequential implements CarAssemblyLine {
 
     public void reactivate() {
         this.isBatteryInFire = false;
-        if (this.assemblyLineMediator.shouldCarReactivateProduction() && !carProductionWaitList.isEmpty())
+        if (this.assemblyLineMediator.isCarState() && !carProductionWaitList.isEmpty())
             setupNextProduction();
     }
 
