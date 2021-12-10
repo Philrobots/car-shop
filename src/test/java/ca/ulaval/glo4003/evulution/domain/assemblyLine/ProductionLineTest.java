@@ -53,16 +53,16 @@ public class ProductionLineTest {
 
     private ProductionLine productionLine;
 
-
     @BeforeEach
     void setup() {
-        this.productionLine = new ProductionLine(carAssemblyLine, batteryAssemblyLineSequential, completeAssemblyLineSequential, manufactureRepository,
-                saleDomainService, batteryProductionFactory, carProductionFactory,
-                completeAssemblyProductionFactory, productionLineEmailNotifier);
+        this.productionLine = new ProductionLine(carAssemblyLine, batteryAssemblyLineSequential,
+                completeAssemblyLineSequential, manufactureRepository, saleDomainService, batteryProductionFactory,
+                carProductionFactory, completeAssemblyProductionFactory, productionLineEmailNotifier);
     }
 
     @Test
-    public void givenAlreadyShutdown_whenShutdown_thenThrowAssemblyLineIsShutdownException() throws AssemblyLineIsShutdownException {
+    public void givenAlreadyShutdown_whenShutdown_thenThrowAssemblyLineIsShutdownException()
+            throws AssemblyLineIsShutdownException {
         this.productionLine.shutdown();
         Assertions.assertThrows(AssemblyLineIsShutdownException.class, () -> this.productionLine.shutdown());
     }
@@ -77,11 +77,12 @@ public class ProductionLineTest {
 
     @Test
     public void givenAlreadyReactivated_whenReactivate_thenThrowsAssemblyLineIsShutdownException() {
-        Assertions.assertThrows(AssemblyLineIsNotShutdownException .class, () -> this.productionLine.reactivate());
+        Assertions.assertThrows(AssemblyLineIsNotShutdownException.class, () -> this.productionLine.reactivate());
     }
 
     @Test
-    public void whenReactivate_thenReactivateIsCalledForEveryAssemblyLine() throws AssemblyLineIsShutdownException, AssemblyLineIsNotShutdownException {
+    public void whenReactivate_thenReactivateIsCalledForEveryAssemblyLine()
+            throws AssemblyLineIsShutdownException, AssemblyLineIsNotShutdownException {
         this.productionLine.shutdown();
 
         this.productionLine.reactivate();

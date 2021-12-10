@@ -49,12 +49,12 @@ public class ProductionLineSwitcherTest {
     @Test
     public void givenBatteryAssemblyLineType_whenSwitchProduction_thenShouldThrow() {
         // when
-        Executable switcher = () -> this.productionSwitcher.switchProduction(BATTERY_ASSEMBLY_LINE_TYPE, JIT_PRODUCTION_TYPE);
+        Executable switcher = () -> this.productionSwitcher.switchProduction(BATTERY_ASSEMBLY_LINE_TYPE,
+                JIT_PRODUCTION_TYPE);
 
         // then
         Assertions.assertThrows(InvalidAssemblyLineException.class, switcher);
     }
-
 
     @Test
     public void givenCarAssemblyTypeWithProductionTypeToJITAndCurrentTypeToJIT_whenSwitchProduction_thenShouldThrow() {
@@ -62,7 +62,8 @@ public class ProductionLineSwitcherTest {
         this.productionSwitcher.setCurrentProductionType(JIT_PRODUCTION_TYPE);
 
         // when
-        Executable switcher = () -> this.productionSwitcher.switchProduction(CAR_ASSEMBLY_LINE_TYPE, JIT_PRODUCTION_TYPE);
+        Executable switcher = () -> this.productionSwitcher.switchProduction(CAR_ASSEMBLY_LINE_TYPE,
+                JIT_PRODUCTION_TYPE);
 
         // then
         Assertions.assertThrows(InvalidAssemblyLineOrderException.class, switcher);
@@ -74,19 +75,21 @@ public class ProductionLineSwitcherTest {
         this.productionSwitcher.setCurrentProductionType(SEQUENTIAL_PRODUCTION_TYPE);
 
         // when
-        Executable switcher = () -> this.productionSwitcher.switchProduction(CAR_ASSEMBLY_LINE_TYPE, SEQUENTIAL_PRODUCTION_TYPE);
+        Executable switcher = () -> this.productionSwitcher.switchProduction(CAR_ASSEMBLY_LINE_TYPE,
+                SEQUENTIAL_PRODUCTION_TYPE);
 
         // then
         Assertions.assertThrows(InvalidAssemblyLineOrderException.class, switcher);
     }
 
     @Test
-    public void givenCarAssemblyTypeWithProductionTypeToSequentialAndCurrentTypeToJIT_whenSwitchProduction_thenShouldChangeCurrentProductionType() throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
+    public void givenCarAssemblyTypeWithProductionTypeToSequentialAndCurrentTypeToJIT_whenSwitchProduction_thenShouldChangeCurrentProductionType()
+            throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
         // given
         this.productionSwitcher.setCurrentProductionType(JIT_PRODUCTION_TYPE);
 
         // when
-         this.productionSwitcher.switchProduction(CAR_ASSEMBLY_LINE_TYPE, SEQUENTIAL_PRODUCTION_TYPE);
+        this.productionSwitcher.switchProduction(CAR_ASSEMBLY_LINE_TYPE, SEQUENTIAL_PRODUCTION_TYPE);
 
         // then
         ProductionType currentProductionType = this.productionSwitcher.getCurrentProductionType();
@@ -94,7 +97,8 @@ public class ProductionLineSwitcherTest {
     }
 
     @Test
-    public void givenCarAssemblyTypeWithProductionTypeToSequentialAndCurrentTypeToJIT_whenSwitchProduction_thenShouldSetSequentialAssemblyLine() throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
+    public void givenCarAssemblyTypeWithProductionTypeToSequentialAndCurrentTypeToJIT_whenSwitchProduction_thenShouldSetSequentialAssemblyLine()
+            throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
         // given
         this.productionSwitcher.setCurrentProductionType(JIT_PRODUCTION_TYPE);
 
@@ -107,7 +111,8 @@ public class ProductionLineSwitcherTest {
     }
 
     @Test
-    public void givenCarAssemblyTypeWithProductionTypeToJITAndCurrentTypeToSequential_whenSwitchProduction_thenShouldHaveTheRightProductionType() throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
+    public void givenCarAssemblyTypeWithProductionTypeToJITAndCurrentTypeToSequential_whenSwitchProduction_thenShouldHaveTheRightProductionType()
+            throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
         // given
         this.productionSwitcher.setCurrentProductionType(SEQUENTIAL_PRODUCTION_TYPE);
 
@@ -120,7 +125,8 @@ public class ProductionLineSwitcherTest {
     }
 
     @Test
-    public void givenCarAssemblyTypeWithProductionTypeToJITAndCurrentTypeToSequential_whenSwitchProduction_thenShouldSetSequentialAssemblyLine() throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
+    public void givenCarAssemblyTypeWithProductionTypeToJITAndCurrentTypeToSequential_whenSwitchProduction_thenShouldSetSequentialAssemblyLine()
+            throws InvalidAssemblyLineException, InvalidAssemblyLineOrderException {
         // given
         this.productionSwitcher.setCurrentProductionType(SEQUENTIAL_PRODUCTION_TYPE);
 

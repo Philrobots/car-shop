@@ -63,8 +63,8 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void whenAddCustomer_thenAccountRepositoryAddsAccount() throws InvalidDateFormatException,
-            BadInputParameterException, AccountAlreadyExistsException {
+    public void whenAddCustomer_thenAccountRepositoryAddsAccount()
+            throws InvalidDateFormatException, BadInputParameterException, AccountAlreadyExistsException {
         // given
         BDDMockito.given(customerFactory.create(customerDto.name, customerDto.birthdate, customerDto.email,
                 customerDto.password, customerDto.sex)).willReturn(customer);
@@ -102,8 +102,7 @@ public class CustomerServiceTest {
 
     @Test
     public void givenAccountAlreadyExistsException_whenAddCustomer_thenServiceCustomerAlreadyExistsException()
-            throws InvalidDateFormatException, BadInputParameterException,
-            AccountAlreadyExistsException {
+            throws InvalidDateFormatException, BadInputParameterException, AccountAlreadyExistsException {
         // given
         BDDMockito.given(customerFactory.create(customerDto.name, customerDto.birthdate, customerDto.email,
                 customerDto.password, customerDto.sex)).willReturn(customer);
