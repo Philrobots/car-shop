@@ -1,6 +1,7 @@
-package ca.ulaval.glo4003.evulution.infrastructure.assemblyline;
+package ca.ulaval.glo4003.evulution.infrastructure.assemblyline.car;
 
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
+import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.CarProductionRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
