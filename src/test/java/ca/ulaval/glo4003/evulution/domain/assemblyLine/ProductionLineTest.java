@@ -6,12 +6,17 @@ import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsNotShutdownException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.AssemblyLineIsShutdownException;
+import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ManufactureRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
+import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
+import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,6 +101,15 @@ public class ProductionLineTest {
     public void whenSetCarAssemblyLine_thenCallTransferAssemblyLine() {
         this.productionLine.setCarAssemblyLine(carAssemblyLine);
         verify(carAssemblyLine).transferAssemblyLine(carAssemblyLine);
+    }
+
+    @Test
+    public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines() throws InvalidMappingKeyException, DeliveryIncompleteException, CarNotAssociatedWithManufactureException, SaleNotFoundException, AccountNotFoundException {
+        this.productionLine.advanceAssemblyLines();
+        verify(carAssemblyLine).advance();
+        verify(batteryAssemblyLineSequential).advance();
+        verify(completeAssemblyLineSequential).advance();
+
     }
 
 }
