@@ -1,7 +1,5 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine.car;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;

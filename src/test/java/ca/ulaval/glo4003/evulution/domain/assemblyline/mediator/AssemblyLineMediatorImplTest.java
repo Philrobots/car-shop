@@ -1,11 +1,10 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine.mediator;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.mediator;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediatorImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

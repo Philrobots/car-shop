@@ -17,7 +17,7 @@ public class CompleteAssemblyLineSequential {
     private static final double FIFTY_PERCENT_CHANCE = 0.5;
     private static final Integer ASSEMBLY_DELAY_IN_WEEKS = 1;
     private static final Integer RANDOM_CASE_OF_TWO_WEEKS_DELIVERY = 2;
-    private static final Integer RANDOM_CASE_OF_NORMAL_ONE_WEEK_DELIVERY = 1;
+    private static final Integer CASE_OF_NORMAL_ONE_WEEK_DELIVERY = 1;
     private static final Integer ASSEMBLY_FINISHED = 0;
 
     private final CarProductionRepository carProductionRepository;
@@ -54,7 +54,7 @@ public class CompleteAssemblyLineSequential {
             LocalDate expectedDate = this.currentProduction.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);
             productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
             this.weeksRemaining--;
-        } else if (weeksRemaining == RANDOM_CASE_OF_NORMAL_ONE_WEEK_DELIVERY) {
+        } else if (weeksRemaining == CASE_OF_NORMAL_ONE_WEEK_DELIVERY) {
             System.out.println("1 weeks remaining");
             this.weeksRemaining--;
         } else if (weeksRemaining == ASSEMBLY_FINISHED) {

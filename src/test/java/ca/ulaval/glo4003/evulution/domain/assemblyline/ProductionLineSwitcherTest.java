@@ -1,9 +1,5 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine;
+package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.AssemblyLineType;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionSwitcher;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionType;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.InvalidAssemblyLineException;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.exceptions.InvalidAssemblyLineOrderException;

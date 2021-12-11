@@ -1,7 +1,6 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine.Battery;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.battery;
 
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.adapter.BatteryAssemblyAdapter;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProduction;
@@ -15,15 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mockito;
 import org.mockito.BDDMockito;
 
-import org.junit.jupiter.api.Assertions;
-
 @ExtendWith(MockitoExtension.class)
 class BatteryAssemblyLineTest {
 
     private static final int TIME_IN_WEEK = 1;
-    private static final String A_BATTERY_TYPE = "type";
-    private static final String AN_EMAIL = "email@email.com";
-    private static final Integer A_PRODUCTION_TIME = 2;
 
     @Mock
     private ProductionId productionId;

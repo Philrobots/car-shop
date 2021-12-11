@@ -1,6 +1,5 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine.car;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLineJITTypeSelector;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,5 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine;
+package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
