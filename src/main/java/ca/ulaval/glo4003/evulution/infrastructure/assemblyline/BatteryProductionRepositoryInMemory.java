@@ -27,8 +27,9 @@ public class BatteryProductionRepositoryInMemory implements BatteryProductionRep
     }
 
     public List<BatteryProduction> getAndSendToProduction() {
-        if (batteries.isEmpty())
+        if (batteries.isEmpty()) {
             return new ArrayList<>();
+        }
         List<BatteryProduction> returnedList = new ArrayList<>(batteries.values());
         batteries.clear();
         return returnedList;
