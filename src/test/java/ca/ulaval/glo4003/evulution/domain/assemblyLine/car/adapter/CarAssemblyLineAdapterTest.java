@@ -27,21 +27,19 @@ public class CarAssemblyLineAdapterTest {
     private static final String A_VEHICLE_TYPE = "Vandry";
 
     private CarAssemblyLineAdapter vehicleAssemblyLineAdapter;
+    private ModelInformationDto modelInformationDto = new ModelInformationDto();
 
     @Mock
     private BasicVehicleAssemblyLine basicVehicleAssemblyLine;
 
-    @Mock
-    private ModelInformationDto modelInformationDto;
 
     @BeforeEach
     public void setUp() {
-        BDDMockito.given(modelInformationDto.time_to_produce).willReturn(A_TIME_TO_PRODUCE);
-        BDDMockito.given(modelInformationDto.name).willReturn(A_VEHICLE_TYPE);
+        modelInformationDto.time_to_produce = A_TIME_TO_PRODUCE;
+        modelInformationDto.style = A_VEHICLE_TYPE;
         List<ModelInformationDto> modelInformationDtos = List.of(modelInformationDto);
         vehicleAssemblyLineAdapter = new CarAssemblyLineAdapter(basicVehicleAssemblyLine, modelInformationDtos);
     }
-
     @Test
     public void whenAdvance_thenVehicleAssemblyLineAdvances() {
         vehicleAssemblyLineAdapter.advance();
@@ -69,7 +67,6 @@ public class CarAssemblyLineAdapterTest {
 
          // then
          verify(basicVehicleAssemblyLine).newCarCommand(any(), any());
-
      }
 
 }
