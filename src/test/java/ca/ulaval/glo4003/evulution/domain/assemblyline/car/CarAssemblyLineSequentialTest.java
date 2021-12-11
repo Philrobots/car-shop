@@ -25,8 +25,10 @@ class CarAssemblyLineSequentialTest {
     private final ProductionId ANOTHER_PRODUCTION_ID = new ProductionId();
     private final String A_CAR_STYLE = "BLUE";
 
-    private final CarProduction VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(A_PRODUCTION_ID, A_CAR_STYLE, A_PRODUCTION_TIME);
-    private final CarProduction ANOTHER_VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(ANOTHER_PRODUCTION_ID, A_CAR_STYLE, A_PRODUCTION_TIME);
+    private final CarProduction VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(A_PRODUCTION_ID,
+            A_CAR_STYLE, A_PRODUCTION_TIME);
+    private final CarProduction ANOTHER_VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(
+            ANOTHER_PRODUCTION_ID, A_CAR_STYLE, A_PRODUCTION_TIME);
 
     private CarAssemblyLineSequential carAssemblyLine;
 
@@ -54,7 +56,6 @@ class CarAssemblyLineSequentialTest {
                 productionLineEmailNotifier);
         carAssemblyLine.setMediator(assemblyLineMediator);
     }
-
 
     @Test
     public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
