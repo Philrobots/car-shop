@@ -42,36 +42,40 @@ class CompleteAssemblyLineSequentialTest {
 
     @BeforeEach
     public void setUp() {
-        completeAssemblyLine = new CompleteAssemblyLineSequential(carProductionRepository, batteryProductionRepository, productionLineEmailNotifier);
+        completeAssemblyLine = new CompleteAssemblyLineSequential(carProductionRepository, batteryProductionRepository,
+                productionLineEmailNotifier);
         completeAssemblyLine.setMediator(assemblyLineMediator);
     }
 
-     @Test
-     public void givenValidProduction_whenAdvance_thenMediatorNotifies() throws InvalidMappingKeyException, DeliveryIncompleteException {
+    @Test
+    public void givenValidProduction_whenAdvance_thenMediatorNotifies()
+            throws InvalidMappingKeyException, DeliveryIncompleteException {
         // then
-         completeAssemblyLine.addProduction(completeAssemblyProduction);
-         completeAssemblyLine.startNext();
-         completeAssemblyLine.advance();
-         completeAssemblyLine.advance();
-         completeAssemblyLine.advance();
+        completeAssemblyLine.addProduction(completeAssemblyProduction);
+        completeAssemblyLine.startNext();
+        completeAssemblyLine.advance();
+        completeAssemblyLine.advance();
+        completeAssemblyLine.advance();
 
-         BDDMockito.verify(assemblyLineMediator).notify(CompleteAssemblyLineSequential.class);
-     }
-
-     @Test
-     public void givenValidProduction_whenAdvance_thenProductionShips() throws InvalidMappingKeyException, DeliveryIncompleteException {
-         // then
-         completeAssemblyLine.addProduction(completeAssemblyProduction);
-         completeAssemblyLine.startNext();
-         completeAssemblyLine.advance();
-         completeAssemblyLine.advance();
-         completeAssemblyLine.advance();
-
-         BDDMockito.verify(completeAssemblyProduction).ship();
-     }
+        BDDMockito.verify(assemblyLineMediator).notify(CompleteAssemblyLineSequential.class);
+    }
 
     @Test
-    public void givenValidProduction_whenAdvance_thenCarProductionRepoRemoves() throws InvalidMappingKeyException, DeliveryIncompleteException {
+    public void givenValidProduction_whenAdvance_thenProductionShips()
+            throws InvalidMappingKeyException, DeliveryIncompleteException {
+        // then
+        completeAssemblyLine.addProduction(completeAssemblyProduction);
+        completeAssemblyLine.startNext();
+        completeAssemblyLine.advance();
+        completeAssemblyLine.advance();
+        completeAssemblyLine.advance();
+
+        BDDMockito.verify(completeAssemblyProduction).ship();
+    }
+
+    @Test
+    public void givenValidProduction_whenAdvance_thenCarProductionRepoRemoves()
+            throws InvalidMappingKeyException, DeliveryIncompleteException {
 
         // then
         when(completeAssemblyProduction.getProductionId()).thenReturn(productionId);
@@ -85,7 +89,8 @@ class CompleteAssemblyLineSequentialTest {
     }
 
     @Test
-    public void givenValidProduction_whenAdvance_thenBatteryProductionRepoRemoves() throws InvalidMappingKeyException, DeliveryIncompleteException {
+    public void givenValidProduction_whenAdvance_thenBatteryProductionRepoRemoves()
+            throws InvalidMappingKeyException, DeliveryIncompleteException {
         // then
         when(completeAssemblyProduction.getProductionId()).thenReturn(productionId);
         completeAssemblyLine.addProduction(completeAssemblyProduction);

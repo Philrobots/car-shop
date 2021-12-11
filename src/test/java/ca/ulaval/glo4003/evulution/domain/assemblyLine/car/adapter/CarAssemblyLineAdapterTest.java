@@ -32,7 +32,6 @@ public class CarAssemblyLineAdapterTest {
     @Mock
     private BasicVehicleAssemblyLine basicVehicleAssemblyLine;
 
-
     @BeforeEach
     public void setUp() {
         modelInformationDto.time_to_produce = A_TIME_TO_PRODUCE;
@@ -40,6 +39,7 @@ public class CarAssemblyLineAdapterTest {
         List<ModelInformationDto> modelInformationDtos = List.of(modelInformationDto);
         vehicleAssemblyLineAdapter = new CarAssemblyLineAdapter(basicVehicleAssemblyLine, modelInformationDtos);
     }
+
     @Test
     public void whenAdvance_thenVehicleAssemblyLineAdvances() {
         vehicleAssemblyLineAdapter.advance();
@@ -47,26 +47,25 @@ public class CarAssemblyLineAdapterTest {
         Mockito.verify(basicVehicleAssemblyLine).advance();
     }
 
+    @Test
+    public void whenGetStatus_thenGetBuildStatusIsCalled() {
+        // given
+        when(basicVehicleAssemblyLine.getBuildStatus(any())).thenReturn(BuildStatus.RECEIVED);
 
-     @Test
-     public void whenGetStatus_thenGetBuildStatusIsCalled() {
-         // given
-         when(basicVehicleAssemblyLine.getBuildStatus(any())).thenReturn(BuildStatus.RECEIVED);
+        // when
+        vehicleAssemblyLineAdapter.isAssembled(A_PRODUCTION_ID);
 
-         // when
-         vehicleAssemblyLineAdapter.isAssembled(A_PRODUCTION_ID);
+        // then
+        verify(basicVehicleAssemblyLine).getBuildStatus(any());
+    }
 
-         // then
-         verify(basicVehicleAssemblyLine).getBuildStatus(any());
-     }
+    @Test
+    public void whenNewVehicleCommand_thenNewCarCommandIsCalledWithGoodParameters() {
+        // when
+        vehicleAssemblyLineAdapter.newVehicleCommand(A_PRODUCTION_ID, A_VEHICLE_TYPE);
 
-     @Test
-     public void whenNewVehicleCommand_thenNewCarCommandIsCalledWithGoodParameters() {
-         // when
-         vehicleAssemblyLineAdapter.newVehicleCommand(A_PRODUCTION_ID, A_VEHICLE_TYPE);
-
-         // then
-         verify(basicVehicleAssemblyLine).newCarCommand(any(), any());
-     }
+        // then
+        verify(basicVehicleAssemblyLine).newCarCommand(any(), any());
+    }
 
 }

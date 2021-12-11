@@ -73,7 +73,7 @@ public class ProductionLineTest {
 
     @Test
     public void whenShutdown_thenAllAssemblyLinesAreShutdownAndEmailIsSent() throws AssemblyLineIsShutdownException {
-       // when
+        // when
         this.productionLine.shutdown();
 
         // then
@@ -112,7 +112,9 @@ public class ProductionLineTest {
     }
 
     @Test
-    public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines() throws InvalidMappingKeyException, DeliveryIncompleteException, CarNotAssociatedWithManufactureException, SaleNotFoundException, AccountNotFoundException {
+    public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines()
+            throws InvalidMappingKeyException, DeliveryIncompleteException, CarNotAssociatedWithManufactureException,
+            SaleNotFoundException, AccountNotFoundException {
         // when
         this.productionLine.advanceAssemblyLines();
 
