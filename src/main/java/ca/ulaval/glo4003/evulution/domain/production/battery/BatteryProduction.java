@@ -18,7 +18,6 @@ public class BatteryProduction {
         return productionId;
     }
 
-
     public void newBatteryCommand(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
         batteryAssemblyLineAdapter.newBatteryCommand(this.productionId, this.batteryType);
     }

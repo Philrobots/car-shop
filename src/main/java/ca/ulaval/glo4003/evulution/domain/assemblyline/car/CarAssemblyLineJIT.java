@@ -48,7 +48,6 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
     public void advance() {
 
         if (this.isBatteryInFire) {
-            System.out.println("Skipping Car assembly");
             return;
         }
 
@@ -62,7 +61,6 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
         }
 
         if (!this.isCarInProduction) {
-            System.out.println("No car in production, picking a new Car");
             this.currentCarInProduction = this.carAssemblyLineJITTypeSelector.getNextCarProduction();
             this.currentCarInProduction.newCarCommand(this.carAssemblyAdapter);
             this.isCarInProduction = true;
@@ -70,10 +68,7 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
         boolean carFinished = currentCarInProduction.advance(carAssemblyAdapter);
 
-        System.out.println("Building car Just in time");
-
         if (carFinished) {
-            System.out.println("Car is finished just in time");
 
             this.carProductionRepository.add(this.currentCarInProduction);
 
@@ -83,7 +78,6 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
             if (!this.carWaitingList.isEmpty()) {
                 this.currentCarInProduction = this.carWaitingList.pop();
-                System.out.println("Picking new car in waiting list just in time");
                 this.currentCarInProduction.newCarCommand(this.carAssemblyAdapter);
             } else {
                 this.isCarInProduction = false;
@@ -103,7 +97,6 @@ public class CarAssemblyLineJIT implements CarAssemblyLine {
 
     @Override
     public void startNext() {
-
     }
 
     @Override

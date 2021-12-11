@@ -67,7 +67,7 @@ public class CarAssemblyLineJITTest {
         // when
         this.carAssemblyLineJIT.transferAssemblyLine(otherAssemblyLine);
 
-        //then
+        // then
         verify(otherAssemblyLine).getIsBatteryInFire();
         verify(otherAssemblyLine).getWaitingList();
     }
@@ -83,10 +83,12 @@ public class CarAssemblyLineJITTest {
     }
 
     @Test
-    public void givenWaitingListIsNotEmpty_whenCarFinished_CarProductionAddsCarCommand() throws CarNotAssociatedWithManufactureException {
+    public void givenWaitingListIsNotEmpty_whenCarFinished_CarProductionAddsCarCommand()
+            throws CarNotAssociatedWithManufactureException {
         BDDMockito.given(mockedCarProduction.advance(carAssemblyAdapter)).willReturn(true);
         BDDMockito.given(carAssemblyLineJITTypeSelector.getNextCarProduction()).willReturn(mockedCarProduction);
-        BDDMockito.given(carProductionRepository.replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction)).willReturn(false);
+        BDDMockito.given(carProductionRepository.replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction))
+                .willReturn(false);
 
         this.carAssemblyLineJIT.addProduction(carProduction);
         this.carAssemblyLineJIT.advance();

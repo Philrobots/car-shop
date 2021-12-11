@@ -41,13 +41,11 @@ public class ProductionSwitcher {
                 this.currentProductionType = ProductionType.SEQUENTIAL;
                 this.productionLine.setCarAssemblyLine(this.carAssemblyLineSequential);
                 this.assemblyLineMediatorSwitcher.setCarAssemblyLine(this.carAssemblyLineSequential);
-                System.out.println("Switching to sequential");
                 return;
             } else if (currentProductionType.equals(ProductionType.SEQUENTIAL)) {
                 this.currentProductionType = ProductionType.JIT;
                 this.productionLine.setCarAssemblyLine(this.carAssemblyLineJustInTime);
                 this.assemblyLineMediatorSwitcher.setCarAssemblyLine(this.carAssemblyLineJustInTime);
-                System.out.println("Switching to Just in time");
                 return;
             }
         }

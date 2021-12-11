@@ -38,31 +38,27 @@ public class CompleteAssemblyLineSequential {
     }
 
     public void addProduction(CompleteAssemblyProduction completeAssemblyProduction) {
-        waitingList.add(completeAssemblyProduction);
+        this.waitingList.add(completeAssemblyProduction);
     }
 
     public void advance() throws DeliveryIncompleteException {
 
-        if (!isCarCompleteInProduction || isBatteryInFire) {
-            System.out.println("Skipping complete car assembly line ");
+        if (!this.isCarCompleteInProduction || this.isBatteryInFire) {
             return;
         }
 
         if (weeksRemaining == RANDOM_CASE_OF_TWO_WEEKS_DELIVERY) {
-            System.out.println("2 weeks remaining");
             LocalDate expectedDate = this.currentProduction.addDelayInWeeks(ASSEMBLY_DELAY_IN_WEEKS);
-            productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
+            this.productionLineEmailNotifier.sendAssemblyDelayEmail(currentProduction.getProductionId(), expectedDate);
             this.weeksRemaining--;
         } else if (weeksRemaining == CASE_OF_NORMAL_ONE_WEEK_DELIVERY) {
-            System.out.println("1 weeks remaining");
             this.weeksRemaining--;
         } else if (weeksRemaining == ASSEMBLY_FINISHED) {
-            System.out.println("Car is done");
             this.currentProduction.ship();
             ProductionId productionId = currentProduction.getProductionId();
             this.carProductionRepository.remove(productionId);
             this.batteryProductionRepository.remove(productionId);
-            assemblyLineMediator.notify(this.getClass());
+            this.assemblyLineMediator.notify(this.getClass());
             this.isCarCompleteInProduction = false;
         }
     }
@@ -83,7 +79,7 @@ public class CompleteAssemblyLineSequential {
         if (this.isBatteryInFire)
             return;
 
-        setUpForProduction();
+        this.setUpForProduction();
     }
 
     private void setUpForProduction() {
@@ -91,7 +87,7 @@ public class CompleteAssemblyLineSequential {
         this.weeksRemaining = Math.random() < FIFTY_PERCENT_CHANCE ? ASSEMBLY_DELAY_IN_WEEKS * 2
                 : ASSEMBLY_DELAY_IN_WEEKS;
 
-        productionLineEmailNotifier.sendAssemblyStartedEmail(currentProduction.getProductionId(), weeksRemaining);
+        this.productionLineEmailNotifier.sendAssemblyStartedEmail(currentProduction.getProductionId(), weeksRemaining);
 
         this.isCarCompleteInProduction = true;
     }

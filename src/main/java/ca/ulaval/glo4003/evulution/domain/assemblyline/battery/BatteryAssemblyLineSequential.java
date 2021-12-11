@@ -33,15 +33,12 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
 
     public void advance() {
         if (!this.isBatteryInProduction || this.isBatteryInFire) {
-            System.out.println("Skipping Battery");
             return;
         }
 
-        System.out.println("Building Battery");
         boolean isBatteryAssembled = currentBatteryProduction.advance(batteryAssemblyLineAdapter);
 
         if (isBatteryAssembled) {
-            System.out.println("Battery is assembled");
             this.batteryProductionRepository.add(currentBatteryProduction);
             this.assemblyLineMediator.notify(BatteryAssemblyLine.class);
             this.isBatteryInProduction = false;
