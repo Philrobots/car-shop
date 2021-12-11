@@ -1,4 +1,5 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
+
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
@@ -23,8 +24,8 @@ class CarAssemblyLineSequentialTest {
     private final ProductionId A_PRODUCTION_ID = new ProductionId();
     private final String A_CAR_STYLE = "BLUE";
 
-    private final CarProduction VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(A_PRODUCTION_ID, A_CAR_STYLE, A_PRODUCTION_TIME);
-
+    private final CarProduction VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(A_PRODUCTION_ID,
+            A_CAR_STYLE, A_PRODUCTION_TIME);
 
     private CarAssemblyLineSequential carAssemblyLine;
 
@@ -50,43 +51,43 @@ class CarAssemblyLineSequentialTest {
         carAssemblyLine.setMediator(assemblyLineMediator);
     }
 
-     @Test
-     public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
-         // when
-         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
-         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+    @Test
+    public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
+        // when
+        carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+        carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
-         // then
-         verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
-     }
+        // then
+        verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
+    }
 
-     @Test
-     public void givenNoProduction_whenAdvance_thenDoesNothing() {
-         // when
-         carAssemblyLine.advance();
+    @Test
+    public void givenNoProduction_whenAdvance_thenDoesNothing() {
+        // when
+        carAssemblyLine.advance();
 
-         // then
-         verify(carAssemblyAdapter, times(0)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
-         verify(carAssemblyAdapter, times(0)).advance();
-         verify(assemblyLineMediator, times(0)).notify(CarAssemblyLine.class);
-     }
+        // then
+        verify(carAssemblyAdapter, times(0)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
+        verify(carAssemblyAdapter, times(0)).advance();
+        verify(assemblyLineMediator, times(0)).notify(CarAssemblyLine.class);
+    }
 
-//     @Test
-//     public void givenAProduction_whenAdvance_thenGetsStatusAndNotifies() {
-//         // given
-////         when(carAssemblyAdapter.getStatus(A_SALE_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
-////         when(emailFactory.createVehicleInProductionEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
-//         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
-//
-//         // when
-//         carAssemblyLine.advance();
-//
-//         // then
-//         verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
-////         verify(carAssemblyAdapter, times(1)).getStatus(A_SALE_ID);
-//         verify(carAssemblyAdapter, times(1)).advance();
-//         verify(assemblyLineMediator, times(1)).notify(CarAssemblyLine.class);
-//     }
+    // @Test
+    // public void givenAProduction_whenAdvance_thenGetsStatusAndNotifies() {
+    // // given
+    //// when(carAssemblyAdapter.getStatus(A_SALE_ID)).thenReturn(AssemblyStatus.ASSEMBLED);
+    //// when(emailFactory.createVehicleInProductionEmail(List.of(AN_EMAIL), A_PRODUCTION_TIME)).thenReturn(email);
+    // carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+    //
+    // // when
+    // carAssemblyLine.advance();
+    //
+    // // then
+    // verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
+    //// verify(carAssemblyAdapter, times(1)).getStatus(A_SALE_ID);
+    // verify(carAssemblyAdapter, times(1)).advance();
+    // verify(assemblyLineMediator, times(1)).notify(CarAssemblyLine.class);
+    // }
 
     // @Test
     // public void whenAdvance_thenAddsInVehicleRepository() {

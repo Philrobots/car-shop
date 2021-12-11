@@ -41,11 +41,10 @@ class BatteryAssemblyLineTest {
 
     @BeforeEach
     public void setup() {
-        this.batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyAdapter, batteryProductionRepository,
-                productionLineEmailNotifier);
+        this.batteryAssemblyLine = new BatteryAssemblyLineSequential(batteryAssemblyAdapter,
+                batteryProductionRepository, productionLineEmailNotifier);
         this.batteryAssemblyLine.setMediator(assemblyLineMediator);
     }
-
 
     @Test
     public void givenABatteryProduction_whenStartNext_thenCurrentBatteryProduction_thenShouldAddNewCommand() {
@@ -72,7 +71,6 @@ class BatteryAssemblyLineTest {
         // when
         Mockito.verify(this.productionLineEmailNotifier).sendBatteryStartedEmail(productionId, TIME_IN_WEEK);
     }
-
 
     @Test
     public void whenReactivate_thenCallTheRepositoryToGetAndSendToProduction() {
