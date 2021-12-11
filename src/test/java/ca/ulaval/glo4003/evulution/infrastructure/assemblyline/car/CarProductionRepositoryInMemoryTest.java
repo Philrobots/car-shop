@@ -4,10 +4,12 @@ import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.CarProductionRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -30,11 +32,18 @@ public class CarProductionRepositoryInMemoryTest {
     }
 
     @Test
-    public void givenEmptyVehicleRepositoryInMemory_whenRemove_thenThrowsInvalidMappingKeyException() {
-        // when
-        Executable result = () -> vehicleRepositoryInMemory.remove(productionId);
+    public void whenAddCarProduction_thenShouldNotThrow() {
+        Assertions.assertDoesNotThrow(() -> this.vehicleRepositoryInMemory.add(carProduction));
+    }
+
+    @Test
+    public void givenACarProduction_whenRemoveCarProduction_thenShouldNotThrow() {
+        // given
+        BDDMockito.given(this.carProduction.getProductionId()).willReturn(productionId);
+        this.vehicleRepositoryInMemory.add(carProduction);
 
         // then
-        assertThrows(InvalidMappingKeyException.class, result);
+        Assertions.assertDoesNotThrow(() -> this.vehicleRepositoryInMemory.remove(productionId));
     }
+
 }

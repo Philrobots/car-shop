@@ -52,8 +52,8 @@ public class ProductionLine {
         this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 
-    public void advanceAssemblyLines() throws DeliveryIncompleteException,
-            SaleNotFoundException, AccountNotFoundException, CarNotAssociatedWithManufactureException {
+    public void advanceAssemblyLines() throws DeliveryIncompleteException, SaleNotFoundException,
+            AccountNotFoundException, CarNotAssociatedWithManufactureException {
         this.addNewManufactureToProduction();
         this.carAssemblyLine.advance();
         this.batteryAssemblyLine.advance();

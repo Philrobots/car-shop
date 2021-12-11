@@ -31,15 +31,6 @@ public class BatteryProductionRepositoryInMemoryTest {
     }
 
     @Test
-    public void givenEmptyBatteryRepositoryInMemory_whenRemove_thenThrowsInvalidMappingKeyException() {
-        // when
-        Executable result = () -> batteryRepositoryInMemory.remove(productionId);
-
-        // then
-        assertThrows(InvalidMappingKeyException.class, result);
-    }
-
-    @Test
     public void givenABatteryProduction_whenAdd_thenShouldReturnTheBatteryProduction() {
         // given
         BDDMockito.given(this.batteryProduction.getProductionId()).willReturn(productionId);
