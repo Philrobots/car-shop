@@ -41,7 +41,7 @@ public class BatteryProductionRepositoryInMemoryTest {
 
     @Test
     public void givenABatteryProduction_whenAdd_thenShouldReturnTheBatteryProduction() {
-        //  given
+        // given
         BDDMockito.given(this.batteryProduction.getProductionId()).willReturn(productionId);
 
         // when
@@ -52,7 +52,8 @@ public class BatteryProductionRepositoryInMemoryTest {
     }
 
     @Test
-    public void givenABatteryProduction_whenAddThenRemove_thenShouldNotContainsANyBatteryProduction() throws InvalidMappingKeyException {
+    public void givenABatteryProduction_whenAddThenRemove_thenShouldNotContainsANyBatteryProduction()
+            throws InvalidMappingKeyException {
         // given
         BDDMockito.given(this.batteryProduction.getProductionId()).willReturn(productionId);
         this.batteryRepositoryInMemory.add(this.batteryProduction);

@@ -1,4 +1,5 @@
 package ca.ulaval.glo4003.evulution.domain.assemblyline.car;
+
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.adapter.CarAssemblyAdapter;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
@@ -27,8 +28,10 @@ class CarAssemblyLineSequentialTest {
     private final CarProduction VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(A_PRODUCTION_ID, A_CAR_STYLE, A_PRODUCTION_TIME);
     private final CarProduction ANOTHER_VEHICLE_PRODUCTION = new CarProductionAssociatedWithManufacture(ANOTHER_PRODUCTION_ID, A_CAR_STYLE, A_PRODUCTION_TIME);
 
-
     private CarAssemblyLineSequential carAssemblyLine;
+
+    @Mock
+    private CarProduction mockCarProduction;
 
     @Mock
     private CarAssemblyAdapter carAssemblyAdapter;
@@ -52,63 +55,65 @@ class CarAssemblyLineSequentialTest {
         carAssemblyLine.setMediator(assemblyLineMediator);
     }
 
-     @Test
-     public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
-         // when
-         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
-         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
-         // then
-         verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
-     }
+    @Test
+    public void givenMultipleProductions_whenAddProduction_thenCreatesVehicleCommandOnce() {
+        // when
+        carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+        carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
-     @Test
-     public void givenNoProduction_whenAdvance_thenDoesNothing() {
-         // when
-         carAssemblyLine.advance();
+        // then
+        verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
+    }
 
-         // then
-         verify(carAssemblyAdapter, times(0)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
-         verify(carAssemblyAdapter, times(0)).advance();
-         verify(assemblyLineMediator, times(0)).notify(CarAssemblyLine.class);
-     }
+    @Test
+    public void givenNoProduction_whenAdvance_thenDoesNothing() {
+        // when
+        carAssemblyLine.advance();
 
-     @Test
-     public void givenAProduction_whenAdvance_thenGetsStatusAndAdvance() {
-         // given
-         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+        // then
+        verify(carAssemblyAdapter, times(0)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
+        verify(carAssemblyAdapter, times(0)).advance();
+        verify(assemblyLineMediator, times(0)).notify(CarAssemblyLine.class);
+    }
 
-         // when
-         carAssemblyLine.advance();
-
-         // then
-         verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
-         verify(carAssemblyAdapter, times(1)).advance();
-     }
-
-     @Test
-     public void whenAdvance_thenAddsInVehicleRepository() {
-         // given
-         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
-
-         // when
-         carAssemblyLine.advance();
-
-         // then
-         verify(carProductionRepository).add(VEHICLE_PRODUCTION);
-     }
-
-     @Test
-     public void givenTwoProductions_whenAdvance_thenGetsStatusNotifiesAndAddsCommand() {
+    @Test
+    public void givenAProduction_whenAdvance_thenGetsStatusAndAdvance() {
         // given
-         carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
-         carAssemblyLine.addProduction(ANOTHER_VEHICLE_PRODUCTION);
+        carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
 
-         // when
-         carAssemblyLine.advance();
+        // when
+        carAssemblyLine.advance();
 
-         // then
-         verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
-         verify(carAssemblyAdapter, times(1)).advance();
-     }
+        // then
+        verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
+        verify(carAssemblyAdapter, times(1)).advance();
+    }
+
+    @Test
+    public void whenAdvance_thenAddsInVehicleRepository() {
+        // given
+        when(mockCarProduction.advance(carAssemblyAdapter)).thenReturn(true);
+        carAssemblyLine.addProduction(mockCarProduction);
+
+        // when
+        carAssemblyLine.advance();
+
+        // then
+        verify(carProductionRepository).add(mockCarProduction);
+    }
+
+    @Test
+    public void givenTwoProductions_whenAdvance_thenGetsStatusNotifiesAndAddsCommand() {
+        // given
+        carAssemblyLine.addProduction(VEHICLE_PRODUCTION);
+        carAssemblyLine.addProduction(ANOTHER_VEHICLE_PRODUCTION);
+
+        // when
+        carAssemblyLine.advance();
+
+        // then
+        verify(carAssemblyAdapter, times(1)).newVehicleCommand(A_PRODUCTION_ID, A_CAR_STYLE);
+        verify(carAssemblyAdapter, times(1)).advance();
+    }
 }

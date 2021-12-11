@@ -18,11 +18,8 @@ public class CarProductionRepositoryInMemory implements CarProductionRepository 
     }
 
     @Override
-    public void remove(ProductionId productionId) throws InvalidMappingKeyException {
-        CarProduction carProduction = this.vehicles.remove(productionId);
-        if (carProduction == null) {
-            throw new InvalidMappingKeyException();
-        }
+    public void remove(ProductionId productionId) {
+        this.vehicles.remove(productionId);
     }
 
     @Override

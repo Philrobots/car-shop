@@ -8,7 +8,7 @@ public interface CarProductionRepository {
 
     void add(CarProduction carProduction);
 
-    void remove(ProductionId productionId) throws InvalidMappingKeyException;
+    void remove(ProductionId productionId);
 
     boolean replaceCarProductionWithoutManufactureIfItHasBeenMade(CarProduction carProductionAssociatedWithManufacture)
             throws CarNotAssociatedWithManufactureException;

@@ -42,7 +42,7 @@ public class CompleteAssemblyLineSequential {
         waitingList.add(completeAssemblyProduction);
     }
 
-    public void advance() throws DeliveryIncompleteException, InvalidMappingKeyException {
+    public void advance() throws DeliveryIncompleteException {
 
         if (!isCarCompleteInProduction || isBatteryInFire) {
             System.out.println("Skipping complete car assembly line ");
