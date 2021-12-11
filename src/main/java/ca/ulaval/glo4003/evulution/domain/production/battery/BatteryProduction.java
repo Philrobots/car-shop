@@ -18,20 +18,17 @@ public class BatteryProduction {
         return productionId;
     }
 
-    // public void sendEmail(EmailFactory emailFactory) throws EmailException {
-    // emailFactory.createBatteryInProductionEmail(List.of(email), productionTimeInWeeks).send();
-    // }
 
     public void newBatteryCommand(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
-        batteryAssemblyLineAdapter.newBatteryCommand(productionId, batteryType);
+        batteryAssemblyLineAdapter.newBatteryCommand(this.productionId, this.batteryType);
     }
 
     public boolean advance(BatteryAssemblyAdapter batteryAssemblyLineAdapter) {
         batteryAssemblyLineAdapter.advance();
-        return batteryAssemblyLineAdapter.isAssembled(productionId);
+        return batteryAssemblyLineAdapter.isAssembled(this.productionId);
     }
 
     public Integer getProductionTimeInWeeks() {
-        return productionTimeInWeeks;
+        return this.productionTimeInWeeks;
     }
 }

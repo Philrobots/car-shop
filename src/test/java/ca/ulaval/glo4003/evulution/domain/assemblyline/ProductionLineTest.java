@@ -111,9 +111,8 @@ public class ProductionLineTest {
     }
 
     @Test
-    public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines()
-            throws DeliveryIncompleteException, CarNotAssociatedWithManufactureException,
-            SaleNotFoundException, AccountNotFoundException {
+    public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines() throws DeliveryIncompleteException,
+            CarNotAssociatedWithManufactureException, SaleNotFoundException, AccountNotFoundException {
         // when
         this.productionLine.advanceAssemblyLines();
 

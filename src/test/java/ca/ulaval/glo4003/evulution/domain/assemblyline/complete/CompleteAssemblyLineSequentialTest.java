@@ -47,8 +47,7 @@ class CompleteAssemblyLineSequentialTest {
     }
 
     @Test
-    public void givenValidProduction_whenAdvance_thenMediatorNotifies()
-            throws DeliveryIncompleteException {
+    public void givenValidProduction_whenAdvance_thenMediatorNotifies() throws DeliveryIncompleteException {
         // then
         completeAssemblyLine.addProduction(completeAssemblyProduction);
         completeAssemblyLine.startNext();
@@ -60,8 +59,7 @@ class CompleteAssemblyLineSequentialTest {
     }
 
     @Test
-    public void givenValidProduction_whenAdvance_thenProductionShips()
-            throws DeliveryIncompleteException {
+    public void givenValidProduction_whenAdvance_thenProductionShips() throws DeliveryIncompleteException {
         // then
         completeAssemblyLine.addProduction(completeAssemblyProduction);
         completeAssemblyLine.startNext();
@@ -73,8 +71,7 @@ class CompleteAssemblyLineSequentialTest {
     }
 
     @Test
-    public void givenValidProduction_whenAdvance_thenCarProductionRepoRemoves()
-            throws DeliveryIncompleteException {
+    public void givenValidProduction_whenAdvance_thenCarProductionRepoRemoves() throws DeliveryIncompleteException {
 
         // then
         when(completeAssemblyProduction.getProductionId()).thenReturn(productionId);
@@ -88,8 +85,7 @@ class CompleteAssemblyLineSequentialTest {
     }
 
     @Test
-    public void givenValidProduction_whenAdvance_thenBatteryProductionRepoRemoves()
-            throws DeliveryIncompleteException {
+    public void givenValidProduction_whenAdvance_thenBatteryProductionRepoRemoves() throws DeliveryIncompleteException {
         // then
         when(completeAssemblyProduction.getProductionId()).thenReturn(productionId);
         completeAssemblyLine.addProduction(completeAssemblyProduction);

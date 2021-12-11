@@ -21,23 +21,23 @@ public class CarProductionWithoutManufacture implements CarProduction {
 
     @Override
     public void newCarCommand(CarAssemblyAdapter carAssemblyAdapter) {
-        carAssemblyAdapter.newVehicleCommand(productionId, carStyle);
+        carAssemblyAdapter.newVehicleCommand(this.productionId, this.carStyle);
     }
 
     @Override
     public boolean advance(CarAssemblyAdapter carAssemblyAdapter) {
         carAssemblyAdapter.advance();
-        return carAssemblyAdapter.isAssembled(productionId);
+        return carAssemblyAdapter.isAssembled(this.productionId);
     }
 
     @Override
     public ProductionId getProductionId() {
-        return productionId;
+        return this.productionId;
     }
 
     @Override
     public String getCarStyle() {
-        return carStyle;
+        return this.carStyle;
     }
 
     @Override

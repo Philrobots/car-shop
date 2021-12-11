@@ -24,8 +24,8 @@ public class InvoicePayment {
             if (entry.getValue().getPaymentsLeft() > 0) {
                 entry.getValue().pay();
             } else {
-                saleRepository.setStatus(entry.getKey(), SaleStatus.PAID);
-                activeInvoices.remove(entry.getKey());
+                this.saleRepository.setStatus(entry.getKey(), SaleStatus.PAID);
+                this.activeInvoices.remove(entry.getKey());
             }
         }
     }

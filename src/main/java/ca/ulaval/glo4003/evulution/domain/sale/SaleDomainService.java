@@ -24,17 +24,17 @@ public class SaleDomainService {
     }
 
     public void setVehiclePrice(SaleId saleId, BigDecimal price) throws SaleNotFoundException {
-        Sale sale = saleRepository.getSale(saleId);
+        Sale sale = this.saleRepository.getSale(saleId);
         sale.setVehiclePrice(price);
 
-        saleRepository.registerSale(sale);
+        this.saleRepository.registerSale(sale);
     }
 
     public void setBatteryPrice(SaleId saleId, BigDecimal price) throws SaleNotFoundException {
-        Sale sale = saleRepository.getSale(saleId);
+        Sale sale = this.saleRepository.getSale(saleId);
         sale.setBatteryPrice(price);
 
-        saleRepository.registerSale(sale);
+        this.saleRepository.registerSale(sale);
     }
 
     public void completeSale(SaleId saleId, int bankNumber, int accountNumber, String frequency)
@@ -42,14 +42,14 @@ public class SaleDomainService {
         Sale sale = this.saleRepository.getSale(saleId);
         sale.completeSale(bankNumber, accountNumber, frequency);
 
-        saleRepository.registerSale(sale);
+        this.saleRepository.registerSale(sale);
     }
 
     public Invoice startPayments(SaleId saleId) throws SaleNotFoundException {
         Sale sale = this.saleRepository.getSale(saleId);
-        Invoice invoice = sale.startPayments(invoicePayment);
+        Invoice invoice = sale.startPayments(this.invoicePayment);
 
-        saleRepository.registerSale(sale);
+        this.saleRepository.registerSale(sale);
         return invoice;
     }
 

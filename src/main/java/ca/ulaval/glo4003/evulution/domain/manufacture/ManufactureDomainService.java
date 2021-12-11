@@ -33,33 +33,33 @@ public class ManufactureDomainService {
     public DeliveryId createManufactureWithDelivery(AccountId accountId, SaleId saleId)
             throws DeliveryIncompleteException {
         Manufacture manufacture = manufactureFactory.create(accountId);
-        manufactureRepository.addManufacture(saleId, manufacture);
+        this.manufactureRepository.addManufacture(saleId, manufacture);
 
         return manufacture.getDeliveryId();
     }
 
     public void addCar(SaleId saleId, String name, String color) throws BadCarSpecsException, SaleNotFoundException {
-        Manufacture manufacture = manufactureRepository.getBySaleId(saleId);
+        Manufacture manufacture = this.manufactureRepository.getBySaleId(saleId);
         Car car = this.carFactory.create(name, color);
         manufacture.setCar(car);
 
-        manufactureRepository.updateManufacture(saleId, manufacture);
-        saleDomainService.setVehiclePrice(saleId, car.getBasePrice());
+        this.manufactureRepository.updateManufacture(saleId, manufacture);
+        this.saleDomainService.setVehiclePrice(saleId, car.getBasePrice());
     }
 
     public int addBattery(SaleId saleId, String type)
             throws BadCarSpecsException, SaleNotFoundException, CarNotChosenBeforeBatteryException {
-        Manufacture manufacture = manufactureRepository.getBySaleId(saleId);
+        Manufacture manufacture = this.manufactureRepository.getBySaleId(saleId);
         Battery battery = this.batteryFactory.create(type);
         int range = manufacture.setBattery(battery);
 
-        manufactureRepository.updateManufacture(saleId, manufacture);
-        saleDomainService.setBatteryPrice(saleId, battery.getPrice());
+        this.manufactureRepository.updateManufacture(saleId, manufacture);
+        this.saleDomainService.setBatteryPrice(saleId, battery.getPrice());
         return range;
     }
 
     public void setManufactureReadyToProduce(SaleId saleId) throws MissingElementsForSaleException {
-        Manufacture manufacture = manufactureRepository.getBySaleId(saleId);
+        Manufacture manufacture = this.manufactureRepository.getBySaleId(saleId);
         manufacture.setReadyToProduce();
     }
 }

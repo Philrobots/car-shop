@@ -34,7 +34,7 @@ public class Sale {
     }
 
     public SaleId getSaleId() {
-        return saleId;
+        return this.saleId;
     }
 
     public void setStatus(SaleStatus saleStatus) {
@@ -66,7 +66,7 @@ public class Sale {
     }
 
     public void verifyIsCompleted() throws IncompleteSaleException {
-        if (!status.equals(SaleStatus.COMPLETED))
+        if (!this.status.equals(SaleStatus.COMPLETED))
             throw new IncompleteSaleException();
     }
 

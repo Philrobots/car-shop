@@ -46,11 +46,13 @@ public class CarAssemblyLineJITTest {
     }
 
     @Test
-    public void whenAddProduction_thenCarProductionRepositoryIsCalled() throws CarNotAssociatedWithManufactureException {
+    public void whenAddProduction_thenCarProductionRepositoryIsCalled()
+            throws CarNotAssociatedWithManufactureException {
         // when
         this.carAssemblyLineJIT.addProduction(carProduction);
 
         // then
-        verify(this.carProductionRepository, times(1)).replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
+        verify(this.carProductionRepository, times(1))
+                .replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
     }
 }

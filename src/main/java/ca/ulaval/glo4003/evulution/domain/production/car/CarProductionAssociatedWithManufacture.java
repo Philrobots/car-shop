@@ -20,23 +20,23 @@ public class CarProductionAssociatedWithManufacture implements CarProduction {
     }
 
     public void newCarCommand(CarAssemblyAdapter carAssemblyAdapter) {
-        carAssemblyAdapter.newVehicleCommand(productionId, carStyle);
+        carAssemblyAdapter.newVehicleCommand(this.productionId, this.carStyle);
     }
 
     public boolean advance(CarAssemblyAdapter carAssemblyAdapter) {
         carAssemblyAdapter.advance();
-        return carAssemblyAdapter.isAssembled(productionId);
+        return carAssemblyAdapter.isAssembled(this.productionId);
     }
 
     public ProductionId getProductionId() {
-        return productionId;
+        return this.productionId;
     }
 
     public String getCarStyle() {
-        return carStyle;
+        return this.carStyle;
     }
 
     public Integer getTimeToProduce() {
-        return carProductionTimeInWeeks;
+        return this.carProductionTimeInWeeks;
     }
 }

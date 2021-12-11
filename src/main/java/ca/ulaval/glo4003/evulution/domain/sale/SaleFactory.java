@@ -20,6 +20,6 @@ public class SaleFactory {
     public Sale create(Token token) throws TokenNotFoundException {
         AccountId accountId = this.tokenRepository.getAccountId(token);
         SaleId saleId = this.saleIdFactory.create();
-        return new Sale(accountId, saleId, invoiceFactory);
+        return new Sale(accountId, saleId, this.invoiceFactory);
     }
 }

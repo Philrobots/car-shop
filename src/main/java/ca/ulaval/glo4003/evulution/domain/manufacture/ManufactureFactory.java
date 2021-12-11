@@ -13,7 +13,7 @@ public class ManufactureFactory {
     }
 
     public Manufacture create(AccountId accountId) {
-        Delivery delivery = deliveryFactory.create(accountId);
+        Delivery delivery = this.deliveryFactory.create(accountId);
         ProductionId productionId = new ProductionId();
         return new Manufacture(productionId, delivery);
     }

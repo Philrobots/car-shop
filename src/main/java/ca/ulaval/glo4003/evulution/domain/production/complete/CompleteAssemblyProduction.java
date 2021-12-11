@@ -17,14 +17,14 @@ public class CompleteAssemblyProduction {
     }
 
     public void ship() throws DeliveryIncompleteException {
-        delivery.setStatus(DeliveryStatus.SHIPPED);
+        this.delivery.setStatus(DeliveryStatus.SHIPPED);
     }
 
     public ProductionId getProductionId() {
-        return productionId;
+        return this.productionId;
     }
 
     public LocalDate addDelayInWeeks(Integer assemblyDelayInWeeks) {
-        return delivery.addDelayInWeeks(assemblyDelayInWeeks);
+        return this.delivery.addDelayInWeeks(assemblyDelayInWeeks);
     }
 }
