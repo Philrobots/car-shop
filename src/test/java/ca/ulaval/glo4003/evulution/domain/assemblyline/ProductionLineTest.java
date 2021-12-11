@@ -73,7 +73,10 @@ public class ProductionLineTest {
 
     @Test
     public void whenShutdown_thenAllAssemblyLinesAreShutdownAndEmailIsSent() throws AssemblyLineIsShutdownException {
+       // when
         this.productionLine.shutdown();
+
+        // then
         verify(batteryAssemblyLineSequential).shutdown();
         verify(carAssemblyLine).shutdown();
         verify(completeAssemblyLineSequential).shutdown();
@@ -87,10 +90,13 @@ public class ProductionLineTest {
     @Test
     public void whenReactivate_thenReactivateIsCalledForEveryAssemblyLine()
             throws AssemblyLineIsShutdownException, AssemblyLineIsNotShutdownException {
+        // given
         this.productionLine.shutdown();
 
+        // when
         this.productionLine.reactivate();
 
+        // then
         verify(batteryAssemblyLineSequential).reactivate();
         verify(carAssemblyLine).reactivate();
         verify(completeAssemblyLineSequential).reactivate();
@@ -98,13 +104,19 @@ public class ProductionLineTest {
 
     @Test
     public void whenSetCarAssemblyLine_thenCallTransferAssemblyLine() {
+        // when
         this.productionLine.setCarAssemblyLine(carAssemblyLine);
+
+        // then
         verify(carAssemblyLine).transferAssemblyLine(carAssemblyLine);
     }
 
     @Test
     public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines() throws InvalidMappingKeyException, DeliveryIncompleteException, CarNotAssociatedWithManufactureException, SaleNotFoundException, AccountNotFoundException {
+        // when
         this.productionLine.advanceAssemblyLines();
+
+        // then
         verify(carAssemblyLine).advance();
         verify(batteryAssemblyLineSequential).advance();
         verify(completeAssemblyLineSequential).advance();
