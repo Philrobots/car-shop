@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.evulution.infrastructure.assemblyline.car;
 
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
+import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.CarProductionRepositoryInMemory;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class CarProductionRepositoryInMemoryTest {
 
-    private CarProductionRepositoryInMemory vehicleRepositoryInMemory;
-
     @Mock
     private ProductionId productionId;
+
+    @Mock
+    private CarProduction carProduction;
+
+    private CarProductionRepositoryInMemory vehicleRepositoryInMemory;
 
     @BeforeEach
     public void setUp() {
