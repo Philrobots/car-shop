@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProduction;
-import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 
 import java.time.LocalDate;
 import java.util.LinkedList;

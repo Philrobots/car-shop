@@ -14,7 +14,6 @@ import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyPr
 import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
 import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
-import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,7 +112,7 @@ public class ProductionLineTest {
 
     @Test
     public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines()
-            throws InvalidMappingKeyException, DeliveryIncompleteException, CarNotAssociatedWithManufactureException,
+            throws DeliveryIncompleteException, CarNotAssociatedWithManufactureException,
             SaleNotFoundException, AccountNotFoundException {
         // when
         this.productionLine.advanceAssemblyLines();

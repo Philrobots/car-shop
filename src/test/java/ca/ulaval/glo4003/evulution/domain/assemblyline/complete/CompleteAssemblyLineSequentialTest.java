@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProduction;
-import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +48,7 @@ class CompleteAssemblyLineSequentialTest {
 
     @Test
     public void givenValidProduction_whenAdvance_thenMediatorNotifies()
-            throws InvalidMappingKeyException, DeliveryIncompleteException {
+            throws DeliveryIncompleteException {
         // then
         completeAssemblyLine.addProduction(completeAssemblyProduction);
         completeAssemblyLine.startNext();
@@ -62,7 +61,7 @@ class CompleteAssemblyLineSequentialTest {
 
     @Test
     public void givenValidProduction_whenAdvance_thenProductionShips()
-            throws InvalidMappingKeyException, DeliveryIncompleteException {
+            throws DeliveryIncompleteException {
         // then
         completeAssemblyLine.addProduction(completeAssemblyProduction);
         completeAssemblyLine.startNext();
@@ -75,7 +74,7 @@ class CompleteAssemblyLineSequentialTest {
 
     @Test
     public void givenValidProduction_whenAdvance_thenCarProductionRepoRemoves()
-            throws InvalidMappingKeyException, DeliveryIncompleteException {
+            throws DeliveryIncompleteException {
 
         // then
         when(completeAssemblyProduction.getProductionId()).thenReturn(productionId);
@@ -90,7 +89,7 @@ class CompleteAssemblyLineSequentialTest {
 
     @Test
     public void givenValidProduction_whenAdvance_thenBatteryProductionRepoRemoves()
-            throws InvalidMappingKeyException, DeliveryIncompleteException {
+            throws DeliveryIncompleteException {
         // then
         when(completeAssemblyProduction.getProductionId()).thenReturn(productionId);
         completeAssemblyLine.addProduction(completeAssemblyProduction);

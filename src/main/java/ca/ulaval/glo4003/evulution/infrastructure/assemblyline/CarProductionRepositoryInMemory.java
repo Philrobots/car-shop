@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProduction;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
-import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 
 import java.util.HashMap;
 import java.util.Map;
