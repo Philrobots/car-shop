@@ -10,11 +10,11 @@ import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociated
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CarAssemblyLineJITTest {
@@ -32,6 +32,12 @@ public class CarAssemblyLineJITTest {
 
     @Mock
     CarAssemblyLineJITTypeSelector carAssemblyLineJITTypeSelector;
+
+    @Mock
+    CarAssemblyLine otherAssemblyLine;
+
+    @Mock
+    CarProduction mockedCarProduction;
 
     ProductionId productionId = new ProductionId();
     String carStyle = "jaime larchitecture";
@@ -54,5 +60,37 @@ public class CarAssemblyLineJITTest {
         // then
         verify(this.carProductionRepository, times(1))
                 .replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction);
+    }
+
+    @Test
+    public void whenTransferAssemblyLine_thenCallOtherAssemblyLine() {
+        // when
+        this.carAssemblyLineJIT.transferAssemblyLine(otherAssemblyLine);
+
+        //then
+        verify(otherAssemblyLine).getIsBatteryInFire();
+        verify(otherAssemblyLine).getWaitingList();
+    }
+
+    @Test
+    public void whenCarFinished_CarProductionRepoAdds() {
+        BDDMockito.given(mockedCarProduction.advance(carAssemblyAdapter)).willReturn(true);
+        BDDMockito.given(carAssemblyLineJITTypeSelector.getNextCarProduction()).willReturn(mockedCarProduction);
+
+        this.carAssemblyLineJIT.advance();
+
+        verify(carProductionRepository).add(mockedCarProduction);
+    }
+
+    @Test
+    public void givenWaitingListIsNotEmpty_whenCarFinished_CarProductionAddsCarCommand() throws CarNotAssociatedWithManufactureException {
+        BDDMockito.given(mockedCarProduction.advance(carAssemblyAdapter)).willReturn(true);
+        BDDMockito.given(carAssemblyLineJITTypeSelector.getNextCarProduction()).willReturn(mockedCarProduction);
+        BDDMockito.given(carProductionRepository.replaceCarProductionWithoutManufactureIfItHasBeenMade(carProduction)).willReturn(false);
+
+        this.carAssemblyLineJIT.addProduction(carProduction);
+        this.carAssemblyLineJIT.advance();
+
+        verify(mockedCarProduction).newCarCommand(carAssemblyAdapter);
     }
 }
