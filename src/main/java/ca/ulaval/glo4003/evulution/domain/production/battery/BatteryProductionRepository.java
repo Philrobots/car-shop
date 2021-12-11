@@ -9,7 +9,7 @@ public interface BatteryProductionRepository {
 
     void add(BatteryProduction batteryProduction);
 
-    void remove(ProductionId productionId) throws InvalidMappingKeyException;
+    void remove(ProductionId productionId);
 
     List<BatteryProduction> getAndSendToProduction();
 

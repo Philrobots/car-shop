@@ -19,11 +19,8 @@ public class BatteryProductionRepositoryInMemory implements BatteryProductionRep
     }
 
     @Override
-    public void remove(ProductionId productionId) throws InvalidMappingKeyException {
-        BatteryProduction batteryProduction = this.batteries.remove(productionId);
-        if (batteryProduction == null) {
-            throw new InvalidMappingKeyException();
-        }
+    public void remove(ProductionId productionId) {
+        this.batteries.remove(productionId);
     }
 
     public List<BatteryProduction> getAndSendToProduction() {

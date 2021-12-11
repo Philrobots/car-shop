@@ -52,7 +52,7 @@ public class ProductionLine {
         this.productionLineEmailNotifier = productionLineEmailNotifier;
     }
 
-    public void advanceAssemblyLines() throws DeliveryIncompleteException, InvalidMappingKeyException,
+    public void advanceAssemblyLines() throws DeliveryIncompleteException,
             SaleNotFoundException, AccountNotFoundException, CarNotAssociatedWithManufactureException {
         this.addNewManufactureToProduction();
         this.carAssemblyLine.advance();
