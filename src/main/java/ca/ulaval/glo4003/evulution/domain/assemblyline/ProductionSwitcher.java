@@ -21,6 +21,14 @@ public class ProductionSwitcher {
         this.assemblyLineMediatorSwitcher = assemblyLineMediatorSwitcher;
     }
 
+    public void setCurrentProductionType(ProductionType productionType) {
+        this.currentProductionType = productionType;
+    }
+
+    public ProductionType getCurrentProductionType() {
+        return this.currentProductionType;
+    }
+
     public void switchProduction(AssemblyLineType assemblyLineType, ProductionType productionType)
             throws InvalidAssemblyLineOrderException, InvalidAssemblyLineException {
         if (assemblyLineType.equals(AssemblyLineType.CAR)) {

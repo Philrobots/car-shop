@@ -1,7 +1,5 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine;
+package ca.ulaval.glo4003.evulution.domain.assemblyline;
 
-import ca.ulaval.glo4003.evulution.car_manufacture.BatteryAssemblyLine;
-import ca.ulaval.glo4003.evulution.domain.assemblyline.ProductionLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.battery.BatteryAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.car.CarAssemblyLine;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
@@ -13,8 +11,11 @@ import ca.ulaval.glo4003.evulution.domain.manufacture.ManufactureRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionFactory;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProductionFactory;
+import ca.ulaval.glo4003.evulution.domain.production.exceptions.CarNotAssociatedWithManufactureException;
 import ca.ulaval.glo4003.evulution.domain.sale.SaleDomainService;
+import ca.ulaval.glo4003.evulution.infrastructure.account.exceptions.AccountNotFoundException;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
+import ca.ulaval.glo4003.evulution.infrastructure.sale.exceptions.SaleNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,51 +24,49 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 
 @ExtendWith(MockitoExtension.class)
 public class ProductionLineTest {
 
     @Mock
-    CarAssemblyLine carAssemblyLine;
+    private CarAssemblyLine carAssemblyLine;
 
     @Mock
-    BatteryAssemblyLineSequential batteryAssemblyLineSequential;
+    private BatteryAssemblyLineSequential batteryAssemblyLineSequential;
 
     @Mock
-    CompleteAssemblyLineSequential completeAssemblyLineSequential;
+    private CompleteAssemblyLineSequential completeAssemblyLineSequential;
 
     @Mock
-    ManufactureRepository manufactureRepository;
+    private ManufactureRepository manufactureRepository;
 
     @Mock
-    SaleDomainService saleDomainService;
+    private SaleDomainService saleDomainService;
 
     @Mock
-    BatteryProductionFactory batteryProductionFactory;
+    private BatteryProductionFactory batteryProductionFactory;
 
     @Mock
-    CarProductionFactory carProductionFactory;
+    private CarProductionFactory carProductionFactory;
 
     @Mock
-    CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
+    private CompleteAssemblyProductionFactory completeAssemblyProductionFactory;
 
     @Mock
-    ProductionLineEmailNotifier productionLineEmailNotifier;
+    private ProductionLineEmailNotifier productionLineEmailNotifier;
 
-    ProductionLine productionLine;
-
+    private ProductionLine productionLine;
 
     @BeforeEach
     void setup() {
-        productionLine = new ProductionLine(carAssemblyLine, batteryAssemblyLineSequential, completeAssemblyLineSequential, manufactureRepository,
-                saleDomainService, batteryProductionFactory, carProductionFactory,
-                completeAssemblyProductionFactory, productionLineEmailNotifier);
+        this.productionLine = new ProductionLine(carAssemblyLine, batteryAssemblyLineSequential,
+                completeAssemblyLineSequential, manufactureRepository, saleDomainService, batteryProductionFactory,
+                carProductionFactory, completeAssemblyProductionFactory, productionLineEmailNotifier);
     }
 
     @Test
-    public void givenAlreadyShutdown_whenShutdown_thenThrowAssemblyLineIsShutdownException() throws AssemblyLineIsShutdownException {
+    public void givenAlreadyShutdown_whenShutdown_thenThrowAssemblyLineIsShutdownException()
+            throws AssemblyLineIsShutdownException {
         this.productionLine.shutdown();
         Assertions.assertThrows(AssemblyLineIsShutdownException.class, () -> this.productionLine.shutdown());
     }
@@ -82,11 +81,12 @@ public class ProductionLineTest {
 
     @Test
     public void givenAlreadyReactivated_whenReactivate_thenThrowsAssemblyLineIsShutdownException() {
-        Assertions.assertThrows(AssemblyLineIsNotShutdownException .class, () -> this.productionLine.reactivate());
+        Assertions.assertThrows(AssemblyLineIsNotShutdownException.class, () -> this.productionLine.reactivate());
     }
 
     @Test
-    public void whenReactivate_thenReactivateIsCalledForEveryAssemblyLine() throws AssemblyLineIsShutdownException, AssemblyLineIsNotShutdownException {
+    public void whenReactivate_thenReactivateIsCalledForEveryAssemblyLine()
+            throws AssemblyLineIsShutdownException, AssemblyLineIsNotShutdownException {
         this.productionLine.shutdown();
 
         this.productionLine.reactivate();
@@ -100,6 +100,15 @@ public class ProductionLineTest {
     public void whenSetCarAssemblyLine_thenCallTransferAssemblyLine() {
         this.productionLine.setCarAssemblyLine(carAssemblyLine);
         verify(carAssemblyLine).transferAssemblyLine(carAssemblyLine);
+    }
+
+    @Test
+    public void whenAdvanceAssemblyLines_thenAdvanceAllAssemblyLines() throws InvalidMappingKeyException, DeliveryIncompleteException, CarNotAssociatedWithManufactureException, SaleNotFoundException, AccountNotFoundException {
+        this.productionLine.advanceAssemblyLines();
+        verify(carAssemblyLine).advance();
+        verify(batteryAssemblyLineSequential).advance();
+        verify(completeAssemblyLineSequential).advance();
+
     }
 
 }

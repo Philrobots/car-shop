@@ -50,8 +50,9 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
 
     public void shutdown() {
         this.isBatteryInFire = true;
-        if (this.isBatteryInProduction)
+        if (this.isBatteryInProduction) {
             this.batteryProductionsWaitingList.add(this.currentBatteryProduction);
+        }
         this.isBatteryInProduction = false;
     }
 
@@ -62,13 +63,12 @@ public class BatteryAssemblyLineSequential implements BatteryAssemblyLine {
             this.batteryProductionsWaitingList.addFirst(batteryProduction);
         }
 
-        if (!this.batteryProductionsWaitingList.isEmpty()
-                && this.assemblyLineMediator.isCompleteOrBatteryState())
+        if (!this.batteryProductionsWaitingList.isEmpty() && this.assemblyLineMediator.isCompleteOrBatteryState())
             this.setUpNextBatteryForProduction();
     }
 
     public void startNext() {
-        if (this.isBatteryInFire && !this.batteryProductionsWaitingList.isEmpty())
+        if (this.isBatteryInFire && this.batteryProductionsWaitingList.isEmpty())
             return;
 
         this.setUpNextBatteryForProduction();

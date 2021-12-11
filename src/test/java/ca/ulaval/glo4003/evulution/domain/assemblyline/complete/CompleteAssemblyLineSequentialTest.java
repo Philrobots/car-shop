@@ -1,15 +1,12 @@
-package ca.ulaval.glo4003.evulution.domain.assemblyLine;
+package ca.ulaval.glo4003.evulution.domain.assemblyline.complete;
 
-import ca.ulaval.glo4003.evulution.domain.assemblyline.complete.CompleteAssemblyLineSequential;
 import ca.ulaval.glo4003.evulution.domain.assemblyline.mediator.AssemblyLineMediator;
 import ca.ulaval.glo4003.evulution.domain.delivery.exceptions.DeliveryIncompleteException;
 import ca.ulaval.glo4003.evulution.domain.email.ProductionLineEmailNotifier;
 import ca.ulaval.glo4003.evulution.domain.manufacture.ProductionId;
 import ca.ulaval.glo4003.evulution.domain.production.car.CarProductionRepository;
 import ca.ulaval.glo4003.evulution.domain.production.battery.BatteryProductionRepository;
-import ca.ulaval.glo4003.evulution.domain.email.Email;
 import ca.ulaval.glo4003.evulution.domain.production.complete.CompleteAssemblyProduction;
-import ca.ulaval.glo4003.evulution.domain.sale.Sale;
 import ca.ulaval.glo4003.evulution.infrastructure.assemblyline.exceptions.InvalidMappingKeyException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import static org.mockito.Mockito.when;
 
@@ -102,4 +96,5 @@ class CompleteAssemblyLineSequentialTest {
 
         BDDMockito.verify(batteryProductionRepository).remove(productionId);
     }
+
 }
